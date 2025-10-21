@@ -1,4 +1,4 @@
-package com.example.VOIDR;
+package com.example.voidr;
 
 public class Test {
 

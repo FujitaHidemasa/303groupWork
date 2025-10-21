@@ -1,10 +1,10 @@
-package com.example.VOIDR.repository;
+package com.example.voidr.repository;
 
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.example.VOIDR.entity.Order;
+import com.example.voidr.entity.Order;
 
 @Mapper
 public interface OrderMapper {
@@ -12,5 +12,5 @@ public interface OrderMapper {
     List<Order> findByOrderListId(long orderListId);
 
 
-    void insert(Order order);
+    void insertOrder(Order order);
 }

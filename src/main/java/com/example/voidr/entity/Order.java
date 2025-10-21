@@ -1,4 +1,4 @@
-package com.example.VOIDR.entity;
+package com.example.voidr.entity;
 
 import java.time.LocalDateTime;
 
