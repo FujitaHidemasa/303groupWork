@@ -24,7 +24,9 @@ public class Item
 	private String overview;
 	
 	/** ダウンロード商品か */
+
 	private boolean isDownload;
+
 	
 	/** 作成日 */
 	private LocalDateTime createdAt;
