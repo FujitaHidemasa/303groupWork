@@ -9,28 +9,17 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Item
-{
-	/** 商品ID */
+public class OrderList {
+	
+	//id 主キー
 	private long id;
 	
-	/** 商品名 */
-	private String name;
+	//ユーザーid
+	private long userId;
 	
-	/** 値段 */
-	private int price;
-	
-	/** 概要 */
-	private String overview;
-	
-	/** ダウンロード商品か */
-
-	private boolean isDownload;
-
-	
-	/** 作成日 */
+	//作成日
 	private LocalDateTime createdAt;
 	
-	/** 更新日 */
+	//更新日
 	private LocalDateTime updatedAt;
 }
