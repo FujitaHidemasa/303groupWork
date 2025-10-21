@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.VOIDR.repository.CartListMapper">
+
+  <!-- 指定ユーザーIDのカートリストを取得 -->
+  <select id="findByUserId" parameterType="long" resultType="com.example.VOIDR.entity.CartList">
+    SELECT
+      id,
+      user_id,
+      created_at,
+      updated_at
+    FROM cart_list
+    WHERE user_id = #{user_id}
+  </select>
+
+  <!-- カートリストを新規作成 -->
+  <insert id="insertCartList" parameterType="com.example.VOIDR.entity.CartList" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO cart_list (
+      user_id,
+      created_at,
+      updated_at
+    )
+    VALUES (
+      #{user_id},
+      #{created_at},
+      #{updated_at}
+    )
+  </insert>
+
+</mapper>

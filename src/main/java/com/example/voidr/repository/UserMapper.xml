@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.voidr.repository.UserMapper">
+
+  <!-- ユーザーIDで検索 -->
+  <select id="findById" parameterType="long" resultType="com.example.voidr.entity.User">
+    SELECT
+      id,
+      name,
+      password,
+      email,
+      address,
+      phone_number AS phoneNumber,
+      created_at AS createdAt,
+      updated_at AS updatedAt,
+      is_active AS isActive
+    FROM users
+    WHERE id = #{id}
+  </select>
+
+  <!-- メールアドレスで検索 -->
+  <select id="findByEmail" parameterType="string" resultType="com.example.voidr.entity.User">
+    SELECT
+      id,
+      name,
+      password,
+      email,
+      address,
+      phone_number AS phoneNumber,
+      created_at AS createdAt,
+      updated_at AS updatedAt,
+      is_active AS isActive
+    FROM users
+    WHERE email = #{email}
+  </select>
+
+  <!-- 新規ユーザー登録 -->
+  <insert id="insertUser" parameterType="com.example.voidr.entity.User" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO users (
+      name,
+      password,
+      email,
+      address,
+      phone_number,
+      created_at,
+      updated_at,
+      is_active
+    )
+    VALUES (
+      #{name},
+      #{password},
+      #{email},
+      #{address},
+      #{phoneNumber},
+      #{createdAt},
+      #{updatedAt},
+      #{isActive}
+    )
+  </insert>
+
+  <!-- ユーザー情報の更新 -->
+  <update id="updateUser" parameterType="com.example.voidr.entity.User">
+    UPDATE users
+    SET
+      name = #{name},
+      password = #{password},
+      email = #{email},
+      address = #{address},
+      phone_number = #{phoneNumber},
+      updated_at = #{updatedAt},
+      is_active = #{isActive}
+    WHERE id = #{id}
+  </update>
+
+</mapper>

@@ -1,4 +1,4 @@
-package com.example.VOIDR;
+package com.example.voidr;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
