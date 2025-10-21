@@ -9,30 +9,24 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-
-public class Item
-{
+public class Cart {
+	
 	/** 商品ID */
 	private long id;
 	
-	/** 商品名 */
-	private String name;
+	/** カートリストid */
+	private long cartListId;
 	
-	/** 値段 */
-	private int price;
+	/** カートの商品のid */
+	private long itemId;
 	
-	/** 概要 */
-	private String overview;
+	/** カートの商品の数 */
+	private int itemCount;
 	
-	/** ダウンロード商品か */
-
-	private boolean isDownload;
-
+	/** カートの商品が「後で買う」状態かどうか */
+	private boolean isHold;
 	
-	/** 作成日 */
-	private LocalDateTime createdAt;
-	
-
 	/** 更新日 */
 	private LocalDateTime updatedAt;
+	
 }
