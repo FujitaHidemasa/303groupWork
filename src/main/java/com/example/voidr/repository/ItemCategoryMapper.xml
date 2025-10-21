@@ -1,0 +1,15 @@
+<mapper namespace="com.example.voidr.mapper.ItemCategoryMapper">
+    <select id="findByItemId" resultType="string">
+        SELECT category FROM item_category WHERE item_id = #{itemId}
+    </select>
+
+    <insert id="insert">
+        INSERT INTO item_category (item_id, category) VALUES (#{itemId}, #{category})
+    </insert>
+
+    <delete id="deleteByItemId">
+        DELETE FROM item_category WHERE item_id = #{itemId}
+    </delete>
+</mapper>
+
+
