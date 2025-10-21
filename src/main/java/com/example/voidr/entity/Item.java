@@ -1,4 +1,4 @@
-package com.example.VOIDR.entity;
+package com.example.voidr.entity;
 
 import java.time.LocalDateTime;
 
@@ -24,7 +24,7 @@ public class Item
 	private String overview;
 	
 	/** ダウンロード商品か */
-	private boolean isDownload;
+	private String[] categorys;
 	
 	/** 作成日 */
 	private LocalDateTime createdAt;
