@@ -1,31 +1,89 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.voidr.repository.ItemMapper">
-	<!-- 全件検索 -->
-	<select id="selectAll" resultType="com.example.webapp.entity.ToDo">
-		SELECT id, todo, detail, created_at as createdAt,
-		updated_at as updatedAt FROM todos
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.mapper.ItemMapper">
+
+	<!-- 商品を全て取得 -->
+	<select id="selectAll" resultType="com.example.entity.Item">
+		SELECT
+		id,
+		name,
+		price,
+		overview,
+		is_download AS isDownload,
+		created_at AS createdAt,
+		updated_at AS updatedAt
+		FROM item
 	</select>
-	
-	<!-- 1件検索 -->
-	<select id="selectById" resultType="com.example.webapp.entity.ToDo">
-		SELECT id, todo, detail, created_at as createdAt,
-		updated_at as updatedAt FROM todos WHERE id = #{id}
-	</select> 
-	
-	<!-- 登録 -->
-	<insert id="insert">
-		INSERT INTO todos (todo, detail, created_at, updated_at)
-		VALUES(#{todo},#{detail}, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+	<!-- 特定の範囲のidの商品を全て取得 -->
+	<select id="selectByRangeId" parameterType="map"
+		resultType="com.example.entity.Item">
+		SELECT
+		id,
+		name,
+		price,
+		overview,
+		is_download AS isDownload,
+		created_at AS createdAt,
+		updated_at AS updatedAt
+		FROM item
+		WHERE id BETWEEN #{min} AND #{max}
+	</select>
+
+	<!-- idに一致した商品を取得 -->
+	<select id="selectById" parameterType="long"
+		resultType="com.example.entity.Item">
+		SELECT
+		id,
+		name,
+		price,
+		overview,
+		is_download AS isDownload,
+		created_at AS createdAt,
+		updated_at AS updatedAt
+		FROM item
+		WHERE id = #{id}
+	</select>
+
+	<!-- 商品を追加 -->
+	<insert id="insert" parameterType="com.example.entity.Item"
+		useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO item (
+		name,
+		price,
+		overview,
+		categorys,
+		created_at,
+		updated_at
+		) VALUES (
+		#{name},
+		#{price},
+		#{overview},
+		#{isDownload},
+		CURRENT_TIMESTAMP,
+		CURRENT_TIMESTAMP
+		)
 	</insert>
-	
-	<!-- 更新 -->
-	<update id="update">
-		UPDATE todos SET todo = #{todo}, detail = #{detail},
-		updated_at = CURRENT_TIMESTAMP WHERE id = #{id}
+
+	<!-- 商品を更新 -->
+	<update id="update" parameterType="com.example.entity.Item">
+		UPDATE item
+		SET
+		name = #{name},
+		price = #{price},
+		overview = #{overview},
+		is_download = #{isDownload},
+		updated_at = CURRENT_TIMESTAMP
+		WHERE id = #{id}
 	</update>
-	<!-- 削除 -->
-	<delete id="delete">
-		DELETE FROM todos WHERE id = #{id}
+
+	<!-- 商品を削除 -->
+	<delete id="delete" parameterType="long">
+		DELETE FROM item WHERE id =
+		#{id}
 	</delete>
+
 </mapper>

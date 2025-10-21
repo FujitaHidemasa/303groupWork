@@ -12,9 +12,6 @@ public interface ItemMapper
 	/** 特定の範囲のidの商品を全て取得する */
 	List<Item> selectByRangeId(Integer min, Integer max);
 	
-	/** 特定のカテゴリーに属する商品を全て取得する */
-	List<Item> selectByCategory(String category);
-	
 	/** idに一致した商品を取得する */
 	Item selectById(Long id);
 	
