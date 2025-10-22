@@ -2,48 +2,68 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
 <mapper namespace="com.example.voidr.repository.ItemMapper">
+
+	<!-- ============================== Itemのマッピング設定 ============================== -->
 	<resultMap id="ItemMap" type="com.example.voidr.entity.Item">
 		<id property="id" column="id" />
 		<result property="name" column="name" />
 		<result property="price" column="price" />
 		<result property="overview" column="overview" />
+		<result property="thumbsImageName" column="thumbs_image_name" />
 		<result property="createdAt" column="created_at" />
 		<result property="updatedAt" column="updated_at" />
 	</resultMap>
 
+	<!-- ============================== SELECT文 ============================== -->
 	<select id="selectAll" resultMap="ItemMap">
-		SELECT id, name, price, overview, created_at, updated_at FROM item
+		SELECT id, name, price,
+		overview, thumbs_image_name, created_at, updated_at
+		FROM item
 	</select>
 
 	<select id="selectByRangeId" resultMap="ItemMap">
-		SELECT id, name, price, overview, created_at, updated_at
+		SELECT id, name, price,
+		overview, thumbs_image_name, created_at, updated_at
 		FROM item
-		WHERE id BETWEEN #{min} AND #{max}
+		WHERE id
+		BETWEEN #{min} AND #{max}
 	</select>
 
 	<select id="selectByCategory" resultMap="ItemMap">
-		SELECT i.id, i.name, i.price, i.overview, i.created_at, i.updated_at
+		SELECT i.id, i.name,
+		i.price, i.overview, i.thumbs_image_name, i.created_at, i.updated_at
 		FROM item i
 		JOIN item_category c ON i.id = c.item_id
-		WHERE c.category = #{category}
+		WHERE c.category =
+		#{category}
 	</select>
 
 	<select id="selectById" resultMap="ItemMap">
-		SELECT id, name, price, overview, created_at, updated_at
+		SELECT id, name, price,
+		overview, thumbs_image_name, created_at, updated_at
 		FROM item
-		WHERE id = #{id}
+		WHERE id =
+		#{id}
 	</select>
 
+	<!-- ============================== INSERT / UPDATE / DELETE ============================== -->
 	<insert id="insert">
-		INSERT INTO item (id, name, price, overview, created_at, updated_at)
-		VALUES (#{id}, #{name}, #{price}, #{overview}, #{createdAt}, #{updatedAt})
+		INSERT INTO item (id, name, price, overview,
+		thumbs_image_name, created_at, updated_at)
+		VALUES (#{id}, #{name},
+		#{price}, #{overview}, #{thumbsImageName}, #{createdAt}, #{updatedAt})
 	</insert>
 
 	<update id="update">
 		UPDATE item
-		SET name = #{name}, price = #{price}, overview = #{overview}, updated_at
-		= #{updatedAt}
+		SET
+		name = #{name},
+		price = #{price},
+		overview = #{overview},
+		thumbs_image_name = #{thumbsImageName},
+		updated_at = #{updatedAt}
 		WHERE id = #{id}
 	</update>
 

@@ -3,7 +3,6 @@ package com.example.voidr.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.voidr.entity.Cart;
@@ -15,14 +14,15 @@ import com.example.voidr.service.CartService;
 import com.example.voidr.service.ItemService;
 import com.example.voidr.view.CartView;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class CartServiceImpl implements CartService
 {
 
-	@Autowired
 	private CartListMapper cartListMapper;
 
-	@Autowired
 	private CartMapper cartMapper;
 	
 	private ItemService itemService;

@@ -34,7 +34,4 @@ public class User
 	
 	/** 更新日時 */
 	private LocalDateTime updatedAt;
-	
-	/** 有効アカウントかどうか */
-	private boolean isActive;
 }
