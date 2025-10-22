@@ -7,6 +7,7 @@ DROP TABLE IF EXISTS "order" CASCADE;
 DROP TABLE IF EXISTS order_list CASCADE;
 DROP TABLE IF EXISTS item CASCADE;
 DROP TABLE IF EXISTS "user" CASCADE;
+DROP TABLE IF EXISTS item_category CASCADE;
 
 -- ===============================
 --  テーブル作成
@@ -39,6 +40,14 @@ CREATE TABLE item (
     created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
+-- -------------------------------
+-- 商品カテゴリーテーブル
+-- -------------------------------
+CREATE TABLE item_category (
+    id SERIAL PRIMARY KEY,
+    item_id BIGINT REFERENCES item(id) ON DELETE CASCADE,
+    category text NOT NULL
+);
 
 -- -------------------------------
 -- 購入履歴リスト
@@ -67,6 +76,7 @@ CREATE TABLE "order" (
 CREATE TABLE cart_list (
     id SERIAL PRIMARY KEY,
     user_id INTEGER REFERENCES "user"(id) ON DELETE CASCADE,
+    is_login_user BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );

@@ -15,7 +15,10 @@ public class CartList {
 	private long id;
 	
 	/** カートのユーザーid */
-	private long user_id;
+	private long userId;
+	
+	/** ログイン状態か */
+	private boolean isLoginUser;
 	
 	/** 作成日 */
 	private LocalDateTime created_at;

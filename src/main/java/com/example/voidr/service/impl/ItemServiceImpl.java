@@ -137,4 +137,40 @@ public class ItemServiceImpl implements ItemService {
 		}
 		return dbItems;
 	}
+
+	@Override
+	public List<Item> getItemsByRangeId(Integer min, Integer max)
+	{
+		return itemMapper.selectByRangeId(min, max);
+	}
+
+	@Override
+	public List<Item> getItemsByCategory(String category)
+	{
+		return itemMapper.selectByCategory(category);
+	}
+
+	@Override
+	public Item getItemById(Long id)
+	{
+		return itemMapper.selectById(id);
+	}
+
+	@Override
+	public void createItem(Item item)
+	{
+		itemMapper.insert(item);
+	}
+
+	@Override
+	public void updateItem(Item item)
+	{
+		itemMapper.update(item);
+	}
+
+	@Override
+	public void deleteItem(Long id)
+	{
+		itemMapper.delete(id);
+	}
 }

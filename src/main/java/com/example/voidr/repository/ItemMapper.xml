@@ -1,49 +1,54 @@
-<mapper namespace="com.example.voidr.mapper.ItemMapper">
-    <resultMap id="ItemMap" type="com.example.voidr.entity.Item">
-        <id property="id" column="id"/>
-        <result property="name" column="name"/>
-        <result property="price" column="price"/>
-        <result property="overview" column="overview"/>
-        <result property="createdAt" column="created_at"/>
-        <result property="updatedAt" column="updated_at"/>
-    </resultMap>
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.voidr.repository.ItemMapper">
+	<resultMap id="ItemMap" type="com.example.voidr.entity.Item">
+		<id property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="price" column="price" />
+		<result property="overview" column="overview" />
+		<result property="createdAt" column="created_at" />
+		<result property="updatedAt" column="updated_at" />
+	</resultMap>
 
-    <select id="selectAll" resultMap="ItemMap">
-        SELECT id, name, price, overview, created_at, updated_at FROM items
-    </select>
+	<select id="selectAll" resultMap="ItemMap">
+		SELECT id, name, price, overview, created_at, updated_at FROM item
+	</select>
 
-    <select id="selectByRangeId" resultMap="ItemMap">
-        SELECT id, name, price, overview, created_at, updated_at
-        FROM items
-        WHERE id BETWEEN #{min} AND #{max}
-    </select>
+	<select id="selectByRangeId" resultMap="ItemMap">
+		SELECT id, name, price, overview, created_at, updated_at
+		FROM item
+		WHERE id BETWEEN #{min} AND #{max}
+	</select>
 
-    <select id="selectByCategory" resultMap="ItemMap">
-        SELECT i.id, i.name, i.price, i.overview, i.created_at, i.updated_at
-        FROM items i
-        JOIN item_category c ON i.id = c.item_id
-        WHERE c.category = #{category}
-    </select>
+	<select id="selectByCategory" resultMap="ItemMap">
+		SELECT i.id, i.name, i.price, i.overview, i.created_at, i.updated_at
+		FROM item i
+		JOIN item_category c ON i.id = c.item_id
+		WHERE c.category = #{category}
+	</select>
 
-    <select id="selectById" resultMap="ItemMap">
-        SELECT id, name, price, overview, created_at, updated_at
-        FROM items
-        WHERE id = #{id}
-    </select>
+	<select id="selectById" resultMap="ItemMap">
+		SELECT id, name, price, overview, created_at, updated_at
+		FROM item
+		WHERE id = #{id}
+	</select>
 
-    <insert id="insert">
-        INSERT INTO items (id, name, price, overview, created_at, updated_at)
-        VALUES (#{id}, #{name}, #{price}, #{overview}, #{createdAt}, #{updatedAt})
-    </insert>
+	<insert id="insert">
+		INSERT INTO item (id, name, price, overview, created_at, updated_at)
+		VALUES (#{id}, #{name}, #{price}, #{overview}, #{createdAt}, #{updatedAt})
+	</insert>
 
-    <update id="update">
-        UPDATE items
-        SET name = #{name}, price = #{price}, overview = #{overview}, updated_at = #{updatedAt}
-        WHERE id = #{id}
-    </update>
+	<update id="update">
+		UPDATE item
+		SET name = #{name}, price = #{price}, overview = #{overview}, updated_at
+		= #{updatedAt}
+		WHERE id = #{id}
+	</update>
 
-    <delete id="delete">
-        DELETE FROM items WHERE id = #{id}
-    </delete>
+	<delete id="delete">
+		DELETE FROM item WHERE id = #{id}
+	</delete>
 </mapper>
 

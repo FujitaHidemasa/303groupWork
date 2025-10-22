@@ -1,17 +1,17 @@
 package com.example.voidr.service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import com.example.voidr.entity.Cart;
+import com.example.voidr.view.CartView;
 
 public interface CartService {
 
-	List<Cart> findByCartListId(long cartListId);
+    List<Cart> getOrCreateCartList(long userId, boolean isLogin);
 
-	void insertCart(Cart cart);
+    void saveOrUpdateCart(Cart cart);
 
-	void updateItemCount(long id, int itemCount, LocalDateTime updatedAt);
-
-	void deleteItem(long id);
+    void deleteGuestCarts();
+    
+    List<CartView> getCartViewByUserId(long userId);
 }

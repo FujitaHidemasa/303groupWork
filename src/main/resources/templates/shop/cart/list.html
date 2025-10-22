@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>カート一覧</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <h1>カート一覧</h1>
+
+    <h2>通常の商品</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>商品名</th>
+                <th>価格</th>
+                <th>数量</th>
+                <th>詳細</th>
+            </tr>
+        </thead>
+        <tbody>
+        <tr th:each="cv : ${normalItems}">
+            <td th:text="${cv.item.name}"></td>
+            <td th:text="${cv.item.price}"></td>
+            <td th:text="${cv.cart.quantity}"></td>
+            <td>
+                <a th:href="@{/voidrshop/items/{id}(id=${cv.item.id})}">詳細</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h2>後で買う商品</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>商品名</th>
+                <th>価格</th>
+                <th>数量</th>
+                <th>詳細</th>
+            </tr>
+        </thead>
+        <tbody>
+        <tr th:each="cv : ${holdItems}">
+            <td th:text="${cv.item.name}"></td>
+            <td th:text="${cv.item.price}"></td>
+            <td th:text="${cv.cart.quantity}"></td>
+            <td>
+                <a th:href="@{/voidrshop/items/{id}(id=${cv.item.id})}">詳細</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>

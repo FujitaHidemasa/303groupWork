@@ -15,7 +15,6 @@
 			<a href="/cart" class="text-white mx-2">カート</a>
 			<a href="/search" class="text-white mx-2">ストア検索</a>
 			<a href="/inquiry" class="text-white mx-2">お問い合わせ</a>
-			<a href="/login" class="text-white mx-2">ログイン</a>
 		</nav>
 	</header>
 
@@ -25,16 +24,7 @@
 		<section class="mb-5">
 			<h2>🛍️ ストア</h2>
 			<ul>
-				<li><a href="/store">商品一覧</a></li>
-				<ul>
-					<li><a href="/item/1">商品詳細</a></li>
-					<ul>
-						<li>商品名・値段・概要など表示</li>
-						<li><a href="/order">購入画面へ</a></li>
-						<li><a href="/cart/add">カートに入れる</a> → <a href="/cart">カートへ</a></li>
-						<li><a href="/store">他の商品一覧へ</a></li>
-					</ul>
-				</ul>
+				<li><a th:href="@{/voidrshop/items}">商品一覧</a></li>
 			</ul>
 		</section>
 
@@ -42,11 +32,7 @@
 		<section class="mb-5">
 			<h2>🛒 カート</h2>
 			<ul>
-				<li><a href="/cart">カートページへ</a></li>
-				<ul>
-					<li><a href="/item/1">商品詳細へ</a></li>
-					<li><a href="/cart/hold">後で買う</a></li>
-				</ul>
+				<li><a th:href="@{/voidrshop/cart}">>カートページへ</a></li>
 			</ul>
 		</section>
 
@@ -61,13 +47,7 @@
 			<h2>📩 お問い合わせ</h2>
 			<ul>
 				<li><a href="/faq">よくある質問</a></li>
-				<ul>
-					<li><a href="/faq/1">よくある質問 - 詳細</a></li>
-				</ul>
 				<li><a href="/inquiry">お問い合わせはこちら</a></li>
-				<ul>
-					<li><a href="/inquiry/form">お問い合わせフォーム</a></li>
-				</ul>
 			</ul>
 		</section>
 
@@ -75,25 +55,8 @@
 		<section class="mb-5">
 			<h2>🔐 ログインページ</h2>
 			<a href="/login">ログインページへ</a>
-			<ul>
-				<li>ログイン後：リダイレクト</li>
-			</ul>
 		</section>
 
-		<!-- 購入画面 -->
-		<section>
-			<h2>💳 購入画面</h2>
-			<ul>
-				<li><a href="/order">購入画面へ</a></li>
-				<ul>
-					<li><a href="/login">ログインページへ</a></li>
-					<li>商品の合計金額</li>
-					<li>お支払い方法</li>
-					<li>お届け先住所</li>
-					<li><a href="/order/confirm">購入する</a> → 購入確定</li>
-				</ul>
-			</ul>
-		</section>
 
 	</main>
 

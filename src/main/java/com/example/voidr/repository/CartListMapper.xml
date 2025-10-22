@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.voidr.repository.CartListMapper">
+
+	<select id="findByUserId" resultType="com.example.voidr.entity.CartList"
+		parameterType="long">
+		SELECT *
+		FROM cart_list
+		WHERE user_id = #{userId}
+		LIMIT 1
+	</select>
+
+	<insert id="insert" parameterType="com.example.voidr.entity.CartList"
+		useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO cart_list(user_id,
+		is_login_user, created_at, updated_at)
+		VALUES(#{userId},
+		#{isLoginUser}, CURRENT_TIMESTAMP,
+		CURRENT_TIMESTAMP)
+	</insert>
+
+	<update id="updateUpdatedAt" parameterType="long">
+		UPDATE cart_list
+		SET
+		updated_at = CURRENT_TIMESTAMP
+		WHERE id = #{id}
+	</update>
+
+	<delete id="deleteAllGuestCartLists">
+		DELETE FROM cart_list
+		WHERE is_login_user = FALSE
+	</delete>
+
+</mapper>
