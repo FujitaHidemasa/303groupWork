@@ -21,7 +21,7 @@ public class Cart {
 	private long itemId;
 	
 	/** カートの商品の数 */
-	private int itemCount;
+	private int quantity;
 	
 	/** カートの商品が「後で買う」状態かどうか */
 	private boolean isHold;

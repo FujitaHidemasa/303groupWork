@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<itemList>
+	<item id="1">
+		<name>スマートフォン</name>
+		<price>50000</price>
+		<overview>最新モデルのスマートフォン</overview>
+		<categories>
+			<category>家電</category>
+			<category>モバイル</category>
+		</categories>
+	</item>
+	<item id="2">
+		<name>ノートPC</name>
+		<price>120000</price>
+		<overview>ハイスペックノートPC</overview>
+		<categories>
+			<category>家電</category>
+			<category>PC</category>
+		</categories>
+	</item>
+</itemList>

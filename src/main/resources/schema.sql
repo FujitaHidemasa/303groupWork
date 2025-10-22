@@ -81,4 +81,8 @@ CREATE TABLE cart (
     item_count INTEGER DEFAULT 1,
     is_hold BOOLEAN DEFAULT FALSE,
     updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP
+<<<<<<< HEAD
 );
+=======
+);
+>>>>>>> branch 'master' of https://github.com/FujitaHidemasa/303groupWork.git
