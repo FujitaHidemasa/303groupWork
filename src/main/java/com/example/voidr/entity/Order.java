@@ -20,8 +20,8 @@ public class Order {
 	//購入した商品id
 	private long itemId;
 	
-	//購入した商品の状態
-	private String state;
+	//購入した商品が「後で買う」状態かどうか
+	private boolean isHold;
 	
 	//作成日
 	private LocalDateTime createdAt;

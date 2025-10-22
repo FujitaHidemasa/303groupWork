@@ -1,5 +1,8 @@
 package com.example.voidr.xml;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlAttribute;
@@ -14,7 +17,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ItemXml {
+public class ItemXmlInfo {
 
     @XmlAttribute(name = "id")
     private long id;
@@ -30,5 +33,5 @@ public class ItemXml {
 
     @XmlElementWrapper(name = "categories")
     @XmlElement(name = "category")
-    private String[] categorys;
+    private List<String> categoryList = new ArrayList<>();;
 }
