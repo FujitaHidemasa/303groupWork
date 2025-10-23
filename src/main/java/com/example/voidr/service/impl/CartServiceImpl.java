@@ -20,12 +20,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CartServiceImpl implements CartService
 {
+	private final CartListMapper cartListMapper;
 
-	private CartListMapper cartListMapper;
-
-	private CartMapper cartMapper;
+	private final CartMapper cartMapper;
 	
-	private ItemService itemService;
+	private final ItemService itemService;
 
 	@Override
 	public List<Cart> getOrCreateCartList(long userId, boolean isLogin)
@@ -66,6 +65,7 @@ public class CartServiceImpl implements CartService
 	public List<CartView> getCartViewByUserId(long userId) {
 	    List<Cart> carts = getOrCreateCartList(userId, true);
 	    List<CartView> views = new ArrayList<>();
+	    carts.forEach(e -> System.out.println());
 	    for (Cart cart : carts) {
 	        Item item = itemService.getItemById(cart.getItemId());
 	        views.add(new CartView(cart, item));

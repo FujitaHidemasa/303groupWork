@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.voidr.service.CartService;
+import com.example.voidr.service.ItemService;
 import com.example.voidr.view.CartView;
 
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,8 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/voidrshop/cart")
 @RequiredArgsConstructor
 public class CartController {
+	
+	private final ItemService itemService;
 
     private final CartService cartService;
 
@@ -27,7 +30,11 @@ public class CartController {
     @GetMapping
     public String cartList(Model model, @AuthenticationPrincipal UserDetails user) {
         // ログインユーザーID、未ログインの場合は0
-        long userId = user != null ? Long.parseLong(user.getUsername()) : 0L;
+        //long userId = user != null ? Long.parseLong(user.getUsername()) : 0L;
+    	
+    	itemService.syncItems();
+    	
+    	long userId = 1;
 
         // カートと商品情報をまとめたCartViewリストを取得
         List<CartView> cartViews = cartService.getCartViewByUserId(userId);
@@ -43,7 +50,7 @@ public class CartController {
 
         model.addAttribute("holdItems", holdItems);
         model.addAttribute("normalItems", normalItems);
-
+        
         // Thymeleaf テンプレート名
         return "shop/cart/list";
     }
