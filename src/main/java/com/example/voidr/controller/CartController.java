@@ -54,4 +54,6 @@ public class CartController {
         // Thymeleaf テンプレート名
         return "shop/cart/list";
     }
+    
+
 }

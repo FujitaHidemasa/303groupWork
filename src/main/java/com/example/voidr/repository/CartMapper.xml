@@ -52,6 +52,14 @@
 		updated_at = CURRENT_TIMESTAMP
 		WHERE id = #{id}
 	</update>
+	<update id="updateQuantityByCart"
+		parameterType="com.example.voidr.entity.Cart">
+		UPDATE cart
+		SET
+		quantity = #{quantity},
+		updated_at = CURRENT_TIMESTAMP
+		WHERE id = #{id}
+	</update>
 
 	<!-- ゲストカート削除 -->
 	<delete id="deleteAllGuestCarts">

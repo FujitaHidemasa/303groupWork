@@ -8,15 +8,7 @@
 </head>
 
 <body class="bg-light">
-	<header class="bg-dark text-white p-3 text-center">
-		<h1>VOIDR ECサイト</h1>
-		<nav>
-			<a href="/store" class="text-white mx-2">ストア</a>
-			<a href="/cart" class="text-white mx-2">カート</a>
-			<a href="/search" class="text-white mx-2">ストア検索</a>
-			<a href="/inquiry" class="text-white mx-2">お問い合わせ</a>
-		</nav>
-	</header>
+	<div th:replace="fragments/header :: header"></div>
 
 	<main class="container py-5">
 

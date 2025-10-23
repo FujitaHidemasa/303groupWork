@@ -10,9 +10,9 @@ public interface CartListMapper {
 
     CartList findByUserId(@Param("userId") long userId);
 
-    int insert(CartList cartList);
+    void insert(CartList cartList);
 
-    int updateUpdatedAt(@Param("id") long id);
+    void updateUpdatedAt(@Param("id") long id);
 
-    int deleteAllGuestCartLists();
+    void deleteAllGuestCartLists();
 }

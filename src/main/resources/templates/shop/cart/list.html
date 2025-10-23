@@ -1,72 +1,218 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ja">
 
 <head>
 	<meta charset="UTF-8">
-	<title>カート一覧</title>
-	<link rel="stylesheet" href="/css/style.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>カート - FPS GEAR STORE</title>
+	<style>
+		body {
+			text-align: center;
+		}
+
+		header {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			padding: 10px 20px;
+			border-bottom: 1px solid #ccc;
+		}
+
+		nav {
+			display: flex;
+			gap: 15px;
+		}
+
+		.header-right {
+			display: flex;
+			gap: 15px;
+			align-items: center;
+		}
+
+		.search-box {
+			display: flex;
+			align-items: center;
+			gap: 5px;
+		}
+
+		.search-box input[type="text"] {
+			padding: 5px 8px;
+			border: 1px solid #ccc;
+			border-radius: 4px;
+		}
+
+		.search-box button {
+			padding: 5px 10px;
+			border: 1px solid #ccc;
+			background-color: #eee;
+			cursor: pointer;
+		}
+
+		.search-box button:hover {
+			background-color: #ddd;
+		}
+
+		main {
+			max-width: 1000px;
+			margin: 30px auto;
+		}
+
+		table {
+			border-collapse: collapse;
+			width: 100%;
+			margin-top: 20px;
+		}
+
+		th,
+		td {
+			padding: 12px 14px;
+			border-bottom: 1px solid #ccc;
+			text-align: center;
+			vertical-align: middle;
+		}
+
+		th {
+			background-color: #f5f5f5;
+		}
+
+		img {
+			display: block;
+			margin: 0 auto;
+		}
+
+		.cart-buttons {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			gap: 10px;
+			height: 100%;
+		}
+
+		.cart-buttons button {
+			padding: 6px 12px;
+			border: 1px solid #999;
+			background-color: #eee;
+			cursor: pointer;
+			height: 36px;
+			line-height: 1.2;
+			display: flex;
+			align-items: center;
+		}
+
+		.cart-buttons button:hover {
+			background-color: #ddd;
+		}
+
+		tbody tr {
+			height: 120px;
+			/* 商品A画像の高さと揃える */
+		}
+
+		.cart-actions {
+			margin-top: 30px;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			border-top: 1px solid #ccc;
+			padding-top: 15px;
+		}
+
+		.cart-actions strong {
+			font-size: 1.1rem;
+		}
+
+		.cart-actions button {
+			margin-left: 15px;
+			padding: 10px 20px;
+			background-color: #ccc;
+			border: none;
+			cursor: pointer;
+		}
+
+		.cart-actions button:hover {
+			background-color: #bbb;
+		}
+
+		.cart-actions a {
+			text-decoration: none;
+			color: black;
+			background-color: #eee;
+			padding: 10px 15px;
+			border: 1px solid #ccc;
+		}
+
+		.cart-actions a:hover {
+			background-color: #ddd;
+		}
+	</style>
 </head>
 
 <body>
-
-	<!-- ロゴ部分 -->
 	<header>
-		<a href="/" class="logo">FPS GEAR STORE</a>
+		<h1>FPS GEAR STORE</h1>
+		<nav>
+			<a href="index.html">トップ</a>
+			<a href="#">ストア</a>
+			<a href="#">検索</a>
+			<a href="#">お問い合わせ</a>
+		</nav>
+		<div class="header-right">
+			<a href="cart.html">カート</a>
+			<a href="#">ログイン</a>
+		</div>
 	</header>
 
-	<h1>カート一覧</h1>
+	<main>
+		<section>
+			<h2>ショッピングカート</h2>
+			<table>
+				<thead>
+					<tr>
+						<th>商品画像</th>
+						<th>商品名</th>
+						<th>価格</th>
+						<th>数量</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="cv : ${normalItems}">
 
-	<section>
-		<h2>通常の商品</h2>
-		<table border="1">
-			<thead>
-				<tr>
-					<th>商品名</th>
-					<th>価格</th>
-					<th>数量</th>
-					<th>詳細</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr th:each="cv : ${normalItems}">
-					<td th:text="${cv.item.name}">商品名</td>
-					<td th:text="${cv.item.price}">価格</td>
-					<td th:text="${cv.cart.quantity}">数量</td>
-					<td>
-						<a th:if="${cv.item != null}" th:href="@{/voidrshop/items/{id}(id=${cv.item.id})}">詳細</a>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-	</section>
+						<td><a href="productA.html"><img
+									src="https://dummyimage.com/100x100/aaaaaa/000000&text=Product+A" alt="商品A"></a>
+						</td>
+						<td th:text="${cv.item.name}">商品名</td>
+						<td th:text="${cv.item.price}">価格</td>
+						<td>
+							<input type="number" th:value="${cv.cart.quantity}" min="1" style="width:60px;"
+								class="cart-quantity" th:data-id="${cv.cart.id}">
+						</td>
 
-	<section>
-		<h2>後で買う商品</h2>
-		<table border="1">
-			<thead>
-				<tr>
-					<th>商品名</th>
-					<th>価格</th>
-					<th>数量</th>
-					<th>詳細</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr th:each="cv : ${holdItems}">
-					<td th:text="${cv.item.name}">商品名</td>
-					<td th:text="${cv.item.price}">価格</td>
-					<td th:text="${cv.cart.quantity}">数量</td>
-					<td>
-						<a th:if="${cv.item != null}" th:href="@{/voidrshop/items/{id}(id=${cv.item.id})}">詳細</a>
-					</td>
-				</tr>
-			</tbody>
-		</table>
-	</section>
+						<td>
+							<button>削除</button>
+							<button>後で買う</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
 
-	<br>
-	<a href="/" class="back-button">トップページへ戻る</a>
+			<div class="cart-actions">
+				<a href="index.html">買い物を続ける</a>
+				<div>
+					<strong>合計金額: ¥3,000</strong>
+					<button>購入画面へ進む</button>
+				</div>
+			</div>
+		</section>
+	</main>
 
+	<footer>
+		<p>© 2025 FPS GEAR STORE</p>
+	</footer>
+	
+
+
+	
 </body>
 
 </html>

@@ -73,4 +73,12 @@ public class CartServiceImpl implements CartService
 	    return views;
 	}
 
+	@Override
+	public void changeQuantity(Cart cart, Integer count) {
+
+		cartMapper.updateQuantityByCart(cart, count);
+	
+		cartListMapper.updateUpdatedAt(cart.getCartListId());
+	}
+
 }
