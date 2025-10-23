@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.voidr.repository.ItemImageMapper">
+
+	<insert id="insert">
+		INSERT INTO item_image (item_id, image_name)
+		VALUES (#{itemId}, #{imageName})
+	</insert>
+
+	<delete id="deleteByItemId">
+		DELETE FROM item_image WHERE item_id = #{itemId}
+	</delete>
+
+	<select id="findByItemId" resultType="string">
+		SELECT image_name FROM item_image WHERE item_id = #{itemId}
+	</select>
+</mapper>

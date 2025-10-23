@@ -10,13 +10,7 @@ VALUES
 -- ===============================
 -- 商品テーブル（5件）
 -- ===============================
-INSERT INTO item (name, price, overview, is_download, created_at, updated_at)
-VALUES
-('デジタルアートパック', 1800, '高画質の背景素材セット', TRUE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-('ゲーミングマウス', 4800, '高精度センサーとRGBライティング搭載', FALSE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-('ワイヤレスキーボード', 3500, '静音・スリムデザイン', FALSE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-('音楽BGMセット', 2200, '商用利用可能なフリーBGM素材', TRUE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-('ポスター（A2サイズ）', 1200, 'VOIDR公式アートワークポスター', FALSE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
 
 -- ===============================
 -- 購入履歴リスト（2件）
@@ -29,30 +23,17 @@ VALUES
 -- ===============================
 -- 購入履歴（4件）
 -- ===============================
-INSERT INTO "order" (orderlist_id, item_id, state, created_at)
-VALUES
-(1, 1, '配送完了', CURRENT_TIMESTAMP),
-(1, 2, '配送中', CURRENT_TIMESTAMP),
-(2, 3, '決済完了', CURRENT_TIMESTAMP),
-(2, 4, 'ダウンロード済', CURRENT_TIMESTAMP);
+
 
 -- ===============================
 -- カートリスト（3件）
 -- ===============================
-INSERT INTO cart_list (user_id, created_at, updated_at)
+INSERT INTO cart_list (user_id,is_login_user, created_at, updated_at)
 VALUES
-(1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(3, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+(1,true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+(2,true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+(3,true, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 -- ===============================
 -- カート（6件）
 -- ===============================
-INSERT INTO cart (cartlist_id, item_id, item_count, is_hold, updated_at)
-VALUES
-(1, 2, 1, FALSE, CURRENT_TIMESTAMP),
-(1, 3, 2, TRUE, CURRENT_TIMESTAMP),
-(2, 1, 1, FALSE, CURRENT_TIMESTAMP),
-(2, 5, 1, FALSE, CURRENT_TIMESTAMP),
-(3, 4, 3, TRUE, CURRENT_TIMESTAMP),
-(3, 2, 1, FALSE, CURRENT_TIMESTAMP);

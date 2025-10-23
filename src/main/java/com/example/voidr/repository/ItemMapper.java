@@ -2,10 +2,12 @@ package com.example.voidr.repository;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.example.voidr.entity.Item;
 
+@Mapper
 public interface ItemMapper
 {
 	/** 商品を全て取得する */

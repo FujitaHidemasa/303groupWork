@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.voidr.repository.CartMapper">
+	<select id="findByCartListId" resultType="com.example.voidr.entity.Cart"
+		parameterType="long">
+		SELECT *
+		FROM cart
+		WHERE cartlist_id = #{cartListId}
+	</select>
+
+	<insert id="insert" parameterType="com.example.voidr.entity.Cart" useGeneratedKeys="true"
+		keyProperty="id">
+		INSERT INTO cart(cartlist_id, item_id, item_count, is_hold, updated_at)
+		VALUES(#{cartListId}, #{itemId}, #{quantity}, #{isHold},
+		CURRENT_TIMESTAMP)
+	</insert>
+
+	<update id="update" parameterType="com.example.voidr.entity.Cart">
+		UPDATE cart
+		SET item_count = #{quantity},
+		is_hold = #{isHold},
+		updated_at = CURRENT_TIMESTAMP
+		WHERE id = #{id}
+	</update>
+
+	<delete id="deleteAllGuestCarts">
+		DELETE FROM cart
+		WHERE cartlist_id IN (SELECT id FROM cart_list WHERE is_login_user = FALSE)
+	</delete>
+</mapper>

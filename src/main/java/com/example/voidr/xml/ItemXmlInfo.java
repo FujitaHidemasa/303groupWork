@@ -30,8 +30,15 @@ public class ItemXmlInfo {
 
     @XmlElement(name = "overview")
     private String overview;
+    
+    @XmlElement(name = "thumbs")
+    private String thumbsImageName;
 
     @XmlElementWrapper(name = "categories")
     @XmlElement(name = "category")
-    private List<String> categoryList = new ArrayList<>();;
+    private List<String> categoryList = new ArrayList<>();
+    
+    @XmlElementWrapper(name = "images")
+    @XmlElement(name = "image")
+    private List<String> imagesName = new ArrayList<>();
 }

@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/items")
+@RequestMapping("/voidrshop/items")
 public class ItemController {
 	private final ItemService itemService;
 
@@ -30,7 +30,7 @@ public class ItemController {
 		// DBから一覧取得
 		List<Item> items = itemService.getAllItems();
 		model.addAttribute("items", items);
-		return "item/list";
+		return "shop/item/list";
 	}
 
 	/** 詳細ページ */
@@ -41,6 +41,6 @@ public class ItemController {
 				.findFirst()
 	            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Item not found"));
 		model.addAttribute("item", item);
-		return "item/detail";
+		return "shop/item/detail";
 	}
 }

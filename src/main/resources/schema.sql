@@ -7,6 +7,10 @@ DROP TABLE IF EXISTS "order" CASCADE;
 DROP TABLE IF EXISTS order_list CASCADE;
 DROP TABLE IF EXISTS item CASCADE;
 DROP TABLE IF EXISTS "user" CASCADE;
+DROP TABLE IF EXISTS item_category CASCADE;
+DROP TABLE IF EXISTS authentications CASCADE;
+DROP TABLE IF EXISTS item_image CASCADE;
+DROP TYPE IF EXISTS role CASCADE;
 
 -- ===============================
 --  テーブル作成
@@ -35,9 +39,26 @@ CREATE TABLE item (
     name VARCHAR(255) NOT NULL,
     price INTEGER NOT NULL,
     overview TEXT,
-    is_download BOOLEAN DEFAULT FALSE,
+    thumbs_image_name TEXT,
     created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+-- -------------------------------
+-- 商品カテゴリーテーブル
+-- -------------------------------
+CREATE TABLE item_category (
+    id SERIAL PRIMARY KEY,
+    item_id BIGINT REFERENCES item(id) ON DELETE CASCADE,
+    category text NOT NULL
+);
+
+-- -------------------------------
+-- 商品画像テーブル
+-- -------------------------------
+CREATE TABLE item_image (
+    id SERIAL PRIMARY KEY,
+    item_id BIGINT REFERENCES item(id) ON DELETE CASCADE,
+    image_name text NOT NULL
 );
 
 -- -------------------------------
@@ -67,6 +88,7 @@ CREATE TABLE "order" (
 CREATE TABLE cart_list (
     id SERIAL PRIMARY KEY,
     user_id INTEGER REFERENCES "user"(id) ON DELETE CASCADE,
+    is_login_user BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
@@ -81,4 +103,20 @@ CREATE TABLE cart (
     item_count INTEGER DEFAULT 1,
     is_hold BOOLEAN DEFAULT FALSE,
     updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 権限用のENUM型
+CREATE TYPE role AS ENUM ('ADMIN', 'USER');
+
+-- 認証情報を格納するテーブル
+CREATE TABLE authentications (
+	id SERIAL PRIMARY KEY,
+	-- ユーザー名：主キー
+	username VARCHAR(50) NOT NULL Unique,
+	-- パスワード
+	password VARCHAR(255) NOT NULL Unique,
+	-- 権限
+	authority role NOT NULL,
+	-- 表示名
+	displayname VARCHAR(50) NOT NULL
 );

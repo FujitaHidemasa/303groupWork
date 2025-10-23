@@ -29,7 +29,13 @@ public class Item {
 
 	/** 更新日 */
 	private LocalDateTime updatedAt;
+	
+	/** サムネイルの画像の名前 */
+	private String thumbsImageName;
 
 	/** カテゴリー */
 	private List<String> categoryList;
+	
+	/** 画像の名前リスト */
+	private List<String> imagesName;
 }
