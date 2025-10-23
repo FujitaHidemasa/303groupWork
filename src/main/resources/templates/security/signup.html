@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>新規登録 | VOIDR</title>
+  <style>
+    /* ==============================
+       共通設定 login.htmlと
+       ============================== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', 'Roboto', 'Noto Sans JP', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #000, #111 60%, #2b0000);
+      color: #fff;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* ==============================
+       コンテナ（フォーム全体）
+       ============================== */
+    .signup-container {
+      background: rgba(20, 20, 20, 0.95);
+      border: 1px solid #ff0033;
+      border-radius: 16px;
+      padding: 50px 40px;
+      width: 400px;
+      box-shadow: 0 0 30px rgba(255, 0, 50, 0.3);
+      text-align: center;
+      animation: fadeIn 0.8s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ==============================
+       タイトル
+       ============================== */
+    .signup-title {
+      font-size: 1.8rem;
+      margin-bottom: 25px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #ff0033;
+    }
+
+    /* ==============================
+       入力フォーム
+       ============================== */
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    label {
+      text-align: left;
+      font-size: 0.9rem;
+      color: #ddd;
+      margin-left: 5px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+      padding: 12px;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      background: #222;
+      color: #fff;
+      outline: none;
+      transition: 0.3s;
+    }
+
+    input:focus {
+      background: #333;
+      border: 1px solid #ff0033;
+    }
+
+    /* ==============================
+       登録ボタン
+       ============================== */
+    button[type="submit"] {
+      background: linear-gradient(135deg, #ff0033, #7a0000);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 12px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.3s;
+      letter-spacing: 1px;
+      margin-top: 10px;
+    }
+
+    button[type="submit"]:hover {
+      transform: scale(1.03);
+      box-shadow: 0 0 12px rgba(255, 0, 50, 0.4);
+    }
+
+    /* ==============================
+       ログインページへのリンク
+       ============================== */
+    .login-link {
+      display: block;
+      margin-top: 25px;
+      background: linear-gradient(135deg, #3a3a3a, #2a2a2a);
+      color: #ff3366;
+      padding: 10px;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: 0.3s;
+      font-weight: bold;
+      text-shadow: 0 0 6px rgba(255, 0, 70, 0.4);
+    }
+
+    .login-link:hover {
+      background: linear-gradient(135deg, #ff0033, #7a0000);
+      color: #fff;
+      transform: scale(1.03);
+      box-shadow: 0 0 15px rgba(255, 0, 50, 0.5);
+      text-shadow: none;
+    }
+
+    /* ==============================
+       エラーメッセージ
+       ============================== */
+    .error-msg {
+      color: #ff6666;
+      font-size: 0.9rem;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="signup-container">
+    <h1 class="signup-title">VOIDR SIGNUP</h1>
+
+    <!-- エラーメッセージ -->
+    <div th:if="${error}" class="error-msg" th:text="${error}"></div>
+
+    <!-- 新規登録フォーム -->
+    <form th:action="@{/signup}" method="post">
+      <label for="username">ユーザー名</label>
+      <input type="text" id="username" name="username" placeholder="例：player001" required>
+
+      <label for="email">メールアドレス</label>
+      <input type="email" id="email" name="email" placeholder="例：example@mail.com" required>
+
+      <label for="password">パスワード</label>
+      <input type="password" id="password" name="password" placeholder="8〜20文字の英数字" required>
+
+      <button type="submit">登録する</button>
+    </form>
+
+    <!-- ログインリンク -->
+    <a th:href="@{/login}" class="login-link">ログインはこちら</a>
+  </div>
+</body>
+</html>
