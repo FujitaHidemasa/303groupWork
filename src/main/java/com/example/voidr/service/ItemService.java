@@ -14,6 +14,9 @@ public interface ItemService
 
     /** カテゴリーで商品取得 */
     List<Item> getItemsByCategory(String category);
+    
+    /** キーワードで商品取得 */
+    List<Item> searchItemsByKeyword(String keyword);
 
     /** idで商品取得 */
     Item getItemById(Long id);

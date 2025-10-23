@@ -9,29 +9,31 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User
+public class Account
 {
-	/** ユーザーID */
-	private long id;
+	private Long id;
 	
-	/** ユーザーネーム */
-	private String name;
+	private String username;
 	
-	/** パスワード(ハッシュ化) */
 	private String password;
-	
+
+	private Role authority;
+
+	private String displayName;
+
 	/** eメール */
 	private String email;
-	
+
 	/** 住所 */
 	private String address;
-	
+
 	/** 電話番号 */
 	private String phoneNumber;
-	
+
 	/** 作成日 */
 	private LocalDateTime createdAt;
-	
+
 	/** 更新日時 */
 	private LocalDateTime updatedAt;
+
 }

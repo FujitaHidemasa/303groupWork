@@ -183,6 +183,18 @@ public class ItemServiceImpl implements ItemService
 		}
 		return dbItems;
 	}
+	
+	@Override
+	public List<Item> searchItemsByKeyword(String keyword)
+	{
+	    List<Item> dbItems = itemMapper.selectByKeyword(keyword);
+	    for (Item item : dbItems)
+	    {
+	        item.setCategoryList(categoryMapper.findByItemId(item.getId()));
+	        item.setImagesName(imageMapper.findByItemId(item.getId()));
+	    }
+	    return dbItems;
+	}
 
 	@Override
 	public List<Item> getItemsByRangeId(Integer min, Integer max)
