@@ -15,6 +15,9 @@ public interface ItemMapper
 	
     /** 特定の範囲のidの商品を全て取得する */
     List<Item> selectByRangeId(@Param("min") Integer min, @Param("max") Integer max);
+    
+    /** 特定のカテゴリーに属する商品を全て取得する */
+    List<Item> selectByKeyword(@Param("keyword") String keyword);
 
     /** 特定のカテゴリーに属する商品を全て取得する */
     List<Item> selectByCategory(@Param("category") String category);
