@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Cart {
 	
-	/** 商品ID */
+	/** カートID */
 	private long id;
 	
 	/** カートリストid */

@@ -35,6 +35,7 @@ dependencies {
     implementation 'jakarta.xml.bind:jakarta.xml.bind-api:4.0.4'
     implementation 'org.glassfish.jaxb:jaxb-core:4.0.2'
     implementation 'org.glassfish.jaxb:jaxb-runtime:4.0.6'
+    implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:3.3.0'
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'org.postgresql:postgresql'
