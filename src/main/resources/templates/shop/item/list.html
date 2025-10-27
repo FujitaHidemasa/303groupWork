@@ -9,6 +9,8 @@ body {
 	text-align: center;
 	font-family: sans-serif;
 }
+
+
 </style>
 </head>
 <body>
@@ -17,8 +19,10 @@ body {
 
   <main>
   <h2>商品一覧</h2>
+
 		<div th:replace="fragments/itemList :: itemList(${items})"></div>
 	</main>
+
 
 
   <footer>
