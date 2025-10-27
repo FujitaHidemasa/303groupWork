@@ -7,6 +7,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * 商品:エンティティ
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -23,6 +26,9 @@ public class Item {
 
 	/** 概要 */
 	private String overview;
+	
+	/** ダウンロード商品かどうか */
+	private boolean isDownload;
 
 	/** 作成日 */
 	private LocalDateTime createdAt;

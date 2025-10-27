@@ -4,35 +4,28 @@ import java.util.Collection;
 import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+/**
+ * 
+ */
+@Data
+@AllArgsConstructor
 public class LoginUser implements UserDetails {
 
     private final Account account; // ← Userエンティティを内包
 
-    public LoginUser(Account account) {
-        this.account = account;
-    }
-
-    public Account getAccount() {
-        return account;
-    }
-
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        // 例：権限を取得（今回は固定値など）
-        return List.of(() -> "ROLE_USER");
+    public Collection<? extends GrantedAuthority> getAuthorities()
+    {
+    	return List.of(new SimpleGrantedAuthority(this.account.getAuthority().getName()));
     }
 
-    @Override
-    public String getPassword() {
-        return this.account;
-    }
 
-    @Override
-    public String getUsername() {
-        return account
-    }
 
     @Override
     public boolean isAccountNonExpired() { return true; }
@@ -45,4 +38,21 @@ public class LoginUser implements UserDetails {
 
     @Override
     public boolean isEnabled() { return true; }
+
+	@Override
+	public String getPassword()
+	{
+		return this.account.getPassword();
+	}
+
+	@Override
+	public String getUsername()
+	{
+		return this.account.getUsername();
+	}
+	
+	public String getDisplayName()
+	{
+		return this.account.getDisplayName();
+	}
 }

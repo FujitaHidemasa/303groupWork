@@ -11,6 +11,7 @@
 		<result property="name" column="name" />
 		<result property="price" column="price" />
 		<result property="overview" column="overview" />
+		<result property="isDownload" column="is_download" />
 		<result property="thumbsImageName" column="thumbs_image_name" />
 		<result property="createdAt" column="created_at" />
 		<result property="updatedAt" column="updated_at" />
@@ -19,15 +20,16 @@
 	<!-- ============================== SELECT文 ============================== -->
 	<select id="selectAll" resultMap="ItemMap">
 		SELECT id, name, price,
-		overview, thumbs_image_name, created_at, updated_at
-		FROM item
+		overview,is_download, thumbs_image_name, created_at, updated_at
+		FROM
+		item
 		ORDER BY
 		id DESC
 	</select>
 
 	<select id="selectByRangeId" resultMap="ItemMap">
 		SELECT id, name, price,
-		overview, thumbs_image_name, created_at, updated_at
+		overview,is_download, thumbs_image_name, created_at, updated_at
 		FROM item
 		WHERE id
 		BETWEEN #{min} AND #{max}
@@ -35,7 +37,7 @@
 
 	<select id="selectByCategory" resultMap="ItemMap">
 		SELECT i.id, i.name,
-		i.price, i.overview, i.thumbs_image_name, i.created_at, i.updated_at
+		i.price, i.overview,i.is_download i.thumbs_image_name, i.created_at, i.updated_at
 		FROM item i
 		JOIN item_category c ON i.id = c.item_id
 		WHERE c.category =
@@ -45,29 +47,35 @@
 
 	<select id="selectById" resultMap="ItemMap">
 		SELECT id, name, price,
-		overview, thumbs_image_name, created_at, updated_at
+		overview,is_download, thumbs_image_name, created_at, updated_at
 		FROM item
-		WHERE id = #{id}
+		WHERE id =
+		#{id}
 	</select>
 
 	<select id="selectByKeyword" resultMap="ItemMap">
-		SELECT DISTINCT i.id, i.name, i.price, i.overview,
-		i.thumbs_image_name, i.created_at, i.updated_at
+		SELECT DISTINCT i.id,
+		i.name, i.price, i.overview,i.is_download,
+		i.thumbs_image_name, i.created_at,
+		i.updated_at
 		FROM item i
 		LEFT JOIN item_category c ON i.id = c.item_id
 		WHERE
 		i.name ILIKE CONCAT('%', #{keyword}, '%')
-		OR i.overview ILIKE CONCAT('%', #{keyword}, '%')
-		OR c.category ILIKE CONCAT('%', #{keyword}, '%')
+		OR i.overview ILIKE
+		CONCAT('%', #{keyword}, '%')
+		OR c.category ILIKE CONCAT('%',
+		#{keyword}, '%')
 		ORDER BY i.id DESC
 	</select>
 
 	<!-- ============================== INSERT / UPDATE / DELETE ============================== -->
 	<insert id="insert">
-		INSERT INTO item (id, name, price, overview,
-		thumbs_image_name, created_at, updated_at)
-		VALUES (#{id}, #{name},
-		#{price}, #{overview}, #{thumbsImageName}, #{createdAt}, #{updatedAt})
+	INSERT INTO item (id, name, price, overview,is_download,
+	thumbs_image_name, created_at, updated_at)
+	VALUES (#{id}, #{name},
+	#{price}, #{overview},#{isDownload}, #{thumbsImageName}, #{createdAt},
+	#{updatedAt})
 	</insert>
 
 	<update id="update">
@@ -76,6 +84,7 @@
 		name = #{name},
 		price = #{price},
 		overview = #{overview},
+		is_download = #{isDownload},
 		thumbs_image_name = #{thumbsImageName},
 		updated_at = #{updatedAt}
 		WHERE id = #{id}

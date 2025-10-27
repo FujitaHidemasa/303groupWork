@@ -13,11 +13,9 @@ VALUES
 -- ===============================
 -- 商品テーブル（5件）
 -- ===============================
-INSERT INTO item (name, price, overview, thumbs_image_name)
+INSERT INTO item (name, price, overview,is_download, thumbs_image_name)
 VALUES 
-('FPS Mouse X', 7800, '高性能FPSゲーミングマウス', 'mouse_x.jpg'),
-('Pro Keyboard Z', 12800, 'メカニカルスイッチ搭載キーボード', 'keyboard_z.jpg'),
-('Gaming Headset V', 9600, '7.1chサラウンド対応ヘッドセット', 'headset_v.jpg');
+('ダミー', 0, 'ダミー用',false, 'dummy.jpg');
 
 -- ===============================
 -- 購入履歴リスト（2件）
@@ -39,8 +37,3 @@ VALUES
 -- ===============================
 -- カート（6件）
 -- ===============================
-INSERT INTO cart (cartlist_id, item_id, quantity, is_hold, updated_at)
-VALUES 
-    (1, 1, 1, false, CURRENT_TIMESTAMP),
-    (1, 2, 2, false, CURRENT_TIMESTAMP),
-    (1, 3, 1, true, CURRENT_TIMESTAMP);

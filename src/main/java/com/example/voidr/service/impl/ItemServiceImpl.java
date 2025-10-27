@@ -1,6 +1,9 @@
 package com.example.voidr.service.impl;
 
+import java.io.File;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -14,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.voidr.common.FilePath;
 import com.example.voidr.entity.Item;
+import com.example.voidr.helper.ItemHelper;
 import com.example.voidr.helper.XmlHelper;
 import com.example.voidr.repository.ItemCategoryMapper;
 import com.example.voidr.repository.ItemImageMapper;
@@ -39,18 +43,30 @@ public class ItemServiceImpl implements ItemService
 	{
 		try
 		{
-			if(!FilePath.ITEM_LIST_XML.exists())
+			File xmlFile = FilePath.ITEM_LIST_XML.getPathFile();
+			if(!xmlFile.exists())
 			{
 				throw new Exception("ItemList.xmlが存在しません:" + FilePath.ITEM_LIST_XML.getRelativePath());
 			}
-			ItemXmlRoot xmlData = XmlHelper.loadXmlClass(FilePath.ITEM_LIST_XML.getRelativePath(), ItemXmlRoot.class);
+			ItemXmlRoot xmlData = XmlHelper.loadXmlClass(xmlFile, ItemXmlRoot.class);
 			List<ItemXmlInfo> xmlItems = xmlData.getItems();
 			List<Item> dbItems = getAllItems();
 
+			// DBのアイテムリストを「ID → Item」形式のMapに変換
 			Map<Long, Item> dbMap = dbItems.stream()
-					.collect(Collectors.toMap(Item::getId, i -> i));
+			        .collect(Collectors.toMap(Item::getId, i -> i));
+
+			// XMLのアイテムリストを「ID → ItemXmlInfo」形式のMapに変換
 			Map<Long, ItemXmlInfo> xmlMap = xmlItems.stream()
-					.collect(Collectors.toMap(ItemXmlInfo::getId, i -> i));
+			        .collect(Collectors.toMap(ItemXmlInfo::getId, i -> i));
+			
+			// XMLの更新時間を取得
+			long lastModifiedMillis = xmlFile.lastModified(); // ミリ秒単位で取得
+			LocalDateTime lastModifiedTime = LocalDateTime.ofInstant(
+			        Instant.ofEpochMilli(lastModifiedMillis),
+			        ZoneId.systemDefault()
+			        );
+
 
 			// INSERT or UPDATE
 			for (ItemXmlInfo xmlItem : xmlItems)
@@ -59,16 +75,9 @@ public class ItemServiceImpl implements ItemService
 				if(dbItem == null)
 				{
 					// INSERT
-					Item newItem = new Item(
-							xmlItem.getId(),
-							xmlItem.getName(),
-							xmlItem.getPrice(),
-							xmlItem.getOverview(),
-							LocalDateTime.now(),
-							LocalDateTime.now(),
-							xmlItem.getThumbsImageName(),
-							xmlItem.getCategoryList(),
-							xmlItem.getImagesName());
+					Item newItem = ItemHelper.convertItem(xmlItem);
+					newItem.setCreatedAt(lastModifiedTime);
+					newItem.setUpdatedAt(lastModifiedTime);
 					itemMapper.insert(newItem);
 					insertCategories(xmlItem);
 					insertImages(xmlItem);
@@ -80,7 +89,7 @@ public class ItemServiceImpl implements ItemService
 					dbItem.setPrice(xmlItem.getPrice());
 					dbItem.setOverview(xmlItem.getOverview());
 					dbItem.setThumbsImageName(xmlItem.getThumbsImageName());
-					dbItem.setUpdatedAt(LocalDateTime.now());
+					dbItem.setUpdatedAt(lastModifiedTime);
 					itemMapper.update(dbItem);
 
 					// カテゴリ更新

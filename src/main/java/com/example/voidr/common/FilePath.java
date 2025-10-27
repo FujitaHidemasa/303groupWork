@@ -2,6 +2,9 @@ package com.example.voidr.common;
 
 import java.io.File;
 
+/**
+ * ファイルの場所(相対パス)を表すenum
+ */
 public enum FilePath {
 
 	// ItemList.xmlの場所
