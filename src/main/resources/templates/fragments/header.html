@@ -1,6 +1,49 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+<meta charset="UTF-8">
+<title>FPS GEAR STORE</title>
+<style>
+body {
+	font-family: sans-serif;
+	margin: 0;
+}
 
+header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 10px 20px;
+	border-bottom: 1px solid #ccc;
+}
+
+nav, .header-right {
+	display: flex;
+	align-items: center;
+	gap: 15px;
+}
+
+.search-box {
+	display: flex;
+	align-items: center;
+	gap: 5px;
+}
+
+.search-box input {
+	padding: 5px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+}
+
+.search-box button {
+	padding: 5px 10px;
+	border: 1px solid #ccc;
+	background: #eee;
+	cursor: pointer;
+}
+</style>
+</head>
 
 <body>
 	<div th:fragment="header">
@@ -12,17 +55,21 @@
 				<a th:href="@{/contact}" class="btn btn-outline-primary">お問い合わせ</a>
 
 
+
 			</nav>
 			<div class="header-right">
-				<form class="search-box" action="search.html" method="get">
-					<input type="text" name="q" placeholder="商品を検索">
+				<form class="search-box" th:action="@{/voidrshop/items/search}"
+					method="get">
+					<input type="text" name="keyword" placeholder="商品を検索"
+						th:value="${keyword}">
 					<button type="submit">検索</button>
 				</form>
-				<a th:href="@{/voidrshop/cart}">カート</a>
-				<a href="#">ログイン</a>
+				<a th:href="@{/voidrshop/cart}">カート</a> <span
+					sec:authorize="isAuthenticated()"
+					sec:authentication="principal.displayName"></span> <a
+					sec:authorize="!isAuthenticated()" th:href="@{/login}">ログイン</a>
 			</div>
 		</header>
 	</div>
 </body>
-
 </html>

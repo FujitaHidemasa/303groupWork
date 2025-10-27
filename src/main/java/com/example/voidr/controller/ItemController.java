@@ -16,6 +16,9 @@ import com.example.voidr.service.ItemService;
 
 import lombok.RequiredArgsConstructor;
 
+/**
+ * アイテムのController
+ */
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/voidrshop")

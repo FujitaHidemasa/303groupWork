@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * カート:エンティティ
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

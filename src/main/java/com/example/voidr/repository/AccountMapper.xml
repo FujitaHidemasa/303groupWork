@@ -26,6 +26,7 @@
 		SELECT
 		id,
 		username,
+		display_name,
 		password,
 		authority
 		FROM
@@ -38,8 +39,8 @@
 	<insert id="insertAccount"
 		parameterType="com.example.voidr.entity.Account"
 		useGeneratedKeys="true" keyProperty="id">
-		INSERT INTO login_user (username, password, authority, displayname)
-		VALUES (#{username}, #{password}, #{authority}, #{username})
+		INSERT INTO login_user (username, password, authority, display_name)
+		VALUES (#{username}, #{password}, #{authority}, #{displayName})
 	</insert>
 
 </mapper>
