@@ -1,33 +1,178 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
 <head>
-<meta charset="UTF-8">
-<title>ログイン</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ログイン | VOIDR</title>
+  <style>
+    /* ==============================
+       全体リセット
+       ============================== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', 'Roboto', 'Noto Sans JP', sans-serif;
+    }
+
+    /* ==============================
+       背景全体設定
+       ============================== */
+    body {
+      background: linear-gradient(135deg, #000, #111 60%, #2b0000);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+    }
+
+    /* ==============================
+       ログインカード本体
+       ============================== */
+    .login-container {
+      background: rgba(20, 20, 20, 0.95);
+      border: 1px solid #ff0033;
+      border-radius: 16px;
+      padding: 50px 40px;
+      width: min(92vw, 360px);
+      box-shadow: 0 0 30px rgba(255, 0, 50, 0.3);
+      text-align: center;
+      animation: fadeIn 0.8s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ==============================
+       タイトル（VOIDR LOGIN）
+       ============================== */
+    .login-title {
+      font-size: clamp(1.6rem, 5vw, 1.8rem); /* 画面幅に応じて微調整 */
+      margin-bottom: 25px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #ff0033;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
+
+    /* ==============================
+       入力フォーム全体
+       ============================== */
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+      padding: 12px;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      background: #222;
+      color: #fff;
+      outline: none;
+      transition: 0.3s;
+      width: 100%;
+    }
+
+    input:focus {
+      background: #333;
+      border: 1px solid #ff0033;
+    }
+
+    /* ==============================
+       ログインボタン
+       ============================== */
+    button[type="submit"] {
+      background: linear-gradient(135deg, #ff0033, #7a0000);
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 12px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.3s;
+      letter-spacing: 1px;
+    }
+
+    button[type="submit"]:hover {
+      transform: scale(1.03);
+      box-shadow: 0 0 12px rgba(255, 0, 50, 0.4);
+    }
+
+	  /* ==============================
+	     新規登録ボタン
+	     ============================== */
+	  .signup-link {
+	    display: block;
+	    margin-top: 25px;
+	    background: linear-gradient(135deg, #3a3a3a, #2a2a2a);
+	    color: #ff3366;
+	    padding: 10px;
+	    border-radius: 6px;
+	    text-decoration: none;
+	    transition: 0.3s;
+	    font-weight: bold;
+	    text-shadow: 0 0 6px rgba(255, 0, 70, 0.4);
+	  }
+
+	  .signup-link:hover {
+	    background: linear-gradient(135deg, #ff0033, #7a0000);
+	    color: #fff;
+	    transform: scale(1.03);
+	    box-shadow: 0 0 15px rgba(255, 0, 50, 0.5);
+	    text-shadow: none;
+	  }
+
+    /* ==============================
+       メッセージ
+       ============================== */
+    .msg {
+      font-size: 0.9rem;
+      margin-bottom: 15px;
+      text-align: left;
+    }
+    .error-msg { color: #ff6666; }
+    .ok-msg    { color: #66ff99; }
+  </style>
 </head>
 <body>
-	<h2>ログイン画面</h2>
-	<!-- エラー表示 -->
-	<div th:if="${param.error}">
-		<p style="color: red;">usernameまたはpasswordが違います</p>
-	</div>
-	<div th:if="${param.logout}">
-		<p style="color: blue">ログアウトしました</p>
-	</div>
-	<form th:action="@{/login}" method="post"
-		th:object="${loginForm}">
-		<div>
-			<!-- ユーザー名 -->
-			<label for="usernameInput">username</label> <input type="text"
-				th:field="*{usernameInput}">
-		</div>
-		<div>
-			<!-- パスワード -->
-			<label for="passwordInput">password</label> <input type="password"
-				th:field="*{passwordInput}">
-		</div>
-		<div>
-			<input type="submit" value="login">
-		</div>
-	</form>
+  <div class="login-container">
+    <h1 class="login-title">VOIDR LOGIN</h1>
+
+    <!-- エラーメッセージ・ログアウトメッセージ・登録完了 -->
+    <div th:if="${param.error}" class="msg error-msg">
+      ユーザー名またはパスワードが間違っています
+    </div>
+    <div th:if="${param.logout}" class="msg ok-msg">
+      ログアウトしました
+    </div>
+    <div th:if="${param.registered}" class="msg ok-msg">
+      登録が完了しました。ログインしてください。
+    </div>
+
+    <!-- ログインフォーム（機能はVOIDR仕様に合わせる） -->
+    <form th:action="@{/login}" method="post" autocomplete="on">
+      <!-- CSRF -->
+      <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+      <!-- ★SecurityConfigに準拠：usernameParameter("usernameInput"), passwordParameter("passwordInput") -->
+      <input type="text"     name="usernameInput" placeholder="ユーザー名" required autocomplete="username" />
+      <input type="password" name="passwordInput" placeholder="パスワード" required autocomplete="current-password" />
+
+      <button type="submit">ログイン</button>
+    </form>
+
+    <!-- 新規登録ボタン -->
+    <a th:href="@{/signup}" class="signup-link">新規登録はこちら</a>
+  </div>
 </body>
 </html>

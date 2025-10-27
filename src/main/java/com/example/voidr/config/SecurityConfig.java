@@ -13,7 +13,7 @@ public class SecurityConfig {
         http
             .authorizeHttpRequests(auth -> auth
                 // 公開ページは未ログインでもアクセス可能
-                .requestMatchers("/login", "/public/**", "/voidrshop", "/voidrshop/items").permitAll()
+                .requestMatchers("/login", "/signup", "/public/**", "/voidrshop", "/voidrshop/items").permitAll()
                 // 認証が必要なページだけ指定
                 .requestMatchers("/voidrshop/cart/**").authenticated()
                 .anyRequest().permitAll() // それ以外は未ログインでも閲覧可能
