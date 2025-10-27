@@ -1,139 +1,127 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FPS GEAR STORE - トップページ</title>
-  <style>
-    body {
-      text-align: center;
-    }
-       header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 20px;
-      border-bottom: 1px solid #ccc;
-    }
-    nav {
-      display: flex;
-      gap: 15px;
-    }
-    .header-right {
-      display: flex;
-      gap: 15px;
-      align-items: center;
-    }
-    .search-box {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-    .search-box input[type="text"] {
-      padding: 5px 8px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-    .search-box button {
-      padding: 5px 10px;
-      border: 1px solid #ccc;
-      background-color: #eee;
-      cursor: pointer;
-    }
-    .search-box button:hover {
-      background-color: #ddd;
-    }
-    main {
-      max-width: 1000px;
-      margin: 30px auto;
-    }
-    .news-list {
-      text-align: left;
-      list-style: none;
-      padding: 0;
-      max-width: 600px;
-      margin: 0 auto;
-    }
-    .product-list {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 20px;
-    }
-    .product-item {
-      width: 23%;
-      box-sizing: border-box;
-      text-align: center;
-    }
-    .product-item img {
-      width: 100%;
-      height: auto;
-      display: block;
-      margin: 0 auto;
-    }
-    .product-item a {
-      text-decoration: none;
-      color: inherit;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FPS GEAR STORE - トップページ</title>
+<style>
+body {
+	text-align: center;
+}
+
+header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 10px 20px;
+	border-bottom: 1px solid #ccc;
+}
+
+nav {
+	display: flex;
+	gap: 15px;
+}
+
+.header-right {
+	display: flex;
+	gap: 15px;
+	align-items: center;
+}
+
+.search-box {
+	display: flex;
+	align-items: center;
+	gap: 5px;
+}
+
+.search-box input[type="text"] {
+	padding: 5px 8px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+}
+
+.search-box button {
+	padding: 5px 10px;
+	border: 1px solid #ccc;
+	background-color: #eee;
+	cursor: pointer;
+}
+
+.search-box button:hover {
+	background-color: #ddd;
+}
+
+main {
+	max-width: 1000px;
+	margin: 30px auto;
+}
+
+.news-list {
+	text-align: left;
+	list-style: none;
+	padding: 0;
+	max-width: 600px;
+	margin: 0 auto;
+}
+
+.product-list {
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+	gap: 20px;
+}
+
+.product-item {
+	width: 23%;
+	box-sizing: border-box;
+	text-align: center;
+}
+
+.product-item img {
+	width: 100%;
+	height: auto;
+	display: block;
+	margin: 0 auto;
+}
+
+.product-item a {
+	text-decoration: none;
+	color: inherit;
+}
+</style>
 </head>
 <body>
 
-  <div th:replace="fragments/header :: header"></div>
+	<div th:replace="fragments/header :: header"></div>
 
 
-  <main>
-    <section>
-      <h2>メインビジュアル</h2>
-      <img src="https://dummyimage.com/1600x600/cccccc/000000&text=Main+Visual" alt="メインビジュアル" style="width:100%;height:auto;max-width:none;border-radius:0;">
-    </section>
+	<main>
+		<section>
+			<h2>メインビジュアル</h2>
+			<img
+				src="https://dummyimage.com/1600x600/cccccc/000000&text=Main+Visual"
+				alt="メインビジュアル"
+				style="width: 100%; height: auto; max-width: none; border-radius: 0;">
+		</section>
 
-    <section>
-      <h2>新着情報</h2>
-      <ul class="news-list">
-        <li>2025.10.20　秋の新作グッズ発売</li>
-        <li>2025.09.15　イベント限定アイテム登場</li>
-        <li>2025.08.01　夏セール開催中</li>
-      </ul>
-    </section>
+		<section>
+			<h2>新着情報</h2>
+			<ul class="news-list">
+				<li>2025.10.20 秋の新作グッズ発売</li>
+				<li>2025.09.15 イベント限定アイテム登場</li>
+				<li>2025.08.01 夏セール開催中</li>
+			</ul>
+		</section>
 
-    <section>
-      <h2>人気商品</h2>
-      <div class="product-list">
-        <div class="product-item">
-          <a th:href="@{/voidrshop/items/1}">
-            <img src="https://dummyimage.com/300x300/aaaaaa/000000&text=Product+1" alt="商品1">
-            <p>商品名A</p>
-	</a>
-            <p>¥3,000</p>
-        </div>
-        <div class="product-item">
-          <a th:href="@{/voidrshop/items/2}">
-            <img src="https://dummyimage.com/300x300/aaaaaa/000000&text=Product+2" alt="商品2">
-            <p>商品名B</p>
-            <p>¥4,500</p>
-          </a>
-        </div>
-        <div class="product-item">
-          <a th:href="@{/voidrshop/items/3}">
-            <img src="https://dummyimage.com/300x300/aaaaaa/000000&text=Product+3" alt="商品3">
-            <p>商品名C</p>
-            <p>¥2,800</p>
-          </a>
-        </div>
-        <div class="product-item">
-          <a th:href="@{/voidrshop/items/4}">
-            <img src="https://dummyimage.com/300x300/aaaaaa/000000&text=Product+4" alt="商品4">
-            <p>商品名D</p>
-            <p>¥5,200</p>
-          </a>
-        </div>
-      </div>
-    </section>
-  </main>
+		<section>
+			<h2>人気商品</h2>
+			<div th:replace="fragments/itemList :: itemList(${items})"></div>
+		</section>
 
-  <footer>
-    <p>© 2025 FPS GEAR STORE</p>
-  </footer>
+	</main>
+
+	<footer>
+		<p>© 2025 FPS GEAR STORE</p>
+	</footer>
 </body>
 </html>

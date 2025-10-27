@@ -3,12 +3,12 @@ package com.example.voidr.controller;
 import java.util.List;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.example.voidr.entity.LoginUser;
 import com.example.voidr.service.CartService;
 import com.example.voidr.service.ItemService;
 import com.example.voidr.view.CartView;
@@ -28,16 +28,13 @@ public class CartController {
      * カート一覧ページ
      */
     @GetMapping
-    public String cartList(Model model, @AuthenticationPrincipal UserDetails user) {
-        // ログインユーザーID、未ログインの場合は0
-        //long userId = user != null ? Long.parseLong(user.getUsername()) : 0L;
+    public String cartList(Model model, @AuthenticationPrincipal LoginUser loginUser) {
     	
     	itemService.syncItems();
-    	
-    	long userId = 1;
+    
 
         // カートと商品情報をまとめたCartViewリストを取得
-        List<CartView> cartViews = cartService.getCartViewByUserId(userId);
+        List<CartView> cartViews = cartService.getCartViewByUserId(loginUser.getId());
 
         // is_hold = true / false に分ける
         List<CartView> holdItems = cartViews.stream()

@@ -9,82 +9,6 @@ body {
 	text-align: center;
 	font-family: sans-serif;
 }
-
-header {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	padding: 10px 20px;
-	border-bottom: 1px solid #ccc;
-}
-
-.header-right {
-	display: flex;
-	gap: 15px;
-	align-items: center;
-}
-
-.search-box {
-	display: flex;
-	align-items: center;
-	gap: 5px;
-}
-
-.search-box input[type="text"] {
-	padding: 5px 8px;
-	border: 1px solid #ccc;
-	border-radius: 4px;
-}
-
-.search-box button {
-	padding: 5px 10px;
-	border: 1px solid #ccc;
-	background-color: #eee;
-	cursor: pointer;
-}
-
-.search-box button:hover {
-	background-color: #ddd;
-}
-
-main {
-	max-width: 1000px;
-	margin: 30px auto;
-}
-
-table {
-	width: 100%;
-	border-collapse: collapse;
-	margin-top: 20px;
-}
-
-th, td {
-	border: 1px solid #ddd;
-	padding: 8px;
-	text-align: center;
-}
-
-th {
-	background-color: #f4f4f4;
-}
-
-footer {
-	margin-top: 40px;
-	padding: 10px;
-	border-top: 1px solid #ccc;
-}
-
-nav {
-	display: flex;
-	gap: 15px;
-}
-
-.product-list {
-	display: grid;
-	grid-template-columns: repeat(4, 1fr);
-	gap: 20px;
-	justify-items: center;
-}
 </style>
 </head>
 <body>
@@ -93,16 +17,8 @@ nav {
 
   <main>
   <h2>商品一覧</h2>
-  <div class="product-list">
-    <div class="product-item" th:each="item : ${items}">
-      <a th:href="@{/voidrshop/items/{id}(id=${item.id})}">
-        <img src="https://dummyimage.com/200x200/cccccc/000000&text=Product+A" alt="商品A">
-        <p th:text="${item.name}">商品名</p>
-      </a>
-      <p th:text="${item.price} + '円'">価格</p>
-    </div>
-  </div>
-</main>
+		<div th:replace="fragments/itemList :: itemList(${items})"></div>
+	</main>
 
 
   <footer>

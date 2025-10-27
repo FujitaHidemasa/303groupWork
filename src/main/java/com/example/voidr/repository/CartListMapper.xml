@@ -26,9 +26,9 @@
 		WHERE id = #{id}
 	</update>
 
-	<delete id="deleteAllGuestCartLists">
+	<delete id="delete">
 		DELETE FROM cart_list
-		WHERE is_login_user = FALSE
+		WHERE id = #{id}
 	</delete>
 
 </mapper>
