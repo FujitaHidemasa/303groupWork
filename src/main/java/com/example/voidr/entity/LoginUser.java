@@ -55,4 +55,9 @@ public class LoginUser implements UserDetails {
 	{
 		return this.account.getDisplayName();
 	}
+	
+	public Long getId()
+	{
+		return this.account.getId();
+	}
 }

@@ -179,7 +179,9 @@
 					<tr th:each="cv : ${normalItems}">
 
 						<td><a href="productA.html"><img
-									src="https://dummyimage.com/100x100/aaaaaa/000000&text=Product+A" alt="商品A"></a>
+					th:src="@{/image/{img}(img=${item.thumbsImageName})}"
+					onerror="this.onerror=null;this.src='/image/no_image.png';"
+					alt="商品画像"></a>
 						</td>
 						<td th:text="${cv.item.name}">商品名</td>
 						<td th:text="${cv.item.price}">価格</td>

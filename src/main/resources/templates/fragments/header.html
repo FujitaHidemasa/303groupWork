@@ -4,12 +4,12 @@
 <head>
 <meta charset="UTF-8">
 <title>FPS GEAR STORE</title>
-<style>
-body {
-	font-family: sans-serif;
-	margin: 0;
-}
 
+</head>
+
+<body>
+	<div th:fragment="header">
+	<style>
 header {
 	display: flex;
 	justify-content: space-between;
@@ -18,10 +18,10 @@ header {
 	border-bottom: 1px solid #ccc;
 }
 
-nav, .header-right {
+.header-right {
 	display: flex;
-	align-items: center;
 	gap: 15px;
+	align-items: center;
 }
 
 .search-box {
@@ -30,8 +30,8 @@ nav, .header-right {
 	gap: 5px;
 }
 
-.search-box input {
-	padding: 5px;
+.search-box input[type="text"] {
+	padding: 5px 8px;
 	border: 1px solid #ccc;
 	border-radius: 4px;
 }
@@ -39,14 +39,14 @@ nav, .header-right {
 .search-box button {
 	padding: 5px 10px;
 	border: 1px solid #ccc;
-	background: #eee;
+	background-color: #eee;
 	cursor: pointer;
 }
-</style>
-</head>
 
-<body>
-	<div th:fragment="header">
+.search-box button:hover {
+	background-color: #ddd;
+}
+</style>
 		<header>
 			<h1>FPS GEAR STORE</h1>
 			<nav>
