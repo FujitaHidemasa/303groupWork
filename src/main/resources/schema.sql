@@ -6,9 +6,8 @@ DROP TABLE IF EXISTS cart_list CASCADE;
 DROP TABLE IF EXISTS "order" CASCADE;
 DROP TABLE IF EXISTS order_list CASCADE;
 DROP TABLE IF EXISTS item CASCADE;
-DROP TABLE IF EXISTS "user" CASCADE;
 DROP TABLE IF EXISTS item_category CASCADE;
-DROP TABLE IF EXISTS authentications CASCADE;
+DROP TABLE IF EXISTS login_user CASCADE;
 DROP TABLE IF EXISTS item_image CASCADE;
 DROP TYPE IF EXISTS role CASCADE;
 
@@ -16,19 +15,20 @@ DROP TYPE IF EXISTS role CASCADE;
 --  テーブル作成
 -- ===============================
 
--- -------------------------------
--- ユーザーテーブル
--- -------------------------------
-CREATE TABLE "user" (
+-- 権限用のENUM型
+CREATE TYPE role AS ENUM ('ADMIN', 'USER');
+
+CREATE TABLE login_user (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL,
-    address TEXT,
-    phone_number VARCHAR(20),
-    created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    is_active BOOLEAN NOT NULL DEFAULT TRUE
+    username VARCHAR(50) NOT NULL UNIQUE,   -- ログインID
+    password VARCHAR(255) NOT NULL,         -- パスワードハッシュ
+    authority role NOT NULL DEFAULT 'USER', -- 権限
+    display_name VARCHAR(50) NOT NULL,      -- 表示名
+    email VARCHAR(100) NOT NULL,            -- メールアドレス
+    address VARCHAR(255),                   -- 住所
+    phone_number VARCHAR(20),               -- 電話番号
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 -- -------------------------------
@@ -66,7 +66,7 @@ CREATE TABLE item_image (
 -- -------------------------------
 CREATE TABLE order_list (
     id SERIAL PRIMARY KEY,
-    user_id INTEGER REFERENCES "user"(id) ON DELETE CASCADE,
+    user_id INTEGER REFERENCES login_user(id) ON DELETE CASCADE,
     created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
@@ -87,7 +87,9 @@ CREATE TABLE "order" (
 -- -------------------------------
 CREATE TABLE cart_list (
     id SERIAL PRIMARY KEY,
-    user_id INTEGER NOT NULL,
+
+    user_id INTEGER REFERENCES login_user(id) ON DELETE CASCADE,
+
     is_login_user BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP
@@ -103,20 +105,4 @@ CREATE TABLE cart (
     quantity INTEGER DEFAULT 1,
     is_hold BOOLEAN DEFAULT FALSE,
     updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP
-);
-
--- 権限用のENUM型
-CREATE TYPE role AS ENUM ('ADMIN', 'USER');
-
--- 認証情報を格納するテーブル
-CREATE TABLE authentications (
-	id SERIAL PRIMARY KEY,
-	-- ユーザー名：主キー
-	username VARCHAR(50) NOT NULL Unique,
-	-- パスワード
-	password VARCHAR(255) NOT NULL Unique,
-	-- 権限
-	authority role NOT NULL,
-	-- 表示名
-	displayname VARCHAR(50) NOT NULL
 );

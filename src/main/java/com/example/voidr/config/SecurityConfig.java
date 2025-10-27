@@ -2,26 +2,12 @@ package com.example.voidr.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-
-import com.example.voidr.service.impl.CustomUserDetailsService;
 
 @Configuration
 public class SecurityConfig
 {
-	@Bean
-	public DaoAuthenticationProvider authenticationProvider(CustomUserDetailsService  userDetailsService,
-			PasswordEncoder passwordEncoder)
-	{
-		DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-		authProvider.setUserDetailsService(userDetailsService);
-		authProvider.setPasswordEncoder(passwordEncoder);
-		return authProvider;
-	}
-
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception
 	{
@@ -32,6 +18,8 @@ public class SecurityConfig
 	    )
 	    .formLogin(form -> form
 	        .loginPage("/login")
+	        .loginProcessingUrl("/login") 
+	        .defaultSuccessUrl("/", false)
 	        .permitAll()
 	        .defaultSuccessUrl("/", true) // ログイン成功後のリダイレクト先
 	    );

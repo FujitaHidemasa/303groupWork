@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.example.voidr.entity.Item;
@@ -18,12 +19,14 @@ import lombok.RequiredArgsConstructor;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/voidrshop/items")
-public class ItemController {
+public class ItemController
+{
 	private final ItemService itemService;
 
 	/** 一覧ページ */
 	@GetMapping
-	public String list(Model model) {
+	public String list(Model model)
+	{
 		// XML ↔ DB 同期
 		itemService.syncItems();
 
@@ -32,14 +35,27 @@ public class ItemController {
 		model.addAttribute("items", items);
 		return "shop/item/list";
 	}
+	
+	@GetMapping("/search")
+	public String search(@RequestParam("keyword") String keyword, Model model)
+	{
+		itemService.syncItems();
+		
+	    List<Item> items = itemService.searchItemsByKeyword(keyword);
+	    model.addAttribute("items", items);
+	    model.addAttribute("keyword", keyword);
+	    return "shop/item/list";
+	}
 
 	/** 詳細ページ */
 	@GetMapping("/{id}")
-	public String detail(@PathVariable("id") Long id, Model model) {
-		Item item = itemService.getAllItems().stream()
-				.filter(i -> i.getId() == id)
-				.findFirst()
-	            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Item not found"));
+	public String detail(@PathVariable("id") Long id, Model model)
+	{
+		Item item = itemService.getItemById(id);
+		if(item == null || item.getId() <= 0)
+		{
+			new ResponseStatusException(HttpStatus.NOT_FOUND, "Item not found");
+		}
 		model.addAttribute("item", item);
 		return "shop/item/detail";
 	}
