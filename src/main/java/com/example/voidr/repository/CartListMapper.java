@@ -14,5 +14,5 @@ public interface CartListMapper {
 
     void updateUpdatedAt(@Param("id") long id);
 
-    void delete(@Param("id") long id);
+    void deleteAllGuestCartLists();
 }
