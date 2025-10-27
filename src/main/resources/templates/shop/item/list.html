@@ -85,6 +85,14 @@ nav {
 	gap: 20px;
 	justify-items: center;
 }
+
+.product-item img {
+  width: 200px;
+  height: 200px;
+  object-fit: cover; /* 画像が枠にきれいに収まるように */
+  border-radius: 8px; /* 角を少し丸めたい場合（任意） */
+}
+
 </style>
 </head>
 <body>
@@ -96,7 +104,8 @@ nav {
   <div class="product-list">
     <div class="product-item" th:each="item : ${items}">
       <a th:href="@{/voidrshop/items/{id}(id=${item.id})}">
-        <img src="https://dummyimage.com/200x200/cccccc/000000&text=Product+A" alt="商品A">
+		<img th:src="@{/image/{file}(file=${item.thumbsImageName})}"
+							onerror="this.onerror=null;this.src='/image/no_image.png';">
         <p th:text="${item.name}">商品名</p>
       </a>
       <p th:text="${item.price} + '円'">価格</p>
