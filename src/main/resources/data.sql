@@ -11,7 +11,7 @@ VALUES
 ('jiro', '$2a$10$gmNQ/1zwukD2OddxS2lAD.8iaCdhbu3GjxdNGew8wXFaAbtBCSpVm', 'ADMIN', '鈴木 次郎', 'jiro@example.com', '福岡県福岡市3-3-3', '07055556666');
 
 -- ===============================
--- 商品テーブル（5件）
+-- 商品テーブル（3件）
 -- ===============================
 INSERT INTO item (name, price, overview, thumbs_image_name)
 VALUES 
@@ -20,27 +20,19 @@ VALUES
 ('Gaming Headset V', 9600, '7.1chサラウンド対応ヘッドセット', 'headset_v.jpg');
 
 -- ===============================
--- 購入履歴リスト（2件）
--- ===============================
---INSERT INTO order_list (user_id, created_at, updated_at)
---VALUES
---(1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
---(2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-
--- ===============================
--- 購入履歴（4件）
--- ===============================
-
-
--- ===============================
 -- カートリスト（3件）
 -- ===============================
+INSERT INTO cart_list (id, user_id, created_at)
+VALUES
+(1, 1, CURRENT_TIMESTAMP),
+(2, 2, CURRENT_TIMESTAMP),
+(3, 3, CURRENT_TIMESTAMP);
 
 -- ===============================
--- カート（6件）
+-- カート（3件）
 -- ===============================
 INSERT INTO cart (cartlist_id, item_id, quantity, is_hold, updated_at)
 VALUES 
-    (1, 1, 1, false, CURRENT_TIMESTAMP),
-    (1, 2, 2, false, CURRENT_TIMESTAMP),
-    (1, 3, 1, true, CURRENT_TIMESTAMP);
+(1, 1, 1, false, CURRENT_TIMESTAMP),
+(1, 2, 2, false, CURRENT_TIMESTAMP),
+(1, 3, 1, true, CURRENT_TIMESTAMP);

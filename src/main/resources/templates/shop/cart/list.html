@@ -148,19 +148,7 @@
 </head>
 
 <body>
-	<header>
-		<h1>FPS GEAR STORE</h1>
-		<nav>
-			<a href="index.html">トップ</a>
-			<a href="#">ストア</a>
-			<a href="#">検索</a>
-			<a href="#">お問い合わせ</a>
-		</nav>
-		<div class="header-right">
-			<a href="cart.html">カート</a>
-			<a href="#">ログイン</a>
-		</div>
-	</header>
+	<div th:replace="fragments/header :: header"></div>
 
 	<main>
 		<section>
@@ -197,10 +185,10 @@
 			</table>
 
 			<div class="cart-actions">
-				<a href="index.html">買い物を続ける</a>
+				<a th:href="@{/voidrshop/items}" class="btn btn-outline-secondary">買い物を続ける</a>
 				<div>
 					<strong>合計金額: ¥3,000</strong>
-					<button>購入画面へ進む</button>
+					<button th:onclick="|location.href='@{/voidrshop/purchase}'|">購入画面へ進む</button>
 				</div>
 			</div>
 		</section>
@@ -209,10 +197,10 @@
 	<footer>
 		<p>© 2025 FPS GEAR STORE</p>
 	</footer>
-	
 
 
-	
+
+
 </body>
 
 </html>
