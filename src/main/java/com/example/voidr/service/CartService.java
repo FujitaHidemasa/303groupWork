@@ -14,4 +14,6 @@ public interface CartService {
     void deleteGuestCarts();
     
     List<CartView> getCartViewByUserId(long userId);
+    
+    void changeQuantity(Cart cart,  Integer count);
 }

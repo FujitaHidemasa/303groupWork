@@ -88,41 +88,27 @@ nav {
 </style>
 </head>
 <body>
-	<header>
-		<h1>FPS GEAR STORE</h1>
-		<nav>
-			<a th:href="@{/voidrshop}">トップ</a> <a th:href="@{/voidrshop/items}">ストア</a>
-			<a href="search.html">検索</a> <a href="contact.html">お問い合わせ</a>
-		</nav>
-		<div class="header-right">
-			<form class="search-box" th:action="@{/voidrshop/items/search}"
-				method="get">
-				<input type="text" name="keyword" placeholder="商品を検索"
-					th:value="${keyword}">
-				<button type="submit">検索</button>
-			</form>
-			<a href="cart.html">カート</a> <a href="#">ログイン</a>
-		</div>
-	</header>
 
-	<main>
-		<h2>商品一覧</h2>
-		<div class="product-list">
-			<div class="product-item" th:each="item : ${items}">
-				<a th:href="@{/voidrshop/items/{id}(id=${item.id})}"> <img
-					src="https://dummyimage.com/200x200/cccccc/000000&text=Product+A"
-					alt="商品A">
-					<p th:text="${item.name}">商品名</p>
-				</a>
-				<p th:text="${item.price} + '円'">価格</p>
-			</div>
-		</div>
-	</main>
+  <div th:replace="fragments/header :: header"></div>
+
+  <main>
+  <h2>商品一覧</h2>
+  <div class="product-list">
+    <div class="product-item" th:each="item : ${items}">
+      <a th:href="@{/voidrshop/items/{id}(id=${item.id})}">
+        <img src="https://dummyimage.com/200x200/cccccc/000000&text=Product+A" alt="商品A">
+        <p th:text="${item.name}">商品名</p>
+      </a>
+      <p th:text="${item.price} + '円'">価格</p>
+    </div>
+  </div>
+</main>
 
 
-	<footer>
-		<p>© 2025 FPS GEAR STORE</p>
-	</footer>
+  <footer>
+    <p>© 2025 FPS GEAR STORE</p>
+  </footer>
+
 </body>
 </html>
 

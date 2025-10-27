@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>お問い合わせ完了 - FPS GEAR STORE</title>
+	<style>
+		body {
+			text-align: center;
+		}
+
+		header {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			padding: 10px 20px;
+			border-bottom: 1px solid #ccc;
+		}
+
+		nav {
+			display: flex;
+			gap: 15px;
+		}
+
+		.header-right {
+			display: flex;
+			gap: 15px;
+			align-items: center;
+		}
+
+		.search-box {
+			display: flex;
+			align-items: center;
+			gap: 5px;
+		}
+
+		.search-box input[type="text"] {
+			padding: 5px 8px;
+			border: 1px solid #ccc;
+			border-radius: 4px;
+		}
+
+		.search-box button {
+			padding: 5px 10px;
+			border: 1px solid #ccc;
+			background-color: #eee;
+			cursor: pointer;
+		}
+
+		.search-box button:hover {
+			background-color: #ddd;
+		}
+
+		main {
+			max-width: 1000px;
+			margin: 30px auto;
+		}
+
+		.news-list {
+			text-align: left;
+			list-style: none;
+			padding: 0;
+			max-width: 600px;
+			margin: 0 auto;
+		}
+
+		.product-list {
+			display: flex;
+			justify-content: center;
+			flex-wrap: wrap;
+			gap: 20px;
+		}
+
+		.product-item {
+			width: 23%;
+			box-sizing: border-box;
+			text-align: center;
+		}
+
+		.product-item img {
+			width: 100%;
+			height: auto;
+			display: block;
+			margin: 0 auto;
+		}
+
+		.product-item a {
+			text-decoration: none;
+			color: inherit;
+		}
+	</style>
+</head>
+
+<body>
+	<div th:replace="fragments/header :: header"></div>
+
+	<main>
+		<h2>お問い合わせありがとうございます</h2>
+		<p>
+			お問い合わせ内容を送信しました。<br>
+			内容を確認のうえ、担当者よりご連絡いたします。<br>
+			今しばらくお待ちください。
+		</p>
+
+		<div class="button-group">
+			<a th:href="@{/index}">トップページへ戻る</a>
+			<a th:href="@{/store}">ストアを見る</a>
+		</div>
+	</main>
+
+	<footer>
+		<p>© 2025 FPS GEAR STORE</p>
+	</footer>
+</body>
+
+</html>

@@ -47,8 +47,7 @@
 		SELECT id, name, price,
 		overview, thumbs_image_name, created_at, updated_at
 		FROM item
-		WHERE id =
-		#{id}
+		WHERE id = #{id}
 	</select>
 
 	<select id="selectByKeyword" resultMap="ItemMap">
