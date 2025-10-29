@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VOIDR | 公式サイト</title>
+  <link rel="stylesheet" href="/css/Homepage.css">
+  <!-- 未来的フォント Orbitron -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- ヘッダー -->
+  <header class="main-header">
+    <a href="index.html" class="logo">
+      <img src="images/logo.png" alt="VOIDRロゴ">
+    </a>
+    <nav class="nav-left">
+      <ul class="nav-menu">
+        <li class="dropdown">
+          <a href="#">ゲーム紹介 v</a>
+          <ul class="submenu">
+            <li><a href="#">ストーリー</a></li>
+            <li><a href="#">マップ</a></li>
+            <li><a href="#">武器</a></li>
+          </ul>
+        </li>
+        <li><a href="/character" class="character-button">キャラクター</a>
+        <li><a href="#">ニュース</a></li>
+        <li><a href="#">ストア</a></li>
+      </ul>
+    </nav>
+    <div class="nav-right">
+      <a href="#" class="login">ログイン</a>
+      <a href="#" class="play-now">今すぐプレイ</a>
+    </div>
+  </header>
+
+  <!-- 動画背景セクション -->
+  <section class="hero">
+    <video autoplay muted loop playsinline class="background-video">
+      <source th:src="@{/videos/downloade.mp4}" type="video/mp4">
+      お使いのブラウザは動画をサポートしていません。
+    </video>
+
+    <div class="hero-content">
+      <h1 class="site-title">
+        <img src="images/title_logo.png" alt="VOIDR" class="title-logo">
+      </h1>
+
+      <p>新たな戦いが、今ここに。</p>
+      <a href="#" class="btn">今すぐダウンロード</a>
+    </div>
+  </section>
+
+  <!-- ゲーム概要セクション -->
+  <section class="game-overview">
+    <div class="content">
+     
+      <div class="text">
+        <h2>ゲーム紹介</h2>
+        <p>VOIDRは未来都市を舞台にした戦略アクションバトルゲームです。プレイヤーは異なる能力を持つキャラクターを操り、チームで勝利を目指します。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- キャラクター紹介セクション -->
+  <section class="character-intro">
+    <div class="content reverse">
+
+      <div class="text">
+        <h2>キャラクター</h2>
+        <p>個性豊かなキャラクターたちが登場。スピード型、タンク型、サポート型など、あなたの戦略に合わせて選択可能です。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ニュースセクション -->
+  <section class="news-section">
+    <div class="content">
+      
+      <div class="text">
+        <h2>ニュース</h2>
+        <p>最新アップデート情報、イベント開催告知、開発チームからのメッセージなどをお届けします。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- お問い合わせ・SNSセクション -->
+<section class="contact-section">
+  <div class="contact-content">
+    <!-- お問い合わせボタン（変更なし） -->
+    <a href="#" class="contact-btn">お問い合わせ</a>
+
+    <!-- SNSアイコン部分）-->
+    <div class="social-links">
+      <a href="#"><img src="images/twitter.png" alt="Twitter"></a>
+      <a href="#"><img src="images/youtube.png" alt="YouTube"></a>
+      <a href="#"><img src="images/tiktok.png" alt="TikTok"></a>
+    </div>
+  </div>
+</section>
+
+
+
+  <!-- フッター -->
+  <footer>
+    <p>© 2025 VOIDR All rights reserved.</p>
+  </footer>
+  <script>
+  // 要素を取得
+  const sections = document.querySelectorAll('.game-overview, .character-intro, .news-section');
+
+  // スクロール検知
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('slide-in');
+      } else {
+        // 再度スクロールしたときにも発火させたいので削除
+        entry.target.classList.remove('slide-in');
+      }
+    });
+  }, { threshold: 0.2 });
+
+  sections.forEach(section => observer.observe(section));
+</script>
+
+</body>
+</html>
