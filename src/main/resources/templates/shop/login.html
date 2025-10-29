@@ -47,18 +47,28 @@
       to   { opacity: 1; transform: translateY(0); }
     }
 
-    /* ==============================
-       タイトル（VOIDR LOGIN）
-       ============================== */
-    .login-title {
-      font-size: clamp(1.6rem, 5vw, 1.8rem); /* 画面幅に応じて微調整 */
-      margin-bottom: 25px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: #ff0033;
-      overflow-wrap: anywhere;
-      word-break: break-word;
-    }
+	/* ==============================
+	   タイトル（VOIDR LOGIN）
+	   ============================== */
+	.login-title {
+	  font-size: clamp(1.6rem, 6vw, 2.1rem); /* 可変で小画面対応 */
+	  line-height: 1.2;
+	  letter-spacing: 1.4px;
+	  text-transform: uppercase;
+
+	  /* ★signup.html と同じ色合い */
+	  color: #ffffff;
+	  text-shadow:
+	    0 0 10px rgba(255, 0, 50, 0.75),
+	    0 0 2px rgba(0, 0, 0, 0.85);
+	  -webkit-text-stroke: 0.4px rgba(0,0,0,0.5);
+
+	  margin-bottom: 25px;
+	  overflow-wrap: anywhere;
+	  word-break: break-word;
+	  max-width: 100%;
+	}
+
 
     /* ==============================
        入力フォーム全体
