@@ -16,7 +16,7 @@ public interface CartMapper {
 
     void update(Cart cart);
 
-    void delete(@Param("id")Long id);
+    void deleteAllGuestCarts();
     
     void updateQuantityByCart(Cart cart, @Param("count") Integer count);
 }
