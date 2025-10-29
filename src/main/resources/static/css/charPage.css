@@ -1,0 +1,168 @@
+:root {
+    --color-dark-bg: #121212;
+    --color-text-light: #EEEEEE;
+    --color-accent-purple: #A020F0;
+    --color-soft-purple: #3A1F4C;
+    --footer-height: 80px;
+    --header-width: 80px;
+}
+
+/* リセット */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { height: 100%; overflow: hidden; }
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--color-dark-bg);
+    color: var(--color-text-light);
+}
+
+/* ヘッダー */
+.header {
+    width: var(--header-width); 
+    height: 87.5vh; 
+    background-color: rgba(0,0,0,0.7); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed; 
+    top: 0; 
+    left: 0;
+    z-index: 101; 
+    border-right: 2px solid var(--color-accent-purple); 
+    border-radius: 0 5px 0 0; 
+}
+.header h1 {
+    color: var(--color-accent-purple);
+    font-size: 2.5em; 
+    letter-spacing: 5px;
+    writing-mode: vertical-rl; 
+    text-orientation: upright; 
+    white-space: nowrap; 
+    height: 100%;
+    display: flex;
+    align-items: center; 
+    justify-content: center; 
+    border-left: 2px solid var(--color-soft-purple); 
+    padding-left: 10px; 
+}
+
+/* キャラクターコンテナ */
+.character-container {
+    margin-left: var(--header-width);
+    padding-bottom: calc(var(--footer-height) + 10px); 
+    position: relative;
+    height: 100vh;
+}
+
+.char-detail {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+#charBackground {
+    position: fixed;
+    top: 0;
+    left: var(--header-width);
+    width: calc(100% - var(--header-width));
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    z-index: 0;
+}
+
+/* 情報オーバーレイ */
+.char-info-overlay {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 45%;
+    max-height: calc(100vh - var(--footer-height) - 40px);
+    background-color: rgba(0, 0, 0, 0.55);
+    border-radius: 15px;
+    color: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    overflow-y: auto;
+    z-index: 2;
+}
+
+.char-info-overlay h2 {
+    font-size: 3em;
+    margin-bottom: 20px;
+    line-height: 1.1;
+}
+
+.char-info-overlay .label {
+    font-size: 1.6em; 
+    font-weight: bold;
+    margin-top: 15px;
+    margin-bottom: 5px;
+}
+
+.char-info-overlay p {
+    font-size: 1.15em;
+    line-height: 1.45;
+    margin-bottom: 15px;
+}
+
+/* フッター */
+.footer-nav {
+    position: fixed; 
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: var(--footer-height);
+    padding: 0 20px;
+    background-color: rgba(18, 18, 18, 0.9);
+    border-top: 2px solid var(--color-accent-purple);
+    display: flex;
+    align-items: center;
+    overflow-x: auto;
+    gap: 15px;
+    z-index: 100;
+}
+
+/* キャラ選択ボタン */
+.char-select-btn {
+    flex-shrink: 0; 
+    width: 200px; 
+    height: 60px;
+    cursor: pointer; 
+    border: 2px solid var(--color-soft-purple);
+    border-radius: 5px; 
+    transition: border-color 0.3s, transform 0.2s;
+    position: relative; 
+    overflow: hidden;
+}
+
+.char-thumbnail {
+    position: absolute; top: 0; left: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    filter: grayscale(80%) brightness(50%);
+    transition: filter 0.3s; 
+    z-index: 1;
+}
+
+.char-label {
+    position: relative; z-index: 2;
+    display: flex; align-items: center; justify-content: center;
+    width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.3);
+    color: var(--color-text-light);
+    font-size: 0.9em; font-weight: bold;
+    text-shadow: 0 0 5px #000;
+    text-align: center;
+    padding: 0 5px;
+}
+
+.char-select-btn:hover { border-color: var(--color-accent-purple); transform: scale(1.02); }
+.char-select-btn:hover .char-thumbnail { filter: grayscale(0%) brightness(80%); }
+.char-select-btn:hover .char-label { background-color: rgba(0,0,0,0.1); }
+.char-select-btn.active { border-color: var(--color-accent-purple); box-shadow: 0 0 10px var(--color-accent-purple); pointer-events: none; }
+.char-select-btn.active .char-thumbnail { filter: grayscale(0%) brightness(70%); }
+.char-select-btn.active .char-label { background-color: rgba(160,32,240,0.3); color:#FFF; }
+

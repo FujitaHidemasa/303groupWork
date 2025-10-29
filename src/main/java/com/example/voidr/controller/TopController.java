@@ -24,4 +24,5 @@ public class TopController
 		// templatesフォルダ配下のmenu.htmlに遷移
 		return "shop/top";
 	}
+	
 }

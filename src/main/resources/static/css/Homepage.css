@@ -1,0 +1,710 @@
+/* リセット */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Orbitron', sans-serif;
+  background-color: #000;
+  color: #fff;
+  overflow-x: hidden;
+}
+
+/* ヘッダー */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(0,0,0,0.6);
+  padding: 25px 40px; /* ヘッダーを少し大きく */
+  position: fixed;
+  width: 100%;
+  z-index: 100;
+  backdrop-filter: blur(6px);
+}
+
+.logo {
+  font-size: 2.2em; /* ロゴ文字を大きく */
+  font-weight: bold;
+  color: #fff;
+}
+
+.nav-menu a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 1.2em; /* ナビ文字を大きく */
+  transition: 0.3s;
+}
+
+.nav-menu a {
+  color: #fff;
+  text-decoration: none; /* 下線消し */
+  transition: 0.3s;
+}
+
+.nav-menu a:hover {
+  color: #00eaff; /* ホワイト基調に近いアクセントカラー */
+}
+
+/* ヒーローセクション */
+.hero {
+  position: relative;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
+}
+
+/* 背景動画 */
+.background-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+  filter: brightness(50%);
+}
+
+/* コンテンツ */
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
+  padding: 0 20px;
+}
+
+.hero h1 {
+  font-size: 3em;
+  margin-bottom: 10px;
+  text-shadow: 2px 2px 6px rgba(0,0,0,0.8);
+}
+
+.hero p {
+  font-size: 1.2em;
+  margin-bottom: 20px;
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.6);
+}
+
+.btn {
+  display: inline-block;
+  padding: 12px 30px;
+  background: #fff;
+  color: #000;
+  text-decoration: none;
+  border-radius: 30px;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  background: #b15fff;
+  color: #000;
+}
+
+/* フッター */
+footer {
+  text-align: center;
+  padding: 20px 0;
+  background: rgba(0,0,0,0.8);
+  margin-top: 50px;
+  color: #fff;
+}
+/* ヘッダー */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(39, 17, 102, 0.6);
+  padding: 18px 40px;
+  position: fixed;
+  width: 100%;
+  z-index: 100;
+  backdrop-filter: blur(6px);
+}
+
+.logo {
+  font-size: 2em;
+  font-weight: bold;
+  color: #fff;
+}
+
+/* 左側ナビ */
+.nav-left {
+  margin-left: 20px; /* 左に少し寄せる */
+}
+
+.nav-menu {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-menu li a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 1.4em;
+  transition: 0.3s;
+}
+
+/* 右側リンク */
+.nav-right {
+  display: flex;
+  gap: 20px;
+}
+
+.nav-right a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1.1em;
+  transition: 0.3s;
+}
+
+.nav-right a:hover {
+  color: #6928ff;
+}
+
+/* 今すぐプレイボタン風 */
+.play-now {
+  background: #8057ce;
+  color: black;
+  padding: 6px 18px;
+  border-radius: 20px;
+  font-weight: bold;
+}
+
+.play-now:hover {
+  background: #fff;
+}
+/* ヒーローセクション タイトルサイズ調整 */
+.hero h1 {
+  font-size: 5.5em; /* もともと3emくらいなら大きくしました */
+}
+/* お問い合わせ・SNSセクション */
+.contact-section {
+  text-align: center;
+  padding: 80px 20px;
+  background: rgba(0, 0, 0, 0.85);
+}
+
+.contact-btn {
+  display: inline-block;
+  padding: 14px 40px;
+  background: #fff;
+  color: #000;
+  text-decoration: none;
+  font-weight: 700;
+  border-radius: 30px;
+  transition: all 0.3s ease;
+  margin-bottom: 40px;
+}
+
+.contact-btn:hover {
+  background: #9131ff;
+  color: #fff;
+  box-shadow: 0 0 20px rgba(78, 20, 83, 0.7);
+}
+
+/* SNSアイコン */
+.social-links {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  margin-bottom: 50px;
+}
+
+.social-links img {
+  width: 40px;
+  height: 40px;
+  transition: transform 0.3s ease;
+}
+
+.social-links img:hover {
+  transform: scale(1.2);
+}
+
+/* フッター */
+footer {
+  background: rgba(0, 0, 0, 0.8);
+  text-align: center;
+  padding: 20px 0;
+  font-size: 0.9rem;
+  color: #aaa;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.header-buttons a {
+  font-size: 1.2rem; /* ← 同じサイズ感にする */
+}
+.header-buttons {
+  display: flex;
+  align-items: center; /* ← 縦方向を中央にそろえる */
+  gap: 20px;
+  margin-right: 40px;
+  position: relative;
+  top: 2px; /* ← この値で「気持ち下げる」調整ができます */
+}
+body {
+  background-image: url("image/background.jpg"); /* ← ここに使いたい画像のパス */
+  background-size: cover; /* 画面いっぱいに */
+  background-position: center; /* 中央に配置 */
+  background-attachment: fixed; /* スクロールしても固定 */
+  background-repeat: no-repeat; /* 繰り返さない */
+}
+/* ===== コンテンツセクション共通 ===== */
+.game-overview, .character-intro, .news-section {
+  padding: 120px 10%;
+  background: rgba(255, 255, 255, 0.05);
+  color: white;
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.content.reverse {
+  flex-direction: row-reverse;
+}
+
+.section-img {
+  width: 45%;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+}
+
+.text {
+  flex: 1;
+  min-width: 300px;
+}
+
+.text h2 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 2.2em;
+  margin-bottom: 20px;
+  color: #fff;
+  text-shadow: 0 0 10px rgba(255,255,255,0.4);
+}
+
+.text p {
+  font-size: 1.1em;
+  line-height: 1.8;
+  color: #ddd;
+}
+/* -------------------------
+   セクションの基本デザイン
+-------------------------- */
+.content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  margin: 40px auto;
+  max-width: 1000px;
+  padding: 0 20px;
+}
+
+/* 画像サイズ */
+.section-img {
+  width: 45%;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+}
+
+/* テキスト部分 */
+.text {
+  width: 50%;
+}
+
+/* -------------------------
+   キャラクター紹介を左右逆に
+-------------------------- */
+.reverse {
+  flex-direction: row;
+}
+/* ▼ ドロップダウンメニュー ▼ */
+.nav-menu li {
+  position: relative;
+}
+
+.submenu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.85);
+  padding: 10px 0;
+  border-radius: 8px;
+  list-style: none;
+  min-width: 160px;
+}
+
+.submenu li a {
+  display: block;
+  padding: 10px 20px;
+  color: white;
+ text-decoration: none;
+ transition: background 0.3s;
+}
+
+.submenu li a:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+/* ホバーでサブメニュー表示 */
+.dropdown:hover .submenu {
+  display: block;
+}
+/* ▲ ドロップダウンメニュー ▲ */
+
+/* 背景動画をページ全体に広げる */
+.background-video {
+  position: fixed;       /* スクロールしても固定 */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;     /* 画面いっぱいに表示 */
+  z-index: -1;           /* コンテンツの後ろに配置 */
+}
+
+/* ヘッダーを透過させて動画を裏で見せる */
+.main-header {
+  background: rgba(20, 10, 60, 0.6); /* 半透明（紫系） */
+  backdrop-filter: blur(8px);        /* 背景ぼかし */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10;
+  padding: 20px 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* ヒーローセクションの上に余白を作る（ヘッダーと被らないように） */
+.hero {
+  position: relative;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  text-align: center;
+  padding-top: 100px; /* ←ヘッダー分の余白 */
+}
+/* ===== お問い合わせ・SNSセクション + フッター統一 ===== */
+.contact-section,
+footer {
+  background: rgba(20, 10, 60, 0.85); /* ヘッダーと同系の紫系半透明で統一 */
+  color: #fff;
+}
+
+.contact-section {
+  text-align: center;
+  padding: 60px 20px; /* フッターとの距離を自然に */
+}
+
+.contact-btn {
+  display: inline-block;
+  padding: 14px 40px;
+  background: #fff;
+  color: #000;
+  text-decoration: none;
+  font-weight: 700;
+  border-radius: 30px;
+  transition: all 0.3s ease;
+  margin-bottom: 40px;
+}
+
+.contact-btn:hover {
+  background: #9131ff;
+  color: #fff;
+  box-shadow: 0 0 20px rgba(78, 20, 83, 0.7);
+}
+
+.social-links {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  margin-bottom: 40px;
+}
+
+.social-links img {
+  width: 40px;
+  height: 40px;
+  transition: transform 0.3s ease;
+}
+
+.social-links img:hover {
+  transform: scale(1.2);
+}
+
+footer {
+  text-align: center;
+  padding: 20px 0;
+  font-size: 0.9rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+/* ===== お問い合わせ・SNS + フッター 背景統一版 ===== */
+.contact-section,
+footer {
+  background-color: #202020; /* 透明度なしで完全統一 */
+  color: #fff;
+}
+
+/* お問い合わせセクション */
+.contact-section {
+  text-align: center;
+  padding: 40px 20px; /* フッターとつながる高さに調整 */
+  margin: 0; /* 上下余白を消す */
+}
+
+.contact-btn {
+  display: inline-block;
+  padding: 14px 40px;
+  background: #fff;
+  color: #000;
+  text-decoration: none;
+  font-weight: 700;
+  border-radius: 30px;
+  transition: all 0.3s ease;
+  margin-bottom: 30px;
+}
+
+.contact-btn:hover {
+  background: #202020;
+  color: #fff;
+  box-shadow: 0 0 20px rgba(78, 20, 83, 0.7);
+}
+
+/* SNSリンク */
+.social-links {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  margin-bottom: 0; /* 下の余白を消す */
+}
+
+.social-links img {
+  width: 40px;
+  height: 40px;
+  transition: transform 0.3s ease;
+}
+
+.social-links img:hover {
+  transform: scale(1.2);
+}
+
+/* フッター */
+footer {
+  text-align: center;
+  padding: 20px 0;
+  margin: 0; /* 上の余白を消す */
+  font-size: 0.9rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+/* ヒーローは動画のままなので何も変更不要 */
+
+/* ゲーム紹介セクション背景 */
+.game-overview {
+  background-image: url("image/game_overview_bg.jpg"); /* ゲーム紹介用背景画像 */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+  padding: 120px 40%;
+  color: white;
+}
+
+.game-overview::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.3); /* 文字を見やすくするオーバーレイ */
+  z-index: 0;
+}
+
+.game-overview .content {
+  position: relative;
+  z-index: 1;
+}
+
+/* キャラクター紹介セクション背景 */
+.character-intro {
+  background-image: url("/image/character_intro_bgA.jpeg"); /* キャラクター紹介用背景画像 */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+  padding: 120px 30%;
+  color: white;
+}
+
+.character-intro::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.3);
+  z-index: 0;
+}
+
+.character-intro .content {
+  position: relative;
+  z-index: 1;
+}
+
+/* ニュースセクション背景 */
+.news-section {
+  background-image: url("/image/news11.jpeg"); /* ニュース用背景画像 */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+  padding: 120px 30%;
+  color: white;
+}
+
+.news-section::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.3);
+  z-index: 0;
+}
+
+.news-section .content {
+  position: relative;
+  z-index: 1;
+}
+/* ヘッダーの高さは固定 */
+.main-header {
+  height: 80px; /* ヘッダーの高さ固定 */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(5px);
+}
+
+/* ロゴ画像のサイズだけ大きくする */
+.logo img {
+  height: 140px;      /* ロゴだけ大きく見せたいサイズ */
+  width: auto;
+  transform: translateY(5px); /* 少し下にずらしてバランス調整 */
+}
+
+/* ロゴがはみ出してもヘッダーの高さを変えない */
+.logo {
+  overflow: visible; /* 重要！はみ出しを許可 */
+}
+.logo {
+  margin-left: -20px; /* ← 好きなだけマイナスにして左へ寄せる */
+  overflow: visible;
+}
+.title-logo {
+  width: 400px; /* 好きなサイズに変更可 */
+  height: auto;
+  display: block;
+  margin: 0 auto; /* 中央寄せ */
+}
+.title-logo {
+  width: 400px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  animation: fadeIn 2s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.hero-content p,
+.hero-content .btn {
+  position: relative;
+  top: -160px; /* 数値を変えると上下位置を微調整できます（例：-20px〜-60px） */
+}
+/* スライド初期状態 */
+.game-overview, .character-intro, .news-section {
+  opacity: 0;
+  transform: translateX(0);
+  transition: all 1s ease-out;
+}
+
+/* ゲーム紹介・ニュースは左から */
+.game-overview:not(.slide-in), .news-section:not(.slide-in) {
+  transform: translateX(-100px);
+}
+
+/* キャラクター紹介は右から */
+.character-intro:not(.slide-in) {
+  transform: translateX(100px);
+}
+
+/* 表示時 */
+.slide-in {
+  opacity: 1;
+  transform: translateX(0);
+}
+/* テキストエリア */
+.character-intro .text {
+  max-width: 500px;
+  color: #fff;
+  font-size: 1.1rem;
+}
+
+/* カーソル変更 */
+body {
+  cursor: url("image/cursor.png"), auto;
+}
+/* カーソル　ボタンホバー */
+a:hover,
+button:hover{
+  cursor: url("image/cursor.png"), pointer;
+}
+.character-intro .text {
+  position: relative;
+  z-index: 1;
+  max-width: 600px;
+  margin-left: -60%; /* ← 左にずらす（数値を増やすともっと左へ） */
+}
+.news-section .text {
+  position: relative;
+  margin-left: 50%; /* ← 好きな位置までずらす（10〜20%くらいが自然） */
+  z-index: 1;
+}
+.game-overview .text {
+  position: relative;
+  margin-left: 100%; /* ← 好きな位置までずらす（10〜20%くらいが自然） */
+  z-index: 1;
+}
+
+
+
+
+
+
+
+
