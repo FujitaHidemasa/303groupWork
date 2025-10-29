@@ -1,106 +1,56 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ja">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FPS GEAR STORE - トップページ</title>
-<style>
-body {
-	text-align: center;
-}
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" th:href="@{/css/ec/main.css}">
+	<link rel="stylesheet" th:href="@{/css/ec/header.css}">
+	<title>FPS GEAR STORE - トップページ</title>
+	<style>
+		.news-list {
+			text-align: left;
+			list-style: none;
+			padding: 0;
+			max-width: 600px;
+			margin: 0 auto;
+		}
 
-header {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	padding: 10px 20px;
-	border-bottom: 1px solid #ccc;
-}
+		.product-list {
+			display: flex;
+			justify-content: center;
+			flex-wrap: wrap;
+			gap: 20px;
+		}
 
-nav {
-	display: flex;
-	gap: 15px;
-}
+		.product-item {
+			width: 23%;
+			box-sizing: border-box;
+			text-align: center;
+		}
 
-.header-right {
-	display: flex;
-	gap: 15px;
-	align-items: center;
-}
+		.product-item img {
+			width: 100%;
+			height: auto;
+			display: block;
+			margin: 0 auto;
+		}
 
-.search-box {
-	display: flex;
-	align-items: center;
-	gap: 5px;
-}
-
-.search-box input[type="text"] {
-	padding: 5px 8px;
-	border: 1px solid #ccc;
-	border-radius: 4px;
-}
-
-.search-box button {
-	padding: 5px 10px;
-	border: 1px solid #ccc;
-	background-color: #eee;
-	cursor: pointer;
-}
-
-.search-box button:hover {
-	background-color: #ddd;
-}
-
-main {
-	max-width: 1000px;
-	margin: 30px auto;
-}
-
-.news-list {
-	text-align: left;
-	list-style: none;
-	padding: 0;
-	max-width: 600px;
-	margin: 0 auto;
-}
-
-.product-list {
-	display: flex;
-	justify-content: center;
-	flex-wrap: wrap;
-	gap: 20px;
-}
-
-.product-item {
-	width: 23%;
-	box-sizing: border-box;
-	text-align: center;
-}
-
-.product-item img {
-	width: 100%;
-	height: auto;
-	display: block;
-	margin: 0 auto;
-}
-
-.product-item a {
-	text-decoration: none;
-	color: inherit;
-}
-</style>
+		.product-item a {
+			text-decoration: none;
+			color: inherit;
+		}
+	</style>
 </head>
+
 <body>
 
 	<div th:replace="fragments/header :: header"></div>
 
-
 	<main>
 		<section>
 			<h2>メインビジュアル</h2>
-			<img
-				src="https://dummyimage.com/1600x600/cccccc/000000&text=Main+Visual"
-				alt="メインビジュアル"
+			<img src="https://dummyimage.com/1600x600/cccccc/000000&text=Main+Visual" alt="メインビジュアル"
 				style="width: 100%; height: auto; max-width: none; border-radius: 0;">
 		</section>
 
@@ -124,4 +74,5 @@ main {
 		<p>© 2025 FPS GEAR STORE</p>
 	</footer>
 </body>
+
 </html>
