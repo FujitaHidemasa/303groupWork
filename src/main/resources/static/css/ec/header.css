@@ -1,0 +1,141 @@
+@charset "UTF-8";
+
+/* ===========================================
+   固定ヘッダー（白帯＋黒帯）
+   ヘッダー専用デザイン
+   =========================================== */
+
+/* 固定ヘッダー全体 */
+.fixed-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background: var(--color-bg-dark);
+  box-shadow: 0 2px 10px var(--color-shadow);
+}
+
+/* 上段：白帯 */
+.top-bar {
+  background: var(--color-bg-light);
+  color: var(--color-text-main);
+  font-size: 13px;
+  padding: 7px 60px;
+  border-bottom: 1px solid var(--color-border-light);
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 18px;
+}
+
+.top-bar a {
+  color: var(--color-text-main);
+  text-decoration: none;
+  transition: opacity .3s;
+}
+
+.top-bar a:hover {
+  opacity: .6;
+}
+
+.top-bar .separator {
+  color: var(--color-text-sub);
+}
+
+/* 下段：黒帯 */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 70px;
+  background: var(--color-bg-dark);
+  color: var(--color-text-invert);
+  border-bottom: 1px solid var(--color-border-dark);
+}
+
+/* ロゴ */
+h1 {
+  margin: 0;
+}
+
+h1 img {
+  height: 54px;
+  display: block;
+}
+
+/* ナビゲーション */
+nav {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+nav a {
+  color: var(--color-text-invert);
+  text-decoration: none;
+  font-weight: 500;
+  letter-spacing: .5px;
+  transition: opacity .3s;
+}
+
+nav a:hover {
+  opacity: .7;
+}
+
+/* 検索・カートエリア */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+/* 検索フォーム */
+.search-box {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--color-border-dark);
+  border-radius: 4px;
+  background: #111;
+  padding: 4px 10px;
+}
+
+.search-box input {
+  padding: 6px 10px;
+  border: none;
+  background: transparent;
+  color: var(--color-text-invert);
+  outline: none;
+  width: 160px;
+}
+
+.search-box input::placeholder {
+  color: #888;
+  font-size: 14px;
+}
+
+.search-box button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: var(--color-bg-light);
+  font-weight: bold;
+}
+
+/* カートリンク */
+.cart-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  color: var(--color-text-invert);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.cart-link img {
+  width: 25px;
+  height: auto;
+  object-fit: contain;
+  margin-bottom: 4px;
+}
