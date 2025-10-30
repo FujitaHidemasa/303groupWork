@@ -1,0 +1,86 @@
+@charset "UTF-8";
+
+/* ===========================================
+   サイト全体の基本スタイル
+   ここでは全ページ共通の見た目・構造を定義します。
+   =========================================== */
+
+/* 共通カラー変数（全CSSで参照可能） */
+:root {
+	--color-bg-light: #ffffff;
+	--color-bg-dark: #0e0e0e;
+	--color-text-main: #222;
+	--color-text-sub: #666;
+	--color-text-invert: #fff;
+	--color-border-light: #e0e0e0;
+	--color-border-dark: #2a2a2a;
+	--color-shadow: rgba(0, 0, 0, .4);
+	--color-accent: #6fb8e3;
+}
+
+/* ============================================
+   全ページ共通のレイアウト安定設定
+   - スクロールバーの有無によるレイアウトずれを防止
+   - 各ブラウザでの表示幅を統一するための基本設定
+   ============================================ */
+html {
+	overflow-y: scroll;
+	/* 常に縦スクロールを確保（幅の変動を防ぐ） */
+	scrollbar-gutter: stable;
+	/* スクロールバー表示時の幅ズレ防止（対応ブラウザ用） */
+}
+
+/* -------------------------------
+   ページ全体のベース設定
+-------------------------------- */
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	padding-top: 120px;
+	/* 固定ヘッダー分の余白 */
+	font-family: "Noto Sans JP", "Segoe UI", "Helvetica Neue", sans-serif;
+	color: var(--color-text-main);
+	background-color: var(--color-bg-light);
+	text-align: center;
+	overflow-x: hidden;
+}
+
+/* -------------------------------
+   コンテンツ（mainタグ）
+-------------------------------- */
+main {
+	max-width: 1000px;
+	margin: 40px auto;
+	text-align: left;
+}
+
+/* -------------------------------
+   共通の見出し・リンク・フッターなど
+-------------------------------- */
+h2 {
+	font-size: 1.5rem;
+	margin-bottom: 1rem;
+	text-align: center;
+}
+
+a {
+	color: var(--color-accent);
+	text-decoration: none;
+}
+
+a:hover {
+	opacity: 0.8;
+}
+
+footer {
+	text-align: center;
+	margin-top: 60px;
+	padding: 20px 0;
+	border-top: 1px solid var(--color-border-light);
+	font-size: 0.9rem;
+	color: var(--color-text-sub);
+}
