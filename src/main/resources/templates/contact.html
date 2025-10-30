@@ -148,10 +148,7 @@
 			<p th:if="${successMessage}" th:text="${successMessage}" class="success-message"></p>
 		</section>
 	</main>
-
-	<footer>
-		<p>© 2025 FPS GEAR STORE</p>
-	</footer>
+	<div th:replace="fragments/footer :: footer"></div>
 </body>
 
 </html>

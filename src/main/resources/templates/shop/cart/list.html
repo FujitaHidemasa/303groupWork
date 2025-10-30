@@ -6,9 +6,9 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" th:href="@{/css/ec/main.css}">
 	<link rel="stylesheet" th:href="@{/css/ec/header.css}">
+	<link rel="stylesheet" th:href="@{/css/ec/footer.css}">
 	<title>カート - FPS GEAR STORE</title>
 	<style>
-
 		table {
 			border-collapse: collapse;
 			width: 100%;
@@ -100,9 +100,9 @@
 </head>
 
 <body>
-	
+
 	<div th:replace="fragments/header :: header"></div>
-	
+
 	<main>
 		<section>
 			<h2>ショッピングカート</h2>
@@ -119,10 +119,8 @@
 				<tbody>
 					<tr th:each="cv : ${normalItems}">
 
-						<td><a href="productA.html"><img
-					th:src="@{/image/{img}(img=${item.thumbsImageName})}"
-					onerror="this.onerror=null;this.src='/image/no_image.png';"
-					alt="商品画像"></a>
+						<td><a href="productA.html"><img th:src="@{/image/{img}(img=${item.thumbsImageName})}"
+									onerror="this.onerror=null;this.src='/image/no_image.png';" alt="商品画像"></a>
 						</td>
 						<td th:text="${cv.item.name}">商品名</td>
 						<td th:text="${cv.item.price}">価格</td>
@@ -148,14 +146,7 @@
 			</div>
 		</section>
 	</main>
-
-	<footer>
-		<p>© 2025 FPS GEAR STORE</p>
-	</footer>
-	
-
-
-	
+	<div th:replace="fragments/footer :: footer"></div>
 </body>
 
 </html>

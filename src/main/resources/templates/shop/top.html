@@ -1,78 +1,76 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="ja">
+<html xmlns:th="http://www.thymeleaf.org" lang="ja"
+      th:replace="layout/shop_base :: base_layout(~{::content}, 'トップページ')">
 
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" th:href="@{/css/ec/main.css}">
-	<link rel="stylesheet" th:href="@{/css/ec/header.css}">
-	<title>FPS GEAR STORE - トップページ</title>
-	<style>
-		.news-list {
-			text-align: left;
-			list-style: none;
-			padding: 0;
-			max-width: 600px;
-			margin: 0 auto;
-		}
+<th:block th:fragment="content">
 
-		.product-list {
-			display: flex;
-			justify-content: center;
-			flex-wrap: wrap;
-			gap: 20px;
-		}
+  <main>
+    <!-- メインビジュアル -->
+    <section>
+      <h2>メインビジュアル</h2>
+      <img src="https://dummyimage.com/1600x600/cccccc/000000&text=Main+Visual"
+           alt="メインビジュアル"
+           style="width: 100%; height: auto; max-width: none; border-radius: 0;">
+    </section>
 
-		.product-item {
-			width: 23%;
-			box-sizing: border-box;
-			text-align: center;
-		}
+    <!-- 新着情報 -->
+    <section>
+      <h2>新着情報</h2>
+      <ul class="news-list">
+        <li>2025.10.20 秋の新作グッズ発売</li>
+        <li>2025.09.15 イベント限定アイテム登場</li>
+        <li>2025.08.01 夏セール開催中</li>
+      </ul>
+    </section>
 
-		.product-item img {
-			width: 100%;
-			height: auto;
-			display: block;
-			margin: 0 auto;
-		}
+    <!-- 人気商品 -->
+    <section>
+      <h2>人気商品</h2>
+      <div th:replace="fragments/itemList :: itemList(${items})"></div>
+    </section>
+  </main>
 
-		.product-item a {
-			text-decoration: none;
-			color: inherit;
-		}
-	</style>
-</head>
+  <!--
+    　このページ専用スタイル
+       他のページには影響しません。
+       共通CSSを上書きしたい場合はここに追記してください。
+  -->
+  <style>
+    .news-list {
+      text-align: left;
+      list-style: none;
+      padding: 0;
+      max-width: 600px;
+      margin: 0 auto;
+    }
 
-<body>
+    .product-list {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
 
-	<div th:replace="fragments/header :: header"></div>
+    .product-item {
+      width: 23%;
+      box-sizing: border-box;
+      text-align: center;
+    }
 
-	<main>
-		<section>
-			<h2>メインビジュアル</h2>
-			<img src="https://dummyimage.com/1600x600/cccccc/000000&text=Main+Visual" alt="メインビジュアル"
-				style="width: 100%; height: auto; max-width: none; border-radius: 0;">
-		</section>
+    .product-item img {
+      width: 100%;
+	  height: 200px;
+	  object-fit: cover;
+	  display: block;
+	  margin: 0 auto;
+	  border-radius: 8px;
+    }
 
-		<section>
-			<h2>新着情報</h2>
-			<ul class="news-list">
-				<li>2025.10.20 秋の新作グッズ発売</li>
-				<li>2025.09.15 イベント限定アイテム登場</li>
-				<li>2025.08.01 夏セール開催中</li>
-			</ul>
-		</section>
+    .product-item a {
+      text-decoration: none;
+      color: inherit;
+    }
+  </style>
 
-		<section>
-			<h2>人気商品</h2>
-			<div th:replace="fragments/itemList :: itemList(${items})"></div>
-		</section>
-
-	</main>
-
-	<footer>
-		<p>© 2025 FPS GEAR STORE</p>
-	</footer>
-</body>
-
+</th:block>
 </html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja"
+      th:fragment="base_layout(content, pageTitle)">
+<head>
+  <meta charset="UTF-8">
+  <title th:text="${pageTitle} ?: 'Voidr Official Store'"></title>
+
+  <!-- 共通CSSの読み込み -->
+  <link rel="stylesheet" th:href="@{/css/ec/main.css}">
+  <link rel="stylesheet" th:href="@{/css/ec/header.css}">
+  <link rel="stylesheet" th:href="@{/css/ec/footer.css}">
+</head>
+
+<body>
+  <!-- 共通ヘッダー -->
+  <div th:replace="fragments/header :: header"></div>
+
+  <!-- 各ページの内容がここに差し込まれます -->
+  <main th:replace="${content}"></main>
+
+  <!-- 共通フッター -->
+  <div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>

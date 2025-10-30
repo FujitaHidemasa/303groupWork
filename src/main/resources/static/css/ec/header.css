@@ -45,6 +45,7 @@
 
 /* 下段：黒帯 */
 header {
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -52,6 +53,18 @@ header {
   background: var(--color-bg-dark);
   color: var(--color-text-invert);
   border-bottom: 1px solid var(--color-border-dark);
+}
+
+/* 中央固定ブロック */
+.header-center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  white-space: nowrap;
+  z-index: 2;
 }
 
 /* ロゴ */
@@ -62,6 +75,7 @@ h1 {
 h1 img {
   height: 54px;
   display: block;
+  -webkit-user-drag: none;
 }
 
 /* ナビゲーション */
@@ -96,7 +110,7 @@ nav a:hover {
   align-items: center;
   border: 1px solid var(--color-border-dark);
   border-radius: 4px;
-  background: #111;
+  background: var(--color-bg-dark);
   padding: 4px 10px;
 }
 
@@ -110,7 +124,7 @@ nav a:hover {
 }
 
 .search-box input::placeholder {
-  color: #888;
+  color: var(--color-text-sub);
   font-size: 14px;
 }
 
