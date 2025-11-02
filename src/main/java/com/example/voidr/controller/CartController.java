@@ -1,7 +1,11 @@
 package com.example.voidr.controller;
 
 import java.util.List;
+import java.util.Map;
 
+import org.springframework.http.MediaType;
+//★追加（import）
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -96,5 +100,28 @@ public class CartController
 	{
 		cartService.clearMyCartSecured(loginUser.getId(), cartListId); // ★変更
 		return "redirect:/voidrshop/cart";
+	}
+	
+	// 追加★
+	@PostMapping(value = "/add-api", produces = MediaType.APPLICATION_JSON_VALUE) // ★追加
+	public ResponseEntity<Map<String, Object>> addToCartApi
+	(
+			@RequestParam long itemId,
+			@RequestParam(defaultValue = "1") int quantity,
+			@AuthenticationPrincipal LoginUser loginUser) {
+		long cartListId = cartService.ensureCartListId(loginUser.getId(), true);
+
+		Cart cart = new Cart();
+		cart.setCartListId(cartListId);
+		cart.setItemId(itemId);
+		cart.setQuantity(quantity);
+		cart.setHold(false);
+
+		cartService.saveOrUpdateCart(cart);
+
+		// 必要なら合計点数など返却してもOK
+		return ResponseEntity.ok(Map.of(
+				"ok", true,
+				"message", "商品をカートに追加しました"));
 	}
 }
