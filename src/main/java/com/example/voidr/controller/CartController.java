@@ -1,26 +1,25 @@
 package com.example.voidr.controller;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.http.MediaType;
-//★追加（import）
+import jakarta.servlet.http.HttpServletRequest;
+
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-// ★PostMapping等まとめて
-// import org.springframework.web.servlet.mvc.support.RedirectAttributes; // ★必要なら復活
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.example.voidr.entity.Cart; // ★追加：add用 Cart の生成に使用
-import com.example.voidr.entity.LoginUser;
+import com.example.voidr.entity.Account;
+import com.example.voidr.service.AccountService;
 import com.example.voidr.service.CartService;
-import com.example.voidr.service.ItemService;
 import com.example.voidr.view.CartView;
 
 import lombok.RequiredArgsConstructor;
@@ -28,100 +27,70 @@ import lombok.RequiredArgsConstructor;
 @Controller
 @RequestMapping("/voidrshop/cart")
 @RequiredArgsConstructor
-public class CartController 
-{
-	private final ItemService itemService;
+@Validated
+@PreAuthorize("isAuthenticated()")
+public class CartController {
+
 	private final CartService cartService;
+	private final AccountService accountService;
 
-	/** カート一覧ページ */
+	/** ログイン中ユーザーのID取得 */
+	private long currentUserId(Principal principal) {
+		Account acc = accountService.findByUsername(principal.getName());
+		return acc.getId();
+	}
+
+	/** カート一覧 */
 	@GetMapping
-	public String cartList(Model model, @AuthenticationPrincipal LoginUser loginUser) 
-	{
-		itemService.syncItems();
-
-		// カートと商品情報をまとめて取得
-		List<CartView> cartViews = cartService.getCartViewByUserId(loginUser.getId());
-
-		// is_hold = true / false で分割
-		var holdItems = cartViews.stream().filter(v -> v.getCart().isHold()).toList();
-		var normalItems = cartViews.stream().filter(v -> !v.getCart().isHold()).toList();
-
-		model.addAttribute("holdItems", holdItems);
-		model.addAttribute("normalItems", normalItems);
-
-		// ★追加：テンプレで「カートを空にする」用に cartListId を渡す
-		long cartListId = !cartViews.isEmpty()
-				? cartViews.get(0).getCart().getCartListId()
-				: cartService.ensureCartListId(loginUser.getId(), true); // ★追加
-		model.addAttribute("cartListId", cartListId); // ★追加
-
+	public String list(Model model, Principal principal) {
+		long userId = currentUserId(principal);
+		List<CartView> items = cartService.list(userId);
+		int total = cartService.sumTotal(userId);
+		model.addAttribute("cartItems", items);
+		model.addAttribute("total", total);
 		return "shop/cart/list";
 	}
 
-	// ================================
-	// ★追加：カートに追加（一覧/詳細からPOST）
-	// ================================
+	/** 追加：AJAXならJSON、非AJAXは画面遷移 */
 	@PostMapping("/add")
-	public String addToCart(@RequestParam long itemId,
-			@RequestParam(defaultValue = "1") int quantity,
-			@AuthenticationPrincipal LoginUser loginUser) 
-	{
-		long cartListId = cartService.ensureCartListId(loginUser.getId(), true); // ★追加
+	public Object add(@RequestParam("itemId") long itemId,
+			@RequestParam(name = "quantity", defaultValue = "1") int quantity,
+			Principal principal,
+			HttpServletRequest request) {
+		long userId = currentUserId(principal);
+		cartService.addItem(userId, itemId, Math.max(1, quantity));
 
-		Cart cart = new Cart(); // ★追加
-		cart.setCartListId(cartListId);
-		cart.setItemId(itemId);
-		cart.setQuantity(quantity);
-		cart.setHold(false);
-
-		cartService.saveOrUpdateCart(cart); // ★追加
-
+		// XHR判定：JSからは fetch で X-Requested-With を付与
+		if ("XMLHttpRequest".equalsIgnoreCase(request.getHeader("X-Requested-With"))) {
+			return ResponseEntity.ok(Map.of("status", "ok", "message", "商品をカートに追加しました"));
+		}
+		// フォールバック（JS無効時）
 		return "redirect:/voidrshop/cart";
 	}
 
-	// ================================
-	// ★変更：削除アクション（本人所有チェック版を呼ぶ）
-	// ================================
-
-	/** ★この商品のみ削除（本人チェック版） */
-	@PostMapping("/item/{cartId}/delete")
-	public String deleteItem(@PathVariable long cartId,
-			@RequestParam long cartListId,
-			@AuthenticationPrincipal LoginUser loginUser) // ★変更
-	{
-		cartService.deleteItemSecured(loginUser.getId(), cartId, cartListId); // ★変更
+	/** 数量変更 */
+	@PostMapping("/change")
+	public String change(@RequestParam("cartId") long cartId,
+			@RequestParam("quantity") int quantity,
+			Principal principal) {
+		long userId = currentUserId(principal);
+		cartService.changeQuantity(userId, cartId, Math.max(1, quantity));
 		return "redirect:/voidrshop/cart";
 	}
 
-	/** ★このカートを空にする（本人チェック版） */
-	@PostMapping("/clear")
-	public String clearCart(@RequestParam long cartListId,
-			@AuthenticationPrincipal LoginUser loginUser) // ★変更
-	{
-		cartService.clearMyCartSecured(loginUser.getId(), cartListId); // ★変更
+	/** 削除 */
+	@PostMapping("/remove")
+	public String remove(@RequestParam("cartId") long cartId, Principal principal) {
+		long userId = currentUserId(principal);
+		cartService.remove(userId, cartId);
 		return "redirect:/voidrshop/cart";
 	}
-	
-	// 追加★
-	@PostMapping(value = "/add-api", produces = MediaType.APPLICATION_JSON_VALUE) // ★追加
-	public ResponseEntity<Map<String, Object>> addToCartApi
-	(
-			@RequestParam long itemId,
-			@RequestParam(defaultValue = "1") int quantity,
-			@AuthenticationPrincipal LoginUser loginUser) {
-		long cartListId = cartService.ensureCartListId(loginUser.getId(), true);
 
-		Cart cart = new Cart();
-		cart.setCartListId(cartListId);
-		cart.setItemId(itemId);
-		cart.setQuantity(quantity);
-		cart.setHold(false);
-
-		cartService.saveOrUpdateCart(cart);
-
-		// 必要なら合計点数など返却してもOK
-		return ResponseEntity.ok(Map.of(
-				"ok", true,
-				"message", "商品をカートに追加しました"));
+	/** バッジ用：現在の合計数量を返す（JSON） */
+	@GetMapping("/count")
+	@ResponseBody
+	public Map<String, Integer> count(Principal principal) {
+		long userId = currentUserId(principal);
+		return Map.of("count", cartService.countInBadge(userId));
 	}
 }

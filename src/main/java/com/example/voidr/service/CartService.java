@@ -2,31 +2,22 @@ package com.example.voidr.service;
 
 import java.util.List;
 
-import com.example.voidr.entity.Cart;
 import com.example.voidr.view.CartView;
 
-public interface CartService 
-{
-	List<Cart> getOrCreateCartList(long userId, boolean isLogin);
+public interface CartService {
+	// ★追加：アイテム追加（数量指定、同一商品は加算）
+	void addItem(long userId, long itemId, int quantity);
 
-	void saveOrUpdateCart(Cart cart);
+	// ★追加：数量直接変更（カート行ID指定）
+	void changeQuantity(long userId, long cartId, int quantity);
 
-	void changeQuantity(Cart cart, Integer count);
+	// ★追加：行削除
+	void remove(long userId, long cartId);
 
-	void deleteGuestCarts();
+	// ★追加：一覧と合計・件数
+	List<CartView> list(long userId);
 
-	// UI用（本人チェックなし版。既存互換）
-	void deleteItem(long cartId, long cartListId);
+	int sumTotal(long userId);
 
-	void clearMyCart(long cartListId);
-
-	// ★追加：カートリストIDを確実に取得（無ければ作る）
-	long ensureCartListId(long userId, boolean isLogin); // ★追加
-
-	// ★追加：本人所有チェック込み（Controllerからはこちらを呼ぶ）
-	void deleteItemSecured(long userId, long cartId, long cartListId); // ★追加
-
-	void clearMyCartSecured(long userId, long cartListId); // ★追加
-
-	List<CartView> getCartViewByUserId(long userId);
+	int countInBadge(long userId);
 }

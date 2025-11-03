@@ -1,26 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- インターフェイス: com.example.voidr.repository.OrderMapper メソッド : List<Order> 
+	findByOrderListId(long orderListId) void insertOrder(Order order) スキーマ : 
+	"order"（予約語のためダブルクォート必須） -->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.voidr.repository.OrderMapper">
 
-    <!-- 購入履歴取得 -->
-    <select id="findByOrderListId" resultType="com.example.voidr.entity.Order">
-        SELECT 
-            id,
-            order_list_id AS orderListId,
-            item_id AS itemId,
-            state,
-            created_at AS createdAt
-        FROM orders
-        WHERE order_list_id = #{orderListId}
-        ORDER BY created_at DESC
-    </select>
+	<!-- 注文明細一覧（注文リストIDで複数行） -->
+	<select id="findByOrderListId" parameterType="long"
+		resultType="com.example.voidr.entity.Order">
+		SELECT
+		id,
+		orderlist_id,
+		item_id,
+		state,
+		created_at
+		FROM "order"
+		WHERE orderlist_id = #{orderListId}
+		ORDER BY id DESC
+	</select>
 
-    <!-- 新規注文を登録 -->
-    <insert id="insertOrder" parameterType="com.example.voidr.entity.Order">
-        INSERT INTO orders (order_list_id, item_id, state, created_at)
-        VALUES (#{orderListId}, #{itemId}, #{state}, #{createdAt})
-    </insert>
+	<!-- 注文明細1件追加 -->
+	<insert id="insertOrder"
+		parameterType="com.example.voidr.entity.Order" useGeneratedKeys="true"
+		keyProperty="id">
+		INSERT INTO "order" (
+		orderlist_id,
+		item_id,
+		state,
+		created_at
+		)
+		VALUES (
+		#{orderlistId},
+		#{itemId},
+		#{state},
+		CURRENT_TIMESTAMP
+		)
+	</insert>
 
 </mapper>

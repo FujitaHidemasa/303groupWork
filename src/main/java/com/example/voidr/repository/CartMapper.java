@@ -6,23 +6,28 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.example.voidr.entity.Cart;
+import com.example.voidr.view.CartView;
 
 @Mapper
-public interface CartMapper 
-{
-	List<Cart> findByCartListId(@Param("cartListId") long cartListId);
+public interface CartMapper {
 
-	void insert(Cart cart);
+	// ★追加：ヘッダのバッジなどに使う件数
+	int countItemsByUserId(@Param("userId") long userId);
 
-	void update(Cart cart);
+	// ★追加：カート合計金額
+	int sumTotalByUserId(@Param("userId") long userId);
 
-	// ★修正：count と cart.id を XML 側で使うため @Param を付与
-	void updateQuantityByCart(@Param("cart") Cart cart, @Param("count") Integer count); // ★修正
+	// ★追加：表示用JOIN結果
+	List<CartView> findViewsByUserId(@Param("userId") long userId);
 
-	// ===== 削除系 =====
-	int deleteById(@Param("id") long id); // ★追加：1件削除
+	// 既存：削除
+	void deleteById(@Param("id") long id);
 
-	int deleteByCartListId(@Param("cartListId") long cartListId); // ★追加：特定カートを空にする
+	void deleteByCartListId(@Param("cartListId") long cartListId);
 
-	int deleteAllGuestCarts(); // ★追加：全ゲスト一括削除（清掃用）
+	// ★追加：UPSERT（XML側で ON CONFLICT を定義）
+	void upsert(Cart cart);
+
+	// ★追加：数量を直接セットする更新（XMLは単引数版に合わせる）
+	void updateQuantityByCart(Cart cart);
 }

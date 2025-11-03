@@ -107,3 +107,7 @@ CREATE TABLE cart (
     is_hold BOOLEAN DEFAULT FALSE,
     updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
+
+-- ★追加：同一カート内の同一商品は1行に集約する一意制約
+ALTER TABLE cart
+  ADD CONSTRAINT uq_cart_cartlist_item UNIQUE (cartlist_id, item_id);

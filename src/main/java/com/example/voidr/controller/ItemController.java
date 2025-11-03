@@ -22,42 +22,38 @@ import lombok.RequiredArgsConstructor;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/voidrshop/items")
-public class ItemController
-{
+public class ItemController {
 	private final ItemService itemService;
 
-	/** 一覧ページ */
+	/** 一覧ページ（/voidrshop/items） */
 	@GetMapping
-	public String list(Model model)
-	{
-		// XML ↔ DB 同期
+	public String list(Model model) {
 		itemService.syncItems();
-
-		// DBから一覧取得
 		List<Item> items = itemService.getAllItems();
 		model.addAttribute("items", items);
+		model.addAttribute("keyword", "");
 		return "shop/item/list";
 	}
-	
+
+	/** 検索（/voidrshop/items/search?keyword=...） */
 	@GetMapping("/search")
-	public String search(@RequestParam("keyword") String keyword, Model model)
-	{
+	public String search(@RequestParam("keyword") String keyword, Model model) {
+		if (keyword == null || keyword.isBlank()) {
+			return "redirect:/voidrshop";
+		}
 		itemService.syncItems();
-		
-	    List<Item> items = itemService.searchItemsByKeyword(keyword);
-	    model.addAttribute("items", items);
-	    model.addAttribute("keyword", keyword);
-	    return "shop/item/list";
+		List<Item> items = itemService.searchItemsByKeyword(keyword);
+		model.addAttribute("items", items);
+		model.addAttribute("keyword", keyword);
+		return "shop/item/list";
 	}
 
-	/** 詳細ページ */
+	/** 詳細ページ（/voidrshop/items/{id}） */
 	@GetMapping("/{id}")
-	public String detail(@PathVariable("id") Long id, Model model)
-	{
+	public String detail(@PathVariable("id") Long id, Model model) {
 		Item item = itemService.getItemById(id);
-		if(item == null || item.getId() <= 0)
-		{
-			new ResponseStatusException(HttpStatus.NOT_FOUND, "Item not found");
+		if (item == null || item.getId() <= 0) { // ★ null比較を外す（getIdはlong）
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Item not found");
 		}
 		model.addAttribute("item", item);
 		return "shop/item/detail";
