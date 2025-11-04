@@ -21,42 +21,46 @@ import lombok.RequiredArgsConstructor;
  */
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/voidrshop")
+
+@RequestMapping("/voidrshop/items")
 public class ItemController {
-    
-    private final ItemService itemService;
+	private final ItemService itemService;
 
-    /** 商品一覧ページ */
- // ItemController の list() を修正
-    @GetMapping("/items") // "/" は削除
-    public String list(Model model) {
-        itemService.syncItems();
-        List<Item> items = itemService.getAllItems();
-        model.addAttribute("items", items);
-        return "shop/item/list";
-    }
+	/** 一覧ページ（/voidrshop/items） */
+	@GetMapping
+	public String list(Model model) 
+	{
+		itemService.syncItems();
+		List<Item> items = itemService.getAllItems();
+		model.addAttribute("items", items);
+		model.addAttribute("keyword", "");
+		return "shop/item/list";
+	}
 
+	/** 検索（/voidrshop/items/search?keyword=...） */
+	@GetMapping("/search")
+	public String search(@RequestParam("keyword") String keyword, Model model) 
+	{
+		if (keyword == null || keyword.isBlank()) {
+			return "redirect:/voidrshop";
+		}
+		itemService.syncItems();
+		List<Item> items = itemService.searchItemsByKeyword(keyword);
+		model.addAttribute("items", items);
+		model.addAttribute("keyword", keyword);
+		return "shop/item/list";
+	}
 
-    /** 商品検索 */
-    @GetMapping("/items/search")
-    public String search(@RequestParam("keyword") String keyword, Model model) {
-        itemService.syncItems();
-        
-        List<Item> items = itemService.searchItemsByKeyword(keyword);
-        model.addAttribute("items", items);
-        model.addAttribute("keyword", keyword);
+	/** 詳細ページ（/voidrshop/items/{id}） */
+	@GetMapping("/{id}")
+	public String detail(@PathVariable("id") Long id, Model model) 
+	{
+		Item item = itemService.getItemById(id);
+		if (item == null || item.getId() <= 0) { // ★ null比較を外す（getIdはlong）
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Item not found");
+		}
+		model.addAttribute("item", item);
+		return "shop/item/detail";
+	}
 
-        return "shop/item/list";
-    }
-
-    /** 商品詳細ページ */
-    @GetMapping("/items/{id}")
-    public String detail(@PathVariable("id") Long id, Model model) {
-        Item item = itemService.getItemById(id);
-        if (item == null || item.getId() <= 0) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Item not found");
-        }
-        model.addAttribute("item", item);
-        return "shop/item/detail";
-    }
 }

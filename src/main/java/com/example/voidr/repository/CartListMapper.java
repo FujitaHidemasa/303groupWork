@@ -6,13 +6,13 @@ import org.apache.ibatis.annotations.Param;
 import com.example.voidr.entity.CartList;
 
 @Mapper
-public interface CartListMapper {
+public interface CartListMapper 
+{
 
-    CartList findByUserId(@Param("userId") long userId);
+	CartList findByUserId(@Param("userId") long userId);
 
-    void insert(CartList cartList);
+	void insert(CartList cartList);
 
-    void updateUpdatedAt(@Param("id") long id);
-
-    void deleteAllGuestCartLists();
+	// ★追加：更新時刻だけ触る
+	void touchUpdatedAt(@Param("id") long id);
 }
