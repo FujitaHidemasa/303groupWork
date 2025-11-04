@@ -4,59 +4,11 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" th:href="@{/css/ec/main.css}">
+	<link rel="stylesheet" th:href="@{/css/ec/header.css}">
+	<link rel="stylesheet" th:href="@{/css/ec/footer.css}">
 	<title>カート - FPS GEAR STORE</title>
 	<style>
-		body {
-			text-align: center;
-		}
-
-		header {
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
-			padding: 10px 20px;
-			border-bottom: 1px solid #ccc;
-		}
-
-		nav {
-			display: flex;
-			gap: 15px;
-		}
-
-		.header-right {
-			display: flex;
-			gap: 15px;
-			align-items: center;
-		}
-
-		.search-box {
-			display: flex;
-			align-items: center;
-			gap: 5px;
-		}
-
-		.search-box input[type="text"] {
-			padding: 5px 8px;
-			border: 1px solid #ccc;
-			border-radius: 4px;
-		}
-
-		.search-box button {
-			padding: 5px 10px;
-			border: 1px solid #ccc;
-			background-color: #eee;
-			cursor: pointer;
-		}
-
-		.search-box button:hover {
-			background-color: #ddd;
-		}
-
-		main {
-			max-width: 1000px;
-			margin: 30px auto;
-		}
-
 		table {
 			border-collapse: collapse;
 			width: 100%;
@@ -148,6 +100,7 @@
 </head>
 
 <body>
+
 	<div th:replace="fragments/header :: header"></div>
 
 	<main>
@@ -166,8 +119,8 @@
 				<tbody>
 					<tr th:each="cv : ${normalItems}">
 
-						<td><a href="productA.html"><img
-									src="https://dummyimage.com/100x100/aaaaaa/000000&text=Product+A" alt="商品A"></a>
+						<td><a href="productA.html"><img th:src="@{/image/{img}(img=${item.thumbsImageName})}"
+									onerror="this.onerror=null;this.src='/image/no_image.png';" alt="商品画像"></a>
 						</td>
 						<td th:text="${cv.item.name}">商品名</td>
 						<td th:text="${cv.item.price}">価格</td>
@@ -194,12 +147,7 @@
 		</section>
 	</main>
 
-	<footer>
-		<p>© 2025 FPS GEAR STORE</p>
-	</footer>
-
-
-
+	<div th:replace="fragments/footer :: footer"></div>
 
 </body>
 

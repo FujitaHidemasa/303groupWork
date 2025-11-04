@@ -7,13 +7,13 @@
 		<name>DOIDR アクリルスタンド</name>
 		
 		<!-- サムネイル画像のファイル名 -->
-		<thumbs></thumbs>
+		<thumbs>acrylicstand.png</thumbs>
 		
 		<!-- ダウンロード専用商品かどうか (true: ダウンロード商品, false: 通常商品) -->
 		<isDownload>false</isDownload>
 		
 		<!-- 商品価格（円） -->
-		<price>3000</price>
+		<price>1800</price>
 		
 		<!-- 商品の説明や概要 -->
 		<overview>
@@ -34,10 +34,10 @@
 	</item>
 	<item id="2">
 		<name>オペレーション・ロゴ アクリルキーホルダー</name>
-		<thumbs></thumbs>
+		<thumbs>keyring.png</thumbs>
 		<isDownload>false</isDownload>
-		<price>3000</price>
-		<overview>"国旗＋役職アイコンで構成されたエンブレム風デザイン。小動物系キャラはちびキャラ化で可愛く展開。"</overview>
+		<price>660</price>
+		<overview>国旗＋役職アイコンで構成されたエンブレム風デザイン。小動物系キャラはちびキャラ化で可愛く展開。</overview>
 		<categories>
 			<category>アクリル</category>
 			<category>キーホルダー</category>
@@ -50,10 +50,10 @@
 
 	<item id="3">
 		<name>カイ・スパーク リチャーズの電撃キーチェーン</name>
-		<thumbs></thumbs>
+		<thumbs>keychain.png</thumbs>
 		<isDownload>false</isDownload>
-		<price>3000</price>
-		<overview>""カイの電撃能力をイメージした、稲妻型のメタル製キーチェーン。ヴォイド・エッセンスの紫色の光を放つデザイン。""
+		<price>660</price>
+		<overview>カイの電撃能力をイメージした、稲妻型のメタル製キーチェーン。ヴォイド・エッセンスの紫色の光を放つデザイン。
 		</overview>
 		<categories>
 			<category>アクリル</category>
@@ -66,10 +66,10 @@
 
 	<item id="4">
 		<name>ヴォイド・リフト 缶バッジ</name>
-		<thumbs></thumbs>
+		<thumbs>badge.png</thumbs>
 		<isDownload>false</isDownload>
-		<price>3000</price>
-		<overview>"背景に紫の亀裂や変異体の影を入れ、世界観を強調。ランダムトレーディング仕様で収集欲を刺激。"</overview>
+		<price>550</price>
+		<overview>背景に紫の亀裂や変異体の影を入れ、世界観を強調。ランダムトレーディング仕様で収集欲を刺激。</overview>
 		<categories>
 			<category>缶バッジ</category>
 		</categories>
@@ -80,10 +80,10 @@
 
 	<item id="5">
 		<name>コードネーム ラバーキーホルダー</name>
-		<thumbs></thumbs>
+		<thumbs>rubberkeychain.png</thumbs>
 		<isDownload>false</isDownload>
-		<price>3000</price>
-		<overview>"「AGENT-K（カイト）」のようなコードネーム＋役職アイコンを英字デザイン。柔らかいシリコン素材で実用的。"
+		<price>880</price>
+		<overview>「AGENT-K（カイト）」のようなコードネーム＋役職アイコンを英字デザイン。柔らかいシリコン素材で実用的。
 		</overview>
 		<categories>
 			<category>キーホルダー</category>
@@ -96,10 +96,10 @@
 
 	<item id="6">
 		<name>界守の斬鋼刀 モチーフ Tシャツ</name>
-		<thumbs></thumbs>
+		<thumbs>t-shirt.png</thumbs>
 		<isDownload>false</isDownload>
-		<price>3000</price>
-		<overview>"颯太の刀やラジャの炎紋をモノクロデザインで配置。和モダン×エスニック調で日常使い可能なスタイリッシュウェア。"
+		<price>4400</price>
+		<overview>颯太の刀やラジャの炎紋をモノクロデザインで配置。和モダン×エスニック調で日常使い可能なスタイリッシュウェア。
 		</overview>
 		<categories>
 			<category>アパレル</category>
@@ -112,10 +112,10 @@
 
 	<item id="7">
 		<name>変異体警戒エリア マグカップ</name>
-		<thumbs></thumbs>
+		<thumbs>Magucup.png</thumbs>
 		<isDownload>false</isDownload>
-		<price>3000</price>
-		<overview>"立入禁止や警告マークを大胆に配置。カップ底にナイトメアやヴァルナーの影を薄くプリントして演出。"</overview>
+		<price>2500</price>
+		<overview>立入禁止や警告マークを大胆に配置。カップ底にナイトメアやヴァルナーの影を薄くプリントして演出。</overview>
 		<categories>
 			<category>生活雑貨</category>
 			<category>マグカップ</category>
@@ -127,10 +127,10 @@
 
 	<item id="8">
 		<name>シグナル・デバイス型ポーチ</name>
-		<thumbs></thumbs>
+		<thumbs>pouch.png</thumbs>
 		<isDownload>false</isDownload>
-		<price>3000</price>
-		<overview>"通信機器やトラップ装置をモチーフにしたメカ風デザイン。モバイルバッテリーケースや小物入れとして便利。"
+		<price>3300</price>
+		<overview>通信機器やトラップ装置をモチーフにしたメカ風デザイン。モバイルバッテリーケースや小物入れとして便利。
 		</overview>
 		<categories>
 			<category>生活雑貨</category>
@@ -143,10 +143,10 @@
 
 	<item id="9">
 		<name>エージェントIDカード風パスケース</name>
-		<thumbs></thumbs>
+		<thumbs>passcase.png</thumbs>
 		<isDownload>false</isDownload>
-		<price>3000</price>
-		<overview>"隊員IDカードをリアル再現。顔・コードネーム入りでスマホ裏やICカードケースに最適。""</overview>
+		<price>2200</price>
+		<overview>隊員IDカードをリアル再現。顔・コードネーム入りでスマホ裏やICカードケースに最適。</overview>
 		<categories>
 			<category>生活雑貨</category>
 			<category>パスケース</category>
@@ -158,10 +158,10 @@
 
 	<item id="10">
 		<name>キャラクターアート B2タペストリー</name>
-		<thumbs></thumbs>
+		<thumbs>tapestry.png</thumbs>
 		<isDownload>false</isDownload>
-		<price>3000</price>
-		<overview>"アップロードされた美麗なキャラクタービジュアルをそのまま活かしたタペストリー。特にエコーやヴァルナーなどの神秘的・異形なアートは、部屋に飾ることで世界観への没入感を高めます。"
+		<price>2000</price>
+		<overview>アップロードされた美麗なキャラクタービジュアルをそのまま活かしたタペストリー。特にエコーやヴァルナーなどの神秘的・異形なアートは、部屋に飾ることで世界観への没入感を高めます。
 		</overview>
 		<categories>
 			<category>生活雑貨</category>
@@ -174,10 +174,10 @@
 
 	<item id="11">
 		<name>リリアの「制御」ペンダント</name>
-		<thumbs></thumbs>
+		<thumbs>pendant.png</thumbs>
 		<isDownload>false</isDownload>
-		<price>3000</price>
-		<overview>"ヴォイド・エッセンスを制御する力の象徴。シンプルかつ上品で日常使いできるデザイン。"</overview>
+		<price>3300</price>
+		<overview>ヴォイド・エッセンスを制御する力の象徴。シンプルかつ上品で日常使いできるデザイン。</overview>
 		<categories>
 			<category>アクセサリー</category>
 			<category>ペンダント</category>
@@ -189,10 +189,10 @@
 
 	<item id="12">
 		<name>ヴォイド・エッセンス ボトル</name>
-		<thumbs></thumbs>
+		<thumbs>essencebottle.png</thumbs>
 		<isDownload>false</isDownload>
 		<price>3000</price>
-		<overview>"紫〜青グラデーションの液体入り試験管／フラスコ型インテリア。幻想的なハーバリウム風。"</overview>
+		<overview>紫〜青グラデーションの液体入り試験管／フラスコ型インテリア。幻想的なハーバリウム風。</overview>
 		<categories>
 			<category>インテリア</category>
 			<category>ハーバリウム</category>
@@ -204,10 +204,10 @@
 
 	<item id="13">
 		<name>フドウの痕跡 ブランケット</name>
-		<thumbs></thumbs>
+		<thumbs>blanket.png</thumbs>
 		<isDownload>false</isDownload>
-		<price>3000</price>
-		<overview>"オオカミの毛並み風フェイクファー素材で極寒の荒野を再現。野営気分を味わえるアイテム。"</overview>
+		<price>12000</price>
+		<overview>オオカミの毛並み風フェイクファー素材で極寒の荒野を再現。野営気分を味わえるアイテム。</overview>
 		<categories>
 			<category>生活雑貨</category>
 			<category>ブランケット</category>
@@ -219,10 +219,10 @@
 
 	<item id="14">
 		<name>ドール・ゼロ・ワン 1/12スケールモデル</name>
-		<thumbs></thumbs>
+		<thumbs>zero-one doll.png</thumbs>
 		<isDownload>false</isDownload>
-		<price>3000</price>
-		<overview>"ブレードや武装を精密再現した可動フィギュア。メカデザイン重視のハイクオリティ仕様。"</overview>
+		<price>6000</price>
+		<overview>ブレードや武装を精密再現した可動フィギュア。メカデザイン重視のハイクオリティ仕様。</overview>
 		<categories>
 			<category>フィギュア</category>
 		</categories>
@@ -233,10 +233,10 @@
 
 	<item id="15">
 		<name>ピコのふわふわぬいぐるみ</name>
-		<thumbs></thumbs>
+		<thumbs>pikonui.png</thumbs>
 		<isDownload>false</isDownload>
-		<price>3000</price>
-		<overview>"ピコの小動物型精霊の可愛らしさを最大限に活かした、ふわふわの手触りのぬいぐるみ。特徴的な羽や、胸元の光るコアも再現します。"
+		<price>3300</price>
+		<overview>ピコの小動物型精霊の可愛らしさを最大限に活かした、ふわふわの手触りのぬいぐるみ。特徴的な羽や、胸元の光るコアも再現します。
 		</overview>
 		<categories>
 			<category>ぬいぐるみ</category>
@@ -248,10 +248,10 @@
 
 	<item id="16">
 		<name>エコーの自然精霊ぬいぐるみ</name>
-		<thumbs></thumbs>
+		<thumbs>ekonui.png</thumbs>
 		<isDownload>false</isDownload>
-		<price>3000</price>
-		<overview>"エコーの自然霊としての神秘的な姿を、可愛らしくデフォルメしたぬいぐるみ。葉っぱの髪や蔓の体が特徴です。"
+		<price>3300</price>
+		<overview>エコーの自然霊としての神秘的な姿を、可愛らしくデフォルメしたぬいぐるみ。葉っぱの髪や蔓の体が特徴です。
 		</overview>
 		<categories>
 			<category>ぬいぐるみ</category>
@@ -263,10 +263,10 @@
 
 	<item id="17">
 		<name>ヴォルフ（タンク）のふわふわぬいぐるみ</name>
-		<thumbs></thumbs>
+		<thumbs>volfnui.png</thumbs>
 		<isDownload>false</isDownload>
-		<price>3000</price>
-		<overview>"ヴォルフの重装甲をデフォルメしつつ、全体的に柔らかく、ふわふわとした手触りをイメージしたぬいぐるみ。パワードスーツのディテールも可愛らしく表現します。"
+		<price>3300</price>
+		<overview>ヴォルフの重装甲をデフォルメしつつ、全体的に柔らかく、ふわふわとした手触りをイメージしたぬいぐるみ。パワードスーツのディテールも可愛らしく表現します。
 		</overview>
 		<categories>
 			<category>ぬいぐるみ</category>
@@ -278,10 +278,10 @@
 
 	<item id="18">
 		<name>界守 颯太（近接アタッカー）のふわふわぬいぐるみ</name>
-		<thumbs></thumbs>
+		<thumbs>kaimorinui.png</thumbs>
 		<isDownload>false</isDownload>
-		<price>3000</price>
-		<overview>"颯太のキャラクターアートの躍動感を残しつつ、黒い道着と青い光を放つ刀を、ぬいぐるみらしい柔らかい素材で表現します。剣士の凛々しさと、可愛らしいデフォルメを両立させました。"
+		<price>3300</price>
+		<overview>颯太のキャラクターアートの躍動感を残しつつ、黒い道着と青い光を放つ刀を、ぬいぐるみらしい柔らかい素材で表現します。剣士の凛々しさと、可愛らしいデフォルメを両立させました。
 		</overview>
 		<categories>
 			<category>ぬいぐるみ</category>
@@ -293,10 +293,10 @@
 
 	<item id="19">
 		<name>アブドゥル・ハッサン（サポート/トラッパー）のふわふわぬいぐるみ</name>
-		<thumbs></thumbs>
+		<thumbs>abdulnui.png</thumbs>
 		<isDownload>false</isDownload>
-		<price>3000</price>
-		<overview>"アブドゥルの特徴的な服装や砂漠の民族衣装の要素を残しつつ、全体的に丸みを帯びたデフォルメと、非常に柔らかい毛並みのようなふわふわ感を強調したぬいぐるみです。手に持つ位相トラップも、可愛らしい光の玉として表現します。"
+		<price>3300</price>
+		<overview>アブドゥルの特徴的な服装や砂漠の民族衣装の要素を残しつつ、全体的に丸みを帯びたデフォルメと、非常に柔らかい毛並みのようなふわふわ感を強調したぬいぐるみです。手に持つ位相トラップも、可愛らしい光の玉として表現します。
 		</overview>
 		<categories>
 			<category>ぬいぐるみ</category>
@@ -308,10 +308,10 @@
 
 	<item id="20">
 		<name>リア・チャン（ヒーラー/バッファー）のふわふわぬいぐるみ</name>
-		<thumbs></thumbs>
+		<thumbs>rianui.png</thumbs>
 		<isDownload>false</isDownload>
-		<price>3000</price>
-		<overview>"リア・チャンの中国風の衣装や特徴的なヘアスタイルを残しつつ、全体的に丸みを帯びたデフォルメと、非常に柔らかい毛並みのようなふわふわ感を強調したぬいぐるみです。手のひらで光る癒しのエネルギーも、可愛らしいエフェクトとして表現します。"
+		<price>3300</price>
+		<overview>リア・チャンの中国風の衣装や特徴的なヘアスタイルを残しつつ、全体的に丸みを帯びたデフォルメと、非常に柔らかい毛並みのようなふわふわ感を強調したぬいぐるみです。手のひらで光る癒しのエネルギーも、可愛らしいエフェクトとして表現します。
 		</overview>
 		<categories>
 			<category>ぬいぐるみ</category>
@@ -323,10 +323,10 @@
 
 	<item id="21">
 		<name>セリーヌ・デュボア（遠距離スナイパー）のふわふわぬいぐるみ</name>
-		<thumbs></thumbs>
+		<thumbs>celinenui.png</thumbs>
 		<isDownload>false</isDownload>
-		<price>3000</price>
-		<overview>"セリーヌのクールなスナイパーとしての姿を、ぬいぐるみらしいふわふわの質感で表現します。特徴的な長い三つ編みや、精密なライフルも可愛らしくデフォルメして再現します。"
+		<price>3300</price>
+		<overview>セリーヌのクールなスナイパーとしての姿を、ぬいぐるみらしいふわふわの質感で表現します。特徴的な長い三つ編みや、精密なライフルも可愛らしくデフォルメして再現します。
 		</overview>
 		<categories>
 			<category>ぬいぐるみ</category>
@@ -338,10 +338,10 @@
 
 	<item id="22">
 		<name>ドール・ゼロ・ワン（機動アタッカー）のふわふわぬいぐるみ</name>
-		<thumbs></thumbs>
+		<thumbs>zero-onenui.png</thumbs>
 		<isDownload>false</isDownload>
-		<price>3000</price>
-		<overview>"ドール・ゼロ・ワンのメカニカルなボディと光るコア、そして鋭いブレードを、丸みを帯びたデフォルメと非常に柔らかい毛並みのようなふわふわ感を強調したぬいぐるみです。クールな印象を残しつつ、抱き心地の良いデザインに仕上げます。"
+		<price>3300</price>
+		<overview>ドール・ゼロ・ワンのメカニカルなボディと光るコア、そして鋭いブレードを、丸みを帯びたデフォルメと非常に柔らかい毛並みのようなふわふわ感を強調したぬいぐるみです。クールな印象を残しつつ、抱き心地の良いデザインに仕上げます。
 		</overview>
 		<categories>
 			<category>ぬいぐるみ</category>
@@ -353,11 +353,10 @@
 
 	<item id="23">
 		<name>ヴァルナー（シンビオート）のふわふわぬいぐるみ</name>
-		<thumbs></thumbs>
+		<thumbs>valnernui.png</thumbs>
 		<isDownload>false</isDownload>
-		<price>3000</price>
-		<overview>"シンビオート/寄生型生命体ヴァルナーの異形なシルエットと、不気味ながらもどこか愛らしいデフォルメを、ぬいぐるみらしいふわふわの素材で表現します。特徴的な一つ目や触手も、柔らかい質感で再現します。
-			"
+		<price>3300</price>
+		<overview>シンビオート/寄生型生命体ヴァルナーの異形なシルエットと、不気味ながらもどこか愛らしいデフォルメを、ぬいぐるみらしいふわふわの素材で表現します。特徴的な一つ目や触手も、柔らかい質感で再現します。
 		</overview>
 		<categories>
 			<category>ぬいぐるみ</category>
@@ -369,10 +368,10 @@
 
 	<item id="24">
 		<name>カイ・スパーク（電撃アタッカー）のふわふわぬいぐるみ</name>
-		<thumbs></thumbs>
+		<thumbs>kainui.png</thumbs>
 		<isDownload>false</isDownload>
-		<price>3000</price>
-		<overview>"電撃能力を持つアタッカー、カイ・スパークの全身を覆うスーツや、電撃エフェクトを、丸みを帯びたデフォルメと非常に柔らかい毛並みのようなふわふわ感を強調したぬいぐるみです。クールな印象を残しつつ、抱き心地の良いデザインに仕上げます。"
+		<price>3300</price>
+		<overview>電撃能力を持つアタッカー、カイ・スパークの全身を覆うスーツや、電撃エフェクトを、丸みを帯びたデフォルメと非常に柔らかい毛並みのようなふわふわ感を強調したぬいぐるみです。クールな印象を残しつつ、抱き心地の良いデザインに仕上げます。
 		</overview>
 		<categories>
 			<category>ぬいぐるみ</category>
@@ -384,10 +383,10 @@
 
 	<item id="25">
 		<name>ラジャ・サルカール（炎の能力者）のふわふわぬいぐるみ</name>
-		<thumbs></thumbs>
+		<thumbs>rajanui.png</thumbs>
 		<isDownload>false</isDownload>
-		<price>3000</price>
-		<overview>"炎の能力者ラジャ・サルカールの、特徴的なオレンジ色のローブと長い白いヒゲを、ぬいぐるみらしい柔らかい素材で表現します。手の炎のエフェクトも、布や刺繍で可愛らしく再現し、賢者と力強さを併せ持つデザインに仕上げます。"
+		<price>3300</price>
+		<overview>炎の能力者ラジャ・サルカールの、特徴的なオレンジ色のローブと長い白いヒゲを、ぬいぐるみらしい柔らかい素材で表現します。手の炎のエフェクトも、布や刺繍で可愛らしく再現し、賢者と力強さを併せ持つデザインに仕上げます。
 		</overview>
 		<categories>
 			<category>ぬいぐるみ</category>
@@ -399,10 +398,10 @@
 
 	<item id="26">
 		<name>フドウ（獣人）のふわふわぬいぐるみ</name>
-		<thumbs></thumbs>
+		<thumbs>fudounui.png</thumbs>
 		<isDownload>false</isDownload>
-		<price>3000</price>
-		<overview>"フドウの力強い獣人の姿を、丸みを帯びたデフォルメと非常に柔らかい毛並みのようなふわふわ感を強調したぬいぐるみです。クールな表情を残しつつ、抱き心地の良いデザインに仕上げます。"
+		<price>3300</price>
+		<overview>フドウの力強い獣人の姿を、丸みを帯びたデフォルメと非常に柔らかい毛並みのようなふわふわ感を強調したぬいぐるみです。クールな表情を残しつつ、抱き心地の良いデザインに仕上げます。
 		</overview>
 		<categories>
 			<category>ぬいぐるみ</category>
@@ -414,10 +413,10 @@
 
 	<item id="27">
 		<name>ガブリエル（ブローラー）のふわふわぬいぐるみ</name>
-		<thumbs></thumbs>
+		<thumbs>gaburierunui.png</thumbs>
 		<isDownload>false</isDownload>
-		<price>3000</price>
-		<overview>"肉体硬化能力を持つブローラー、ガブリエルの鍛え上げられた肉体と、ストリート感のある服装を、ぬいぐるみらしいふわふわの質感で表現します。炎をまとった拳のエフェクトも、布や刺繍で可愛らしく再現します。"
+		<price>3300</price>
+		<overview>肉体硬化能力を持つブローラー、ガブリエルの鍛え上げられた肉体と、ストリート感のある服装を、ぬいぐるみらしいふわふわの質感で表現します。炎をまとった拳のエフェクトも、布や刺繍で可愛らしく再現します。
 		</overview>
 		<categories>
 			<category>ぬいぐるみ</category>
@@ -429,10 +428,10 @@
 
 	<item id="28">
 		<name>ナイトメア（異形アタッカー）のふわふわぬいぐるみ</name>
-		<thumbs></thumbs>
+		<thumbs>nightmarenui.png</thumbs>
 		<isDownload>false</isDownload>
-		<price>3000</price>
-		<overview>"影や粘液状の異形生命体であるナイトメアの、不気味ながらもクールなシルエットを、丸みを帯びたデフォルメと非常に柔らかい毛並みのようなふわふわ感を強調したぬいぐるみです。鋭い爪や、闇をまとうような質感を可愛らしく表現し、抱き心地の良いデザインに仕上げます。"
+		<price>3300</price>
+		<overview>影や粘液状の異形生命体であるナイトメアの、不気味ながらもクールなシルエットを、丸みを帯びたデフォルメと非常に柔らかい毛並みのようなふわふわ感を強調したぬいぐるみです。闇をまとうような質感を可愛らしく表現し、抱き心地の良いデザインに仕上げます。
 		</overview>
 		<categories>
 			<category>ぬいぐるみ</category>
@@ -444,13 +443,13 @@
 
 	<item id="29">
 		<name>ナイトメアの幻影 マスキングテープ</name>
-		<thumbs></thumbs>
+		<thumbs>maskingtape.png</thumbs>
 		<isDownload>false</isDownload>
-		<price>3000</price>
-		<overview>"ナイトメアが潜む影や、不気味な模様をデザインしたマスキングテープ。手帳や小物のデコレーションに。蓄光タイプにすると、暗闇で怪しく光ります。"
+		<price>440</price>
+		<overview>ナイトメアが潜む影や、不気味な模様をデザインしたマスキングテープ。手帳や小物のデコレーションに。蓄光タイプにすると、暗闇で怪しく光ります。
 		</overview>
 		<categories>
-			<category>ぬいぐるみ</category>
+			<category>文具</category>
 		</categories>
 		<images>
 			<image></image>
@@ -459,21 +458,17 @@
 
 	<item id="30">
 		<name>ヴァルナーの捕食 ボールペン</name>
-		<thumbs></thumbs>
+		<thumbs>bollpointpen.png</thumbs>
 		<isDownload>false</isDownload>
-		<price>3000</price>
-		<overview>"ヴァルナーの触手が獲物を拘束するイメージで、触手型グリップや、シンビオートの不気味な模様をボディにデザインしたボールペン。"
+		<price>2000</price>
+		<overview>ヴァルナーの触手が獲物を拘束するイメージで、触手型グリップや、シンビオートの不気味な模様をボディにデザインしたボールペン。
 		</overview>
 		<categories>
-			<category>ぬいぐるみ</category>
+			<category>文具</category>
 		</categories>
 		<images>
 			<image></image>
 		</images>
 	</item>
-
-
-
-
 
 </itemList>
