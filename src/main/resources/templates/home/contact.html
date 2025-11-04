@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>お問い合わせ - FPS GEAR STORE</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #fff;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+
+    /* ヘッダーはそのまま */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      border-bottom: 1px solid #ccc;
+      background-color: #fff;
+    }
+
+    nav {
+      display: flex;
+      gap: 15px;
+    }
+
+    .header-right {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+
+    /* メインコンテンツ */
+    main {
+      max-width: 1000px;
+      margin: 30px auto;
+      padding: 0 20px;
+    }
+
+    /* よくある質問 */
+    .faq {
+      max-width: 600px;
+      margin: 0 auto 40px auto;
+      text-align: left;
+    }
+
+    .faq h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .faq-item {
+      margin-bottom: 15px;
+      padding: 10px;
+      border-left: 4px solid #007BFF;
+      background-color: #f4f4f4;
+      border-radius: 5px;
+    }
+
+    .faq-item strong {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    /* お問い合わせフォーム */
+    .contact-section {
+      max-width: 600px;
+      margin: 0 auto 50px auto;
+      text-align: left;
+    }
+
+    .contact-section h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background-color: #f9f9f9;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    label {
+      font-weight: bold;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    textarea {
+      padding: 10px;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    textarea {
+      min-height: 140px;
+      resize: vertical;
+    }
+
+    .submit-btn {
+      padding: 12px;
+      background-color: #007BFF;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    .submit-btn:hover {
+      background-color: #0056b3;
+    }
+
+    .success-message {
+      color: green;
+      font-weight: bold;
+      margin-top: 15px;
+      text-align: center;
+    }
+
+    /* レスポンシブ対応 */
+    @media screen and (max-width: 640px) {
+      .contact-form {
+        padding: 15px;
+      }
+
+      .faq-item {
+        padding: 8px;
+      }
+
+      input[type="text"],
+      input[type="email"],
+      textarea {
+        font-size: 0.95rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- ヘッダー -->
+  <div th:replace="fragments/header :: header"></div>
+
+  <main>
+    <!-- よくある質問 -->
+    <section class="faq">
+      <h2>よくある質問</h2>
+
+      <div class="faq-item">
+        <strong>Q. 配送にはどのくらい時間がかかりますか？</strong>
+        <p>A. 通常、ご注文から2〜3営業日以内に発送いたします。土日祝を挟む場合は翌営業日の発送となります。</p>
+      </div>
+
+      <div class="faq-item">
+        <strong>Q. 送料はいくらですか？</strong>
+        <p>A. 全国一律500円です。合計金額が5,000円以上の場合は送料無料になります。</p>
+      </div>
+
+      <div class="faq-item">
+        <strong>Q. 配送業者を選ぶことはできますか？</strong>
+        <p>A. 現在はヤマト運輸のみの対応となっております。</p>
+      </div>
+
+      <div class="faq-item">
+        <strong>Q. 海外への配送は可能ですか？</strong>
+        <p>A. 現在は日本国内のみの配送に対応しております。</p>
+      </div>
+    </section>
+
+    <!-- お問い合わせフォーム -->
+    <section class="contact-section">
+      <h2>お問い合わせフォーム</h2>
+
+      <form th:action="@{/contact/submit}" th:object="${contactForm}" method="post" class="contact-form">
+        <div class="form-group">
+          <label for="name">お名前</label>
+          <input type="text" id="name" th:field="*{name}" required>
+        </div>
+        <div class="form-group">
+          <label for="email">メールアドレス</label>
+          <input type="email" id="email" th:field="*{email}" required>
+        </div>
+        <div class="form-group">
+          <label for="subject">件名</label>
+          <input type="text" id="subject" th:field="*{subject}">
+        </div>
+        <div class="form-group">
+          <label for="message">お問い合わせ内容</label>
+          <textarea id="message" th:field="*{message}" required></textarea>
+        </div>
+        <button type="submit" class="submit-btn">送信する</button>
+      </form>
+
+      <p th:if="${successMessage}" th:text="${successMessage}" class="success-message"></p>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 FPS GEAR STORE</p>
+  </footer>
+</body>
+
+</html>

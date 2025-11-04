@@ -1,0 +1,143 @@
+@charset "UTF-8";
+
+/* ===========================
+   全体設定
+=========================== */
+body {
+  margin: 100;   /*ページ余白*/
+  padding: 100;  /*ページ内側の余白*/
+  background-color: #050505;  /*背景色 */
+  color:#ffff; /*文字の色*/
+  font-family: 'Orbitron', 'Segoe UI', メイリオ , sans-serif; /*フォント*/
+  line-height: 1.5; /*行間*/
+  overflow-x: hidden; /*横スクロール非表示*/
+}
+
+/* ===========================
+   ヘッダー
+=========================== */
+header {
+  background: linear-gradient(90deg, #0a0a0a 0%, #1a1a1a 100%); /*ヘッダーの背景*/
+  padding: 20px 40px; /*上下、左右の余白*/
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgb(255, 0, 255);
+  box-shadow: 0 0 20px rgb(255, 0, 255);
+}
+
+header img {
+  height: 50px;
+  filter: drop-shadow(0 0 6px#9400d3);
+}
+
+header nav a {
+  color:#9400d3;
+  text-decoration: none;
+  margin-left: 25px;
+  position: relative;
+  transition: color 0.3s;
+}
+
+header nav a::after {
+  content: "";
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background-color:#9400d3;
+  transition: width 0.3s;
+}
+
+header nav a:hover {
+  color:#9400d3;
+}
+
+header nav a:hover::after {
+  width: 100%;
+}
+
+/* ===========================
+   メインタイトル
+=========================== */
+article {
+  max-width: 700px;
+  margin: 0 auto;   /* 中央寄せ */
+  padding: 0 10px;
+}
+
+article h1 {
+  text-align: left;        /* 左寄せ */
+  margin-left: 0;          /* 親の余白とは別にマージンも削除 */
+  font-size:4em;
+  color: #9400d3; /*Weapon（武器紹介）の文字色*/
+  text-shadow: 0 0 10px rgba(148,0,211,0.7);
+}
+
+/* ===========================
+   武器ギャラリー
+=========================== */
+.weapon-gallery {
+  display: grid; /* グリッドにする */
+  grid-template-columns: repeat(3, 1fr); /* 横3列 */
+  gap: 30px; /* アイテム間の余白 */
+  justify-content: center; /* 各アイテムを中央揃え */
+  align-items: center;
+}
+
+.weapon-item {
+  background-color: #0f0f0f;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 0 15px rgb(255, 0, 255);
+  transition: transform 0.3s, box-shadow 0.3s;
+  width: 100%;
+  max-width: 300px; /* これを超えると折り返す*/
+}
+
+.weapon-item:hover {
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 0 25px rgb(255, 0, 255);
+}
+
+.weapon-item img {
+  width: 100%; /*画像の大きさ*/
+  height: 100px; /*画像の横幅*/
+  object-fit: cover; /*画像をボックスのサイズに合わせつつ、縦横比を保って切り抜く*/
+}
+
+.weapon-item h2 {
+  text-align: center;
+  margin: 10px 0 5px;
+  color:#ffff;
+  font-size: 3em;
+}
+
+.weapon-item h3 {
+  text-align: center;
+  margin: 0 0 10px;
+  color:#ffff;
+  font-size: 2em;
+}
+
+.weapon-item h4 {
+  padding: 0 15px 15px;
+  font-size: 1em;
+  color:#ffff;
+  text-align: center;
+}
+
+
+/* ===========================
+   フッター
+=========================== */
+footer {
+  background-color: #0a0a0a;
+  text-align: center;
+  padding: 25px 0;
+  border-top: 1px solid rgb(255, 0, 255);
+  color: #888;
+  font-size: 0.9em;
+  letter-spacing: 1px;
+}

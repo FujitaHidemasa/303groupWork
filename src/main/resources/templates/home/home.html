@@ -11,7 +11,7 @@
 <body>
   <!-- ヘッダー -->
   <header class="main-header">
-    <a href="index.html" class="logo">
+    <a th:href="@{/voidr}" class="logo">
       <img src="images/logo.png" alt="VOIDRロゴ">
     </a>
     <nav class="nav-left">
@@ -19,14 +19,14 @@
         <li class="dropdown">
           <a href="#">ゲーム紹介 v</a>
           <ul class="submenu">
-            <li><a href="#">ストーリー</a></li>
-            <li><a href="#">マップ</a></li>
-            <li><a href="#">武器</a></li>
+            <li><a th:href="@{/voidr/story}">ストーリー</a></li>
+            <li><a th:href="@{/voidr/map}">マップ</a></li>
+            <li><a th:href="@{/voidr/weapon}">武器</a></li>
           </ul>
         </li>
-        <li><a href="/character" class="character-button">キャラクター</a>
-        <li><a href="#">ニュース</a></li>
-        <li><a href="#">ストア</a></li>
+        <li><a th:href="@{/voidr/character}" class="character-button">キャラクター</a>
+        <li><a th:href="@{/voidr/news}">ニュース</a></li>
+        <li><a th:href="@{/voidrshop}">ストア</a></li>
       </ul>
     </nav>
     <div class="nav-right">
@@ -89,13 +89,13 @@
 <section class="contact-section">
   <div class="contact-content">
     <!-- お問い合わせボタン（変更なし） -->
-    <a href="#" class="contact-btn">お問い合わせ</a>
+    <a th:href="@{/voidr/contact}" class="contact-btn">お問い合わせ</a>
 
     <!-- SNSアイコン部分）-->
     <div class="social-links">
-      <a href="#"><img src="images/twitter.png" alt="Twitter"></a>
-      <a href="#"><img src="images/youtube.png" alt="YouTube"></a>
-      <a href="#"><img src="images/tiktok.png" alt="TikTok"></a>
+      <a href="https://x.com/elonmusk/highlights"><img src="images/twitter.png" alt="Twitter"></a>
+      <a href="https://www.youtube.com/"><img src="images/youtube.png" alt="YouTube"></a>
+      <a href="https://www.tiktok.com/ja-JP"><img src="images/tiktok.png" alt="TikTok"></a>
     </div>
   </div>
 </section>
