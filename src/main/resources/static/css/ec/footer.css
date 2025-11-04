@@ -1,0 +1,10 @@
+@charset "UTF-8";
+footer {
+	text-align: center;
+	margin-top: 60px;
+	padding: 20px 0;
+	/* 一時的な区切り線（デザイン調整後に削除） */
+	border-top: 1px solid var(--color-border-light);
+	font-size: 0.9rem;
+	color: var(--color-text-sub);
+}
