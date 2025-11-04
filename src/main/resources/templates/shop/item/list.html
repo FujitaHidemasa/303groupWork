@@ -1,28 +1,11 @@
 <!DOCTYPE html>
-<html lang="ja" xmlns:th="http://www.thymeleaf.org">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" th:href="@{/css/ec/main.css}">
-<link rel="stylesheet" th:href="@{/css/ec/header.css}">
-<title>商品一覧 - FPS GEAR STORE</title>
-</head>
-<body>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja"
+      th:replace="layout/shop_base :: base_layout(~{::content}, '商品一覧')">
 
-  <div th:replace="fragments/header :: header"></div>
+<th:block th:fragment="content">
+	<h2>商品一覧</h2>
 
-  <main>
-  <h2>商品一覧</h2>
+	<div th:replace="fragments/itemList :: itemList(${items})"></div>
+</th:block>
 
-		<div th:replace="fragments/itemList :: itemList(${items})"></div>
-	</main>
-
-
-
-  <footer>
-    <p>© 2025 FPS GEAR STORE</p>
-  </footer>
-
-</body>
 </html>
-

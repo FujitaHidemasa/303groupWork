@@ -11,6 +11,15 @@
             <a th:href="@{/contact}">お問い合わせ</a>
         </div>
 
+<<<<<<< HEAD
+			<!-- 黒帯 -->
+			<header>
+				<h1>
+					<a th:href="@{/voidr}">
+						<img th:src="@{/images/ui/header_logo.webp}" alt="Voidr Official Store">
+					</a>
+				</h1>
+=======
         <!-- 黒帯 -->
         <header>
             <h1>
@@ -18,12 +27,20 @@
                     <img th:src="@{/image/ui/header_logo.webp}" alt="Voidr Official Store">
                 </a>
             </h1>
+>>>>>>> refs/remotes/origin/master
 
+<<<<<<< HEAD
+				<nav  class="header-center">
+					<a th:href="@{/voidrshop}">ストアトップ</a>
+					<a th:href="@{/voidrshop/items}">商品一覧</a>
+				</nav>
+=======
             <nav>
                 <a th:href="@{/voidrshop}">トップ</a>
                 <a th:href="@{/voidrshop/items}">ストア</a>
                 <a th:href="@{/home/contact}">お問い合わせ</a>
             </nav>
+>>>>>>> refs/remotes/origin/master
 
             <div class="header-right">
                 <form class="search-box" th:action="@{/voidrshop/items/search}" method="get">
@@ -31,6 +48,17 @@
                     <button type="submit">検索</button>
                 </form>
 
+<<<<<<< HEAD
+					<a th:href="@{/voidrshop/cart}" class="cart-link">
+						<img th:src="@{/images/ui/header_carticon.png}" alt="Cart Icon">
+						<span>カート</span>
+					</a>
+				</div>
+			</header>
+		</div>
+	</div>
+	</script>
+=======
                 <a th:href="@{/voidrshop/cart}" class="cart-link">
                     <img th:src="@{/image/ui/header_carticon.png}" alt="Cart Icon">
                     <span>カート</span>
@@ -43,3 +71,4 @@
     </div>
 </div>
 
+>>>>>>> refs/remotes/origin/master

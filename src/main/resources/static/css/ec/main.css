@@ -7,15 +7,15 @@
 
 /* 共通カラー変数（全CSSで参照可能） */
 :root {
-	--color-bg-light: #ffffff;
-	--color-bg-dark: #0e0e0e;
-	--color-text-main: #222;
-	--color-text-sub: #666;
-	--color-text-invert: #fff;
-	--color-border-light: #e0e0e0;
-	--color-border-dark: #2a2a2a;
-	--color-shadow: rgba(0, 0, 0, .4);
-	--color-accent: #6fb8e3;
+	--color-bg-light: #121212;         /* メイン背景（純黒ではなく深灰） */
+	--color-bg-dark: #1c1c1c;          /* サブ背景やカード背景 */
+	--color-text-main: #eeeeee;        /* メイン文字：明るめの白灰 */
+	--color-text-sub: #aaaaaa;         /* サブ文字：少し抑えたグレー */
+	--color-text-invert: #000000;      /* 明るい要素上での文字用 */
+	--color-border-light: #2a2a2a;     /* 枠線・区切り線（明るすぎないグレー） */
+	--color-border-dark: #0a0a0a;      /* さらに深い区切り用 */
+	--color-shadow: rgba(0, 0, 0, .7); /* 陰影をやや強めに */
+	--color-accent: #8f7af0;           /* 元の水色からバランスを保った紫寄りの強調色 */
 }
 
 /* ============================================
@@ -59,7 +59,7 @@ main {
 }
 
 /* -------------------------------
-   共通の見出し・リンク・フッターなど
+   共通の見出し・リンクなど
 -------------------------------- */
 h2 {
 	font-size: 1.5rem;
@@ -74,13 +74,4 @@ a {
 
 a:hover {
 	opacity: 0.8;
-}
-
-footer {
-	text-align: center;
-	margin-top: 60px;
-	padding: 20px 0;
-	border-top: 1px solid var(--color-border-light);
-	font-size: 0.9rem;
-	color: var(--color-text-sub);
 }
