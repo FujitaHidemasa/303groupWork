@@ -15,25 +15,22 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
 
-    private final OrderMapper orderMapper;
+	private final OrderMapper orderMapper;
 
-    @Override
-    public List<Order> getOrderHistory(long orderListId) {
-        return orderMapper.findByOrderListId(orderListId);
-    }
+	@Override
+	public List<Order> getOrderHistory(long orderListId) {
+		return orderMapper.findByOrderListId(orderListId);
+	}
 
-    @Override
-    @Transactional
-    public void createOrder(Order order) {
-        orderMapper.insertOrder(order);
-    }
+	@Override
+	@Transactional
+	public void createOrder(Order order) {
+		orderMapper.insertOrder(order);
+	}
 
-    @Override
-    @Transactional
-    public void confirmPurchase(long orderListId) {
-        // 状態(state)を「確定」に更新する処理を後でMyBatisに追加予定
-        // 例: UPDATE orders SET state = 'CONFIRMED' WHERE order_list_id = #{orderListId}
-        // 仮でログを出すだけにしておく
-        System.out.println("注文リストID " + orderListId + " の購入を確定しました。");
-    }
+	@Override
+	@Transactional
+	public void confirmPurchase(long orderListId) {
+		orderMapper.confirmPurchase(orderListId);
+	}
 }

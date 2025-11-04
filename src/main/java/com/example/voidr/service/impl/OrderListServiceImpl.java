@@ -31,4 +31,10 @@ public class OrderListServiceImpl implements OrderListService {
         orderList.setUpdatedAt(LocalDateTime.now());
         orderListMapper.insertOrderList(orderList);
     }
+
+	@Override
+	public OrderList findByUserName(String username) {
+		// TODO 自動生成されたメソッド・スタブ
+		return null;
+	}
 }

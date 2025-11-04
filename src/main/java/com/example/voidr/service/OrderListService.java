@@ -8,4 +8,6 @@ public interface OrderListService {
     List<OrderList> getOrderListsByUserId(long userId);
     
     void createOrderList(OrderList orderList);
+
+	OrderList findByUserName(String username);
 }
