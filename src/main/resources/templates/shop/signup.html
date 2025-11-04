@@ -1,186 +1,270 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ja">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" /> <!-- ★追加：モバイル最適化 -->
-  <title>新規登録 | VOIDR</title>
-  <style>
-    /* ==============================
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" /> <!-- ★追加：モバイル最適化 -->
+	<title>新規登録 | VOIDR</title>
+	<style>
+		/* ==============================
        共通設定
        ============================== */
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI','Roboto','Noto Sans JP',sans-serif; }
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+			font-family: 'Segoe UI', 'Roboto', 'Noto Sans JP', sans-serif;
+		}
 
-    body {
-      background: linear-gradient(135deg, #000, #111 60%, #2b0000);
-      color: #fff;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 16px; /* 極狭端末での余白 */
-    }
+		body {
+			/* ★青系に変更: 差し色を濃紺に */
+			background: linear-gradient(135deg, #000, #111 60%, #001a33);
+			color: #fff;
+			min-height: 100vh;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			padding: 16px;
+			/* 極狭端末での余白 */
+		}
 
-    /* ==============================
+		/* ==============================
        コンテナ（フォーム全体）
        ============================== */
-    .signup-container{
-      background: rgba(20,20,20,0.95);
-      border: 1px solid #ff0033;
-      border-radius: 16px;
-      padding: 36px 28px;                 /* ★少し薄く */
-      width: min(86vw, 360px);            /* ★幅をさらに細く */
-      box-shadow: 0 0 30px rgba(255,0,50,0.3);
-      text-align: center;
-      animation: fadeIn 0.8s ease;
-    }
+		.signup-container {
+			background: rgba(20, 20, 20, 0.95);
+			/* ★青系に変更 */
+			border: 1px solid #0088ff;
+			border-radius: 16px;
+			padding: 36px 28px;
+			/* ★少し薄く */
+			width: min(86vw, 360px);
+			/* ★幅をさらに細く */
+			/* ★青系に変更 */
+			box-shadow: 0 0 30px rgba(0, 136, 255, 0.3);
+			text-align: center;
+			animation: fadeIn 0.8s ease;
+		}
 
-    @keyframes fadeIn { from {opacity: 0; transform: translateY(10px);} to {opacity:1; transform: translateY(0);} }
+		@keyframes fadeIn {
+			from {
+				opacity: 0;
+				transform: translateY(10px);
+			}
 
-    /* 極狭端末向けの最適化 */
-    @media (max-width: 360px){
-      .signup-container{
-        width: 94vw;                      /* 端末幅に追従 */
-        padding: 28px 20px;               /* さらに薄く */
-      }
-      .signup-title{
-        font-size: clamp(1.6rem, 7vw, 2rem);
-        letter-spacing: 1.2px;
-      }
-    }
+			to {
+				opacity: 1;
+				transform: translateY(0);
+			}
+		}
 
-    /* ==============================
+		/* 極狭端末向けの最適化 */
+		@media (max-width: 360px) {
+			.signup-container {
+				width: 94vw;
+				/* 端末幅に追従 */
+				padding: 28px 20px;
+				/* さらに薄く */
+			}
+
+			.signup-title {
+				font-size: clamp(1.6rem, 7vw, 2rem);
+				letter-spacing: 1.2px;
+			}
+		}
+
+		/* ==============================
        タイトル（見切れ・視認性対策）
        ============================== */
-    .signup-title{
-      font-size: clamp(1.6rem, 6vw, 2.1rem); /* ★縮み過ぎ防止＆可変 */
-      line-height: 1.2;
-      letter-spacing: 1.4px;                 /* 収まりやすく */
-      text-transform: uppercase;
-      color: #ffffff;
-      text-shadow:
-        0 0 10px rgba(255, 0, 50, 0.75),
-        0 0 2px rgba(0, 0, 0, 0.85);
-      -webkit-text-stroke: 0.4px rgba(0,0,0,0.5); /* WebKit縁取り */
-      margin-bottom: 22px;
-      overflow-wrap: anywhere;
-      word-break: break-word;
-      max-width: 100%;
-      overflow: visible;
-    }
+		.signup-title {
+			font-size: clamp(1.6rem, 6vw, 2.1rem);
+			/* ★縮み過ぎ防止＆可変 */
+			line-height: 1.2;
+			letter-spacing: 1.4px;
+			/* 収まりやすく */
+			text-transform: uppercase;
+			color: #ffffff;
+			/* ★青系に変更 */
+			text-shadow:
+				0 0 10px rgba(0, 136, 255, 0.75),
+				0 0 2px rgba(0, 0, 0, 0.85);
+			-webkit-text-stroke: 0.4px rgba(0, 0, 0, 0.5);
+			/* WebKit縁取り */
+			margin-bottom: 22px;
+			overflow-wrap: anywhere;
+			word-break: break-word;
+			max-width: 100%;
+			overflow: visible;
+		}
 
-    /* ==============================
+		/* ==============================
        入力フォーム
        ============================== */
-    form { display: flex; flex-direction: column; gap: 16px; }
+		form {
+			display: flex;
+			flex-direction: column;
+			gap: 16px;
+		}
 
-    label{
-      text-align: left;
-      font-size: 0.9rem;
-      color: #ddd;
-      margin-left: 4px;
-    }
+		label {
+			text-align: left;
+			font-size: 0.9rem;
+			color: #ddd;
+			margin-left: 4px;
+		}
 
-    input[type="text"], input[type="email"], input[type="password"]{
-      padding: 12px;
-      border: none;
-      border-radius: 6px;
-      font-size: 1rem;
-      background: #222;
-      color: #fff;
-      outline: none;
-      transition: 0.3s;
-      width: 100%;
-    }
-    input:focus{ background:#333; border: 1px solid #ff0033; }
+		input[type="text"],
+		input[type="email"],
+		input[type="password"] {
+			padding: 12px;
+			border: none;
+			border-radius: 6px;
+			font-size: 1rem;
+			background: #222;
+			color: #fff;
+			outline: none;
+			transition: 0.3s;
+			width: 100%;
+		}
 
-    /* ==============================
+		/* ★青系に変更 */
+		input:focus {
+			background: #333;
+			border: 1px solid #0088ff;
+			box-shadow: 0 0 8px rgba(0, 136, 255, 0.35);
+		}
+
+		/* ==============================
        ボタン
        ============================== */
-    button[type="submit"]{
-      background: linear-gradient(135deg, #ff0033, #7a0000);
-      color:#fff; border:none; border-radius:6px;
-      padding:12px; font-size:1rem; cursor:pointer; transition:.3s; letter-spacing:1px; margin-top:6px;
-    }
-    button[type="submit"]:hover{ transform: scale(1.03); box-shadow: 0 0 12px rgba(255,0,50,0.4); }
+		button[type="submit"] {
+			/* ★青系に変更 */
+			background: linear-gradient(135deg, #0aa0ff, #003a7a);
+			color: #fff;
+			border: none;
+			border-radius: 6px;
+			padding: 12px;
+			font-size: 1rem;
+			cursor: pointer;
+			transition: .3s;
+			letter-spacing: 1px;
+			margin-top: 6px;
+		}
 
-    /* ==============================
+		/* ★青系に変更 */
+		button[type="submit"]:hover {
+			transform: scale(1.03);
+			box-shadow: 0 0 12px rgba(0, 136, 255, 0.4);
+		}
+
+		/* ==============================
        メッセージ
        ============================== */
-    .error-msg{ color:#ff6666; font-size:0.9rem; margin-top:6px; text-align:left; }
-    .notice-msg{ color:#66ff99; font-size:0.9rem; margin-bottom:10px; text-align:left; }
+		.error-msg {
+			color: #ff6666;
+			font-size: 0.9rem;
+			margin-top: 6px;
+			text-align: left;
+		}
 
-    /* ==============================
+		.notice-msg {
+			color: #66ff99;
+			font-size: 0.9rem;
+			margin-bottom: 10px;
+			text-align: left;
+		}
+
+		/* ==============================
        ログインページへのリンク
        ============================== */
-    .login-link{
-      display:block; margin-top:22px;
-      background: linear-gradient(135deg, #3a3a3a, #2a2a2a);
-      color:#ff3366; padding:10px; border-radius:6px; text-decoration:none; transition:.3s; font-weight:bold; text-shadow:0 0 6px rgba(255,0,70,0.4);
-    }
-    .login-link:hover{
-      background: linear-gradient(135deg, #ff0033, #7a0000);
-      color:#fff; transform: scale(1.03); box-shadow:0 0 15px rgba(255,0,50,0.5); text-shadow:none;
-    }
-  </style>
+		.login-link {
+			display: block;
+			margin-top: 22px;
+			background: linear-gradient(135deg, #3a3a3a, #2a2a2a);
+			/* ★青系に変更（リンク文字色と発光） */
+			color: #55b7ff;
+			padding: 10px;
+			border-radius: 6px;
+			text-decoration: none;
+			transition: .3s;
+			font-weight: bold;
+			text-shadow: 0 0 6px rgba(0, 136, 255, 0.4);
+		}
+
+		/* ★青系に変更 */
+		.login-link:hover {
+			background: linear-gradient(135deg, #0aa0ff, #003a7a);
+			color: #fff;
+			transform: scale(1.03);
+			box-shadow: 0 0 15px rgba(0, 136, 255, 0.5);
+			text-shadow: none;
+		}
+	</style>
 </head>
+
 <body>
-  <div class="signup-container">
-    <h1 class="signup-title">VOIDR SIGNUP</h1>
+	<div class="signup-container">
+		<h1 class="signup-title">VOIDR SIGNUP</h1>
 
-    <!-- 登録完了メッセージ（任意） -->
-    <div th:if="${param.registered}" class="notice-msg">登録が完了しました。ログインしてください。</div>
+		<!-- 登録完了メッセージ（任意） -->
+		<div th:if="${param.registered}" class="notice-msg">登録が完了しました。ログインしてください。</div>
 
-    <!-- グローバルエラー（任意） -->
-    <div th:if="${#fields.hasGlobalErrors()}" class="error-msg" th:each="e : ${#fields.globalErrors()}" th:text="${e}"></div>
+		<!-- グローバルエラー（任意） -->
+		<div th:if="${#fields.hasGlobalErrors()}" class="error-msg" th:each="e : ${#fields.globalErrors()}"
+			th:text="${e}"></div>
 
-    <!-- 新規登録フォーム -->
-    <form th:action="@{/signup}" th:object="${form}" method="post" autocomplete="on">
-      <!-- CSRF -->
-      <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+		<!-- 新規登録フォーム -->
+		<form th:action="@{/signup}" th:object="${form}" method="post" autocomplete="on">
+			<!-- CSRF -->
+			<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 
-      <div>
-        <label for="username">ユーザー名</label>
-        <input type="text" id="username" th:field="*{username}" placeholder="例：player001" required autocomplete="username" />
-        <div class="error-msg" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
-      </div>
+			<div>
+				<label for="username">ユーザー名</label>
+				<input type="text" id="username" th:field="*{username}" placeholder="例：player001" required
+					autocomplete="username" />
+				<div class="error-msg" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
+			</div>
 
-      <div>
-        <label for="displayName">表示名</label>
-        <input type="text" id="displayName" th:field="*{displayName}" placeholder="例：プレイヤー太郎" required />
-        <div class="error-msg" th:if="${#fields.hasErrors('displayName')}" th:errors="*{displayName}"></div>
-      </div>
+			<div>
+				<label for="displayName">表示名</label>
+				<input type="text" id="displayName" th:field="*{displayName}" placeholder="例：プレイヤー太郎" required />
+				<div class="error-msg" th:if="${#fields.hasErrors('displayName')}" th:errors="*{displayName}"></div>
+			</div>
 
-      <div>
-        <label for="email">メールアドレス</label>
-        <input type="email" id="email" th:field="*{email}" placeholder="例：example@mail.com" required autocomplete="email" />
-        <div class="error-msg" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
-      </div>
+			<div>
+				<label for="email">メールアドレス</label>
+				<input type="email" id="email" th:field="*{email}" placeholder="例：example@mail.com" required
+					autocomplete="email" />
+				<div class="error-msg" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+			</div>
 
-      <div>
-        <label for="password">パスワード</label>
-        <input type="password" id="password" th:field="*{password}" placeholder="8〜20文字の英数字" required autocomplete="new-password" />
-        <div class="error-msg" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
-      </div>
+			<div>
+				<label for="password">パスワード</label>
+				<input type="password" id="password" th:field="*{password}" placeholder="8〜20文字の英数字" required
+					autocomplete="new-password" />
+				<div class="error-msg" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+			</div>
 
-      <!-- 任意：住所 -->
-      <div>
-        <label for="address">住所（任意）</label>
-        <input type="text" id="address" th:field="*{address}" placeholder="任意入力" />
-        <div class="error-msg" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></div>
-      </div>
+			<!-- 任意：住所 -->
+			<div>
+				<label for="address">住所（任意）</label>
+				<input type="text" id="address" th:field="*{address}" placeholder="任意入力" />
+				<div class="error-msg" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></div>
+			</div>
 
-      <!-- 任意：電話番号 -->
-      <div>
-        <label for="phoneNumber">電話番号（任意）</label>
-        <input type="text" id="phoneNumber" th:field="*{phoneNumber}" placeholder="例：090-1234-5678" />
-        <div class="error-msg" th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}"></div>
-      </div>
+			<!-- 任意：電話番号 -->
+			<div>
+				<label for="phoneNumber">電話番号（任意）</label>
+				<input type="text" id="phoneNumber" th:field="*{phoneNumber}" placeholder="例：090-1234-5678" />
+				<div class="error-msg" th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}"></div>
+			</div>
 
-      <button type="submit">登録する</button>
-    </form>
+			<button type="submit">登録する</button>
+		</form>
 
-    <!-- ログインリンク -->
-    <a th:href="@{/login}" class="login-link">ログインはこちら</a>
-  </div>
+		<!-- ログインリンク -->
+		<a th:href="@{/login}" class="login-link">ログインはこちら</a>
+	</div>
 </body>
+
 </html>

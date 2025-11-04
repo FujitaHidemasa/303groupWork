@@ -107,3 +107,9 @@ CREATE TABLE cart (
     is_hold BOOLEAN DEFAULT FALSE,
     updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
+
+-- -------------------------------
+-- 11/04 DB にユニーク制約
+-- -------------------------------
+ALTER TABLE cart
+  ADD CONSTRAINT uq_cart_cartlist_item UNIQUE (cartlist_id, item_id);
