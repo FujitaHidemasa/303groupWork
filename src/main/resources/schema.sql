@@ -109,7 +109,6 @@ CREATE TABLE cart (
 );
 
 -- -------------------------------
-<<<<<<< HEAD
 -- お気に入りテーブル
 -- -------------------------------
 CREATE TABLE IF NOT EXISTS favorites (
@@ -119,13 +118,10 @@ CREATE TABLE IF NOT EXISTS favorites (
     created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
-
--- 重複登録を防ぐ（1ユーザーが同じ商品を複数お気に入り登録できないように）
---ALTER TABLE favorites
---ADD CONSTRAINT unique_user_item UNIQUE (user_id, item_id);
-=======
--- 11/04 DB にユニーク制約
--- -------------------------------
+-- cart: 同じカートに同じ商品を重複追加できないようにする
 ALTER TABLE cart
   ADD CONSTRAINT uq_cart_cartlist_item UNIQUE (cartlist_id, item_id);
->>>>>>> refs/remotes/origin/master
+
+-- cart: 同じカートに同じ商品を重複追加できないようにする
+ALTER TABLE cart
+  ADD CONSTRAINT uq_cart_cartlist_item UNIQUE (cartlist_id, item_id);

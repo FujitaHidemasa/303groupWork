@@ -7,14 +7,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.voidr.entity.Cart;
 import com.example.voidr.entity.CartList;
-<<<<<<< HEAD
-import com.example.voidr.entity.Item;
-import com.example.voidr.mapper.CartListMapper;
-import com.example.voidr.mapper.CartMapper;
-=======
-import com.example.voidr.repository.CartListMapper;
-import com.example.voidr.repository.CartMapper;
->>>>>>> refs/remotes/origin/master
+// 修正: ここで mapper パッケージではなく repository パッケージを使用します
+import com.example.voidr.repository.CartListMapper; // ← repository を使う
+import com.example.voidr.repository.CartMapper;     // ← repository を使う
 import com.example.voidr.service.CartService;
 import com.example.voidr.view.CartView;
 
@@ -23,75 +18,72 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class CartServiceImpl implements CartService 
-{
+public class CartServiceImpl implements CartService {
 
-	private final CartMapper cartMapper;
-	private final CartListMapper cartListMapper;
+    // 修正: CartMapper と CartListMapper は repository パッケージのものです
+    private final CartMapper cartMapper;
+    private final CartListMapper cartListMapper;
 
-	/** ユーザーの cart_list を取得 or 作成 */
-	private long ensureCartListId(long userId) {
-		CartList found = cartListMapper.findByUserId(userId);
-		if (found != null) {
-			return found.getId();
-		}
-		CartList created = new CartList();
-		created.setUserId(userId);
-		// boolean プロパティが isLoginUser の場合は setter は setLoginUser(...)
-		created.setLoginUser(true);
-		cartListMapper.insert(created);
-		return created.getId();
-	}
+    /**
+     * ユーザーの cart_list を取得 or 作成
+     */
+    private long ensureCartListId(long userId) {
+        CartList found = cartListMapper.findByUserId(userId);
+        if (found != null) {
+            return found.getId();
+        }
+        CartList created = new CartList();
+        created.setUserId(userId);
+        // boolean プロパティが isLoginUser の場合は setter は setLoginUser(...)
+        created.setLoginUser(true);
+        cartListMapper.insert(created);
+        return created.getId();
+    }
 
-	@Override
-	public void addItem(long userId, long itemId, int quantity) 
-	{
-		int q = Math.max(1, quantity);
-		long cartListId = ensureCartListId(userId);
+    @Override
+    public void addItem(long userId, long itemId, int quantity) {
+        int q = Math.max(1, quantity);
+        long cartListId = ensureCartListId(userId);
 
-		Cart c = new Cart();
-		c.setCartListId(cartListId); // ※ キャメルケース
-		c.setItemId(itemId);
-		c.setQuantity(q);
+        Cart c = new Cart();
+        c.setCartListId(cartListId); // ※ キャメルケース
+        c.setItemId(itemId);
+        c.setQuantity(q);
 
-		cartMapper.upsert(c); // 同一商品は数量加算
-		cartListMapper.touchUpdatedAt(cartListId);
-	}
+        cartMapper.upsert(c); // 同一商品は数量加算
+        cartListMapper.touchUpdatedAt(cartListId);
+    }
 
-	@Override
-	public void changeQuantity(long userId, long cartId, int quantity) 
-	{
-		int q = Math.max(1, quantity);
-		Cart c = new Cart();
-		c.setId(cartId);
-		c.setQuantity(q);
-		cartMapper.updateQuantityByCart(c);
-	}
+    @Override
+    public void changeQuantity(long userId, long cartId, int quantity) {
+        int q = Math.max(1, quantity);
+        Cart c = new Cart();
+        c.setId(cartId);
+        c.setQuantity(q);
+        cartMapper.updateQuantityByCart(c);
+    }
 
-	@Override
-	public void remove(long userId, long cartId) {
-		cartMapper.deleteById(cartId);
-	}
+    @Override
+    public void remove(long userId, long cartId) {
+        cartMapper.deleteById(cartId);
+    }
 
-	@Override
-	@Transactional(readOnly = true)
-	public List<CartView> list(long userId) 
-	{
-		List<CartView> list = cartMapper.findViewsByUserId(userId);
-		return (list != null) ? list : java.util.Collections.emptyList();
-	}
+    @Override
+    @Transactional(readOnly = true)
+    public List<CartView> list(long userId) {
+        List<CartView> list = cartMapper.findViewsByUserId(userId);
+        return (list != null) ? list : java.util.Collections.emptyList();
+    }
 
-	@Override
-	@Transactional(readOnly = true)
-	public int sumTotal(long userId) 
-	{
-		return cartMapper.sumTotalByUserId(userId);
-	}
+    @Override
+    @Transactional(readOnly = true)
+    public int sumTotal(long userId) {
+        return cartMapper.sumTotalByUserId(userId);
+    }
 
-	@Override
-	@Transactional(readOnly = true)
-	public int countInBadge(long userId) 
-	{
-		return cartMapper.countItemsByUserId(userId);
-	}
+    @Override
+    @Transactional(readOnly = true)
+    public int countInBadge(long userId) {
+        return cartMapper.countItemsByUserId(userId);
+    }
 }
