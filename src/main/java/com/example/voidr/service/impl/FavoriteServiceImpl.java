@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.voidr.entity.Favorite;
-import com.example.voidr.mapper.FavoriteMapper;
+import com.example.voidr.repository.FavoriteMapper;
 import com.example.voidr.service.FavoriteService;
 
 @Service

@@ -1,26 +1,50 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- インターフェイス: com.example.voidr.repository.OrderListMapper メソッド : List<OrderList> 
+	findByUserId(@Param("userId") long userId) void insertOrderList(OrderList 
+	orderList) スキーマ : order_list -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.voidr.repository.OrderListMapper">
 
-<mapper namespace="com.example.voidr.mapper.OrderListMapper">
+	<!-- 購入履歴一覧（ユーザーIDで複数行） -->
+	<select id="findByUserId" parameterType="long"
+		resultType="com.example.voidr.entity.OrderList">
+		SELECT
+		id,
+		user_id,
+		created_at,
+		updated_at
+		FROM order_list
+		WHERE
+		user_id = #{userId}
+		ORDER BY created_at DESC, id DESC
+	</select>
 
-    <!-- ユーザーごとの注文履歴を取得 -->
-    <select id="findByUserId" resultType="com.example.voidr.entity.OrderList">
-        SELECT
-            id,
-            user_id AS userId,
-            created_at AS createdAt,
-            updated_at AS updatedAt
-        FROM order_lists
-        WHERE user_id = #{userId}
-        ORDER BY created_at DESC
-    </select>
+	<!-- 新しい購入履歴（注文リスト）を作成 -->
+	<insert id="insertOrderList"
+		parameterType="com.example.voidr.entity.OrderList"
+		useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO order_list (
+		user_id,
+		created_at,
+		updated_at
+		)
+		VALUES (
+		#{userId},
+		CURRENT_TIMESTAMP,
+		CURRENT_TIMESTAMP
+		)
+	</insert>
 
-    <!-- 新しい購入リストを登録 -->
-    <insert id="insert" parameterType="com.example.voidr.entity.OrderList">
-        INSERT INTO order_lists (user_id, created_at, updated_at)
-        VALUES (#{userId}, #{createdAt}, #{updatedAt})
-    </insert>
+	<!-- OrderListMapper.xml -->
+	<select id="findByUserName" parameterType="String"
+		resultType="com.example.voidr.entity.OrderList">
+		SELECT ol.*
+		FROM order_list ol
+		JOIN login_user u ON ol.user_id = u.id
+		WHERE u.username = #{username}
+	</select>
+
+
 
 </mapper>
