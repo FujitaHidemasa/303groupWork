@@ -9,17 +9,17 @@
 			font-family: "Segoe UI", sans-serif;
 			margin: 40px;
 			background-color: #fafafa;
+			text-align: center;
 		}
 
 		h2 {
-			text-align: center;
 			color: #333;
 			margin-bottom: 30px;
 		}
 
 		table {
 			width: 90%;
-			margin: 0 auto;
+			margin: 0 auto 40px;
 			border-collapse: collapse;
 			box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
 			background-color: #fff;
@@ -86,13 +86,40 @@
 		.action-buttons .reorder:hover {
 			background-color: #27ae60;
 		}
+
+		.no-history {
+			text-align: center;
+			color: #666;
+			font-size: 1.2em;
+			margin-top: 50px;
+		}
+
+		.button-group {
+			margin-top: 40px;
+		}
+
+		.button-group a {
+			display: inline-block;
+			text-decoration: none;
+			background-color: #3498db;
+			color: white;
+			padding: 10px 20px;
+			margin: 0 10px;
+			border-radius: 6px;
+			transition: 0.2s;
+		}
+
+		.button-group a:hover {
+			background-color: #2980b9;
+		}
 	</style>
 </head>
 
 <body>
 	<h2>購入履歴</h2>
 
-	<table>
+	<!-- 購入履歴がある場合 -->
+	<table th:if="${orders != null and !orders.isEmpty()}">
 		<thead>
 			<tr>
 				<th>注文ID</th>
@@ -110,28 +137,21 @@
 			<tr th:each="order : ${orders}">
 				<td th:text="${order.id}"></td>
 
-				<!-- 商品画像 -->
 				<td>
 					<img th:src="@{'/images/' + ${order.imageName}}" alt="商品画像">
 				</td>
 
-				<!-- 商品名 -->
 				<td th:text="${order.itemName}"></td>
 
-				<!-- 数量 -->
 				<td th:text="${order.quantity}"></td>
 
-				<!-- 価格 -->
 				<td th:text="'¥' + ${#numbers.formatInteger(order.price, 0)}" class="price"></td>
 
-				<!-- 状態 -->
 				<td th:text="${order.isHold ? '保留中' : '発送済み'}"
 					th:classappend="${order.isHold} ? 'status-hold' : 'status-fixed'"></td>
 
-				<!-- 注文日時 -->
 				<td th:text="${#temporals.format(order.createdAt, 'yyyy/MM/dd HH:mm')}"></td>
 
-				<!-- 操作ボタン -->
 				<td class="action-buttons">
 					<button th:onclick="'location.href=\'/order/detail/' + ${order.id} + '\';'">詳細を見る</button>
 					<button class="reorder"
@@ -140,6 +160,20 @@
 			</tr>
 		</tbody>
 	</table>
+
+	<!-- 購入履歴がない場合 -->
+	<p class="no-history" th:unless="${orders != null and !orders.isEmpty()}">
+		購入履歴がありません。
+	</p>
+
+	<div style="text-align: center; margin-top: 30px;">
+		<a th:href="@{/voidrshop}" style="margin-right: 15px; text-decoration: none; color: #3498db;">
+			トップページへ戻る
+			<a th:href="@{/voidrshop/items}" style="text-decoration: none; color: #3498db;">
+				ストアを見る
+			</a>
+	</div>
+
 </body>
 
 </html>
