@@ -44,13 +44,14 @@ CREATE TABLE item (
     created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
+
 -- -------------------------------
 -- 商品カテゴリーテーブル
 -- -------------------------------
 CREATE TABLE item_category (
     id SERIAL PRIMARY KEY,
     item_id BIGINT REFERENCES item(id) ON DELETE CASCADE,
-    category text NOT NULL
+    category TEXT NOT NULL
 );
 
 -- -------------------------------
@@ -59,7 +60,7 @@ CREATE TABLE item_category (
 CREATE TABLE item_image (
     id SERIAL PRIMARY KEY,
     item_id BIGINT REFERENCES item(id) ON DELETE CASCADE,
-    image_name text NOT NULL
+    image_name TEXT NOT NULL
 );
 
 -- -------------------------------
@@ -88,9 +89,7 @@ CREATE TABLE "order" (
 -- -------------------------------
 CREATE TABLE cart_list (
     id SERIAL PRIMARY KEY,
-
     user_id INTEGER REFERENCES login_user(id) ON DELETE CASCADE,
-
     is_login_user BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP
@@ -118,10 +117,14 @@ CREATE TABLE IF NOT EXISTS favorites (
     created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
--- cart: 同じカートに同じ商品を重複追加できないようにする
-ALTER TABLE cart
-  ADD CONSTRAINT uq_cart_cartlist_item UNIQUE (cartlist_id, item_id);
+-- ===============================
+--  追加制約（存在チェック付き）
+-- ===============================
 
--- cart: 同じカートに同じ商品を重複追加できないようにする
-ALTER TABLE cart
-  ADD CONSTRAINT uq_cart_cartlist_item UNIQUE (cartlist_id, item_id);
+-- cart: 同じカートに同じ商品を重複追加できないようにする（何度実行しても安全）
+CREATE UNIQUE INDEX IF NOT EXISTS uq_cart_cartlist_item
+  ON cart (cartlist_id, item_id);
+
+-- favorites: 同じ商品の重複お気に入りを防止（任意）
+CREATE UNIQUE INDEX IF NOT EXISTS uq_favorites_user_item
+  ON favorites (user_id, item_id);

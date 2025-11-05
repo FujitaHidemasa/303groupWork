@@ -1,13 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.example.voidr.repository.CartMapper">
 
-	<!-- CartList ID からカート一覧取得 -->
-	<select id="findByCartListId"
-		resultType="com.example.voidr.entity.Cart" parameterType="long">
+	<!-- ========================= 取得系 ========================= -->
+
+	<!-- バッジ用：ユーザーのカート内アイテム数（is_hold=false を数える想定） -->
+	<select id="countItemsByUserId" parameterType="long"
+		resultType="int">
+		SELECT COALESCE(SUM(c.quantity), 0)
+		FROM cart c
+		JOIN cart_list cl ON cl.id = c.cartlist_id
+		WHERE cl.user_id = #{userId}
+		AND (c.is_hold = FALSE OR c.is_hold IS NULL)
+	</select>
+
+	<!-- 合計金額（quantity * item.price の合計）。金額が不要なら COUNT(*) に変更可 -->
+	<select id="sumTotalByUserId" parameterType="long"
+		resultType="int">
+		SELECT COALESCE(SUM(c.quantity * i.price), 0)
+		FROM cart c
+		JOIN cart_list cl ON cl.id = c.cartlist_id
+		JOIN item i ON i.id = c.item_id
+		WHERE cl.user_id = #{userId}
+		AND (c.is_hold = FALSE OR c.is_hold IS NULL)
+	</select>
+
+	<!-- 既存：CartList ID からカート一覧取得（Cart エンティティ用） -->
+	<select id="findByCartListId" parameterType="long"
+		resultType="com.example.voidr.entity.Cart">
 		SELECT
 		id,
 		cartlist_id AS cartListId,
@@ -19,9 +42,9 @@
 		WHERE cartlist_id = #{cartListId}
 	</select>
 
-	<!-- Cart ID から単一カート取得（移動用） -->
-	<select id="findById" resultType="com.example.voidr.entity.Cart"
-		parameterType="long">
+	<!-- 既存：Cart ID から単一カート取得 -->
+	<select id="findById" parameterType="long"
+		resultType="com.example.voidr.entity.Cart">
 		SELECT
 		id,
 		cartlist_id AS cartListId,
@@ -33,16 +56,26 @@
 		WHERE id = #{id}
 	</select>
 
-	<!-- 新規カート追加 -->
+	<!-- （任意実装） 表示用JOIN結果：CartView に合わせて必要なら有効化 CartView のプロパティ名に合わせて AS を調整してください -->
+	<!-- <select id="findViewsByUserId" parameterType="long" resultType="com.example.voidr.view.CartView"> 
+		SELECT c.id AS cartId, i.id AS itemId, i.name AS itemName, i.price AS price, 
+		c.quantity AS quantity, (i.price * c.quantity) AS subtotal, c.is_hold AS 
+		isHold, c.updated_at AS updatedAt, i.thumbs_image_name AS thumbsImageName 
+		FROM cart c JOIN cart_list cl ON cl.id = c.cartlist_id JOIN item i ON i.id 
+		= c.item_id WHERE cl.user_id = #{userId} ORDER BY c.updated_at DESC </select> -->
+
+	<!-- ========================= 追加・更新系 ========================= -->
+
+	<!-- 既存：新規カート追加 -->
 	<insert id="insert"
 		parameterType="com.example.voidr.entity.Cart" useGeneratedKeys="true"
 		keyProperty="id">
-		INSERT INTO cart(cartlist_id, item_id, quantity, is_hold, updated_at)
-		VALUES(#{cartListId}, #{itemId}, #{quantity}, #{isHold},
+		INSERT INTO cart (cartlist_id, item_id, quantity, is_hold, updated_at)
+		VALUES (#{cartListId}, #{itemId}, #{quantity}, #{isHold},
 		CURRENT_TIMESTAMP)
 	</insert>
 
-	<!-- カート更新 -->
+	<!-- 既存：丸ごと更新 -->
 	<update id="update"
 		parameterType="com.example.voidr.entity.Cart">
 		UPDATE cart
@@ -52,6 +85,8 @@
 		updated_at = CURRENT_TIMESTAMP
 		WHERE id = #{id}
 	</update>
+
+	<!-- 数量だけ更新（Cart 単引数版に合わせる） -->
 	<update id="updateQuantityByCart"
 		parameterType="com.example.voidr.entity.Cart">
 		UPDATE cart
@@ -61,12 +96,32 @@
 		WHERE id = #{id}
 	</update>
 
-	<!-- ゲストカート削除 -->
-	<delete id="delete">
+	<!-- UPSERT（cartlist_id + item_id の一意制約が前提： schema.sql に uq_cart_cartlist_item 
+		を作成済みであること） 既存なら数量を加算したい／上書きしたい等、要件で SET を調整してください。 -->
+	<insert id="upsert"
+		parameterType="com.example.voidr.entity.Cart">
+		INSERT INTO cart (cartlist_id, item_id, quantity, is_hold, updated_at)
+		VALUES (#{cartListId}, #{itemId}, #{quantity}, #{isHold},
+		CURRENT_TIMESTAMP)
+		ON CONFLICT (cartlist_id, item_id)
+		DO UPDATE SET
+		quantity = EXCLUDED.quantity,        <!-- 加算にしたいなら: cart.quantity + EXCLUDED.quantity -->
+		is_hold = EXCLUDED.is_hold,
+		updated_at = CURRENT_TIMESTAMP
+	</insert>
+
+	<!-- ========================= 削除系 ========================= -->
+
+	<!-- Cart 単体削除 -->
+	<delete id="deleteById" parameterType="long">
 		DELETE FROM cart
-		WHERE cartlist_id IN (
-		SELECT id FROM cart_list WHERE id = #{id}
-		)
+		WHERE id = #{id}
+	</delete>
+
+	<!-- カートリスト配下の全行削除 -->
+	<delete id="deleteByCartListId" parameterType="long">
+		DELETE FROM cart
+		WHERE cartlist_id = #{cartListId}
 	</delete>
 
 </mapper>
