@@ -44,7 +44,7 @@ public class OrderController {
 		List<Order> orders = orderService.getOrderHistory(orderList.getId());
 		model.addAttribute("orders", orders);
 
-		return "order/history";
+		return "order_history";
 	}
 
 	/**

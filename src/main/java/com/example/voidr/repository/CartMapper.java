@@ -9,26 +9,29 @@ import com.example.voidr.entity.Cart;
 import com.example.voidr.view.CartView;
 
 @Mapper
-public interface CartMapper 
-{
+public interface CartMapper {
 
-	// ★追加：ヘッダのバッジなどに使う件数
+	// ★ヘッダのバッジなどに使う件数
 	int countItemsByUserId(@Param("userId") long userId);
 
-	// ★追加：カート合計金額
+	// ★カート合計金額
 	int sumTotalByUserId(@Param("userId") long userId);
 
-	// ★追加：表示用JOIN結果
+	// ★表示用JOIN結果
 	List<CartView> findViewsByUserId(@Param("userId") long userId);
 
-	// 既存：削除
+	// カート削除
 	void deleteById(@Param("id") long id);
 
+	// ✅ confirmPurchase() で使う：cartListIdで削除
 	void deleteByCartListId(@Param("cartListId") long cartListId);
 
-	// ★追加：UPSERT（XML側で ON CONFLICT を定義）
+	// カートに商品を追加・更新
 	void upsert(Cart cart);
 
-	// ★追加：数量を直接セットする更新（XMLは単引数版に合わせる）
+	// 数量を直接更新
 	void updateQuantityByCart(Cart cart);
+
+	// ✅ confirmPurchase() で使う：cartListIdで商品一覧取得
+	List<Cart> findByCartListId(@Param("cartListId") long cartListId);
 }
