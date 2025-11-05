@@ -3,7 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.example.voidr.mapper.OrderListMapper">
+<mapper namespace="com.example.voidr.repository.OrderListMapper">
 
     <!-- ユーザーごとの注文履歴を取得 -->
     <select id="findByUserId" resultType="com.example.voidr.entity.OrderList">
