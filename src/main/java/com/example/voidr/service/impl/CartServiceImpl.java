@@ -7,8 +7,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.voidr.entity.Cart;
 import com.example.voidr.entity.CartList;
+<<<<<<< HEAD
+import com.example.voidr.entity.Item;
+import com.example.voidr.mapper.CartListMapper;
+import com.example.voidr.mapper.CartMapper;
+=======
 import com.example.voidr.repository.CartListMapper;
 import com.example.voidr.repository.CartMapper;
+>>>>>>> refs/remotes/origin/master
 import com.example.voidr.service.CartService;
 import com.example.voidr.view.CartView;
 

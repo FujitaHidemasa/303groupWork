@@ -1,4 +1,4 @@
-package com.example.voidr.repository;
+package com.example.voidr.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;

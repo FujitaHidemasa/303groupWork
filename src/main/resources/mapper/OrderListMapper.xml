@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.voidr.mapper.OrderListMapper">
+
+    <!-- ユーザーごとの注文履歴を取得 -->
+    <select id="findByUserId" resultType="com.example.voidr.entity.OrderList">
+        SELECT
+            id,
+            user_id AS userId,
+            created_at AS createdAt,
+            updated_at AS updatedAt
+        FROM order_lists
+        WHERE user_id = #{userId}
+        ORDER BY created_at DESC
+    </select>
+
+    <!-- 新しい購入リストを登録 -->
+    <insert id="insert" parameterType="com.example.voidr.entity.OrderList">
+        INSERT INTO order_lists (user_id, created_at, updated_at)
+        VALUES (#{userId}, #{createdAt}, #{updatedAt})
+    </insert>
+
+</mapper>
