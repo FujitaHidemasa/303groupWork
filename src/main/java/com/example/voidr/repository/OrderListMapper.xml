@@ -15,7 +15,8 @@
 		created_at,
 		updated_at
 		FROM order_list
-		WHERE user_id = #{userId}
+		WHERE
+		user_id = #{userId}
 		ORDER BY created_at DESC, id DESC
 	</select>
 
@@ -34,5 +35,16 @@
 		CURRENT_TIMESTAMP
 		)
 	</insert>
+
+	<!-- OrderListMapper.xml -->
+	<select id="findByUserName" parameterType="String"
+		resultType="com.example.voidr.entity.OrderList">
+		SELECT ol.*
+		FROM order_list ol
+		JOIN login_user u ON ol.user_id = u.id
+		WHERE u.username = #{username}
+	</select>
+
+
 
 </mapper>

@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.voidr.entity.Order;
-import com.example.voidr.entity.OrderList; // 👈 追加
-import com.example.voidr.service.OrderListService; // 👈 追加：OrderList取得用サービス（例）
+import com.example.voidr.entity.OrderList;
+import com.example.voidr.service.OrderListService;
 import com.example.voidr.service.OrderService;
 
 import lombok.RequiredArgsConstructor;
@@ -23,32 +23,39 @@ import lombok.RequiredArgsConstructor;
 public class OrderController {
 
 	private final OrderService orderService;
-	private final OrderListService orderListService; // 👈 追加
+	private final OrderListService orderListService;
 
 	/**
-	 * ✅ 購入履歴一覧を表示
+	 * 購入履歴一覧を表示
+	 * ログイン中ユーザーの注文リストを取得し、購入履歴を表示する
 	 */
 	@GetMapping
 	public String showOrderHistory(Model model, Principal principal) {
-		// ログイン中ユーザーを取得
-		String username = principal.getName();
-
-		// ユーザーの注文リストIDを取得（例：1ユーザー1つのOrderListを持つ想定）
-		OrderList orderList = orderListService.findByUserName(username);
-		if (orderList == null) {
-			model.addAttribute("orders", List.of());
-			return "order/history";
+		if (principal == null) {
+			// ログインしていない場合はログインページへリダイレクト
+			return "redirect:/login";
 		}
 
-		// 購入履歴取得
-		List<Order> orders = orderService.getOrderHistory(orderList.getId());
-		model.addAttribute("orders", orders);
+		String username = principal.getName();
 
-		return "order_history";
+		// ユーザーの注文リストを取得
+		OrderList orderList = orderListService.findByUserName(username);
+
+		List<Order> orders;
+		if (orderList == null) {
+			// 注文履歴が無い場合は空リスト
+			orders = List.of();
+		} else {
+			// 購入履歴を取得
+			orders = orderService.getOrderHistory(orderList.getId());
+		}
+
+		model.addAttribute("orders", orders);
+		return "order/history"; // templates/order/history.html を参照
 	}
 
 	/**
-	 * ✅ 購入確定処理（「購入する」ボタン押下時など）
+	 * 購入確定処理（「購入する」ボタン押下時）
 	 */
 	@PostMapping("/confirm")
 	public String confirmPurchase(@RequestParam("orderListId") long orderListId) {
