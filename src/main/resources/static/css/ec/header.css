@@ -1,75 +1,44 @@
 @charset "UTF-8";
 
 /* ===========================================
-   固定ヘッダー（白帯＋黒帯）
-   ヘッダー専用デザイン
+   固定ヘッダー
    =========================================== */
-
-/* 固定ヘッダー全体 */
 .fixed-header {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   z-index: 1000;
-  background: var(--color-bg-dark);
-  box-shadow: 0 2px 10px var(--color-shadow);
+  box-shadow: 0 2px 20px var(--color-shadow-strong);
+  border-bottom: 1px solid var(--color-border-light);
+  backdrop-filter: blur(6px);
 }
 
-/* 上段：白帯 */
+/* 上段：グラデーションバー */
 .top-bar {
-  background: var(--color-bg-light);
-  color: var(--color-text-main);
+  background: var(--grad-topbar);
+  color: var(--color-text-sub);
   font-size: 13px;
   padding: 7px 60px;
-  border-bottom: 1px solid var(--color-border-light);
   display: flex;
   justify-content: flex-end;
   align-items: center;
   gap: 18px;
+  border-bottom: 1px solid var(--color-border-thin);
 }
 
 .top-bar a {
-  color: var(--color-text-main);
+  color: var(--color-accent-purple-light);
   text-decoration: none;
-  transition: opacity .3s;
+  transition: 0.3s;
 }
-
 .top-bar a:hover {
-  opacity: .6;
+  color: var(--color-accent-purple);
+  text-shadow: 0 0 6px var(--color-accent-purple);
 }
 
 .top-bar .separator {
-  color: var(--color-text-sub);
-}
-
-/* 下段：黒帯 */
-header {
-  position: relative;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 14px 70px;
-  background: var(--color-bg-dark);
-  color: var(--color-text-invert);
-  border-bottom: 1px solid var(--color-border-dark);
-}
-
-/* 中央固定ブロック */
-.header-center {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  align-items: center;
-  gap: 32px;
-  white-space: nowrap;
-  z-index: 2;
-}
-
-/* ロゴ */
-h1 {
-  margin: 0;
+  color: #666;
 }
 
 h1 img {
@@ -78,62 +47,84 @@ h1 img {
   -webkit-user-drag: none;
 }
 
-/* ナビゲーション */
-nav {
+/* 下段：黒＋淡い光 */
+header {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2px 60px;
+  background: rgba(0, 0, 0, 0.9);
+  backdrop-filter: blur(4px);
+  border-bottom: 1px solid var(--color-border-light);
+  box-shadow: 0 2px 16px var(--color-shadow-glow);
+  height: 68px;
+}
+
+/* ナビ中央 */
+.header-center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   align-items: center;
-  gap: 32px;
+  gap: 40px;
+  z-index: 2;
 }
 
 nav a {
-  color: var(--color-text-invert);
+  color: var(--color-text-main);
   text-decoration: none;
   font-weight: 500;
-  letter-spacing: .5px;
-  transition: opacity .3s;
+  letter-spacing: .6px;
+  transition: color .3s, text-shadow .3s;
 }
-
 nav a:hover {
-  opacity: .7;
+  color: var(--color-accent-purple);
+  text-shadow: 0 0 8px var(--color-accent-purple);
 }
 
-/* 検索・カートエリア */
+/* 検索・カート */
 .header-right {
   display: flex;
   align-items: center;
   gap: 28px;
 }
 
-/* 検索フォーム */
 .search-box {
   display: flex;
   align-items: center;
-  border: 1px solid var(--color-border-dark);
-  border-radius: 4px;
-  background: var(--color-bg-dark);
+  border: 1px solid var(--color-border-light);
+  border-radius: 6px;
+  background: var(--color-bg-glass);
   padding: 4px 10px;
+  transition: all 0.3s ease;
 }
-
+.search-box:focus-within {
+  border-color: var(--color-accent-purple);
+  box-shadow: 0 0 8px var(--color-shadow-glow);
+}
 .search-box input {
   padding: 6px 10px;
   border: none;
   background: transparent;
-  color: var(--color-text-invert);
+  color: var(--color-text-main);
   outline: none;
   width: 160px;
 }
-
 .search-box input::placeholder {
-  color: var(--color-text-sub);
-  font-size: 14px;
+  color: var(--color-text-dim);
 }
-
 .search-box button {
   border: none;
   background: none;
   cursor: pointer;
-  color: var(--color-bg-light);
+  color: var(--color-text-main);
   font-weight: bold;
+  transition: color 0.3s;
+}
+.search-box button:hover {
+  color: var(--color-accent-purple);
 }
 
 /* カートリンク */
@@ -141,15 +132,21 @@ nav a:hover {
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-decoration: none;
-  color: var(--color-text-invert);
+  color: var(--color-text-main);
   font-size: 13px;
-  font-weight: 500;
+  text-decoration: none;
+  transition: 0.3s;
 }
-
+.cart-link:hover {
+  color: var(--color-accent-purple);
+  text-shadow: 0 0 6px var(--color-accent-purple);
+}
 .cart-link img {
   width: 25px;
-  height: auto;
-  object-fit: contain;
+  height: 25px;
   margin-bottom: 4px;
+  transition: transform 0.3s;
+}
+.cart-link:hover img {
+  transform: scale(1.1);
 }
