@@ -37,7 +37,7 @@
 				    <button type="button"
 				            th:attr="data-item-id=${item.id}"
 				            class="favorite-btn"
-				            th:text="${item.favorite ? '★ お気に入り' : '☆ お気に入り'}">
+				            th:text="${isFavorite} ? '★ お気に入り' : '☆ お気に入り'">
 				    </button>
 				</div>
               </div>
