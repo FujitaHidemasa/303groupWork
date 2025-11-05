@@ -1,24 +1,31 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="ja"
-      th:fragment="base_layout(content, pageTitle)">
-<head>
-  <meta charset="UTF-8">
-  <title th:text="${pageTitle} ?: 'Voidr Official Store'"></title>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja" th:fragment="base_layout(content, pageTitle, extraCss)">
 
-  <!-- 共通CSSの読み込み -->
-  <link rel="stylesheet" th:href="@{/css/ec/main.css}">
-  <link rel="stylesheet" th:href="@{/css/ec/header.css}">
-  <link rel="stylesheet" th:href="@{/css/ec/footer.css}">
+<head>
+	<meta charset="UTF-8">
+	<title th:text="${pageTitle} ?: 'Voidr Official Store'"></title>
+
+	<!-- 共通CSSの読み込み -->
+	<link rel="stylesheet" th:href="@{/css/ec/main.css}">
+	<link rel="stylesheet" th:href="@{/css/ec/header.css}">
+	<link rel="stylesheet" th:href="@{/css/ec/footer.css}">
+
+	<!-- ページ固有CSSの読み込み（存在する場合のみ） -->
+	<th:block th:if="${extraCss != null}">
+		<th:block th:replace="${extraCss}"></th:block>
+	</th:block>
+
 </head>
 
 <body>
-  <!-- 共通ヘッダー -->
-  <div th:replace="fragments/header :: header"></div>
+	<!-- 共通ヘッダー -->
+	<div th:replace="fragments/header :: header"></div>
 
-  <!-- 各ページの内容がここに差し込まれます -->
-  <main th:replace="${content}"></main>
+	<!-- 各ページの内容がここに差し込まれます -->
+	<main th:replace="${content}"></main>
 
-  <!-- 共通フッター -->
-  <div th:replace="fragments/footer :: footer"></div>
+	<!-- 共通フッター -->
+	<div th:replace="fragments/footer :: footer"></div>
 </body>
+
 </html>

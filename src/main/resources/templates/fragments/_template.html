@@ -1,23 +1,39 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ja"
-      th:replace="layout/shop_base :: base_layout(~{::content}, 'ページタイトル')">
+	th:replace="layout/shop_base :: base_layout(~{::content}, 'ページタイトル')">
 
 <!--
   ============================================================
-   🧱 新規ページ作成用テンプレート
+   新規ページ作成用テンプレート
   ============================================================
    このファイルをコピーして名前を変更すれば、
    簡単に新しいページを作成できます。
 
    【使い方】
-     ① このファイルをコピーして、例：
-        → itemList.html / cart.html / about.html などにリネーム
-     ② ページタイトルを変更する（2行目の 'ページタイトル' 部分）
-     ③ <th:block> 内にページ固有のHTMLを記述してください。
+     ① ページタイトルを変更（2行目の 'ページタイトル'）
+     ② <th:block th:fragment="content"> 内にHTMLを書く
+	 ③ 必要に応じて「extraCss」ブロックで個別CSSを設定する
+		   ├ A. 個別CSSを使う → コメントアウトを外して <link> を記述
+		   └ B. 個別CSSが不要 → null の行をそのまま残す
 -->
 
-<th:block th:fragment="content">
-  <h2>ここにページ固有の内容を記述</h2>
-</th:block>
+<!--
+  ==========================================
+     ページ固有CSSの設定
+  ========================================== -->
+<th:block th:fragment="extraCss">
 
+	<!-- A. 個別CSSを使う場合（コメントアウトを外して使用） -->
+	<!-- <link rel="stylesheet" th:href="@{/css/ec/ファイル名.css}"> -->
+
+	<!-- B. 個別CSSが不要な場合（この行は削除しない） -->
+	<th:block th:remove="all">null（個別CSSなし）</th:block>
+
+</th:block>
+<!-- ==========================================
+     ページ本体の内容
+========================================== -->
+<th:block th:fragment="content">
+	<h2>ここにページ固有の内容を記述</h2>
+</th:block>
 </html>
