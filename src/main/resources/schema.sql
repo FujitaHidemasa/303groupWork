@@ -107,3 +107,18 @@ CREATE TABLE cart (
     is_hold BOOLEAN DEFAULT FALSE,
     updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
+
+-- -------------------------------
+-- お気に入りテーブル
+-- -------------------------------
+CREATE TABLE IF NOT EXISTS favorites (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES login_user(id) ON DELETE CASCADE,
+    item_id INTEGER REFERENCES item(id) ON DELETE CASCADE,
+    created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+
+-- 重複登録を防ぐ（1ユーザーが同じ商品を複数お気に入り登録できないように）
+--ALTER TABLE favorites
+--ADD CONSTRAINT unique_user_item UNIQUE (user_id, item_id);

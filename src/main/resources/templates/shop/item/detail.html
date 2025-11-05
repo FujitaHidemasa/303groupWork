@@ -33,6 +33,13 @@
 				<form th:action="@{/cart}" method="post">
 				  <button type="submit" class="cart-add-btn">カートに追加</button>
 				</form>
+				 <!-- お気に入りボタン -->
+				    <button type="button"
+				            th:attr="data-item-id=${item.id}"
+				            class="favorite-btn"
+				            th:text="${item.favorite ? '★ お気に入り' : '☆ お気に入り'}">
+				    </button>
+				</div>
               </div>
             </td>
           </tr>
@@ -138,6 +145,8 @@
 	  background-color: #21867a;
 	}
   </style>
+
+  <script th:src="@{/js/favorite.js}"></script>
 
 </th:block>
 </html>

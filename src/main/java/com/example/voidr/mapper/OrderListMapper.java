@@ -1,4 +1,4 @@
-package com.example.voidr.repository;
+package com.example.voidr.mapper;
 
 import java.util.List;
 
