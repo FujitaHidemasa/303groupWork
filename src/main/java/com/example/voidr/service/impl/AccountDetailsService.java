@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.voidr.entity.Account;
 import com.example.voidr.entity.Role;
-import com.example.voidr.mapper.AccountMapper;
+import com.example.voidr.repository.AccountMapper;
 import com.example.voidr.service.AccountService;
 
 import lombok.RequiredArgsConstructor;

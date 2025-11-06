@@ -1,4 +1,4 @@
-package com.example.voidr.mapper;
+package com.example.voidr.repository;
 
 import java.util.List;
 
@@ -14,4 +14,6 @@ public interface OrderListMapper {
 
     // 新しい購入履歴（注文リスト）を作成
     void insertOrderList(OrderList orderList);
+
+	OrderList findByUserName(String username);
 }

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.voidr.entity.Account;
 import com.example.voidr.entity.LoginUser;
-import com.example.voidr.mapper.AccountMapper;
+import com.example.voidr.repository.AccountMapper;
 
 import lombok.RequiredArgsConstructor;
 

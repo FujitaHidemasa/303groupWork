@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.voidr.entity.Order;
-import com.example.voidr.mapper.OrderMapper;
+import com.example.voidr.repository.OrderMapper;
 import com.example.voidr.service.OrderService;
 
 import lombok.RequiredArgsConstructor;
