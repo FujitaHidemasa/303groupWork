@@ -2,7 +2,10 @@
 <html lang="ja">
 <head>
 	<meta charset="utf-8">
-	<title>Weapon introduction（武器紹介）</title>
+	<title>VOIDR｜武器紹介</title>
+	<!-- ✅ 共通CSSを読み込み -->
+	  <link rel="stylesheet" th:href="@{/css/hpHeader.css}">
+	  
 	<meta name="description" content="FPSゲーム『VOIDR』の公式サイト。 近未来　4v4のチーム戦　キャラクター、マップ、武器、ストーリー等の情報をお届けします。">
 	<meta name="keywords" content="FPS,オンラインゲーム,VOIDR,アクション,シューティング">
 	<link rel="stylesheet" th:href="@{/css/weapon.css}">
@@ -10,7 +13,8 @@
 
 <body>
 <!-- ヘッダー -->
-<header>ヘッダー</header>
+<!-- ✅ 共通ヘッダーを読み込む -->
+<div th:replace="fragments/hpheader :: header"></div>
 <!-- ヘッダー END -->
 		
 <!-- 本文 -->
@@ -78,7 +82,7 @@
 <!-- 本文 END -->
 		
 <!-- フッター -->
-<footer>フッター</footer>
+<footer>© 2025 VOIDR All rights reserved.</footer>
 <!-- フッター END -->
 </body>
 </html>
