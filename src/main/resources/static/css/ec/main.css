@@ -92,3 +92,32 @@ a {
 a:hover {
 	opacity: 0.8;
 }
+
+/* -------------------------------
+   セクションタイトル共通デザイン
+   - 対象： LATEST UPDATES / POPULAR ITEMS など
+-------------------------------- */
+
+.section-title {
+	font-size: 1.4rem;
+	font-weight: 700;
+	background: var(--grad-accent);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	margin-bottom: 20px;
+	position: relative;
+	display: inline-block;
+	letter-spacing: 0.8px;
+	text-transform: uppercase;
+}
+
+.section-title::after {
+	content: "";
+	position: absolute;
+	bottom: -6px;
+	left: 0;
+	width: 60px;
+	height: 2px;
+	background: var(--grad-accent);
+	border-radius: 1px;
+}

@@ -1,0 +1,69 @@
+@charset "UTF-8";
+
+/* ===========================================
+   商品一覧ページ専用スタイル（itemList.css）
+   使用箇所：voidrshop/itemsなど
+   =========================================== */
+
+
+/* 商品一覧の全体グリッド */
+.product-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 36px 28px;
+  justify-items: center;
+  align-items: start;
+  margin: 40px auto 80px;
+  max-width: 1200px;
+  padding: 0 20px;
+}
+
+/* 各商品カード */
+.product-item {
+  width: 100%;
+  max-width: 240px;
+  background: linear-gradient(180deg, var(--color-bg-dark), #111118);
+  border: 1px solid var(--color-border-light);
+  border-radius: 10px;
+  box-shadow: 0 0 12px var(--color-shadow-strong);
+  text-align: center;
+  overflow: hidden;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* hover時の発光エフェクト */
+.product-item:hover {
+  border-color: var(--color-accent-purple);
+  box-shadow: 0 0 14px var(--color-shadow-glow);
+}
+
+/* 商品画像 */
+.product-item img {
+  width: 220px;
+  height: 220px;
+  object-fit: cover;
+  display: block;
+  border-bottom: 1px solid var(--color-border-thin);
+}
+
+/* 商品名リンク */
+.product-item a {
+  text-decoration: none;
+  color: var(--color-text-main);
+  display: block;
+  font-weight: 500;
+  line-height: 1.4;
+  padding: 10px 8px 6px;
+  transition: color 0.2s ease;
+}
+
+.product-item a:hover {
+  color: var(--color-text-accent);
+}
+
+/* 価格 */
+.product-item p {
+  color: var(--color-text-sub);
+  font-size: 0.95rem;
+  margin-bottom: 14px;
+}
