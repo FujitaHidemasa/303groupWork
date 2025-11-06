@@ -20,4 +20,6 @@ public interface FavoriteService {
 	
 	boolean toggleFavorite(Long userId, Long itemId);
 
+	// ★追加 11/06
+	boolean isFavorite(Long userId, Long itemId);
 }

@@ -3,7 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.example.voidr.mapper.FavoriteMapper">
+<mapper namespace="com.example.voidr.repository.FavoriteMapper">
 
   <!-- 結果マッピング -->
   <resultMap id="FavoriteMap" type="com.example.voidr.entity.Favorite">
