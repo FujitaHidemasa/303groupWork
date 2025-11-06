@@ -117,10 +117,12 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr th:each="cv : ${normalItems}">
-
-						<td><a href="productA.html"><img th:src="@{/image/{img}(img=${item.thumbsImageName})}"
-									onerror="this.onerror=null;this.src='/image/no_image.png';" alt="商品画像"></a>
+					<tr th:each="cv : ${cartItems}">
+						<td>
+							<a href="#">
+								<img th:src="@{/image/{img}(img=${cv.item.thumbsImageName})}"
+									onerror="this.onerror=null;this.src='/image/no_image.png';" alt="商品画像">
+							</a>
 						</td>
 						<td th:text="${cv.item.name}">商品名</td>
 						<td th:text="${cv.item.price}">価格</td>
@@ -128,19 +130,21 @@
 							<input type="number" th:value="${cv.cart.quantity}" min="1" style="width:60px;"
 								class="cart-quantity" th:data-id="${cv.cart.id}">
 						</td>
-
 						<td>
-							<button>削除</button>
-							<button>後で買う</button>
+							<form th:action="@{/voidrshop/cart/remove}" method="post">
+								<input type="hidden" name="cartId" th:value="${cv.cart.id}">
+								<button type="submit">削除</button>
+							</form>
 						</td>
 					</tr>
 				</tbody>
+
 			</table>
 
 			<div class="cart-actions">
 				<a th:href="@{/voidrshop/items}" class="btn btn-outline-secondary">買い物を続ける</a>
 				<div>
-					<strong>合計金額: ¥3,000</strong>
+					<strong>合計金額: ¥<span th:text="${total}">0</span></strong>
 					<button th:onclick="|location.href='@{/voidrshop/purchase}'|">購入画面へ進む</button>
 				</div>
 			</div>
