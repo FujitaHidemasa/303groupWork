@@ -14,5 +14,3 @@
         DELETE FROM item_category WHERE item_id = #{itemId}
     </delete>
 </mapper>
-
-

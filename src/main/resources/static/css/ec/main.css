@@ -7,15 +7,32 @@
 
 /* 共通カラー変数（全CSSで参照可能） */
 :root {
-	--color-bg-light: #121212;         /* メイン背景（純黒ではなく深灰） */
-	--color-bg-dark: #1c1c1c;          /* サブ背景やカード背景 */
-	--color-text-main: #eeeeee;        /* メイン文字：明るめの白灰 */
-	--color-text-sub: #aaaaaa;         /* サブ文字：少し抑えたグレー */
-	--color-text-invert: #000000;      /* 明るい要素上での文字用 */
-	--color-border-light: #2a2a2a;     /* 枠線・区切り線（明るすぎないグレー） */
-	--color-border-dark: #0a0a0a;      /* さらに深い区切り用 */
-	--color-shadow: rgba(0, 0, 0, .7); /* 陰影をやや強めに */
-	--color-accent: #8f7af0;           /* 元の水色からバランスを保った紫寄りの強調色 */
+  /* === ベースカラー === */
+  --color-bg-black: #000000;              /* 純黒（ベース） */
+  --color-bg-dark: #0d0d0f;               /* やや明るめの黒背景 */
+  --color-bg-glass: rgba(255, 255, 255, 0.05); /* ガラス調背景 */
+
+  /* === テキストカラー === */
+  --color-text-main: #f2f2f2;             /* メイン文字：明るい白 */
+  --color-text-sub: #dcdcdc;              /* サブ文字 */
+  --color-text-dim: #aaaaaa;              /* プレースホルダー・補助 */
+  --color-text-accent: #8f7af0;           /* アクセント用（リンク hoverなど） */
+
+  /* === アクセントカラー === */
+  --color-accent-blue: #7fc6ff;           /* 輝く青グラデーションの片側 */
+  --color-accent-purple: #8f7af0;         /* メインブランドカラー（紫） */
+  --color-accent-purple-light: #bfbfff;   /* 明るめリンク文字色 */
+  --color-accent-purple-deep: #3a2b6e;    /* 背景グラデ等に使用する深紫 */
+
+  /* === グラデーション === */
+  --grad-topbar: linear-gradient(90deg, #101018, #171730 60%, #1d1d3a);
+  --grad-accent: linear-gradient(90deg, var(--color-accent-blue), var(--color-accent-purple));
+
+  /* === 枠線・影 === */
+  --color-border-light: rgba(255, 255, 255, 0.1);
+  --color-border-thin: rgba(255, 255, 255, 0.05);
+  --color-shadow-strong: rgba(0, 0, 0, 0.6);
+  --color-shadow-glow: rgba(143, 122, 240, 0.3);
 }
 
 /* ============================================
@@ -40,11 +57,11 @@ html {
 
 body {
 	margin: 0;
-	padding-top: 120px;
+	padding-top: 100px;
 	/* 固定ヘッダー分の余白 */
 	font-family: "Noto Sans JP", "Segoe UI", "Helvetica Neue", sans-serif;
 	color: var(--color-text-main);
-	background-color: var(--color-bg-light);
+	background-color: var(--color-bg-black);
 	text-align: center;
 	overflow-x: hidden;
 }
@@ -74,4 +91,33 @@ a {
 
 a:hover {
 	opacity: 0.8;
+}
+
+/* -------------------------------
+   セクションタイトル共通デザイン
+   - 対象： LATEST UPDATES / POPULAR ITEMS など
+-------------------------------- */
+
+.section-title {
+	font-size: 1.4rem;
+	font-weight: 700;
+	background: var(--grad-accent);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	margin-bottom: 20px;
+	position: relative;
+	display: inline-block;
+	letter-spacing: 0.8px;
+	text-transform: uppercase;
+}
+
+.section-title::after {
+	content: "";
+	position: absolute;
+	bottom: -6px;
+	left: 0;
+	width: 60px;
+	height: 2px;
+	background: var(--grad-accent);
+	border-radius: 1px;
 }

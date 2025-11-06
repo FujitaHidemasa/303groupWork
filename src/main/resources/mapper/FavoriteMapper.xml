@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.voidr.mapper.FavoriteMapper">
+
+  <!-- 結果マッピング -->
+  <resultMap id="FavoriteMap" type="com.example.voidr.entity.Favorite">
+    <id property="id" column="id" />
+    <result property="userId" column="user_id" />
+    <result property="itemId" column="item_id" />
+    <result property="createdAt" column="created_at" />
+  </resultMap>
+
+  <!-- 指定ユーザーのお気に入り一覧取得 -->
+  <select id="findByUserId" parameterType="long" resultMap="FavoriteMap">
+    SELECT id, user_id, item_id, created_at
+    FROM favorite
+    WHERE user_id = #{userId}
+    ORDER BY created_at DESC
+  </select>
+
+  <!-- すでに登録されているか確認 -->
+  <select id="findByUserIdAndItemId" parameterType="map" resultMap="FavoriteMap">
+    SELECT id, user_id, item_id, created_at
+    FROM favorite
+    WHERE user_id = #{userId} AND item_id = #{itemId}
+  </select>
+
+  <!-- お気に入り追加 -->
+  <insert id="insertFavorite" parameterType="com.example.voidr.entity.Favorite"
+          useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO favorite (user_id, item_id, created_at)
+    VALUES (#{userId}, #{itemId}, NOW())
+  </insert>
+
+  <!-- お気に入り削除 -->
+  <delete id="deleteFavorite" parameterType="map">
+    DELETE FROM favorite
+    WHERE user_id = #{userId} AND item_id = #{itemId}
+  </delete>
+
+</mapper>

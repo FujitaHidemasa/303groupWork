@@ -121,8 +121,25 @@ CREATE TABLE cart (
     updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
+
+-- -------------------------------
+-- お気に入りテーブル
+-- -------------------------------
+CREATE TABLE IF NOT EXISTS favorites (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES login_user(id) ON DELETE CASCADE,
+    item_id INTEGER REFERENCES item(id) ON DELETE CASCADE,
+    created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
 -- ===============================
---  ユニーク制約
+--  11/05 追加制約（存在チェック付き）
 -- ===============================
-ALTER TABLE cart
-  ADD CONSTRAINT uq_cart_cartlist_item UNIQUE (cartlist_id, item_id);
+
+-- cart: 同じカートに同じ商品を重複追加できないようにする（何度実行しても安全）
+CREATE UNIQUE INDEX IF NOT EXISTS uq_cart_cartlist_item
+  ON cart (cartlist_id, item_id);
+
+-- favorites: 同じ商品の重複お気に入りを防止（任意）
+CREATE UNIQUE INDEX IF NOT EXISTS uq_favorites_user_item
+  ON favorites (user_id, item_id);

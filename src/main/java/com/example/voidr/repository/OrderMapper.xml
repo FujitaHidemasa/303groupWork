@@ -1,51 +1,51 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--<?xml version="1.0" encoding="UTF-8"?>-->
+<!--<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"-->
+<!--  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">-->
 
-<mapper namespace="com.example.voidr.repository.OrderMapper">
+<!--<mapper namespace="com.example.voidr.repository.OrderMapper">-->
 
-	<!-- ========================================================= -->
-	<!-- 購入履歴一覧取得（注文リストIDに紐づく注文一覧＋商品情報） -->
-	<!-- ========================================================= -->
-	<select id="findByOrderListId" parameterType="long"
-		resultType="com.example.voidr.entity.Order">
-		SELECT
-		o.id AS id,
-		o.order_list_id AS orderListId,
-		o.item_id AS itemId,
-		o.is_hold AS isHold,
-		o.created_at AS createdAt,
-		i.name AS itemName,
-		i.thumbs_image_name AS imageName,
-		i.price AS price,
-		oi.quantity AS quantity
-		FROM "order" o
-		LEFT JOIN order_item oi ON o.id =
-		oi.order_id
-		LEFT JOIN item i ON o.item_id = i.id
-		WHERE o.order_list_id =
-		#{orderListId}
-		ORDER BY o.id DESC
-	</select>
+<!--	 ========================================================= -->
+<!--	 購入履歴一覧取得（注文リストIDに紐づく注文一覧＋商品情報） -->
+<!--	 ========================================================= -->
+<!--	<select id="findByOrderListId" parameterType="long"-->
+<!--		resultType="com.example.voidr.entity.Order">-->
+<!--		SELECT-->
+<!--		o.id AS id,-->
+<!--		o.order_list_id AS orderListId,-->
+<!--		o.item_id AS itemId,-->
+<!--		o.is_hold AS isHold,-->
+<!--		o.created_at AS createdAt,-->
+<!--		i.name AS itemName,-->
+<!--		i.thumbs_image_name AS imageName,-->
+<!--		i.price AS price,-->
+<!--		oi.quantity AS quantity-->
+<!--		FROM "order" o-->
+<!--		LEFT JOIN order_item oi ON o.id =-->
+<!--		oi.order_id-->
+<!--		LEFT JOIN item i ON o.item_id = i.id-->
+<!--		WHERE o.order_list_id =-->
+<!--		#{orderListId}-->
+<!--		ORDER BY o.id DESC-->
+<!--	</select>-->
 
-	<!-- ========================================================= -->
-	<!-- 注文の新規登録 -->
-	<!-- ========================================================= -->
-	<insert id="insertOrder"
-		parameterType="com.example.voidr.entity.Order" useGeneratedKeys="true"
-		keyProperty="id">
-		INSERT INTO "order" (
-		order_list_id,
-		item_id,
-		is_hold,
-		created_at
-		)
-		VALUES (
-		#{orderListId},
-		#{itemId},
-		#{isHold},
-		CURRENT_TIMESTAMP
-		)
-	</insert>
+<!--	 ========================================================= -->
+<!--	 注文の新規登録 -->
+<!--	 ========================================================= -->
+<!--	<insert id="insertOrder"-->
+<!--		parameterType="com.example.voidr.entity.Order" useGeneratedKeys="true"-->
+<!--		keyProperty="id">-->
+<!--		INSERT INTO "order" (-->
+<!--		order_list_id,-->
+<!--		item_id,-->
+<!--		is_hold,-->
+<!--		created_at-->
+<!--		)-->
+<!--		VALUES (-->
+<!--		#{orderListId},-->
+<!--		#{itemId},-->
+<!--		#{isHold},-->
+<!--		CURRENT_TIMESTAMP-->
+<!--		)-->
+<!--	</insert>-->
 
-</mapper>
+<!--</mapper>-->
