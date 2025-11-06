@@ -3,6 +3,7 @@
 -- ===============================
 DROP TABLE IF EXISTS cart CASCADE;
 DROP TABLE IF EXISTS cart_list CASCADE;
+DROP TABLE IF EXISTS order_item CASCADE;
 DROP TABLE IF EXISTS "order" CASCADE;
 DROP TABLE IF EXISTS order_list CASCADE;
 DROP TABLE IF EXISTS item CASCADE;
@@ -12,12 +13,13 @@ DROP TABLE IF EXISTS item_image CASCADE;
 DROP TYPE IF EXISTS role CASCADE;
 
 -- ===============================
---  テーブル作成
+--  ENUM型定義（権限）
 -- ===============================
-
--- 権限用のENUM型
 CREATE TYPE role AS ENUM ('ADMIN', 'USER');
 
+-- ===============================
+--  ユーザーテーブル
+-- ===============================
 CREATE TABLE login_user (
     id SERIAL PRIMARY KEY,
     username VARCHAR(50) NOT NULL UNIQUE,   -- ログインID
@@ -31,9 +33,9 @@ CREATE TABLE login_user (
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- -------------------------------
--- 商品テーブル
--- -------------------------------
+-- ===============================
+--  商品テーブル
+-- ===============================
 CREATE TABLE item (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
@@ -44,27 +46,28 @@ CREATE TABLE item (
     created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
--- -------------------------------
--- 商品カテゴリーテーブル
--- -------------------------------
+
+-- ===============================
+--  商品カテゴリーテーブル
+-- ===============================
 CREATE TABLE item_category (
     id SERIAL PRIMARY KEY,
     item_id BIGINT REFERENCES item(id) ON DELETE CASCADE,
-    category text NOT NULL
+    category TEXT NOT NULL
 );
 
--- -------------------------------
--- 商品画像テーブル
--- -------------------------------
+-- ===============================
+--  商品画像テーブル
+-- ===============================
 CREATE TABLE item_image (
     id SERIAL PRIMARY KEY,
     item_id BIGINT REFERENCES item(id) ON DELETE CASCADE,
-    image_name text NOT NULL
+    image_name TEXT NOT NULL
 );
 
--- -------------------------------
--- 購入履歴リスト
--- -------------------------------
+-- ===============================
+--  購入履歴リスト（注文全体の単位）
+-- ===============================
 CREATE TABLE order_list (
     id SERIAL PRIMARY KEY,
     user_id INTEGER REFERENCES login_user(id) ON DELETE CASCADE,
@@ -72,33 +75,43 @@ CREATE TABLE order_list (
     updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
--- -------------------------------
--- 購入履歴
--- -------------------------------
+-- ===============================
+--  購入履歴（個々の注文レコード）
+-- ===============================
 CREATE TABLE "order" (
     id SERIAL PRIMARY KEY,
-    orderlist_id INTEGER REFERENCES order_list(id) ON DELETE CASCADE,
+    order_list_id INTEGER REFERENCES order_list(id) ON DELETE CASCADE,
     item_id INTEGER REFERENCES item(id) ON DELETE CASCADE,
-    state VARCHAR(50),
+    is_hold BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
--- -------------------------------
--- カートリスト
--- -------------------------------
+-- ===============================
+--  購入履歴詳細（注文ごとの商品情報）
+-- ===============================
+CREATE TABLE order_item (
+    id SERIAL PRIMARY KEY,
+    order_id INTEGER REFERENCES "order"(id) ON DELETE CASCADE,
+    item_id INTEGER REFERENCES item(id) ON DELETE CASCADE,
+    price INTEGER NOT NULL,
+    quantity INTEGER NOT NULL DEFAULT 1,
+    created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- ===============================
+--  カートリスト（ユーザーごとのカート）
+-- ===============================
 CREATE TABLE cart_list (
     id SERIAL PRIMARY KEY,
-
     user_id INTEGER REFERENCES login_user(id) ON DELETE CASCADE,
-
     is_login_user BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
--- -------------------------------
--- カート
--- -------------------------------
+-- ===============================
+--  カート（カート内の商品）
+-- ===============================
 CREATE TABLE cart (
     id SERIAL PRIMARY KEY,
     cartlist_id INTEGER REFERENCES cart_list(id) ON DELETE CASCADE,
@@ -109,7 +122,23 @@ CREATE TABLE cart (
 );
 
 -- -------------------------------
--- 11/04 DB にユニーク制約
+-- お気に入りテーブル
 -- -------------------------------
-ALTER TABLE cart
-  ADD CONSTRAINT uq_cart_cartlist_item UNIQUE (cartlist_id, item_id);
+CREATE TABLE IF NOT EXISTS favorites (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES login_user(id) ON DELETE CASCADE,
+    item_id INTEGER REFERENCES item(id) ON DELETE CASCADE,
+    created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- ===============================
+--  11/05 追加制約（存在チェック付き）
+-- ===============================
+
+-- cart: 同じカートに同じ商品を重複追加できないようにする（何度実行しても安全）
+CREATE UNIQUE INDEX IF NOT EXISTS uq_cart_cartlist_item
+  ON cart (cartlist_id, item_id);
+
+-- favorites: 同じ商品の重複お気に入りを防止（任意）
+CREATE UNIQUE INDEX IF NOT EXISTS uq_favorites_user_item
+  ON favorites (user_id, item_id);
