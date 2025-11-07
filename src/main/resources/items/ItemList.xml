@@ -4,7 +4,7 @@
 	<item id="1">
 	
 	<!-- 商品名 -->
-		<name>DOIDR アクリルスタンド</name>
+		<name>VOIDR アクリルスタンド</name>
 		
 		<!-- サムネイル画像のファイル名 -->
 		<thumbs>acrylicstand.png</thumbs>
@@ -17,7 +17,11 @@
 		
 		<!-- 商品の説明や概要 -->
 		<overview>
-			キャラクターの全身とヴォイド・エッセンスの渦・光を表現。廃墟都市モチーフの台座は連結可能でコレクション性抜群。
+			「ヴォイドの力をその手に。」
+			キャラクターの存在感を最大限に引き出した、ファン必携のアクリルスタンド。
+			背景には“ヴォイドエネルギー”をイメージした透明グラデーション加工を施し、角度によって光が反射するたびに世界観が広がります。
+			デスクや棚に飾るだけで、あなたの空間が“VOIDR”の一部に。
+			限定生産仕様で、ファンの情熱を形にしたコレクタブルアイテムです。
 		</overview>
 		
 		<!-- 商品のカテゴリリスト -->
@@ -32,12 +36,18 @@
 		</images>
 
 	</item>
+	
 	<item id="2">
 		<name>オペレーション・ロゴ アクリルキーホルダー</name>
-		<thumbs>keyring.png</thumbs>
+		<thumbs>アクリルキーホルダー.jpg</thumbs>
 		<isDownload>false</isDownload>
 		<price>660</price>
-		<overview>国旗＋役職アイコンで構成されたエンブレム風デザイン。小動物系キャラはちびキャラ化で可愛く展開。</overview>
+		<overview>「任務の証を、日常に。」
+			VOIDRの作戦部隊ロゴを大胆にあしらった、ファン限定アクリルキーホルダー。
+			厚みのあるクリア素材にレーザー刻印を施し、光の角度でロゴが浮かび上がる特別仕様。
+			バッグや鍵に付ければ、いつでも“作戦（オペレーション）”の一員であることを感じられます。
+			手に取るたび、あなたの中の“VOIDR”が共鳴する、コレクターズアイテム。
+		</overview>
 		<categories>
 			<category>アクリル</category>
 			<category>キーホルダー</category>
@@ -45,7 +55,6 @@
 		<images>
 			<image></image>
 		</images>
-
 	</item>
 
 	<item id="3">
@@ -53,7 +62,11 @@
 		<thumbs>keychain.png</thumbs>
 		<isDownload>false</isDownload>
 		<price>660</price>
-		<overview>カイの電撃能力をイメージした、稲妻型のメタル製キーチェーン。ヴォイド・エッセンスの紫色の光を放つデザイン。
+		<overview>「スパークの閃光を、ポケットに携えて。」
+			カイ・スパーク リチャーズの象徴である“電撃エネルギー”をモチーフにした、特製アクリルキーチェーン。
+			クリア素材の内部に稲妻模様をプリントし、見る角度によって光が走るような仕上がりに。
+			裏面にはカイのサインをイメージした刻印が入り、ファンだけが手にできる限定仕様。
+			日常のキーアイテムが、彼と共に戦う証に変わる。——その瞬間、あなたの手の中で閃光が走る。
 		</overview>
 		<categories>
 			<category>アクリル</category>
@@ -65,11 +78,56 @@
 	</item>
 
 	<item id="4">
-		<name>ヴォイド・リフト 缶バッジ</name>
-		<thumbs>badge.png</thumbs>
+		<name>ヴォルフ 缶バッジ</name>
+		<thumbs>ヴォルフ缶バッジ.jpg</thumbs>
 		<isDownload>false</isDownload>
 		<price>550</price>
-		<overview>背景に紫の亀裂や変異体の影を入れ、世界観を強調。ランダムトレーディング仕様で収集欲を刺激。</overview>
+		<overview>「その背中が、戦線を支える。」
+			VOIDRの世界で象徴的な“リフトエネルギー”をテーマにデザインされた、プレミアム缶バッジ。
+			メタリック光沢の特殊印刷により、角度によって渦のような光が流れ、まるでヴォイドが脈動しているかのよう。
+
+			防御の要《ヴォルフ・ヴァイスマン》を象徴する、重厚で静かな存在感を放つ缶バッジ。
+			背景はスチールグレーと深青のツートーンで構成され、
+			彼の冷静な判断力と鉄壁の守備を表現。
+			中央には盾の紋章とともに、ヴォルフの横顔シルエットをエンボス調デザインで配置。
+
+			表面はセミマット加工により、光を吸い込むような落ち着いた質感。
+			縁にはドイツ語で刻まれた「Ehre und Pflicht（名誉と義務）」の文字が走り、
+			まさに“守護の信念”を胸に宿すファンのための一点。
+			カバンやジャケットに付ければ、あなたもヴォイドの力を解放する一員に。
+
+			——戦場で仲間を守る、その姿を永遠に刻む。
+			ヴォルフの誇りと覚悟を象徴するコレクターズバッジ。
+		</overview>
+		<categories>
+			<category>缶バッジ</category>
+		</categories>
+		<images>
+			<image></image>
+		</images>
+	</item>
+	
+	<item id="5">
+		<name>フドウ缶バッジ</name>
+		<thumbs>フドウ缶バッジ.jpg</thumbs>
+		<isDownload>false</isDownload>
+		<price>550</price>
+		<overview>「その眼差しが、仲間を守る。」
+			VOIDRの世界で象徴的な“リフトエネルギー”をテーマにデザインされた、プレミアム缶バッジ。
+			メタリック光沢の特殊印刷により、角度によって渦のような光が流れ、まるでヴォイドが脈動しているかのよう。
+
+			獣人戦士《フドウ》を象徴する“力と絆”をテーマにした、ファン必携の缶バッジ。
+			重厚なグレイッシュシルバーの背景に、彼の鋭い眼光と部族紋章を重ねた二層デザインを採用。
+			光の角度によって紋章がうっすら浮かび上がるマットメタリック加工が施され、
+			まるでフドウ自身の“静かな闘志”が宿っているかのような存在感を放つ。
+
+			縁には「LOYAL FANG（忠義の牙）」の英字を刻印風にデザインし、
+			ファンなら一目で“守護の象徴”とわかる仕上がりに。
+			カバンやジャケットに着けるだけで、頼もしさと誇りを感じられるアイテム。
+
+			——沈黙の中に力を秘める者、その名はフドウ。
+			仲間を想う心を、胸に灯して。"
+		</overview>
 		<categories>
 			<category>缶バッジ</category>
 		</categories>
@@ -78,12 +136,17 @@
 		</images>
 	</item>
 
-	<item id="5">
+	<item id="6">
 		<name>コードネーム ラバーキーホルダー</name>
 		<thumbs>rubberkeychain.png</thumbs>
 		<isDownload>false</isDownload>
 		<price>880</price>
-		<overview>「AGENT-K（カイト）」のようなコードネーム＋役職アイコンを英字デザイン。柔らかいシリコン素材で実用的。
+		<overview>「その名は、仲間だけが知る。」
+			キャラクターの“コードネーム”を大胆にデザインした、ファン限定ラバーキーホルダー。
+			マットな質感のシリコン素材に、立体的なエンボス加工で存在感をプラス。
+			触れるたびに感じるのは、あの戦場の緊張感と、チームの絆。
+			カバンや鍵に付ければ、あなただけの識別コードが光る。
+			——それは、VOIDRファンの証であり、共に戦う者の印。
 		</overview>
 		<categories>
 			<category>キーホルダー</category>
@@ -93,13 +156,39 @@
 			<image></image>
 		</images>
 	</item>
+	
+	<item id="35">
+		<name>VOIDR エンブレムバッジ</name>
+		<thumbs>エンブレムバッジ.jpg</thumbs>
+		<isDownload>false</isDownload>
+		<price>880</price>
+		<overview>所属”を示す、唯一無二の証。
+			VOIDRの公式エンブレムを立体成形した、ファン限定メタルバッジ。
+			重厚感あるブラックメタルに、ネオングリーンのラインが静かに輝くデザイン。
+			ジャケットやバッグに装着すれば、まるで任務中のエージェントのような存在感を放つ。
+			裏面にはシリアルナンバー刻印入り。
+			「VOIDR」チームの一員であることを示す、特別な証明アイテム。
+		</overview>
+		<categories>
+			<category>バッジ</category>
+			<category>バッジ</category>
+		</categories>
+		<images>
+			<image></image>
+		</images>
+	</item>
 
-	<item id="6">
+	<item id="7">
 		<name>界守の斬鋼刀 モチーフ Tシャツ</name>
 		<thumbs>t-shirt.png</thumbs>
 		<isDownload>false</isDownload>
 		<price>4400</price>
-		<overview>颯太の刀やラジャの炎紋をモノクロデザインで配置。和モダン×エスニック調で日常使い可能なスタイリッシュウェア。
+		<overview>「その刃は、決意の象徴。」
+			界守が振るう“斬鋼刀”をモチーフにデザインした、ファン限定Tシャツ。
+			フロントには刀身を抽象化したラインアートを、バックには界守の決意を刻むコードフレーズをプリント。
+			シルバーインクが光を受けて鋭く輝き、戦場での緊張感を纏う仕上がりに。
+			普段使いでもスタイリッシュに映えるデザインでありながら、着る者だけが知る“誓い”を秘めた一枚。
+			——それは、界守と同じ覚悟を胸に戦う者のユニフォーム。
 		</overview>
 		<categories>
 			<category>アパレル</category>
@@ -110,12 +199,100 @@
 		</images>
 	</item>
 
-	<item id="7">
+	<item id="32">
+		<name>ロゴキャップ</name>
+		<thumbs>ロゴキャップ.jpg</thumbs>
+		<isDownload>false</isDownload>
+		<price>3000</price>
+		<overview>「日常に、戦場の意志を。」
+			ゲーム《VOIDR》の世界観を象徴する公式ロゴをあしらった、
+			ファン限定のストリートキャップ。
+
+			フロントには立体刺繍で浮かび上がるVOIDRロゴを配置。
+			刺繍糸には光を反射するリフレクティブ素材を使用し、
+			暗がりでもさりげなく光る“存在感”を演出。
+
+			ボディはマットな質感のブラックツイル生地で仕立て、
+			ツバ裏にはゲームの世界観をイメージしたコードパターンプリントを隠しデザインとして採用。
+			バックには調整用のメタルバックルと、
+			「VOIDR OPERATIONS」タグをワンポイントで配置。
+			
+			タウンユースにも合わせやすく、
+			戦闘服のような無骨さとストリートの抜け感を両立したアイテム。
+			——あなたの“日常装備”に、VOIDRの魂を。
+		</overview>
+		<categories>
+			<category>アパレル</category>
+			<category>キャップ</category>
+		</categories>
+		<images>
+			<image></image>
+		</images>
+	</item>
+	
+	<item id="33">
+		<name>キャラキャップ</name>
+		<thumbs>キャラキャップ.jpg</thumbs>
+		<isDownload>false</isDownload>
+		<price>3000</price>
+		<overview>「推しの“意志”を、かぶる。」
+			《VOIDR》に登場する各エージェントの個性と能力をテーマにした、
+			ファン必携のキャラクターキャップシリーズ。
+			
+			フロントにはキャラごとに異なる象徴アイコン（紋章・スキルマーク・コードネームロゴ）を立体刺繍で配置。
+			ベースカラーはキャラクターの属性カラーに合わせたツートーン仕様。
+			ツバ裏にはそれぞれの決め台詞やエンブレムを隠しプリントとしてデザインし、
+			見えない部分まで“推しらしさ”を表現。
+			
+			バックのタグには「VOIDR AGENT ID」デザインがあしらわれ、
+			コレクションとして並べても映える仕上がり。
+			軽量かつ耐久性のある素材を使用し、普段使いにも最適。
+			
+			——戦場でも、日常でも。
+			あなたの信じるエージェントと共に歩め。
+		</overview>
+		<categories>
+			<category>アパレル</category>
+			<category>キャップ</category>
+		</categories>
+		<images>
+			<image></image>
+		</images>
+	</item>
+	
+	<item id="34">
+		<name>VOIDR OFFICIAL ロゴTシャツ</name>
+		<thumbs>ロゴTシャツ.jpg</thumbs>
+		<isDownload>false</isDownload>
+		<price>4400</price>
+		<overview>「VOIDR」の象徴を、日常に纏う。
+			公式ロゴを胸元に配した、シンプルながら存在感のあるファン限定Tシャツ。
+			マットブラックの生地にネオンホワイトのロゴが浮かび上がり、光の角度でわずかに輝く仕様。
+			袖口にはVOIDRの識別コードを刻印し、“公式エージェント”としての証をデザイン。
+			ゲームの世界観をそのまま現実に投影した、ファン必携の限定モデル。
+		</overview>
+		<categories>
+			<category>アパレル</category>
+			<category>Tシャツ</category>
+		</categories>
+		<images>
+			<image></image>
+		</images>
+	</item>
+	
+
+	<item id="8">
 		<name>変異体警戒エリア マグカップ</name>
 		<thumbs>Magucup.png</thumbs>
 		<isDownload>false</isDownload>
 		<price>2500</price>
-		<overview>立入禁止や警告マークを大胆に配置。カップ底にナイトメアやヴァルナーの影を薄くプリントして演出。</overview>
+		<overview>「警戒を怠るな。その一杯が、任務の始まりだ。」
+			VOIDR世界の危険地帯“変異体警戒エリア”をテーマにした、ファン限定マグカップ。
+			警戒テープをモチーフにしたデザインがぐるりと巻かれ、持ち手には注意コードを刻印。
+			温かい飲み物を注ぐと、隠された“警告メッセージ”が浮かび上がる特殊プリント仕様。
+			ゲームの緊張感を、日常のブレイクタイムでも体感できる一品。
+			——そのマグを手にする者は、すでにVOIDRの監視下にある。
+		</overview>
 		<categories>
 			<category>生活雑貨</category>
 			<category>マグカップ</category>
@@ -125,12 +302,17 @@
 		</images>
 	</item>
 
-	<item id="8">
+	<item id="9">
 		<name>シグナル・デバイス型ポーチ</name>
 		<thumbs>pouch.png</thumbs>
 		<isDownload>false</isDownload>
 		<price>3300</price>
-		<overview>通信機器やトラップ装置をモチーフにしたメカ風デザイン。モバイルバッテリーケースや小物入れとして便利。
+		<overview>「通信は常に確保せよ。任務はここから始まる。」
+			VOIDRの戦術通信機“シグナル・デバイス”を再現した、ファン限定ポーチ。
+			マットな質感のボディに、メカ的なラインと発光インジケータ風デザインをプリント。
+			ファスナー部分には小型アンテナモチーフのチャームを採用し、細部まで世界観を追求。
+			ガジェットや小物を収納すれば、まるで本物の装備を携帯しているかのよう。
+			——これを持つ者は、VOIDR通信網の一員。あなたの信号を、世界が受信する。
 		</overview>
 		<categories>
 			<category>生活雑貨</category>
@@ -141,12 +323,18 @@
 		</images>
 	</item>
 
-	<item id="9">
+	<item id="10">
 		<name>エージェントIDカード風パスケース</name>
 		<thumbs>passcase.png</thumbs>
 		<isDownload>false</isDownload>
 		<price>2200</price>
-		<overview>隊員IDカードをリアル再現。顔・コードネーム入りでスマホ裏やICカードケースに最適。</overview>
+		<overview>「そのカードが、あなたの正体を証明する。」
+			VOIDRエージェント公式認証デザインを再現した、ファン限定パスケース。
+			高品質PVCレザーにホログラム加工を施し、光の角度でセキュリティコードが浮かび上がる特別仕様。
+			表面には所属部隊ロゴと個人コードを刻印、裏面にはクリア窓付きポケットを配置。
+			日常使いの中に、極秘任務の緊張感を感じられる一品。
+			——このIDを携えし者こそ、VOIDRに認められた正式エージェント。
+		</overview>
 		<categories>
 			<category>生活雑貨</category>
 			<category>パスケース</category>
@@ -156,12 +344,17 @@
 		</images>
 	</item>
 
-	<item id="10">
+	<item id="11">
 		<name>キャラクターアート B2タペストリー</name>
 		<thumbs>tapestry.png</thumbs>
 		<isDownload>false</isDownload>
 		<price>2000</price>
-		<overview>アップロードされた美麗なキャラクタービジュアルをそのまま活かしたタペストリー。特にエコーやヴァルナーなどの神秘的・異形なアートは、部屋に飾ることで世界観への没入感を高めます。
+		<overview>「その瞬間、彼らはここにいる。」
+			VOIDRのキャラクターたちを迫力のB2サイズで描き下ろした、ファン限定タペストリー。
+			布地には高発色スエードを採用し、衣装の質感や光の反射まで緻密に再現。
+			背景にはキャラごとの“ヴォイドエネルギー”が揺らめき、見る角度によって世界が動き出すような臨場感を演出。
+			部屋に飾れば、あなたの空間がそのまま作戦ブリーフィングルームに。
+			——ファンのためだけに描かれた、永遠に色褪せない一枚。
 		</overview>
 		<categories>
 			<category>生活雑貨</category>
@@ -171,13 +364,61 @@
 			<image></image>
 		</images>
 	</item>
+	
+	<item id="36">
+		<name>VOIDR エコバッグ</name>
+		<thumbs>エコバッグ.jpg</thumbs>
+		<isDownload>false</isDownload>
+		<price>2000</price>
+		<overview>任務帰還後も、VOIDRと共に。
+			VOIDR公式ロゴをワンポイントで配した、ファン限定仕様のエコバッグ。
+			マットブラックのボディにネオンラインを走らせ、近未来的なデザインに仕上げました。
+			折りたためばコンパクトに収納可能。展開すれば、作戦用ギアさながらの大容量サイズ。
+			日常使いの中でも、さりげなくVOIDRの世界観を感じられるアイテムです。
+			“持っているだけでエージェント気分になれる”、限定生産モデル。
+		</overview>
+		<categories>
+			<category>生活雑貨</category>
+			<category>エコバッグ</category>
+		</categories>
+		<images>
+			<image></image>
+		</images>
+	</item>
+	
+	<item id="38">
+		<name>VOIDR ワイヤレスチャージャー</name>
+		<thumbs>ワイヤレス充電器.jpg</thumbs>
+		<isDownload>false</isDownload>
+		<price>3300</price>
+		<overview>「VOID」の力を、デバイスに宿す。
+			VOIDR公式ロゴを中央に配した、ファン限定のワイヤレス充電デバイス。
+			充電中にはロゴが淡く発光し、まるで“VOIDエネルギー”が流れ込むかのような演出を再現。
+			マットブラックのボディにメタリックラインを走らせ、デスク上でも存在感を放つデザイン。
+			TYPE-C対応・急速充電仕様で、実用性も抜群。
+			任務の合間に、あなたのデバイスを補給する公式ギア。
+		</overview>
+		<categories>
+			<category>生活雑貨</category>
+			<category>充電器</category>
+			<category>バッテリー</category>
+		</categories>
+		<images>
+			<image></image>
+		</images>
+	</item>
 
-	<item id="11">
+	<item id="12">
 		<name>リリアの「制御」ペンダント</name>
 		<thumbs>pendant.png</thumbs>
 		<isDownload>false</isDownload>
 		<price>3300</price>
-		<overview>ヴォイド・エッセンスを制御する力の象徴。シンプルかつ上品で日常使いできるデザイン。</overview>
+		<overview>「心を鎮め、力を解き放つ——」
+			リリアが身に着ける“制御装置”をモチーフにデザインされた、ファン限定ペンダント。
+			中央には淡く光を反射するクリスタルガラスを配置し、彼女の内に秘めたエネルギーの均衡を象徴。
+			チェーンには繊細な装飾を施し、どんなスタイルにも溶け込む上品な仕上がりに。
+			身に着けるたび、リリアの静かな意志と共鳴するような感覚を覚える——。
+			それは、彼女の“制御”を共に背負うファンだけに許された証。</overview>
 		<categories>
 			<category>アクセサリー</category>
 			<category>ペンダント</category>
@@ -187,12 +428,17 @@
 		</images>
 	</item>
 
-	<item id="12">
+	<item id="13">
 		<name>ヴォイド・エッセンス ボトル</name>
 		<thumbs>essencebottle.png</thumbs>
 		<isDownload>false</isDownload>
 		<price>3000</price>
-		<overview>紫〜青グラデーションの液体入り試験管／フラスコ型インテリア。幻想的なハーバリウム風。</overview>
+		<overview>「ヴォイドの鼓動を、この手に。」
+			VOIDRの根源的エネルギー“ヴォイド・エッセンス”をイメージした、ファン限定コレクションボトル。
+			内部には淡く揺らめく液体と光反射粒子を封入し、傾けるたびに異界の輝きが流れるような幻想的な仕上がりに。
+			ラベルにはシリーズロゴと識別コードを刻印し、実験記録を思わせるデザインを採用。
+			棚に飾るだけで、まるで研究施設の一角を再現したかのような没入感を演出。
+			——それは、ファンだけが触れることを許された“ヴォイドの欠片”。</overview>
 		<categories>
 			<category>インテリア</category>
 			<category>ハーバリウム</category>
@@ -202,12 +448,18 @@
 		</images>
 	</item>
 
-	<item id="13">
+	<item id="14">
 		<name>フドウの痕跡 ブランケット</name>
 		<thumbs>blanket.png</thumbs>
 		<isDownload>false</isDownload>
 		<price>12000</price>
-		<overview>オオカミの毛並み風フェイクファー素材で極寒の荒野を再現。野営気分を味わえるアイテム。</overview>
+		<overview>「その温もりの中に、戦いの残響を。」
+			フドウが戦場を歩んだ“痕跡”をテーマにした、ファン限定ブランケット。
+			表面には彼の背中を象徴する炎の紋章を大胆にデザインし、裏面は柔らかなフリース素材で仕上げた二重構造。
+			赤と黒のグラデーションが、静かな闘志と燃える決意を表現。
+			膝に掛ければ、まるでフドウの力強い気配に包まれているかのような安心感を覚える。
+			——それは、戦士の熱を受け継ぐ者だけに許された“ぬくもりの証”。
+		</overview>
 		<categories>
 			<category>生活雑貨</category>
 			<category>ブランケット</category>
@@ -217,12 +469,18 @@
 		</images>
 	</item>
 
-	<item id="14">
+	<item id="15">
 		<name>ドール・ゼロ・ワン 1/12スケールモデル</name>
 		<thumbs>zero-one doll.png</thumbs>
 		<isDownload>false</isDownload>
 		<price>6000</price>
-		<overview>ブレードや武装を精密再現した可動フィギュア。メカデザイン重視のハイクオリティ仕様。</overview>
+		<overview>「目を覚ませ、ゼロ・ワン。」
+			VOIDR世界で開発された人型兵器《ドール・ゼロ・ワン》を精密再現した、1/12スケールコレクションモデル。
+			メカニカルな関節構造と有機的なフォルムの対比を徹底追求し、細部の配線やマーキングまで忠実に再現。
+			マット加工の装甲パーツは、光の角度によってわずかに色調が変化する特別塗装仕様。
+			専用台座にはシリアルナンバーとVOIDRロゴが刻まれ、コレクションとしての存在感を放つ。
+			——ただのフィギュアではない。これは、“覚醒前”のゼロ・ワンを手にする者への招待状。
+		</overview>
 		<categories>
 			<category>フィギュア</category>
 		</categories>
@@ -231,27 +489,17 @@
 		</images>
 	</item>
 
-	<item id="15">
+	<item id="16">
 		<name>ピコのふわふわぬいぐるみ</name>
 		<thumbs>pikonui.png</thumbs>
 		<isDownload>false</isDownload>
 		<price>3300</price>
-		<overview>ピコの小動物型精霊の可愛らしさを最大限に活かした、ふわふわの手触りのぬいぐるみ。特徴的な羽や、胸元の光るコアも再現します。
-		</overview>
-		<categories>
-			<category>ぬいぐるみ</category>
-		</categories>
-		<images>
-			<image></image>
-		</images>
-	</item>
-
-	<item id="16">
-		<name>エコーの自然精霊ぬいぐるみ</name>
-		<thumbs>ekonui.png</thumbs>
-		<isDownload>false</isDownload>
-		<price>3300</price>
-		<overview>エコーの自然霊としての神秘的な姿を、可愛らしくデフォルメしたぬいぐるみ。葉っぱの髪や蔓の体が特徴です。
+		<overview>「その笑顔、あなたの隣に。」
+			VOIDRのサポートドローン《ピコ》をモチーフにした、ファン限定ふわふわぬいぐるみ。
+			柔らかく弾力のあるボディと、触れるたびに癒やされる極上の手触りが特徴。
+			瞳部分には光沢刺繍を使用し、まるでピコがこちらを見上げているような愛らしさを再現。
+			飾っても、抱えても、そっと心を和ませてくれる存在に。
+			——戦場の緊張を解く、唯一の“安らぎユニット”。
 		</overview>
 		<categories>
 			<category>ぬいぐるみ</category>
@@ -262,11 +510,16 @@
 	</item>
 
 	<item id="17">
-		<name>ヴォルフ（タンク）のふわふわぬいぐるみ</name>
-		<thumbs>volfnui.png</thumbs>
+		<name>エコーの自然精霊ぬいぐるみ</name>
+		<thumbs>ekonui.png</thumbs>
 		<isDownload>false</isDownload>
 		<price>3300</price>
-		<overview>ヴォルフの重装甲をデフォルメしつつ、全体的に柔らかく、ふわふわとした手触りをイメージしたぬいぐるみ。パワードスーツのディテールも可愛らしく表現します。
+		<overview>「森が息づく音が、ここにある。」
+			エコーと共に行動する“自然精霊”をモチーフにした、ファン限定ぬいぐるみ。
+			やわらかなグリーンとアースカラーでまとめたボディは、抱きしめるたびに心が落ち着く優しい質感。
+			胸元には小さな葉の刺繍が施され、まるで生命の鼓動を感じるような繊細なデザインに。
+			ぬいぐるみの中には、ほのかに香るリーフアロマを封入（限定仕様）。
+			——エコーが信じる“自然の力”を、あなたの手の中で感じて。
 		</overview>
 		<categories>
 			<category>ぬいぐるみ</category>
@@ -277,11 +530,16 @@
 	</item>
 
 	<item id="18">
-		<name>界守 颯太（近接アタッカー）のふわふわぬいぐるみ</name>
-		<thumbs>kaimorinui.png</thumbs>
+		<name>ヴォルフのふわふわぬいぐるみ</name>
+		<thumbs>volfnui.png</thumbs>
 		<isDownload>false</isDownload>
 		<price>3300</price>
-		<overview>颯太のキャラクターアートの躍動感を残しつつ、黒い道着と青い光を放つ刀を、ぬいぐるみらしい柔らかい素材で表現します。剣士の凛々しさと、可愛らしいデフォルメを両立させました。
+		<overview>「強く、やさしく、守ってくれる。」
+			屈強なタンク《ヴォルフ・ヴァイスマン》をモチーフにした、ファン限定ふわふわぬいぐるみ。
+			重厚なアーマーを柔らかなフェルト調素材で再現し、手のひらサイズながら存在感抜群。
+			表情は戦場で見せる厳しさではなく、ファンだけに見せる穏やかな“ぬいモード”仕様。
+			抱えるとほんのり安心するような、包容感のあるフォルムが魅力。
+			——ヴォルフの信念「仲間を守る」が、今、あなたのそばに。
 		</overview>
 		<categories>
 			<category>ぬいぐるみ</category>
@@ -292,11 +550,16 @@
 	</item>
 
 	<item id="19">
-		<name>アブドゥル・ハッサン（サポート/トラッパー）のふわふわぬいぐるみ</name>
-		<thumbs>abdulnui.png</thumbs>
+		<name>界守 颯太のふわふわぬいぐるみ</name>
+		<thumbs>kaimorinui.png</thumbs>
 		<isDownload>false</isDownload>
 		<price>3300</price>
-		<overview>アブドゥルの特徴的な服装や砂漠の民族衣装の要素を残しつつ、全体的に丸みを帯びたデフォルメと、非常に柔らかい毛並みのようなふわふわ感を強調したぬいぐるみです。手に持つ位相トラップも、可愛らしい光の玉として表現します。
+		<overview>「小さくなっても、闘志はそのまま。」
+			俊敏な近接アタッカー《界守 颯太》をモチーフにした、ファン限定ふわふわぬいぐるみ。
+			トレードマークの斬鋼刀と軽装アーマーを、柔らかなフェルトと刺繍で丁寧に再現。
+			少し照れたような表情は、ファンの前でしか見せない“オフモード”デザイン。
+			ふわっとした手触りと、手のひらにすっぽり収まるサイズ感が心を癒す。
+			——戦場では鋭く、あなたのそばでは優しく。颯太のもう一つの姿が、ここに。
 		</overview>
 		<categories>
 			<category>ぬいぐるみ</category>
@@ -307,11 +570,16 @@
 	</item>
 
 	<item id="20">
-		<name>リア・チャン（ヒーラー/バッファー）のふわふわぬいぐるみ</name>
-		<thumbs>rianui.png</thumbs>
+		<name>アブドゥル・ハッサンのふわふわぬいぐるみ</name>
+		<thumbs>abdulnui.png</thumbs>
 		<isDownload>false</isDownload>
 		<price>3300</price>
-		<overview>リア・チャンの中国風の衣装や特徴的なヘアスタイルを残しつつ、全体的に丸みを帯びたデフォルメと、非常に柔らかい毛並みのようなふわふわ感を強調したぬいぐるみです。手のひらで光る癒しのエネルギーも、可愛らしいエフェクトとして表現します。
+		<overview>「罠も、心も、やさしく包み込む。」
+			知略のサポート《アブドゥル・ハッサン》をモチーフにした、ファン限定ふわふわぬいぐるみ。
+			特徴的なターバンと装備ベルトを柔らかなフェルト生地で再現し、落ち着いたブラウン調で仕上げた大人のぬい。
+			口元には穏やかな微笑みを浮かべ、戦場の冷静さとは対照的な“癒しの一面”を表現。
+			触れればふわっと安心感が広がり、まるで彼が静かに守ってくれているよう。
+			——知恵と包容力を兼ね備えた、アブドゥルの優しさをその手に。
 		</overview>
 		<categories>
 			<category>ぬいぐるみ</category>
@@ -322,11 +590,16 @@
 	</item>
 
 	<item id="21">
-		<name>セリーヌ・デュボア（遠距離スナイパー）のふわふわぬいぐるみ</name>
-		<thumbs>celinenui.png</thumbs>
+		<name>リア・チャンのふわふわぬいぐるみ</name>
+		<thumbs>rianui.png</thumbs>
 		<isDownload>false</isDownload>
 		<price>3300</price>
-		<overview>セリーヌのクールなスナイパーとしての姿を、ぬいぐるみらしいふわふわの質感で表現します。特徴的な長い三つ編みや、精密なライフルも可愛らしくデフォルメして再現します。
+		<overview>「癒やしの微笑み、あなたの手のひらに。」
+			チームの心を支えるヒーラー《リア・チャン》をモチーフにした、ファン限定ふわふわぬいぐるみ。
+			柔らかなパステルカラーの衣装と、胸元の医療エンブレムを丁寧な刺繍で再現。
+			表情は戦場では見せない優しい笑顔仕様で、抱きしめるだけで疲れを癒やしてくれるような温かさ。
+			触れるたび、リアの穏やかなエネルギーが広がる——。
+			——それは、回復の力を“感じられる”唯一のぬいぐるみ。
 		</overview>
 		<categories>
 			<category>ぬいぐるみ</category>
@@ -337,11 +610,16 @@
 	</item>
 
 	<item id="22">
-		<name>ドール・ゼロ・ワン（機動アタッカー）のふわふわぬいぐるみ</name>
-		<thumbs>zero-onenui.png</thumbs>
+		<name>セリーヌ・デュボアのふわふわぬいぐるみ</name>
+		<thumbs>celinenui.png</thumbs>
 		<isDownload>false</isDownload>
 		<price>3300</price>
-		<overview>ドール・ゼロ・ワンのメカニカルなボディと光るコア、そして鋭いブレードを、丸みを帯びたデフォルメと非常に柔らかい毛並みのようなふわふわ感を強調したぬいぐるみです。クールな印象を残しつつ、抱き心地の良いデザインに仕上げます。
+		<overview>「静かな瞳が、あなたを見守る。」
+			精密な射撃で仲間を支えるスナイパー《セリーヌ・デュボア》をモチーフにした、ファン限定ふわふわぬいぐるみ。
+			特徴的なスコープ付きゴーグルとコートを、柔らかいフェルトと刺繍で細やかに再現。
+			クールな性格を感じさせる落ち着いた表情ながら、口元にはほんのり微笑みを添えた“ファンだけが知る素顔”仕様。
+			抱くとふわっと軽く、まるで狙撃前の静寂のような穏やかさが広がる。
+			——戦場では冷静沈着、今はあなたのそばで静かに寄り添う。
 		</overview>
 		<categories>
 			<category>ぬいぐるみ</category>
@@ -352,11 +630,16 @@
 	</item>
 
 	<item id="23">
-		<name>ヴァルナー（シンビオート）のふわふわぬいぐるみ</name>
-		<thumbs>valnernui.png</thumbs>
+		<name>ドール・ゼロ・ワンのふわふわぬいぐるみ</name>
+		<thumbs>zero-onenui.png</thumbs>
 		<isDownload>false</isDownload>
 		<price>3300</price>
-		<overview>シンビオート/寄生型生命体ヴァルナーの異形なシルエットと、不気味ながらもどこか愛らしいデフォルメを、ぬいぐるみらしいふわふわの素材で表現します。特徴的な一つ目や触手も、柔らかい質感で再現します。
+		<overview>「冷たい機械に、ぬくもりを。」
+			高機動アタッカー《ドール・ゼロ・ワン》をモチーフにした、ファン限定ふわふわぬいぐるみ。
+			メカニカルな装甲やセンサー部分をフェルト刺繍でデフォルメし、硬質デザインながらも優しく愛らしい仕上がりに。
+			わずかに傾いた頭の角度は、プログラムにない“感情”を感じさせる特別デザイン。
+			抱きしめるとほんのり温かく、冷たい外装の奥に“心”があるような錯覚を覚える。
+			——戦場での無機質な兵器は、今、あなたの手の中で安らぎに変わる。
 		</overview>
 		<categories>
 			<category>ぬいぐるみ</category>
@@ -367,11 +650,16 @@
 	</item>
 
 	<item id="24">
-		<name>カイ・スパーク（電撃アタッカー）のふわふわぬいぐるみ</name>
-		<thumbs>kainui.png</thumbs>
+		<name>ヴァルナーのふわふわぬいぐるみ</name>
+		<thumbs>valnernui.png</thumbs>
 		<isDownload>false</isDownload>
 		<price>3300</price>
-		<overview>電撃能力を持つアタッカー、カイ・スパークの全身を覆うスーツや、電撃エフェクトを、丸みを帯びたデフォルメと非常に柔らかい毛並みのようなふわふわ感を強調したぬいぐるみです。クールな印象を残しつつ、抱き心地の良いデザインに仕上げます。
+		<overview>「恐れるな。これは“共生”だ。」
+			未知の寄生生命体《シンビオート・ヴァルナー》をモチーフにした、ファン限定ふわふわぬいぐるみ。
+			黒と深紅のボディを柔らかなベルベット生地で再現し、触れると吸い付くような独特の質感を表現。
+			瞳部分はグロウ刺繍でわずかに光を反射し、生命の鼓動を感じさせる仕上がりに。
+			見た目は少し不気味でありながら、抱くと不思議な安心感に包まれる“共生感覚”を楽しめる。
+			——そのぬくもりは、あなたを選んだヴァルナーの意思。
 		</overview>
 		<categories>
 			<category>ぬいぐるみ</category>
@@ -382,11 +670,18 @@
 	</item>
 
 	<item id="25">
-		<name>ラジャ・サルカール（炎の能力者）のふわふわぬいぐるみ</name>
-		<thumbs>rajanui.png</thumbs>
+		<name>カイ・スパークのふわふわぬいぐるみ</name>
+		<thumbs>kainui.png</thumbs>
 		<isDownload>false</isDownload>
 		<price>3300</price>
-		<overview>炎の能力者ラジャ・サルカールの、特徴的なオレンジ色のローブと長い白いヒゲを、ぬいぐるみらしい柔らかい素材で表現します。手の炎のエフェクトも、布や刺繍で可愛らしく再現し、賢者と力強さを併せ持つデザインに仕上げます。
+		<overview>「抱きしめた瞬間、ビリッとくるかも？」
+			稲妻のようなスピードと閃光を操る《カイ・スパーク》をモチーフにした、アクティブなふわふわぬいぐるみ。
+			イエロー×ブラックのボディには、発電ラインを思わせる光沢糸のステッチが走り、
+			胸元の「⚡スパーク・エンブレム」は立体刺繍で再現。
+			ふわふわの毛並みの中に、ほんのり静電気のようなサラッとした手触りを仕込んだ特製生地を使用。
+			小さな稲妻型チャーム付きで、ぬいのポーズも“今にも走り出しそう”なアクティブポジション。
+			——元気をもらいたい朝、デスクに置くだけで充電完了⚡
+			「エネルギーをくれる相棒ぬい」として人気急上昇中！
 		</overview>
 		<categories>
 			<category>ぬいぐるみ</category>
@@ -397,11 +692,18 @@
 	</item>
 
 	<item id="26">
-		<name>フドウ（獣人）のふわふわぬいぐるみ</name>
-		<thumbs>fudounui.png</thumbs>
+		<name>ラジャ・サルカールのふわふわぬいぐるみ</name>
+		<thumbs>rajanui.png</thumbs>
 		<isDownload>false</isDownload>
 		<price>3300</price>
-		<overview>フドウの力強い獣人の姿を、丸みを帯びたデフォルメと非常に柔らかい毛並みのようなふわふわ感を強調したぬいぐるみです。クールな表情を残しつつ、抱き心地の良いデザインに仕上げます。
+		<overview>「触れたら燃える…けど、心はあったかい。」
+			紅蓮の炎を操る《ラジャ・サルカール》をモチーフにした、情熱あふれるふわふわぬいぐるみ。
+			燃えるようなディープレッドとオレンジを基調に、髪や衣装の縁には炎の揺らめきを表すグラデーション刺繍を採用。
+			胸元には、彼の象徴である「焔紋（えんもん）」を立体的な金糸で再現。
+			抱き心地はしっとり温かく、素材にはほんのり保温性のある柔らかファブリックを使用。
+			両手を広げたポーズは、まるで炎の加護を分け与えてくれるかのよう。
+			——冷えた夜も、ラジャと一緒なら心までぽかぽか。
+			「炎の守護者ぬいぐるみ」シリーズの中心的存在。
 		</overview>
 		<categories>
 			<category>ぬいぐるみ</category>
@@ -412,11 +714,19 @@
 	</item>
 
 	<item id="27">
-		<name>ガブリエル（ブローラー）のふわふわぬいぐるみ</name>
-		<thumbs>gaburierunui.png</thumbs>
+		<name>フドウのふわふわぬいぐるみ</name>
+		<thumbs>fudounui.png</thumbs>
 		<isDownload>false</isDownload>
 		<price>3300</price>
-		<overview>肉体硬化能力を持つブローラー、ガブリエルの鍛え上げられた肉体と、ストリート感のある服装を、ぬいぐるみらしいふわふわの質感で表現します。炎をまとった拳のエフェクトも、布や刺繍で可愛らしく再現します。
+		<overview>「その背中に、安心を。」
+			屈強な獣人戦士《フドウ》をモチーフにした、重厚さと優しさを両立したふわふわぬいぐるみ。
+			しなやかな毛並みを再現するために、長短2種類のファー素材を組み合わせ、
+			見る角度によって毛の流れが変わるリアルな質感を実現。
+			鋭い牙と黄金の瞳は刺繍で細部まで丁寧に表現しつつ、口元にはわずかな微笑みを残すデザインで“戦士の穏やかな一面”を演出。
+			腕には部族紋章の刺繍入りバンドを再現し、コレクションとしても映える仕上がりに。
+			抱きしめれば包み込むような安心感、
+			——まるでフドウがあなたの傍で静かに見守ってくれているよう。
+			「守護者シリーズ」ぬいぐるみとして、他キャラとの並びも抜群。
 		</overview>
 		<categories>
 			<category>ぬいぐるみ</category>
@@ -427,11 +737,19 @@
 	</item>
 
 	<item id="28">
-		<name>ナイトメア（異形アタッカー）のふわふわぬいぐるみ</name>
-		<thumbs>nightmarenui.png</thumbs>
+		<name>ガブリエルのふわふわぬいぐるみ</name>
+		<thumbs>gaburierunui.png</thumbs>
 		<isDownload>false</isDownload>
 		<price>3300</price>
-		<overview>影や粘液状の異形生命体であるナイトメアの、不気味ながらもクールなシルエットを、丸みを帯びたデフォルメと非常に柔らかい毛並みのようなふわふわ感を強調したぬいぐるみです。闇をまとうような質感を可愛らしく表現し、抱き心地の良いデザインに仕上げます。
+		<overview>「戦う手より、抱きしめる腕のほうが強い。」
+			拳で戦場を切り拓く《ガブリエル》をモチーフにした、熱血と愛嬌をあわせ持つふわふわぬいぐるみ。
+			筋肉質なシルエットを、柔らかいマイクロファイバー生地で“むぎゅっ”と再現。
+			トレードマークのグローブ部分は少し弾力のある中綿で立体感を出し、
+			胸元のエンブレムは刺繍で精密に表現。
+			眉のきりっとした表情の中に、どこか安心感を与える穏やかな目元をデザインし、
+			“強くて優しい兄貴分”の雰囲気をそのまま再現しました。
+			戦う姿とは裏腹に、抱きしめると誰よりもあたたかい。
+			——ガブリエルのぬいぐるみは、あなたの毎日に「勇気」と「ぬくもり」を。
 		</overview>
 		<categories>
 			<category>ぬいぐるみ</category>
@@ -442,11 +760,45 @@
 	</item>
 
 	<item id="29">
+		<name>ナイトメアのふわふわぬいぐるみ</name>
+		<thumbs>nightmarenui.png</thumbs>
+		<isDownload>false</isDownload>
+		<price>3300</price>
+		<overview>「恐ろしいほど、かわいい。」
+			闇から生まれた異形の戦士《ナイトメア》を、思わず抱きしめたくなる“ダークキュート”な姿にアレンジ。
+			漆黒のボディには手触りの異なるマット＆ベルベット素材を組み合わせ、
+			光の角度でわずかに赤紫の輝きを放つ“深淵のグラデーション”を再現。
+			特徴的な角や触手はやわらかい中綿入りで安全にデフォルメ化、
+			胸元には不気味に光る蛍光刺繍のコア模様をあしらい、暗闇でほんのり光るギミック付き。
+			見た目は怖いのに、抱くとふわふわで落ち着く——
+			そのギャップがクセになる、ファン必携の異形マスコット。
+			「VOIDR」シリーズ屈指の人気キャラとして、
+			“禁断の可愛さ”を手のひらサイズで体感できる一品です。
+		</overview>
+		<categories>
+			<category>ぬいぐるみ</category>
+		</categories>
+		<images>
+			<image></image>
+		</images>
+	</item>
+
+	<item id="30">
 		<name>ナイトメアの幻影 マスキングテープ</name>
 		<thumbs>maskingtape.png</thumbs>
 		<isDownload>false</isDownload>
 		<price>440</price>
-		<overview>ナイトメアが潜む影や、不気味な模様をデザインしたマスキングテープ。手帳や小物のデコレーションに。蓄光タイプにすると、暗闇で怪しく光ります。
+		<overview>「貼るたびに、闇が揺らめく。」
+			異形アタッカー《ナイトメア》の幻影をモチーフにした、
+			ダークで幻想的なデザインのマスキングテープ。
+			テープ全体には、黒から紫へと溶け合うグラデーション地に、
+			ナイトメアのシルエットやコア紋章がメタリック箔で浮かび上がる仕様。
+			見る角度によって微かに光が走り、まるで“闇の残光”が紙面に残るような仕上がりに。
+			ノートや手紙、スマホケースのデコレーションにもぴったり。
+			アートとして飾っても映えるよう、デザインは繰り返し構図の中に
+			「影」「瞳」「コア紋章」の3モチーフをリズムよく配置。
+			——静寂の中に潜む美しさを、日常にひとしずく。
+			ナイトメアの“幻影”を纏うファン限定アートマステ。
 		</overview>
 		<categories>
 			<category>文具</category>
@@ -456,15 +808,152 @@
 		</images>
 	</item>
 
-	<item id="30">
+	<item id="31">
 		<name>ヴァルナーの捕食 ボールペン</name>
 		<thumbs>bollpointpen.png</thumbs>
 		<isDownload>false</isDownload>
 		<price>2000</price>
-		<overview>ヴァルナーの触手が獲物を拘束するイメージで、触手型グリップや、シンビオートの不気味な模様をボディにデザインしたボールペン。
+		<overview>「その一筆に、捕食本能を。」
+			シンビオート《ヴァルナー》の狂気と美しさを封じ込めた、ファン限定ボールペン。
+			ボディには深紅と黒が絡み合う有機的なマーブル模様を採用し、
+			インクが流れる様子を思わせる“生命脈デザイン”を再現。
+			クリップ部分には、ヴァルナーの象徴である「共生体の眼」をモチーフにしたメタルエンブレムを装着。
+			ペン先へ向かうにつれて赤が濃くなるグラデーションは、まるで“捕食の瞬間”を描くかのよう。
+			重厚感のある金属軸に、なめらかなゲルインク仕様で、
+			書き心地もその名にふさわしい“滑るような鋭さ”を実現。
+			——知性をもって書き、衝動をもって生きる。
+			ヴァルナーの“捕食美学”を手の中で感じることができる、禁断の一本。
 		</overview>
 		<categories>
 			<category>文具</category>
+		</categories>
+		<images>
+			<image></image>
+		</images>
+	</item>
+	
+	<item id="37">
+		<name>VOIDR クリアファイル</name>
+		<thumbs>クリアファイル.jpg</thumbs>
+		<isDownload>false</isDownload>
+		<price>500</price>
+		<overview>VOIDR作戦データを携帯せよ。
+			VOIDRの世界観を閉じ込めた、ファン限定クリアファイル。
+			表面には公式ロゴや勢力マークをあしらい、光の角度で浮かび上がるホログラム加工を採用。
+			裏面には暗号風のコードネームやエージェントの象徴モチーフをプリント。
+			書類整理やアートコレクションに最適で、日常の中でも“VOIDR任務感”を楽しめるアイテム。
+			ファンなら手に入れたい、限定デザインの公式クリアファイル。
+		</overview>
+		<categories>
+			<category>文具</category>
+		</categories>
+		<images>
+			<image></image>
+		</images>
+	</item>
+	
+	<item id="39">
+		<name>OAP-20キーチェーン</name>
+		<thumbs>OAP-20キーチェーン.jpg</thumbs>
+		<isDownload>false</isDownload>
+		<price>1000</price>
+		<overview>VOIDR世界の象徴的な銃器フォルムを忠実にミニチュア化した、ファン限定レプリカ・キーチェーン。
+		実銃や実射機能とは一切関係のない安全な装飾品として設計され、手に取るだけで“任務感”と“チームの誇り”が宿る一品です。
+		金属の重みと繊細な刻印、そして隠しエンブレムが施された限定仕様パーツで、コレクター心を満たします。
+		</overview>
+		<categories>
+			<category>アクリル</category>
+			<category>キーチェーン</category>
+		</categories>
+		<images>
+			<image></image>
+		</images>
+	</item>
+	
+	<item id="40">
+		<name>FHBG-01キーチェーン</name>
+		<thumbs>FHBG-01キーチェーン.jpg</thumbs>
+		<isDownload>false</isDownload>
+		<price>1000</price>
+		<overview>VOIDR世界の象徴的な銃器フォルムを忠実にミニチュア化した、ファン限定レプリカ・キーチェーン。
+		実銃や実射機能とは一切関係のない安全な装飾品として設計され、手に取るだけで“任務感”と“チームの誇り”が宿る一品です。
+		金属の重みと繊細な刻印、そして隠しエンブレムが施された限定仕様パーツで、コレクター心を満たします。
+		</overview>
+		<categories>
+			<category>アクリル</category>
+			<category>キーチェーン</category>
+		</categories>
+		<images>
+			<image></image>
+		</images>
+	</item>
+	
+	<item id="41">
+		<name>BSR-A1キーチェーン</name>
+		<thumbs>BSR-A1キーチェーン.jpg</thumbs>
+		<isDownload>false</isDownload>
+		<price>1000</price>
+		<overview>VOIDR世界の象徴的な銃器フォルムを忠実にミニチュア化した、ファン限定レプリカ・キーチェーン。
+		実銃や実射機能とは一切関係のない安全な装飾品として設計され、手に取るだけで“任務感”と“チームの誇り”が宿る一品です。
+		金属の重みと繊細な刻印、そして隠しエンブレムが施された限定仕様パーツで、コレクター心を満たします。
+		</overview>
+		<categories>
+			<category>アクリル</category>
+			<category>キーチェーン</category>
+		</categories>
+		<images>
+			<image></image>
+		</images>
+	</item>
+	
+	<item id="42">
+		<name>SSR-PPキーチェーン</name>
+		<thumbs>SSR-PPキーチェーン.jpg</thumbs>
+		<isDownload>false</isDownload>
+		<price>1000</price>
+		<overview>VOIDR世界の象徴的な銃器フォルムを忠実にミニチュア化した、ファン限定レプリカ・キーチェーン。
+		実銃や実射機能とは一切関係のない安全な装飾品として設計され、手に取るだけで“任務感”と“チームの誇り”が宿る一品です。
+		金属の重みと繊細な刻印、そして隠しエンブレムが施された限定仕様パーツで、コレクター心を満たします。
+		</overview>
+		<categories>
+			<category>アクリル</category>
+			<category>キーチェーン</category>
+		</categories>
+		<images>
+			<image></image>
+		</images>
+	</item>
+	
+	<item id="43">
+		<name>LMG-XDキーチェーン</name>
+		<thumbs>LMG-XDキーチェーン.jpg</thumbs>
+		<isDownload>false</isDownload>
+		<price>1000</price>
+		<overview>VOIDR世界の象徴的な銃器フォルムを忠実にミニチュア化した、ファン限定レプリカ・キーチェーン。
+		実銃や実射機能とは一切関係のない安全な装飾品として設計され、手に取るだけで“任務感”と“チームの誇り”が宿る一品です。
+		金属の重みと繊細な刻印、そして隠しエンブレムが施された限定仕様パーツで、コレクター心を満たします。
+		</overview>
+		<categories>
+			<category>アクリル</category>
+			<category>キーチェーン</category>
+		</categories>
+		<images>
+			<image></image>
+		</images>
+	</item>
+	
+	<item id="44">
+		<name>SP-07キーチェーン</name>
+		<thumbs>SP-07キーチェーン.jpg</thumbs>
+		<isDownload>false</isDownload>
+		<price>1000</price>
+		<overview>VOIDR世界の象徴的な銃器フォルムを忠実にミニチュア化した、ファン限定レプリカ・キーチェーン。
+		実銃や実射機能とは一切関係のない安全な装飾品として設計され、手に取るだけで“任務感”と“チームの誇り”が宿る一品です。
+		金属の重みと繊細な刻印、そして隠しエンブレムが施された限定仕様パーツで、コレクター心を満たします。
+		</overview>
+		<categories>
+			<category>アクリル</category>
+			<category>キーチェーン</category>
 		</categories>
 		<images>
 			<image></image>
