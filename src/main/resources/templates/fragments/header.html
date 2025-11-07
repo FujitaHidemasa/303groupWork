@@ -14,13 +14,12 @@
 		<!-- 黒帯 -->
 		<header>
 			<h1>
-				<a th:href="@{/voidr}">
+				<a th:href="@{/voidrshop}">
 					<img th:src="@{/images/ui/header_logo.webp}" alt="Voidr Official Store">
 				</a>
 			</h1>
 
 			<nav class="header-center">
-				<a th:href="@{/voidrshop}">ストアトップ</a>
 				<a th:href="@{/voidrshop/items}">商品一覧</a>
 				<a th:href="@{/mypage/orders}" sec:authorize="isAuthenticated()">購入履歴</a>
 			</nav>
