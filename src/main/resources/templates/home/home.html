@@ -9,43 +9,98 @@
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <!-- ヘッダー -->
-  <header class="main-header">
-    <a th:href="@{/voidr}" class="logo">
-      <img src="images/logo.png" alt="VOIDRロゴ">
-    </a>
-    <nav class="nav-left">
-      <ul class="nav-menu">
-        <li class="dropdown">
-          <a href="#">ゲーム紹介 v</a>
-          <ul class="submenu">
-            <li><a th:href="@{/voidr/story}">ストーリー</a></li>
-            <li><a th:href="@{/voidr/map}">マップ</a></li>
-            <li><a th:href="@{/voidr/weapon}">武器</a></li>
-          </ul>
-        </li>
-        <li><a th:href="@{/voidr/character}" class="character-button">キャラクター</a>
-        <li><a th:href="@{/voidr/news}">ニュース</a></li>
-        <li><a th:href="@{/voidrshop}">ストア</a></li>
-      </ul>
-    </nav>
-    <div class="nav-right">
-      <a href="#" class="login">ログイン</a>
-      <a href="#" class="play-now">今すぐプレイ</a>
-    </div>
-  </header>
+ 
+<!-- ロード画面 -->
+<div id="loading-screen">
+  <div class="logo-container">
+    <img src="images/logo.png" alt="VOIDRロゴ" class="logo">
+    <p class="roading-text">Loading...</p>
+  </div>
+  <canvas id="particle-canvas"></canvas>
+</div>
+
+
+<!-- JS をここに直接記述 -->
+<script>
+  // canvas サイズ対応
+  const canvas = document.getElementById('particle-canvas');
+  const ctx = canvas.getContext('2d');
+
+  function resizeCanvas(){
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  // 粒子生成
+  const particles = [];
+  for(let i=0; i<150; i++){
+    particles.push({
+      x: Math.random()*canvas.width,
+      y: Math.random()*canvas.height,
+      r: Math.random()*2+1,
+      dx: (Math.random()-0.5)*1.5,
+      dy: (Math.random()-0.5)*1.5
+    });
+  }
+
+  function animateParticles(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    particles.forEach(p => {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+      ctx.fillStyle = 'rgba(255,255,255,0.7)';
+      ctx.fill();
+      p.x += p.dx;
+      p.y += p.dy;
+
+      if(p.x<0) p.x = canvas.width;
+      if(p.x>canvas.width) p.x = 0;
+      if(p.y<0) p.y = canvas.height;
+      if(p.y>canvas.height) p.y = 0;
+    });
+    requestAnimationFrame(animateParticles);
+  }
+  animateParticles();
+
+  // ロード画面フェードアウト
+  window.addEventListener('load', () => {
+    const loadingScreen = document.getElementById('loading-screen');
+    const logo = document.querySelector('.logo');
+    const roadingText = document.querySelector('.roading-text');
+
+    setTimeout(() => {
+      logo.style.opacity = '0';
+      roadingText.style.opacity = '0';
+    }, 1000);
+
+    setTimeout(() => {
+      loadingScreen.style.opacity = '0';
+      setTimeout(() => {
+        loadingScreen.style.display = 'none';
+      }, 1000);
+    }, 4000);
+  });
+</script>
+
+<!-- ✅ 共通ヘッダーを読み込む -->
+<div th:replace="fragments/hpheader :: header"></div>
 
   <!-- 動画背景セクション -->
   <section class="hero">
     <video autoplay muted loop playsinline class="background-video">
-      <source th:src="@{/videos/downloade.mp4}" type="video/mp4">
+      <source src="/videos/downloade.mp4" type="video/mp4">
       お使いのブラウザは動画をサポートしていません。
     </video>
 
     <div class="hero-content">
       <h1 class="site-title">
+        <div class="title-logo-container">
         <img src="images/title_logo.png" alt="VOIDR" class="title-logo">
+    </div>
       </h1>
+
 
       <p>新たな戦いが、今ここに。</p>
       <a href="#" class="btn">今すぐダウンロード</a>
@@ -55,11 +110,13 @@
   <!-- ゲーム概要セクション -->
   <section class="game-overview">
     <div class="content">
-     
       <div class="text">
         <h2>ゲーム紹介</h2>
-        <p>VOIDRは未来都市を舞台にした戦略アクションバトルゲームです。プレイヤーは異なる能力を持つキャラクターを操り、チームで勝利を目指します。</p>
-      </div>
+        <p>
+  『VOIDR（ヴォイダー）』は、ヴォイド・エッセンスによって崩壊した近未来を舞台にした4vs4の戦術FPS。<br>
+  各プレイヤーは「ヴォイド・アバター」として、個々の感情や記憶を具現化した異能を駆使し動的な戦場での制圧戦を繰り広げる。<br>
+  戦術・心理・スキルが交錯する、次世代のチームバトルがここに。
+</p>
     </div>
   </section>
 
@@ -69,9 +126,18 @@
 
       <div class="text">
         <h2>キャラクター</h2>
-        <p>個性豊かなキャラクターたちが登場。スピード型、タンク型、サポート型など、あなたの戦略に合わせて選択可能です。</p>
-      </div>
-    </div>
+        <p>
+   『VOIDR（ヴォイダー）』の戦闘者はヴォイド・エッセンスに適合し“感情”や“記憶”を異能として扱う存在<br>
+   元兵士・研究者・異能者・企業実験体など、経歴も目的も異なり、それぞれの信念と虚無が力となる。<br>
+   戦場では唯一無二の能力を発現する。
+
+        </p>
+     <div class="see-more-wrap">
+  <a class="see-more" href="/voidr/character" title="キャラクター詳細ページへ移動">
+    もっと見る
+    <span class="arrow">→</span>
+  </a>
+</div>
   </section>
 
   <!-- ニュースセクション -->
@@ -81,7 +147,13 @@
       <div class="text">
         <h2>ニュース</h2>
         <p>最新アップデート情報、イベント開催告知、開発チームからのメッセージなどをお届けします。</p>
-      </div>
+     <div class="see-more-wrap news-more">
+  <a class="see-more" href="/voidr/news" title="ニュース一覧ページへ">
+    もっと見る
+    <span class="arrow">→</span>
+  </a>
+</div>
+
     </div>
   </section>
 
@@ -89,13 +161,13 @@
 <section class="contact-section">
   <div class="contact-content">
     <!-- お問い合わせボタン（変更なし） -->
-    <a th:href="@{/voidr/contact}" class="contact-btn">お問い合わせ</a>
+    <a href="#" class="contact-btn">お問い合わせ</a>
 
     <!-- SNSアイコン部分）-->
     <div class="social-links">
-      <a href="https://x.com/elonmusk/highlights"><img src="images/twitter.png" alt="Twitter"></a>
-      <a href="https://www.youtube.com/"><img src="images/youtube.png" alt="YouTube"></a>
-      <a href="https://www.tiktok.com/ja-JP"><img src="images/tiktok.png" alt="TikTok"></a>
+      <a href="#"><img src="images/twitter.png" alt="Twitter"></a>
+      <a href="#"><img src="images/youtube.png" alt="YouTube"></a>
+      <a href="#"><img src="images/tiktok.png" alt="TikTok"></a>
     </div>
   </div>
 </section>
@@ -124,6 +196,5 @@
 
   sections.forEach(section => observer.observe(section));
 </script>
-
 </body>
 </html>
