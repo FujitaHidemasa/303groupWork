@@ -1,0 +1,140 @@
+/* story.css — ストーリー専用 */
+
+/* --- ベース --- */
+body { font-family: "Hina Mincho", serif; margin: 0; padding: 0; overflow: hidden; }
+
+/* --- 背景動画 --- */
+.story-hero { position: relative; width: 100%; height: 100vh; overflow: hidden; }
+.bg-video {
+  position: absolute; top: 50%; left: 50%;
+  min-width: 100%; min-height: 100%;
+  transform: translate(-50%, -50%); object-fit: cover; z-index: -1;
+}
+
+/* --- タイトルテキスト（最初に表示） --- */
+.text-layer {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 100%; max-width: 1200px; text-align: center; z-index: 12;
+  color: #fff; padding: 0 20px;
+  animation: fadeReveal 1.8s ease-out forwards; animation-delay: 0.2s;
+}
+.text-layer h1 { font-size: 4rem; margin-bottom: 1rem; text-shadow: 0 0 18px rgba(0,0,0,0.6); }
+.text-layer p { font-size: 1.2rem; max-width: 900px; margin: 0 auto; text-shadow: 0 0 14px rgba(0,0,0,0.5); }
+
+/* --- コンテナ（画像＋テキスト） --- */
+.hidden { opacity: 0; visibility: hidden; pointer-events: none; transition: opacity 0.6s ease; }
+.show  { opacity: 1; visibility: visible; pointer-events: auto; }
+
+#storyContainer {
+  display: flex; width: 100%; height: 100vh;
+  align-items: center; justify-content: flex-start;
+  gap: 40px; padding: 0 10px; z-index: 10;
+}
+
+/* --- 画像左側 --- */
+#storyImageWrapper {
+  flex: 1; display: flex; justify-content: flex-start; align-items: center; min-width: 20%;
+}
+
+#storyImage {
+  width: 100%; max-width: 600px; height: 400px;
+  border-radius: 10px;
+  filter: drop-shadow(0 0 25px rgba(0,0,0,0.4));
+  opacity: 0; transform: translateX(-40px);
+  transition: opacity 0.45s ease, transform 0.45s ease;
+  position: relative;  
+    right: -40px;
+}
+#storyImage.fade-in { opacity: 1; transform: translateX(0); }
+
+/* --- テキスト右側 --- */
+.story-text {
+  flex: 1; max-width: 600px;
+  font-size: 16px; line-height: 1.9; color: #fff;
+  text-shadow: 0 0 8px rgba(0,0,0,0.5);
+  opacity: 0; transform: translateX(30px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  position: relative;  
+  left: -40px; 
+}
+.story-text.fade-in { opacity: 1; transform: translateX(0); }
+
+/* --- タイトル用フェードアニメ --- */
+@keyframes fadeReveal { 0% { opacity: 0;} 100% { opacity: 1;} }
+
+/* --- 紫発光テキスト --- */
+.void-glow {
+  color: #b171ff; font-weight: 700;
+  text-shadow: 0 0 6px rgba(177,113,255,0.8),
+               0 0 12px rgba(161,78,255,0.6),
+               0 0 24px rgba(143,47,255,0.4);
+  animation: glowPulse 2.5s ease-in-out infinite;
+}
+@keyframes glowPulse {
+  0% { text-shadow: 0 0 4px rgba(177,113,255,0.7), 0 0 10px rgba(161,78,255,0.5), 0 0 18px rgba(143,47,255,0.3); }
+ 50% { text-shadow: 0 0 8px rgba(177,113,255,1), 0 0 18px rgba(161,78,255,0.9), 0 0 36px rgba(143,47,255,0.7); }
+100% { text-shadow: 0 0 4px rgba(177,113,255,0.7), 0 0 10px rgba(161,78,255,0.5), 0 0 18px rgba(143,47,255,0.3); }
+}
+
+/* --- ✅ ここから新しく統一されたボタンCSS --- */
+
+/* ボタン全体を中央配置 */
+.button-wrapper {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 22px;
+  z-index: 20;
+}
+
+/* 共通デザイン */
+.story-btn {
+  padding: 12px 28px;
+  min-height: 40px;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  color: #fff;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.25);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+/* ホバーで紫発光 */
+.story-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(139,92,246,0.25),
+              0 0 22px rgba(139,92,246,0.45);
+  border-color: rgba(139,92,246,0.9);
+  background: rgba(139,92,246,0.14);
+}
+
+/* --- スマホ対応 --- */
+@media (max-width: 800px) {
+  .button-wrapper { bottom: 24px; gap: 12px; }
+  .story-btn { padding: 10px 18px; min-height: 40px; font-size: 15px; }
+}
+
+.scroll-top-btn {
+  position: fixed;
+  bottom: 40px;
+  right: 24px;
+  z-index: 30; /* 背景動画や他のボタンより上 */
+  padding:12px 14px; 
+  font-size: 16px;
+  min-height: 20px;
+  opacity: 0.7;
+  transition: opacity 0.3s ease, transform 0.2s ease;
+}
+
+.scroll-top-btn:hover {
+  opacity: 1;
+  transform: translateY(-2px);
+}
+
+.story-btn,
+.scroll-top-btn {
+  font-family: "Segoe UI", sans-serif;
+}
