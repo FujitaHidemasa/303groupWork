@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="ja"
 	th:replace="layout/shop_base :: base_layout(~{::content}, ${item.name} + '商品詳細', null)">
 
+
 <th:block th:fragment="content">
 
 
@@ -9,9 +10,12 @@
 		<section>
 			<h2 style="text-align: center;" th:text="${item.name}">商品の詳細</h2>
 
+
 			<div class="product-detail">
 				<img th:src="@{/images/{file}(file=${item.thumbsImageName})}"
 					onerror="this.onerror=null;this.src='/image/no_image.png';">
+
+
 
 				<table>
 					<tr>
@@ -41,10 +45,10 @@
 								<button type="button"
 								        th:attr="data-item-id=${item.id}"
 								        class="favorite-btn"
-								        th:text="${item.favorite ? '★ お気に入り' : '☆ お気に入り'}">
+								        th:text="${isFavorite} ? '★ お気に入り' : '☆ お気に入り'">
 								</button>
 								-->
-								
+
 							</div>
 						</td>
 					</tr>
@@ -59,7 +63,6 @@
 		</section>
 	</main>
 
-
 	<!--
     　このページ専用スタイル
     　他のページには影響しません。
@@ -70,13 +73,17 @@
 		body {
 			text-align: center;
 			font-family: "Noto Sans JP", "Segoe UI", "Helvetica Neue", sans-serif;
+
 		}
+
 
 		main {
 			max-width: 1000px;
 			margin: 30px auto;
 			text-align: left;
+
 		}
+
 
 		.product-detail {
 			display: flex;
@@ -85,30 +92,41 @@
 			gap: 40px;
 			margin: 20px auto;
 			width: fit-content;
+
 		}
+
 
 		.product-detail img {
 			width: 400px;
 			height: auto;
 			border: 1px solid #ccc;
+
 		}
+
 
 		table {
 			border-collapse: collapse;
 			width: 450px;
+
 		}
 
-		th, td {
+
+		th,
+		td {
 			padding: 10px 12px;
 			border-bottom: 1px solid #ccc;
 			text-align: left;
 			vertical-align: top;
+
 		}
+
 
 		th {
 			width: 120px;
 			white-space: nowrap;
+
 		}
+
 
 		.action-buttons {
 			display: flex;
@@ -155,8 +173,10 @@
 	<script th:src="@{/js/favorite.js}"></script>
 
 
-  <script th:src="@{/js/favorite.js}"></script>
+	<script th:src="@{/js/favorite.js}"></script>
+
 
 </th:block>
+
 
 </html>

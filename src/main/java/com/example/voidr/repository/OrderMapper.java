@@ -18,4 +18,6 @@ public interface OrderMapper {
 
 	/** 購入確定状態に変更 */
 	void confirmPurchase(@Param("orderListId") long orderListId);
+
 }
+

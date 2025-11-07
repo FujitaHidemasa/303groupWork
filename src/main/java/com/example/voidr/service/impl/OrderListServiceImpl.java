@@ -16,19 +16,27 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class OrderListServiceImpl implements OrderListService {
 
-    private final OrderListMapper orderListMapper;
+	private final OrderListMapper orderListMapper;
 
-    @Override
-    public List<OrderList> getOrderListsByUserId(long userId) {
-        return orderListMapper.findByUserId(userId);
-    }
+	@Override
+	public List<OrderList> getOrderListsByUserId(long userId) {
+		return orderListMapper.findByUserId(userId);
+	}
 
-    @Override
-    @Transactional
-    public void createOrderList(OrderList orderList) {
-        // タイムスタンプを自動セット
-        orderList.setCreatedAt(LocalDateTime.now());
-        orderList.setUpdatedAt(LocalDateTime.now());
-        orderListMapper.insertOrderList(orderList);
-    }
+	@Override
+	@Transactional
+	public void createOrderList(OrderList orderList) {
+		// タイムスタンプを自動セット
+		orderList.setCreatedAt(LocalDateTime.now());
+		orderList.setUpdatedAt(LocalDateTime.now());
+		orderListMapper.insertOrderList(orderList);
+	}
+
+	/**
+	 * ✅ ユーザー名から OrderList を取得
+	 */
+	@Override
+	public OrderList findByUserName(String username) {
+		return orderListMapper.findByUserName(username);
+	}
 }

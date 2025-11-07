@@ -121,6 +121,7 @@ CREATE TABLE cart (
     updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
+
 -- -------------------------------
 -- お気に入りテーブル
 -- -------------------------------

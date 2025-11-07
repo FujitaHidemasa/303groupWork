@@ -31,5 +31,10 @@ public class Cart {
 	
 	/** 更新日 */
 	private LocalDateTime updatedAt;
+
+	public Order getItem() {
+		// TODO 自動生成されたメソッド・スタブ
+		return null;
+	}
 	
 }

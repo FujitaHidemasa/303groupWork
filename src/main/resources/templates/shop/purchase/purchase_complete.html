@@ -4,7 +4,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>購入画面 | FPS GEAR STORE</title>
+	<title>購入完了 | FPS GEAR STORE</title>
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
 	<style>
@@ -66,13 +66,23 @@
 		}
 
 		main {
-			max-width: 800px;
-			margin: 40px auto;
-			text-align: left;
+			max-width: 700px;
+			margin: 80px auto;
+			text-align: center;
+			background-color: #fff;
+			padding: 40px;
+			border-radius: 8px;
+			box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+		}
+
+		.complete-icon {
+			font-size: 60px;
+			color: #28a745;
+			margin-bottom: 20px;
 		}
 
 		footer {
-			margin-top: 40px;
+			margin-top: 60px;
 			padding: 15px;
 			border-top: 1px solid #ccc;
 			background-color: #fff;
@@ -81,49 +91,27 @@
 </head>
 
 <body>
-	<!-- ヘッダー（トップページと共通） -->
+	<!-- 共通ヘッダー -->
 	<div th:replace="fragments/header :: header"></div>
 
 	<main>
-		<h1 class="mb-4 text-center">購入画面</h1>
+		<div class="complete-icon">✅</div>
+		<h1 class="mb-4">ご購入ありがとうございました！</h1>
+		<p class="fs-5 mb-4">
+			ご注文が正常に完了しました。<br>
+			ご登録のメールアドレスに確認メールをお送りしました。
+		</p>
 
-		<!-- ログインページへ -->
-		<div class="mb-3 text-center">
-			<a href="login.html" class="btn btn-outline-primary">ログインページへ</a>
-		</div>
-
-		<!-- 商品合計金額 -->
-		<div class="card mb-3 shadow-sm">
+		<div class="card text-start mb-4 shadow-sm">
 			<div class="card-body">
-				<h5 class="card-title">商品合計金額</h5>
-				<p class="card-text fs-5 fw-bold">¥12,800（税込）</p>
+				<h5 class="card-title">ご注文番号</h5>
+				<p class="card-text">#20251027-001</p>
 			</div>
 		</div>
 
-		<!-- お支払い方法 -->
-		<div class="card mb-3 shadow-sm">
-			<div class="card-body">
-				<h5 class="card-title">お支払い方法</h5>
-				<select class="form-select">
-					<option selected>クレジットカード</option>
-					<option>銀行振込</option>
-					<option>コンビニ払い</option>
-					<option>代引き</option>
-				</select>
-			</div>
-		</div>
-
-		<!-- お届け先住所 -->
-		<div class="card mb-4 shadow-sm">
-			<div class="card-body">
-				<h5 class="card-title">お届け先住所</h5>
-				<textarea class="form-control" rows="3" placeholder="住所を入力してください"></textarea>
-			</div>
-		</div>
-
-		<!-- 購入ボタン -->
 		<div class="text-center">
-			<a th:href="@{/voidrshop/purchase_confirm}" class="btn btn-success btn-lg px-5">購入する</a>
+			<a th:href="@{/voidrshop}" class="btn btn-primary btn-lg px-5">トップページへ戻る</a>
+			<a href="mypage.html" class="btn btn-outline-secondary btn-lg px-5 ms-3">マイページを見る</a>
 		</div>
 	</main>
 
