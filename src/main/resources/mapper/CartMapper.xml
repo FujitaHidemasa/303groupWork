@@ -28,6 +28,24 @@
 		</association>
 	</resultMap>
 
+	<resultMap id="CartWithItemResultMap"
+		type="com.example.voidr.entity.Cart">
+		<id property="id" column="c_id" />
+		<result property="cartListId" column="cartlist_id" />
+		<result property="itemId" column="c_item_id" />
+		<result property="quantity" column="quantity" />
+		<result property="isHold" column="is_hold" />
+
+		<association property="item"
+			javaType="com.example.voidr.entity.Item">
+			<id property="id" column="i_id" />
+			<result property="name" column="item_name" />
+			<result property="price" column="item_price" />
+		</association>
+	</resultMap>
+
+
+
 	<!-- 表示用：ユーザーのカートを JOIN で取得 -->
 	<select id="findViewsByUserId" parameterType="long"
 		resultMap="CartViewMap">
@@ -80,22 +98,39 @@
 
 	<!-- ✅ ユーザー名でカート一覧取得 -->
 	<select id="findByUsername" parameterType="string"
-		resultType="com.example.voidr.entity.Cart">
-		SELECT c.id, c.cartlist_id, c.item_id, c.quantity, c.is_hold, i.name,
-		i.price
+		resultMap="CartWithItemResultMap">
+		SELECT
+		-- Cart
+		c.id AS c_id,
+		c.cartlist_id,
+		c.item_id AS
+		c_item_id,
+		c.quantity,
+		c.is_hold,
+		-- Item
+		i.id AS i_id,
+		i.name AS
+		item_name,
+		i.price AS
+		item_price
 		FROM cart c
-		JOIN cart_list cl ON c.cartlist_id = cl.id
+		JOIN cart_list cl ON
+		c.cartlist_id = cl.id
 		JOIN item i ON c.item_id = i.id
-		JOIN login_user u ON cl.user_id = u.id
+		JOIN login_user u
+		ON cl.user_id = u.id
 		WHERE u.username = #{username}
 	</select>
+
+
 
 	<!-- ✅ ユーザー名で全カート削除 -->
 	<delete id="deleteAllByUsername" parameterType="string">
 		DELETE FROM cart
 		WHERE cartlist_id IN (
 		SELECT cl.id FROM cart_list cl
-		JOIN login_user u ON cl.user_id = u.id
+		JOIN login_user u
+		ON cl.user_id = u.id
 		WHERE u.username = #{username}
 		)
 	</delete>

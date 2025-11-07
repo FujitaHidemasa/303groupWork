@@ -31,15 +31,18 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr th:each="cart : ${cartItems}">
+						<tr th:each="cv : ${cartItems}">
 							<td>
-								<img th:src="${cart.item.imagePath}" alt="商品画像" width="80">
+								<img th:src="${cv.item.imagePath != null ? cv.item.imagePath : '/images/default.png'}"
+									alt="商品画像" width="80">
 							</td>
-							<td th:text="${cart.item.name}">商品名</td>
-							<td th:text="${cart.quantity}">1</td>
-							<td th:text="${#numbers.formatInteger(cart.item.price, 1, 'COMMA')} + '円'">0円</td>
-							<td th:text="${#numbers.formatInteger(cart.item.price * cart.quantity, 1, 'COMMA')} + '円'">
-								0円</td>
+							<td th:text="${cv.item.name}">商品名</td>
+							<td th:text="${cv.cart != null ? cv.cart.quantity : 1}">1</td>
+							<td th:text="${#numbers.formatInteger(cv.item.price, 1, 'COMMA')} + '円'">0円</td>
+							<td
+								th:text="${#numbers.formatInteger(cv.item.price * (cv.cart != null ? cv.cart.quantity : 1), 1, 'COMMA')} + '円'">
+								0円
+							</td>
 						</tr>
 					</tbody>
 				</table>

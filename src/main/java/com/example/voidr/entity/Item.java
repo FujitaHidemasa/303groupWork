@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-
 public class Item {
 	/** 商品ID */
 	private long id;
@@ -26,7 +25,7 @@ public class Item {
 
 	/** 概要 */
 	private String overview;
-	
+
 	/** ダウンロード商品かどうか */
 	private boolean isDownload;
 
@@ -35,13 +34,16 @@ public class Item {
 
 	/** 更新日 */
 	private LocalDateTime updatedAt;
-	
+
 	/** サムネイルの画像の名前 */
 	private String thumbsImageName;
 
 	/** カテゴリー */
 	private List<String> categoryList;
-	
+
 	/** 画像の名前リスト */
 	private List<String> imagesName;
+
+	/** 商品の代表画像パス（サムネイルや一覧表示用） */
+	private String imagePath; // ← これを追加
 }
