@@ -17,44 +17,52 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class CartServiceImpl implements CartService 
-{
+public class CartServiceImpl implements CartService {
 
 	private final CartMapper cartMapper;
 	private final CartListMapper cartListMapper;
 
-	/** ユーザーの cart_list を取得 or 作成 */
+	/**
+	 * ユーザーの cart_list を取得 or 作成
+	 */
 	private long ensureCartListId(long userId) {
 		CartList found = cartListMapper.findByUserId(userId);
 		if (found != null) {
 			return found.getId();
 		}
+
 		CartList created = new CartList();
 		created.setUserId(userId);
-		// boolean プロパティが isLoginUser の場合は setter は setLoginUser(...)
 		created.setLoginUser(true);
 		cartListMapper.insert(created);
 		return created.getId();
 	}
 
+	/**
+	 * カートに商品追加（同一商品は数量加算）
+	 */
 	@Override
-	public void addItem(long userId, long itemId, int quantity) 
-	{
+	public void addItem(long userId, long itemId, int quantity) {
 		int q = Math.max(1, quantity);
 		long cartListId = ensureCartListId(userId);
 
 		Cart c = new Cart();
-		c.setCartListId(cartListId); // ※ キャメルケース
+		c.setCartListId(cartListId);
 		c.setItemId(itemId);
 		c.setQuantity(q);
 
-		cartMapper.upsert(c); // 同一商品は数量加算
+		// 同一商品は数量加算 or 新規登録
+		cartMapper.upsert(c);
+
+		// カートリスト更新日時更新
 		cartListMapper.touchUpdatedAt(cartListId);
 	}
 
+	/**
+	 * 数量変更
+	 */
 	@Override
-	public void changeQuantity(long userId, long cartId, int quantity) 
-	{
+	public void changeQuantity(long userId, long cartId, int quantity) {
 		int q = Math.max(1, quantity);
 		Cart c = new Cart();
 		c.setId(cartId);
@@ -62,30 +70,56 @@ public class CartServiceImpl implements CartService
 		cartMapper.updateQuantityByCart(c);
 	}
 
+	/**
+	 * 削除
+	 */
 	@Override
 	public void remove(long userId, long cartId) {
 		cartMapper.deleteById(cartId);
 	}
 
+	/**
+	 * カート一覧（JOIN済み表示用ビュー）
+	 */
 	@Override
 	@Transactional(readOnly = true)
-	public List<CartView> list(long userId) 
-	{
+	public List<CartView> list(long userId) {
 		List<CartView> list = cartMapper.findViewsByUserId(userId);
 		return (list != null) ? list : java.util.Collections.emptyList();
 	}
 
+	/**
+	 * 合計金額
+	 */
 	@Override
 	@Transactional(readOnly = true)
-	public int sumTotal(long userId) 
-	{
+	public int sumTotal(long userId) {
 		return cartMapper.sumTotalByUserId(userId);
 	}
 
+	/**
+	 * バッジ表示用件数
+	 */
 	@Override
 	@Transactional(readOnly = true)
-	public int countInBadge(long userId) 
-	{
+	public int countInBadge(long userId) {
 		return cartMapper.countItemsByUserId(userId);
+	}
+
+	/**
+	 * ユーザー名でカート取得
+	 */
+	@Override
+	@Transactional(readOnly = true)
+	public List<Cart> findByUsername(String username) {
+		return cartMapper.findByUsername(username);
+	}
+
+	/**
+	 * カートクリア
+	 */
+	@Override
+	public void clearCart(String username) {
+		cartMapper.deleteAllByUsername(username);
 	}
 }

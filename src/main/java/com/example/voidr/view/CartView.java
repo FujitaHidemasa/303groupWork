@@ -15,4 +15,8 @@ public class CartView
 {
     private Cart cart;
     private Item item;
+	public int getSubtotal() {
+		// TODO 自動生成されたメソッド・スタブ
+		return 0;
+	}
 }

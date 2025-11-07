@@ -22,4 +22,29 @@ public class OrderList {
 	
 	//更新日
 	private LocalDateTime updatedAt;
+
+	public void setUsername(String username) {
+		// TODO 自動生成されたメソッド・スタブ
+		
+	}
+
+	public void setTotalPrice(int totalPrice) {
+		// TODO 自動生成されたメソッド・スタブ
+		
+	}
+
+	public void setPaymentMethod(String paymentMethod) {
+		// TODO 自動生成されたメソッド・スタブ
+		
+	}
+
+	public String getUsername() {
+		// TODO 自動生成されたメソッド・スタブ
+		return null;
+	}
+
+	public void setAccountId(long userId2) {
+		// TODO 自動生成されたメソッド・スタブ
+		
+	}
 }

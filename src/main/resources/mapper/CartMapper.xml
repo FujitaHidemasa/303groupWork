@@ -28,6 +28,24 @@
 		</association>
 	</resultMap>
 
+	<resultMap id="CartWithItemResultMap"
+		type="com.example.voidr.entity.Cart">
+		<id property="id" column="c_id" />
+		<result property="cartListId" column="cartlist_id" />
+		<result property="itemId" column="c_item_id" />
+		<result property="quantity" column="quantity" />
+		<result property="isHold" column="is_hold" />
+
+		<association property="item"
+			javaType="com.example.voidr.entity.Item">
+			<id property="id" column="i_id" />
+			<result property="name" column="item_name" />
+			<result property="price" column="item_price" />
+		</association>
+	</resultMap>
+
+
+
 	<!-- 表示用：ユーザーのカートを JOIN で取得 -->
 	<select id="findViewsByUserId" parameterType="long"
 		resultMap="CartViewMap">
@@ -49,9 +67,11 @@
 		i.created_at AS i_created_at,
 		i.updated_at AS i_updated_at
 		FROM cart c
-		JOIN cart_list cl ON c.cartlist_id = cl.id
+		JOIN cart_list cl ON
+		c.cartlist_id = cl.id
 		JOIN item i ON c.item_id = i.id
-		WHERE cl.user_id = #{userId}
+		WHERE cl.user_id =
+		#{userId}
 		ORDER BY c.id DESC
 	</select>
 
@@ -61,7 +81,8 @@
 		SELECT COALESCE(SUM(i.price * c.quantity), 0)
 		FROM cart c
 		JOIN cart_list cl ON c.cartlist_id = cl.id
-		JOIN item i ON c.item_id = i.id
+		JOIN item i ON c.item_id =
+		i.id
 		WHERE cl.user_id = #{userId}
 	</select>
 
@@ -70,38 +91,84 @@
 		resultType="int">
 		SELECT COALESCE(SUM(c.quantity), 0)
 		FROM cart c
-		JOIN cart_list cl ON c.cartlist_id = cl.id
+		JOIN
+		cart_list cl ON c.cartlist_id = cl.id
 		WHERE cl.user_id = #{userId}
 	</select>
+
+	<!-- ✅ ユーザー名でカート一覧取得 -->
+	<select id="findByUsername" parameterType="string"
+		resultMap="CartWithItemResultMap">
+		SELECT
+		-- Cart
+		c.id AS c_id,
+		c.cartlist_id,
+		c.item_id AS
+		c_item_id,
+		c.quantity,
+		c.is_hold,
+		-- Item
+		i.id AS i_id,
+		i.name AS
+		item_name,
+		i.price AS
+		item_price
+		FROM cart c
+		JOIN cart_list cl ON
+		c.cartlist_id = cl.id
+		JOIN item i ON c.item_id = i.id
+		JOIN login_user u
+		ON cl.user_id = u.id
+		WHERE u.username = #{username}
+	</select>
+
+
+
+	<!-- ✅ ユーザー名で全カート削除 -->
+	<delete id="deleteAllByUsername" parameterType="string">
+		DELETE FROM cart
+		WHERE cartlist_id IN (
+		SELECT cl.id FROM cart_list cl
+		JOIN login_user u
+		ON cl.user_id = u.id
+		WHERE u.username = #{username}
+		)
+	</delete>
+
 
 	<!-- UPSERT（同一 cartlist_id + item_id は数量加算） -->
 	<insert id="upsert"
 		parameterType="com.example.voidr.entity.Cart" useGeneratedKeys="true"
 		keyProperty="id">
-		INSERT INTO cart (cartlist_id, item_id, quantity, is_hold, updated_at)
+		INSERT INTO cart (cartlist_id, item_id, quantity, is_hold,
+		updated_at)
 		VALUES (#{cartListId}, #{itemId}, #{quantity}, FALSE,
 		CURRENT_TIMESTAMP)
 		ON CONFLICT (cartlist_id, item_id)
 		DO UPDATE SET
 		quantity = cart.quantity + EXCLUDED.quantity,
-		updated_at = CURRENT_TIMESTAMP
+		updated_at =
+		CURRENT_TIMESTAMP
 	</insert>
 
 	<!-- 数量を直接セット -->
 	<update id="updateQuantityByCart"
 		parameterType="com.example.voidr.entity.Cart">
 		UPDATE cart
-		SET quantity = #{quantity}, updated_at = CURRENT_TIMESTAMP
+		SET quantity = #{quantity}, updated_at =
+		CURRENT_TIMESTAMP
 		WHERE id = #{id}
 	</update>
 
 	<!-- 削除 -->
 	<delete id="deleteById" parameterType="long">
-		DELETE FROM cart WHERE id = #{id}
+		DELETE FROM cart WHERE id
+		= #{id}
 	</delete>
 
 	<delete id="deleteByCartListId" parameterType="long">
-		DELETE FROM cart WHERE cartlist_id = #{cartListId}
+		DELETE FROM cart
+		WHERE cartlist_id = #{cartListId}
 	</delete>
 
 </mapper>
