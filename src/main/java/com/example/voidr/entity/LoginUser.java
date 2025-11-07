@@ -17,7 +17,8 @@ import lombok.Data;
 @AllArgsConstructor
 public class LoginUser implements UserDetails {
 
-    private final Account account; // ← Userエンティティを内包
+	private final Account account; // ← Userエンティティを内包
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities()
@@ -25,35 +26,39 @@ public class LoginUser implements UserDetails {
     	return List.of(new SimpleGrantedAuthority(this.account.getAuthority().getName()));
     }
 
-
-
-    @Override
-    public boolean isAccountNonExpired() { return true; }
-
-    @Override
-    public boolean isAccountNonLocked() { return true; }
-
-    @Override
-    public boolean isCredentialsNonExpired() { return true; }
-
-    @Override
-    public boolean isEnabled() { return true; }
-
 	@Override
-	public String getPassword()
-	{
+	public String getPassword() {
 		return this.account.getPassword();
 	}
 
 	@Override
-	public String getUsername()
-	{
+	public String getUsername() {
 		return this.account.getUsername();
 	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+
+
+	
 	
 	public String getDisplayName()
 	{
 		return this.account.getDisplayName();
+
 	}
 	
 	public Long getId()

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.voidr.repository.OrderItemMapper">
+
+	<!-- ========================================================= -->
+	<!-- 注文IDに紐づく商品明細を取得 -->
+	<!-- ========================================================= -->
+	<select id="findByOrderId" parameterType="long"
+		resultType="com.example.voidr.entity.OrderItem">
+		SELECT
+		id,
+		order_id AS orderId,
+		item_id AS itemId,
+		price,
+		quantity,
+		created_at AS createdAt
+		FROM order_item
+		WHERE order_id = #{orderId}
+		ORDER BY id ASC
+	</select>
+
+	<!-- ========================================================= -->
+	<!-- 商品明細の登録 -->
+	<!-- ========================================================= -->
+	<insert id="insertOrderItem"
+		parameterType="com.example.voidr.entity.OrderItem"
+		useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO order_item (
+		order_id,
+		item_id,
+		price,
+		quantity,
+		created_at
+		) VALUES (
+		#{orderId},
+		#{itemId},
+		#{price},
+		#{quantity},
+		CURRENT_TIMESTAMP
+		)
+	</insert>
+
+</mapper>

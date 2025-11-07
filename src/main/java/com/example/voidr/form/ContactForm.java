@@ -1,5 +1,6 @@
 package com.example.voidr.form;
 
+
 public class ContactForm {
 	
 	private String name;

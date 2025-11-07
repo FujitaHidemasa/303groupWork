@@ -34,4 +34,6 @@ public interface CartMapper {
 
 	// ✅ confirmPurchase() で使う：cartListIdで商品一覧取得
 	List<Cart> findByCartListId(@Param("cartListId") long cartListId);
+
 }
+

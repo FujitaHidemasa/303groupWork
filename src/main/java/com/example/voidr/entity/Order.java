@@ -10,19 +10,35 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Order {
-	
-	//id 主キー
+
+	// 注文ID（主キー）
 	private long id;
-	
-	//対応する購入履歴リストid
+
+	// 対応する購入履歴リストID
 	private long orderListId;
-	
-	//購入した商品id
+
+	// 商品ID
 	private long itemId;
-	
-	//購入した商品が「後で買う」状態かどうか
+
+	// 後で買うフラグ
 	private boolean isHold;
-	
-	//作成日
+
+	// 作成日（注文日時）
 	private LocalDateTime createdAt;
+
+	// ===============================
+	// 以下は購入履歴画面表示用の追加フィールド
+	// ===============================
+
+	// 商品名
+	private String itemName;
+
+	// 商品画像（サムネイルファイル名など）
+	private String imageName;
+
+	// 購入価格
+	private int price;
+
+	// 購入数量
+	private int quantity;
 }

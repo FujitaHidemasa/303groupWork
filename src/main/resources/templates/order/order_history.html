@@ -1,0 +1,145 @@
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org">-->
+
+<!--<head>-->
+<!--	<meta charset="UTF-8">-->
+<!--	<title>購入履歴</title>-->
+<!--	<style>-->
+<!--		body {-->
+<!--			font-family: "Segoe UI", sans-serif;-->
+<!--			margin: 40px;-->
+<!--			background-color: #fafafa;-->
+<!--		}-->
+
+<!--		h2 {-->
+<!--			text-align: center;-->
+<!--			color: #333;-->
+<!--			margin-bottom: 30px;-->
+<!--		}-->
+
+<!--		table {-->
+<!--			width: 90%;-->
+<!--			margin: 0 auto;-->
+<!--			border-collapse: collapse;-->
+<!--			box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);-->
+<!--			background-color: #fff;-->
+<!--		}-->
+
+<!--		th,-->
+<!--		td {-->
+<!--			padding: 14px;-->
+<!--			border-bottom: 1px solid #ddd;-->
+<!--			text-align: center;-->
+<!--			vertical-align: middle;-->
+<!--		}-->
+
+<!--		th {-->
+<!--			background-color: #f8f8f8;-->
+<!--			font-weight: 600;-->
+<!--		}-->
+
+<!--		tr:hover {-->
+<!--			background-color: #f9f9f9;-->
+<!--		}-->
+
+<!--		img {-->
+<!--			width: 70px;-->
+<!--			height: 70px;-->
+<!--			object-fit: cover;-->
+<!--			border-radius: 8px;-->
+<!--		}-->
+
+<!--		.status-hold {-->
+<!--			color: #f39c12;-->
+<!--			font-weight: bold;-->
+<!--		}-->
+
+<!--		.status-fixed {-->
+<!--			color: #27ae60;-->
+<!--			font-weight: bold;-->
+<!--		}-->
+
+<!--		.price {-->
+<!--			color: #333;-->
+<!--			font-weight: bold;-->
+<!--		}-->
+
+<!--		.action-buttons button {-->
+<!--			background-color: #3498db;-->
+<!--			color: white;-->
+<!--			border: none;-->
+<!--			padding: 8px 14px;-->
+<!--			margin: 0 5px;-->
+<!--			border-radius: 6px;-->
+<!--			cursor: pointer;-->
+<!--			transition: 0.2s;-->
+<!--		}-->
+
+<!--		.action-buttons button:hover {-->
+<!--			background-color: #2980b9;-->
+<!--		}-->
+
+<!--		.action-buttons .reorder {-->
+<!--			background-color: #2ecc71;-->
+<!--		}-->
+
+<!--		.action-buttons .reorder:hover {-->
+<!--			background-color: #27ae60;-->
+<!--		}-->
+<!--	</style>-->
+<!--</head>-->
+
+<!--<body>-->
+<!--	<h2>購入履歴</h2>-->
+
+<!--	<table>-->
+<!--		<thead>-->
+<!--			<tr>-->
+<!--				<th>注文ID</th>-->
+<!--				<th>商品画像</th>-->
+<!--				<th>商品名</th>-->
+<!--				<th>数量</th>-->
+<!--				<th>価格</th>-->
+<!--				<th>状態</th>-->
+<!--				<th>注文日</th>-->
+<!--				<th>操作</th>-->
+<!--			</tr>-->
+<!--		</thead>-->
+
+<!--		<tbody>-->
+<!--			<tr th:each="order : ${orders}">-->
+<!--				<td th:text="${order.id}"></td>-->
+
+<!--				 商品画像 -->
+<!--				<td>-->
+<!--					<img th:src="@{'/images/' + ${order.imageName}}" alt="商品画像">-->
+<!--				</td>-->
+
+<!--				 商品名 -->
+<!--				<td th:text="${order.itemName}"></td>-->
+
+<!--				 数量 -->
+<!--				<td th:text="${order.quantity}"></td>-->
+
+<!--				 価格 -->
+<!--				<td th:text="'¥' + ${#numbers.formatInteger(order.price, 0)}" class="price"></td>-->
+
+<!--				 状態 -->
+<!--				<td th:text="${order.isHold ? '保留中' : '発送済み'}"-->
+<!--					th:classappend="${order.isHold} ? 'status-hold' : 'status-fixed'"></td>-->
+
+<!--				 注文日時 -->
+<!--				<td th:text="${#temporals.format(order.createdAt, 'yyyy/MM/dd HH:mm')}"></td>-->
+
+<!--				 操作ボタン -->
+<!--				<td class="action-buttons">-->
+<!--					<button th:onclick="'location.href=\'/order/detail/' + ${order.id} + '\';'">詳細を見る</button>-->
+<!--					<button class="reorder"-->
+<!--						th:onclick="'location.href=\'/order/reorder/' + ${order.itemId} + '\';'">再購入</button>-->
+<!--				</td>-->
+<!--			</tr>-->
+<!--		</tbody>-->
+<!--	</table>-->
+<!--</body>-->
+
+<!--</html>-->

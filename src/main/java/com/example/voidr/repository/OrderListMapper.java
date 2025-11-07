@@ -16,4 +16,5 @@ public interface OrderListMapper {
     void insertOrderList(OrderList orderList);
 
 	OrderList findByUserName(String username);
+
 }

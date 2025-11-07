@@ -11,29 +11,21 @@ VALUES
 ('jiro', '$2a$10$gmNQ/1zwukD2OddxS2lAD.8iaCdhbu3GjxdNGew8wXFaAbtBCSpVm', 'ADMIN', '鈴木 次郎', 'jiro@example.com', '福岡県福岡市3-3-3', '07055556666');
 
 -- ===============================
--- 商品テーブル（5件）
+-- 商品テーブル（3件）
 -- ===============================
 INSERT INTO item (name, price, overview,is_download, thumbs_image_name)
 VALUES 
 ('ダミー', 0, 'ダミー用',false, 'dummy.jpg');
 
 -- ===============================
--- 購入履歴リスト（2件）
--- ===============================
---INSERT INTO order_list (user_id, created_at, updated_at)
---VALUES
---(1, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
---(2, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
-
--- ===============================
--- 購入履歴（4件）
--- ===============================
-
-
--- ===============================
 -- カートリスト（3件）
 -- ===============================
+INSERT INTO cart_list (id, user_id, created_at)
+VALUES
+(1, 1, CURRENT_TIMESTAMP),
+(2, 2, CURRENT_TIMESTAMP),
+(3, 3, CURRENT_TIMESTAMP);
 
 -- ===============================
--- カート（6件）
+-- カート（3件）
 -- ===============================

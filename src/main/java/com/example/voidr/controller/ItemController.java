@@ -21,6 +21,7 @@ import lombok.RequiredArgsConstructor;
  */
 @Controller
 @RequiredArgsConstructor
+
 @RequestMapping("/voidrshop/items")
 public class ItemController {
 	private final ItemService itemService;
@@ -61,4 +62,5 @@ public class ItemController {
 		model.addAttribute("item", item);
 		return "shop/item/detail";
 	}
+
 }
