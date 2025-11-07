@@ -1,26 +1,49 @@
-<!-- ヘッダー -->
+<!DOCTYPE html>
+<html lang="ja">  
+	<head>           
+	 <meta charset="UTF-8">
+    <title>VOIDR</title>  </head>
+<body>
+  <!-- ヘッダー -->
+  <header class="main-header">
+    <a href="/voidr" class="logo"><img src="/images/logo.png" alt="VOIDRロゴ"></a>
 
- <header class="main-header">
-   <a href="/voidr.html" class="logo">
-     <img src="images/logo.png" alt="VOIDRロゴ">
-   </a>
-   <nav class="nav-left">
-     <ul class="nav-menu">
-       <li class="dropdown">
-         <a href="#">ゲーム紹介 v</a>
-         <ul class="submenu">
-           <li><a href="/voidr/story">ストーリー</a></li>
-           <li><a href="/voidr/map">マップ</a></li>
-           <li><a href="/voidr/weapon">武器</a></li>
-         </ul>
-       </li>
-       <li><a href="/voidr/character">キャラクター</a></li>
-       <li><a href="/voidr/news">ニュース</a></li>
-       <li><a href="/voidrshop">ストア</a></li>
-     </ul>
-   </nav>
-   <div class="nav-right">
-     <a href="#" class="login">ログイン</a>
-     <a href="#" class="play-now">今すぐプレイ</a>
-   </div>
- </header>
+    <nav class="nav-left">
+      <ul class="nav-menu">
+        <li class="dropdown">
+          <a href="#">ゲーム紹介 v</a>
+          <ul class="submenu">
+            <li><a href="/voidr/story">ストーリー</a></li>
+            <li><a href="/voidr/map">マップ</a></li>
+            <li><a href="/voidr/weapon">武器</a></li>
+          </ul>
+        </li>
+        <li><a href="/voidr/character">キャラクター</a></li>
+        <li><a href="/voidr/news">ニュース</a></li>
+        <li><a href="/voidrshop">ストア</a></li>
+      </ul>
+    </nav>
+
+    <div class="nav-right">
+      <a href="#" class="login">ログイン</a>
+      <button class="play-now" id="playNowBtn">今すぐプレイ</button>
+    </div>
+  </header>
+
+  <!-- モーダル -->
+  <div id="storeModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <a href="https://www.ea.com/ja-jp/ea-app" class="store-btn ea">Windows用EA appでダウンロード</a>
+      <a href="https://store.steampowered.com/" class="store-btn steam">Steamストアに進む</a>
+      <a href="https://store.epicgames.com/" class="store-btn epic">Epic Gamesストアに進む</a>
+      <a href="https://store.playstation.com/" class="store-btn ps4">PlayStation®4ストアに進む</a>
+      <a href="https://store.playstation.com/" class="store-btn ps5">PlayStation®5ストアに進む</a>
+      <a href="https://www.xbox.com/ja-JP/microsoft-store" class="store-btn xbox">Xboxストアに進む</a>
+      <a href="https://www.nintendo.co.jp/software/" class="store-btn switch">Nintendo Switchストアに進む</a>
+    </div>
+  </div>
+
+ 
+</body>
+</html>

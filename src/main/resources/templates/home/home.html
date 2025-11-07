@@ -5,6 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>VOIDR | 公式サイト</title>
   <link rel="stylesheet" href="/css/Homepage.css">
+  <link rel="stylesheet" th:href="@{/css/hpHeader.css}">
+  <div id="storeModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <a href="https://www.ea.com/ja-jp/ea-app" class="store-btn ea">Windows用EA appでダウンロード</a>
+        <a href="https://store.steampowered.com/" class="store-btn steam">Steamストアに進む</a>
+        <a href="https://store.epicgames.com/" class="store-btn epic">Epic Gamesストアに進む</a>
+        <a href="https://store.playstation.com/" class="store-btn ps4">PlayStation®4ストアに進む</a>
+        <a href="https://store.playstation.com/" class="store-btn ps5">PlayStation®5ストアに進む</a>
+        <a href="https://www.xbox.com/ja-JP/microsoft-store" class="store-btn xbox">Xboxストアに進む</a>
+        <a href="https://www.nintendo.co.jp/software/" class="store-btn switch">Nintendo Switchストアに進む</a>
+      </div>
+    </div>
   <!-- 未来的フォント Orbitron -->
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
 </head>
@@ -161,7 +174,7 @@
 <section class="contact-section">
   <div class="contact-content">
     <!-- お問い合わせボタン（変更なし） -->
-    <a href="#" class="contact-btn">お問い合わせ</a>
+    <a href="/voidr/contact" class="contact-btn">お問い合わせ</a>
 
     <!-- SNSアイコン部分）-->
     <div class="social-links">
@@ -195,6 +208,26 @@
   }, { threshold: 0.2 });
 
   sections.forEach(section => observer.observe(section));
+  
+  document.addEventListener("DOMContentLoaded", () => {
+  	  const modal = document.getElementById("storeModal");
+  	  const playBtn = document.getElementById("playNowBtn");
+  	  const closeBtn = document.querySelector(".close");
+
+  	  console.log("modal:", modal);     
+  	  console.log("playBtn:", playBtn); 
+  	  console.log("closeBtn:", closeBtn); 
+
+  	  if(modal && playBtn && closeBtn){
+  	    playBtn.addEventListener("click", () => {
+  	      console.log("ボタン押された！");
+  	      // CSSが適用されていればモーダルが表示される
+  	      modal.style.display = "flex"; 
+  	    });
+  	    closeBtn.addEventListener("click", () => modal.style.display = "none");
+  	    window.addEventListener("click", e => { if(e.target === modal) modal.style.display = "none"; });
+  	  }
+  	});
 </script>
 </body>
 </html>

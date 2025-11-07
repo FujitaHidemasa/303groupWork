@@ -1,9 +1,10 @@
 /* ==============================
-  HP用 ヘッダー
+   HP用 ヘッダー
 ============================== */
 html, body {
   margin: 0;
   padding: 0;
+  font-family: "Segoe UI", "Meiryo", "メイリオ", sans-serif;
 }
 
 header, .main-header {
@@ -21,31 +22,11 @@ header, .main-header {
   box-sizing: border-box; 
 }
 
-.logo {
-  font-size: 2em;
-  font-weight: bold;
-  color: #fff;
-  overflow: visible;
-  margin-left: -20px;
-}
-
+/* ロゴ */
 .logo img {
-  height: 140px;
+  height: 100px;
   width: auto;
   transform: translateY(5px);
-}
-
-.title-logo {
-  width: 400px;
-  height: auto;
-  display: block;
-  margin: 0 auto;
-  animation: fadeIn 2s ease-in-out;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(30px); }
-  to { opacity: 1; transform: translateY(0); }
 }
 
 /* ヘッダーリンク */
@@ -55,17 +36,19 @@ header, .main-header {
   gap: 30px;
   margin: 0;
   padding: 0;
+  align-items: center;
 }
 
-.nav-menu li a, .nav-right a, .header-buttons a {
+.nav-menu li a, .nav-right a, .play-now {
   color: #fff;
   text-decoration: none;
   font-size: 1.2em;
   transition: 0.3s;
 }
 
-.nav-menu li a:hover { color: #00eaff; }
-.nav-right a:hover { color: #00eaff; }
+.nav-menu li a:hover, .nav-right a:hover, .play-now:hover {
+  color: #00eaff;
+}
 
 /* ドロップダウン */
 .nav-menu li { position: relative; }
@@ -89,12 +72,65 @@ header, .main-header {
 .submenu li a:hover { background-color: rgba(255,255,255,0.15); }
 .dropdown:hover .submenu { display: block; }
 
-/* 今すぐプレイボタン風 */
+/* 今すぐプレイボタン */
 .play-now {
-  background: #8057ce;
-  color: black;
-  padding: 6px 18px;
-  border-radius: 20px;
+  background: #ff3b3b;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 6px;
+  text-decoration: none;
   font-weight: bold;
+  cursor: pointer;
 }
-.play-now:hover { background: #fff; }
+.play-now:hover { background: #ff6666; }
+
+/* モーダル */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: #111;
+  padding: 30px;
+  border-radius: 12px;
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+  box-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 14px;
+  font-size: 28px;
+  color: #fff;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.close:hover { color: #ff3b3b; }
+
+.store-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #e60012;
+  color: #fff;
+  padding: 12px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.3s;
+}
+.store-btn:hover { background: #ff3333; }
