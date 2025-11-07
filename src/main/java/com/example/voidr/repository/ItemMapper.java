@@ -21,6 +21,9 @@ public interface ItemMapper
 
     /** 特定のカテゴリーに属する商品を全て取得する */
     List<Item> selectByCategory(@Param("category") String category);
+    
+    /** 最新4件の商品を取得する */
+    List<Item> findLatestItems();
 	
 	/** idに一致した商品を取得する */
 	Item selectById(@Param("id")Long id);
@@ -33,4 +36,6 @@ public interface ItemMapper
 	
 	/** 商品を削除する */
 	void delete(@Param("id")Long id);
+	
+	
 }

@@ -17,6 +17,9 @@ public interface ItemService
     
     /** キーワードで商品取得 */
     List<Item> searchItemsByKeyword(String keyword);
+    
+    /** 最新4件の商品を取得 */
+    List<Item> getLatestItems();
 
     /** idで商品取得 */
     Item getItemById(Long id);
