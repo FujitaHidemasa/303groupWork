@@ -1,14 +1,14 @@
 <!-- header.html -->
 <div th:fragment="header">
 	<div class="fixed-header">
-		<!-- 白帯 -->
+		<!-- 紺色帯 -->
 		<div class="top-bar">
 			<span sec:authorize="isAuthenticated()">
 				こんにちは、<span sec:authentication="principal.displayName"></span> さん
 			</span>
 			<a th:href="@{/login}" sec:authorize="!isAuthenticated()">ログイン</a>
 			<span class="separator">｜</span>
-			<a th:href="@{/contact}">お問い合わせ</a>
+			<a th:href="@{/voidr/contact}">お問い合わせ</a>
 		</div>
 
 		<!-- 黒帯 -->
