@@ -26,7 +26,7 @@ public class TopController
 	{
 		itemService.syncItems();
 		// 1~4の
-		List<Item> items = itemService.getItemsByRangeId(1, 4);
+		List<Item> items = itemService.getLatestItems();
 		model.addAttribute("items", items);
 		return "shop/top";
 	}

@@ -255,4 +255,9 @@ public class ItemServiceImpl implements ItemService
 		imageMapper.deleteByItemId(id);
 		itemMapper.delete(id);
 	}
+	
+	@Override
+	public List<Item> getLatestItems() {
+	    return itemMapper.findLatestItems();
+	}
 }

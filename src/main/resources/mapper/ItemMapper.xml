@@ -68,6 +68,13 @@
 		#{keyword}, '%')
 		ORDER BY i.id DESC
 	</select>
+	
+	<select id="findLatestItems" resultType="com.example.voidr.entity.Item">
+		SELECT *
+		FROM item
+		ORDER BY id DESC
+		LIMIT 4
+	</select>
 
 	<!-- ============================== INSERT / UPDATE / DELETE ============================== -->
 	<insert id="insert">
