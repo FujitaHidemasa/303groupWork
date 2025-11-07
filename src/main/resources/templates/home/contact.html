@@ -1,72 +1,100 @@
 <!DOCTYPE html>
-<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="ja"
+	th:replace="layout/shop_base :: base_layout(~{::content}, 'お問い合せ', ~{::extraCss})">
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>お問い合わせ - FPS GEAR STORE</title>
-  <link rel="stylesheet" th:href="@{/css/ec/main.css}">
-  <link rel="stylesheet" th:href="@{/css/ec/header.css}">
-  <link rel="stylesheet" th:href="@{/css/ec/contact.css}">
-</head>
+<th:block th:fragment="extraCss">
+	<link rel="stylesheet" th:href="@{/css/ec/contact.css}">
+</th:block>
 
-<body>
-  <!-- ヘッダー -->
-  <div th:replace="fragments/header :: header"></div>
+<th:block th:fragment="content">
+	<section class="faq">
+		<h2 class="section-title">Q&A</h2>
 
-  <main>
-    <!-- よくある質問 -->
-    <section class="faq">
-      <h2>よくある質問</h2>
-      <div class="faq-item">
-        <strong>Q. 配送にはどのくらい時間がかかりますか？</strong>
-        <p>A. 通常、ご注文から2〜3営業日以内に発送いたします。土日祝を挟む場合は翌営業日の発送となります。</p>
-      </div>
-      <div class="faq-item">
-        <strong>Q. 送料はいくらですか？</strong>
-        <p>A. 全国一律500円です。合計金額が5,000円以上の場合は送料無料になります。</p>
-      </div>
-      <div class="faq-item">
-        <strong>Q. 配送業者を選ぶことはできますか？</strong>
-        <p>A. 現在はヤマト運輸のみの対応となっております。</p>
-      </div>
-      <div class="faq-item">
-        <strong>Q. 海外への配送は可能ですか？</strong>
-        <p>A. 現在は日本国内のみの配送に対応しております。</p>
-      </div>
-    </section>
+		<!-- ゲームサイト -->
+		<div class="faq-item">
+			<button class="faq-question">Q. ゲームの対応プラットフォームを教えてください。</button>
+			<div class="faq-answer">
+				<p>A. 本作は PC（Steam）、PlayStation、Nintendo Switch に対応しています。各プラットフォームで同様の内容をお楽しみいただけます。</p>
+			</div>
+		</div>
 
-    <!-- お問い合わせフォーム -->
-    <section class="contact-section">
-      <h2>お問い合わせフォーム</h2>
+		<div class="faq-item">
+			<button class="faq-question">Q. マルチプレイや協力プレイは可能ですか？</button>
+			<div class="faq-answer">
+				<p>A. はい、最大4人までの協力プレイが可能です。PC・PlayStation・Nintendo Switch間でのクロスプレイにも対応しています。</p>
+			</div>
+		</div>
 
-      <form th:action="@{/contact/submit}" th:object="${contactForm}" method="post" class="contact-form">
-        <div class="form-group">
-          <label for="name">お名前</label>
-          <input type="text" id="name" th:field="*{name}" required>
-        </div>
-        <div class="form-group">
-          <label for="email">メールアドレス</label>
-          <input type="email" id="email" th:field="*{email}" required>
-        </div>
-        <div class="form-group">
-          <label for="subject">件名</label>
-          <input type="text" id="subject" th:field="*{subject}">
-        </div>
-        <div class="form-group">
-          <label for="message">お問い合わせ内容</label>
-          <textarea id="message" th:field="*{message}" required></textarea>
-        </div>
-        <button type="submit" class="submit-btn">送信する</button>
-      </form>
+		<div class="faq-item">
+			<button class="faq-question">Q. 不具合を見つけた場合はどうすればいいですか？</button>
+			<div class="faq-answer">
+				<p>A. ゲーム内の「フィードバック」または本ページ下部の「お問い合わせフォーム」からご連絡ください。</p>
+			</div>
+		</div>
+		
+		<!-- ECサイト -->
+		<div class="faq-item">
+			<button class="faq-question">Q. 配送にはどのくらい時間がかかりますか？</button>
+			<div class="faq-answer">
+				<p>A. 通常、ご注文から2〜3営業日以内に発送いたします。土日祝を挟む場合は翌営業日の発送となります。</p>
+			</div>
+		</div>
 
-      <p th:if="${successMessage}" th:text="${successMessage}" class="success-message"></p>
-    </section>
-  </main>
+		<div class="faq-item">
+			<button class="faq-question">Q. 送料はいくらですか？</button>
+			<div class="faq-answer">
+				<p>A. 全国一律500円です。合計金額が5,000円以上の場合は送料無料になります。</p>
+			</div>
+		</div>
 
-  <footer>
-    <p>© 2025 FPS GEAR STORE</p>
-  </footer>
-</body>
+		<div class="faq-item">
+			<button class="faq-question">Q. 海外への配送は可能ですか？</button>
+			<div class="faq-answer">
+				<p>A. 現在は日本国内のみの配送に対応しております。</p>
+			</div>
+		</div>
+	</section>
+
+	<!-- お問い合わせフォーム -->
+	<section class="contact-section">
+		<h2 class="section-title">お問い合わせフォーム</h2>
+
+		<form th:action="@{/contact/submit}" th:object="${contactForm}" method="post" class="contact-form">
+			<div class="form-group">
+				<label for="name">お名前</label>
+				<input type="text" id="name" th:field="*{name}" required placeholder="商品を検索">
+			</div>
+			<div class="form-group">
+				<label for="email">メールアドレス</label>
+				<input type="email" id="email" th:field="*{email}" required>
+			</div>
+			<div class="form-group">
+				<label for="subject">件名</label>
+				<input type="text" id="subject" th:field="*{subject}">
+			</div>
+			<div class="form-group">
+				<label for="message">お問い合わせ内容</label>
+				<textarea id="message" th:field="*{message}" required></textarea>
+			</div>
+			<button type="submit" class="submit-btn">送信する</button>
+		</form>
+
+		<p th:if="${successMessage}" th:text="${successMessage}" class="success-message"></p>
+	</section>
+
+	<script>
+		document.addEventListener("DOMContentLoaded", () => {
+			document.querySelectorAll(".faq-question").forEach(q => {
+				q.addEventListener("click", () => {
+					q.classList.toggle("active");
+					const answer = q.nextElementSibling;
+					answer.style.maxHeight = q.classList.contains("active")
+						? answer.scrollHeight + "px"
+						: null;
+				});
+			});
+		});
+	</script>
+</th:block>
 
 </html>

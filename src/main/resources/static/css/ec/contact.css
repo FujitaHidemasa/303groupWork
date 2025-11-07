@@ -1,92 +1,171 @@
 @charset "UTF-8";
 /* contact.css */
-.faq, .contact-section {
-  max-width: 600px;
-  margin: 0 auto 40px auto;
-  text-align: left;
+
+body {
+	background: var(--color-bg-dark);
+	color: var(--color-text-main);
+	font-family: "Noto Sans JP", "Segoe UI", sans-serif;
+	line-height: 1.6;
+	padding-top: 35px;
 }
 
-.faq h2, .contact-section h2 {
-  text-align: center;
-  margin-bottom: 20px;
+/* ==========================================
+   FAQセクション
+========================================== */
+
+.faq,
+.contact-section {
+	max-width: 700px;
+	margin: 60px auto;
+	padding: 0px 20px;
 }
+
+.section-title {
+	margin-bottom: 20px;}
+
+
+/* ==========================================
+   FAQ アイテム
+========================================== */
 
 .faq-item {
-  margin-bottom: 15px;
-  padding: 10px;
-  border-left: 4px solid #007BFF;
-  background-color: #f4f4f4;
-  border-radius: 5px;
+  margin-bottom: 16px;
+  overflow: hidden;
+  border-left: 4px solid transparent;
+  background: linear-gradient(to right, rgba(143, 122, 240, 0.3), transparent);
+  border-radius: 10px;
 }
 
-.faq-item strong {
-  display: block;
-  margin-bottom: 5px;
+.faq-question {
+	width: 100%;
+	text-align: left;
+	background: transparent;
+	border: none;
+	color: var(--color-text-main);
+	font-size: 1rem;
+	font-weight: 600;
+	padding: 16px 18px;
+	cursor: pointer;
+	display: block;
+	font-family: inherit;
 }
 
+.faq-question::after {
+	content: "＋";
+	float: right;
+	color: var(--color-accent-purple-light);
+	transition: transform 0.2s ease;
+}
+
+.faq-question.active::after {
+	content: "－";
+}
+
+.faq-answer {
+	max-height: 0;
+	overflow: hidden;
+	background: rgba(255, 255, 255, 0.04);
+	border-top: 1px solid var(--color-border-light);
+	transition: max-height 0.3s ease;
+}
+
+.faq-answer p {
+	padding: 12px 18px;
+	color: var(--color-text-sub);
+	margin: 0;
+	text-align: left;
+	line-height: 1.7;
+}
+
+
+
+/* ==========================================
+   お問い合わせフォーム
+========================================== */
 .contact-form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  padding: 20px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  background-color: #f9f9f9;
+	display: flex;
+	flex-direction: column;
+	gap: 18px;
+	padding: 32px;
+	border: 1px solid var(--color-border-light);
+	border-radius: 12px;
+	background: var(--color-bg-glass);
+	box-shadow: 0 2px 12px var(--color-shadow-strong);
+	backdrop-filter: blur(12px);
 }
 
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
+.contact-form .form-group {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
 }
 
-input[type="text"], input[type="email"], textarea {
-  padding: 10px;
-  font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  width: 100%;
-  box-sizing: border-box;
+.contact-form label {
+	color: var(--color-text-main);
+	font-weight: 500;
 }
 
-textarea {
-  min-height: 140px;
-  resize: vertical;
+/* === 入力フォーム共通 === */
+.contact-form input[type="text"],
+.contact-form input[type="email"],
+.contact-form textarea {
+	padding: 12px;
+	font-size: 1rem;
+	border: 1px solid var(--color-border-light);
+	border-radius: 6px;
+	background: rgba(255, 255, 255, 0.04);
+	color: var(--color-text-main);
+	box-sizing: border-box;
 }
 
-.submit-btn {
-  padding: 12px;
-  background-color: #007BFF;
-  color: white;
-  font-weight: bold;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
+.contact-form input:focus,
+.contact-form textarea:focus {
+	outline: none;
+	border-color: var(--color-accent-purple);
+	background: rgba(255, 255, 255, 0.08);
 }
 
-.submit-btn:hover {
-  background-color: #0056b3;
+.contact-form textarea {
+	min-height: 150px;
+	resize: vertical;
 }
 
+/* === 送信ボタン === */
+.contact-form .submit-btn {
+	padding: 14px;
+	font-weight: 600;
+	color: var(--color-text-main);
+	border: none;
+	border-radius: 8px;
+	background: var(--grad-accent);
+	cursor: pointer;
+	box-shadow: 0 0 16px var(--color-shadow-glow);
+}
+
+/* === 成功メッセージ === */
 .success-message {
-  color: green;
-  font-weight: bold;
-  margin-top: 15px;
-  text-align: center;
+	color: var(--color-accent-blue);
+	font-weight: 600;
+	margin-top: 20px;
+	text-align: center;
 }
 
-/* レスポンシブ */
+/* ==========================================
+   レスポンシブ対応
+========================================== */
 @media screen and (max-width: 640px) {
-  .contact-form {
-    padding: 15px;
-  }
 
-  .faq-item {
-    padding: 8px;
-  }
+	.faq,
+	.contact-section {
+		padding: 24px 20px;
+		margin-bottom: 40px;
+	}
 
-  input[type="text"], input[type="email"], textarea {
-    font-size: 0.95rem;
-  }
+	.contact-form {
+		padding: 20px;
+	}
+
+	.faq-item {
+		padding: 14px 16px;
+	}
 }
