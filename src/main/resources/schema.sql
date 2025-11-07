@@ -10,6 +10,13 @@ DROP TABLE IF EXISTS item CASCADE;
 DROP TABLE IF EXISTS item_category CASCADE;
 DROP TABLE IF EXISTS login_user CASCADE;
 DROP TABLE IF EXISTS item_image CASCADE;
+
+-- ★追加：マッパーが参照する単数形を優先して削除
+DROP TABLE IF EXISTS favorite CASCADE;
+
+-- ★追加：既存の複数形を使っていた場合の掃除
+DROP TABLE IF EXISTS favorites CASCADE;
+
 DROP TYPE IF EXISTS role CASCADE;
 
 -- ===============================
@@ -125,12 +132,19 @@ CREATE TABLE cart (
 -- -------------------------------
 -- お気に入りテーブル
 -- -------------------------------
-CREATE TABLE IF NOT EXISTS favorites (
+-- ★修正：Mapper が参照する単数形 "favorite" を作成
+CREATE TABLE IF NOT EXISTS favorite (
     id SERIAL PRIMARY KEY,
-    user_id INTEGER REFERENCES login_user(id) ON DELETE CASCADE,
-    item_id INTEGER REFERENCES item(id) ON DELETE CASCADE,
-    created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    user_id INTEGER NOT NULL REFERENCES login_user(id) ON DELETE CASCADE,
+    item_id INTEGER NOT NULL REFERENCES item(id) ON DELETE CASCADE,
+    created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    -- ★追加：重複登録防止（user_id, item_id の一意制約）
+    CONSTRAINT uq_favorite_user_item UNIQUE (user_id, item_id)
 );
+
+-- ★追加：検索高速化
+CREATE INDEX IF NOT EXISTS idx_favorite_user ON favorite(user_id);
+CREATE INDEX IF NOT EXISTS idx_favorite_item ON favorite(item_id);
 
 -- ===============================
 --  11/05 追加制約（存在チェック付き）
@@ -139,7 +153,3 @@ CREATE TABLE IF NOT EXISTS favorites (
 -- cart: 同じカートに同じ商品を重複追加できないようにする（何度実行しても安全）
 CREATE UNIQUE INDEX IF NOT EXISTS uq_cart_cartlist_item
   ON cart (cartlist_id, item_id);
-
--- favorites: 同じ商品の重複お気に入りを防止（任意）
-CREATE UNIQUE INDEX IF NOT EXISTS uq_favorites_user_item
-  ON favorites (user_id, item_id);
