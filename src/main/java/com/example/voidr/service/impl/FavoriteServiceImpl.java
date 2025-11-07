@@ -54,4 +54,10 @@ public class FavoriteServiceImpl implements FavoriteService {
             return true; // 追加した
         }
     }
+    
+	// ★追加 11/06 谷口
+	@Override
+	public boolean isFavorite(Long userId, Long itemId) {
+		return favoriteMapper.findByUserIdAndItemId(userId, itemId) != null;
+	}
 }
