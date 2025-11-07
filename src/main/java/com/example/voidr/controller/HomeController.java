@@ -22,7 +22,6 @@ public class HomeController {
     @GetMapping("/voidr/story")
     public String story() {
     	
-    	
     	return "home/story";
     }
     

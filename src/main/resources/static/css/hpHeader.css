@@ -1,0 +1,100 @@
+/* ==============================
+  HP用 ヘッダー
+============================== */
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+header, .main-header {
+  display: flex;
+  top: 0;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(54, 54, 54, 0.6);
+  backdrop-filter: blur(6px);
+  position: fixed;
+  width: 100%;
+  z-index: 100;
+  padding: 0 40px;
+  height: 80px;
+  box-sizing: border-box; 
+}
+
+.logo {
+  font-size: 2em;
+  font-weight: bold;
+  color: #fff;
+  overflow: visible;
+  margin-left: -20px;
+}
+
+.logo img {
+  height: 140px;
+  width: auto;
+  transform: translateY(5px);
+}
+
+.title-logo {
+  width: 400px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  animation: fadeIn 2s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ヘッダーリンク */
+.nav-menu, .nav-right {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-menu li a, .nav-right a, .header-buttons a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 1.2em;
+  transition: 0.3s;
+}
+
+.nav-menu li a:hover { color: #00eaff; }
+.nav-right a:hover { color: #00eaff; }
+
+/* ドロップダウン */
+.nav-menu li { position: relative; }
+.submenu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.85);
+  padding: 10px 0;
+  border-radius: 8px;
+  min-width: 160px;
+}
+.submenu li a {
+  display: block;
+  padding: 10px 20px;
+  color: #fff;
+  text-decoration: none;
+  transition: background 0.3s;
+}
+.submenu li a:hover { background-color: rgba(255,255,255,0.15); }
+.dropdown:hover .submenu { display: block; }
+
+/* 今すぐプレイボタン風 */
+.play-now {
+  background: #8057ce;
+  color: black;
+  padding: 6px 18px;
+  border-radius: 20px;
+  font-weight: bold;
+}
+.play-now:hover { background: #fff; }

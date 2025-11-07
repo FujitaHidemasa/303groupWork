@@ -10,16 +10,7 @@ body {
   overflow-x: hidden; /* 横スクロールを無効化 */
 }
 
-/* ヘッダー */
-header {
-  background: linear-gradient(90deg, #0a0a0a 0%, #1a1a1a 100%); /*背景の色 */
-  padding: 20px 40px; /* 余白：上下20px、左右40px */
-  display: flex; /* 配置：中の要素を横並びにして中央揃え */
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: 5px solid  rgba(148, 0, 211, 0.6); /* ヘッダー下の線 */
-  box-shadow: 0 0 15px rgba(255, 0, 255, 0.6); /* 光のぼかし */
-}
+
 
 /* 見出し */
 h1 {
@@ -96,4 +87,9 @@ footer {
   font-size: 0.9rem;
   border-top: 5px solid rgba(148, 0, 211, 0.6); /* フッター上の線 */
   box-shadow: 0 0 20px rgba(255, 0, 255, 0.6); /* 周りに紫の光 */
+}
+
+/* ヘッダーが固定されているため、本文を下げる */
+article {
+  padding-top: 100px; /* ヘッダー高さ(80px)＋余白20px分 */
 }
