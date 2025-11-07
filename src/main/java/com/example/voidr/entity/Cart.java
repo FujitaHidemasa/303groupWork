@@ -13,28 +13,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Cart {
-	
-	/** カートID */
-	private long id;
-	
-	/** カートリストid */
-	private long cartListId;
-	
-	/** カートの商品のid */
-	private long itemId;
-	
-	/** カートの商品の数 */
-	private int quantity;
-	
-	/** カートの商品が「後で買う」状態かどうか */
-	private boolean isHold;
-	
-	/** 更新日 */
-	private LocalDateTime updatedAt;
 
-	public Order getItem() {
-		// TODO 自動生成されたメソッド・スタブ
-		return null;
-	}
-	
+	private long id; // カートID
+	private long cartListId; // カートリストID
+	private long itemId; // 商品ID
+	private int quantity; // 数量
+	private boolean isHold; // 後で買うフラグ
+	private LocalDateTime updatedAt; // 更新日
+
+	/** 商品情報（JOIN で取得用） */
+	private Item item; // ← ★追加！
+
 }

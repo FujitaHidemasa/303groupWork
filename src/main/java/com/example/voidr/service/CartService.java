@@ -2,6 +2,7 @@ package com.example.voidr.service;
 
 import java.util.List;
 
+import com.example.voidr.entity.Cart;
 import com.example.voidr.view.CartView;
 
 public interface CartService {
@@ -20,4 +21,8 @@ public interface CartService {
 	int sumTotal(long userId);
 
 	int countInBadge(long userId);
+
+	List<Cart> findByUsername(String username);
+
+	void clearCart(String username);
 }

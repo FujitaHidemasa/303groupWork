@@ -31,4 +31,9 @@ public class OrderItem {
 
 	// 作成日時
 	private LocalDateTime createdAt;
+
+	public void setOrderListId(long id2) {
+		// TODO 自動生成されたメソッド・スタブ
+		
+	}
 }

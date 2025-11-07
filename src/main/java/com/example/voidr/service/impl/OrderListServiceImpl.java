@@ -1,12 +1,12 @@
 package com.example.voidr.service.impl;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import com.example.voidr.entity.Account;
 import com.example.voidr.entity.OrderList;
+import com.example.voidr.repository.AccountMapper;
 import com.example.voidr.repository.OrderListMapper;
 import com.example.voidr.service.OrderListService;
 
@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 public class OrderListServiceImpl implements OrderListService {
 
 	private final OrderListMapper orderListMapper;
+	private final AccountMapper accountMapper;
 
 	@Override
 	public List<OrderList> getOrderListsByUserId(long userId) {
@@ -24,17 +25,19 @@ public class OrderListServiceImpl implements OrderListService {
 	}
 
 	@Override
-	@Transactional
 	public void createOrderList(OrderList orderList) {
-		// タイムスタンプを自動セット
-		orderList.setCreatedAt(LocalDateTime.now());
-		orderList.setUpdatedAt(LocalDateTime.now());
+		// username からユーザー情報を取得
+		Account account = accountMapper.selectByUsername(orderList.getUsername());
+		if (account == null) {
+			throw new IllegalArgumentException("ユーザーが存在しません: " + orderList.getUsername());
+		}
+
+		orderList.setUserId(account.getId());
+
+		// 注文リストを登録
 		orderListMapper.insertOrderList(orderList);
 	}
 
-	/**
-	 * ✅ ユーザー名から OrderList を取得
-	 */
 	@Override
 	public OrderList findByUserName(String username) {
 		return orderListMapper.findByUserName(username);
