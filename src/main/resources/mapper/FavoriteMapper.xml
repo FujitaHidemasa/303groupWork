@@ -13,13 +13,43 @@
     <result property="createdAt" column="created_at" />
   </resultMap>
 
-  <!-- 指定ユーザーのお気に入り一覧取得 -->
-  <select id="findByUserId" parameterType="long" resultMap="FavoriteMap">
-    SELECT id, user_id, item_id, created_at
-    FROM favorite
-    WHERE user_id = #{userId}
-    ORDER BY created_at DESC
-  </select>
+	<!-- ★追加: Itemをネストする結果マップ -->
+	<resultMap id="FavoriteWithItemMap"
+		type="com.example.voidr.entity.Favorite">
+		<id property="id" column="id" />
+		<result property="userId" column="user_id" />
+		<result property="itemId" column="item_id" />
+		<result property="createdAt" column="created_at" />
+
+		<association property="item"
+			javaType="com.example.voidr.entity.Item">
+			<id property="id" column="item_id_pref" />
+			<result property="name" column="item_name_pref" />
+			<result property="price" column="item_price_pref" />
+			<result property="thumbsImageName"
+				column="item_thumbs_image_name_pref" />
+		</association>
+	</resultMap>
+
+	<!-- 指定ユーザーのお気に入り一覧（Item JOINして表示用データ揃える） -->
+	<select id="findByUserId" parameterType="long"
+		resultMap="FavoriteWithItemMap">
+		SELECT
+		f.id,
+		f.user_id,
+		f.item_id,
+		f.created_at,
+
+		-- ★Itemの列をプレフィックス付きで別名に
+		i.id AS item_id_pref,
+		i.name AS item_name_pref,
+		i.price AS item_price_pref,
+		i.thumbs_image_name AS item_thumbs_image_name_pref
+		FROM favorite f
+		JOIN item i ON i.id = f.item_id
+		WHERE f.user_id = #{userId}
+		ORDER BY f.created_at DESC
+	</select>
 
   <!-- すでに登録されているか確認 -->
   <select id="findByUserIdAndItemId" parameterType="map" resultMap="FavoriteMap">

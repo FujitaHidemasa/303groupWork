@@ -1,5 +1,8 @@
 package com.example.voidr.config;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -8,6 +11,9 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
 @Configuration
 @EnableMethodSecurity(prePostEnabled = true) // ★追加：@PreAuthorize が有効になる
@@ -33,6 +39,10 @@ public class SecurityConfig {
 						// ★カート操作はログイン必須（/voidrshop/cart/**）
 						.requestMatchers("/voidrshop/cart/**").authenticated()
 
+						// ★お気に入りトグルPOST 認証必須
+						.requestMatchers(HttpMethod.POST,
+								"/voidrshop/items/*/favorite").authenticated()
+						
 						// それ以外は公開（必要に応じてauthenticated()に切替）
 						.anyRequest().permitAll())
 
@@ -42,8 +52,10 @@ public class SecurityConfig {
 						.loginProcessingUrl("/login") // POST /login
 						.usernameParameter("usernameInput") // フォームのnameと一致させる
 						.passwordParameter("passwordInput") // フォームのnameと一致させる
-						.defaultSuccessUrl("/voidrshop", false) // リダイレクト先
-						.failureUrl("/login?error")
+						// ★成功時ハンドラ。next→SavedRequest→/voidrshop の順
+						.successHandler(authenticationSuccessHandler()) // リダイレクト先
+						// ★失敗: next を付け直して /login?error&next=... に戻す
+						.failureHandler(authenticationFailureHandler())
 						.permitAll())
 
 				// ★ログアウト（任意だが入れておくと便利）
@@ -59,6 +71,29 @@ public class SecurityConfig {
 		;
 
 		return http.build();
+	}
+	
+	// ★追加：next を最優先、なければ SavedRequest、最後に /voidrshop
+	@Bean
+	public AuthenticationSuccessHandler authenticationSuccessHandler() {
+		SavedRequestAwareAuthenticationSuccessHandler h = new SavedRequestAwareAuthenticationSuccessHandler();
+		h.setTargetUrlParameter("next"); // ← ?next=/voidrshop/items/123 に対応
+		h.setDefaultTargetUrl("/voidrshop"); // ← フォールバック
+		h.setAlwaysUseDefaultTargetUrl(false); // ← SavedRequestがあればそれを使用
+		return h;
+	}
+	
+	// ★追加: 失敗時にも next を維持してログイン画面へ戻す
+	@Bean
+	public AuthenticationFailureHandler authenticationFailureHandler() {
+		return (request, response, ex) -> {
+			String next = request.getParameter("next");
+			String url = "/login?error";
+			if (next != null && !next.isBlank()) {
+				url += "&next=" + URLEncoder.encode(next, StandardCharsets.UTF_8);
+			}
+			response.sendRedirect(url);
+		};
 	}
 
 	// Signup後の自動ログインで使用
