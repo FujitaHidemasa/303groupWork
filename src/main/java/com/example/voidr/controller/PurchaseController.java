@@ -39,24 +39,20 @@ public class PurchaseController {
 
 	/** 現在ログイン中のユーザーIDを取得 */
 	private long currentUserId(Principal principal) {
-		if (principal == null) {
-			throw new IllegalStateException("未ログインの状態でアクセスしました。");
-		}
 		Account acc = accountService.findByUsername(principal.getName());
 		return acc != null ? acc.getId() : 0L;
 	}
 
 	// ==============================
-	// ✅ 購入画面表示
+	// ✅ 購入画面表示（常に最新のカート情報を取得）
 	// ==============================
 	@GetMapping
 	public String showPurchasePage(Model model, Principal principal) {
-		if (principal == null) {
-			return "redirect:/login"; // ✅ 未ログインならログイン画面へ
-		}
+		if (principal == null)
+			return "redirect:/login";
 
 		long userId = currentUserId(principal);
-		List<CartView> cartList = cartService.list(userId);
+		List<CartView> cartList = cartService.list(userId); // ✅ 最新のDB状態を取得
 
 		if (cartList == null || cartList.isEmpty()) {
 			model.addAttribute("cartItems", Collections.emptyList());
@@ -75,19 +71,17 @@ public class PurchaseController {
 	}
 
 	// ==============================
-	// ✅ 商品詳細 → 購入処理（カートに追加して購入画面へ）
+	// ✅ 商品詳細 → 購入画面へ（カートに追加して遷移）
 	// ==============================
 	@PostMapping
 	public String goToPurchase(@RequestParam("itemId") long itemId,
 			@RequestParam(value = "quantity", defaultValue = "1") int quantity,
 			Principal principal) {
-		if (principal == null) {
+		if (principal == null)
 			return "redirect:/login";
-		}
 
 		long userId = currentUserId(principal);
 		cartService.addItem(userId, itemId, quantity);
-
 		return "redirect:/voidrshop/purchase";
 	}
 
@@ -98,12 +92,11 @@ public class PurchaseController {
 	public String confirmPurchase(@RequestParam("paymentMethod") String paymentMethod,
 			Model model,
 			Principal principal) {
-		if (principal == null) {
+		if (principal == null)
 			return "redirect:/login";
-		}
 
 		long userId = currentUserId(principal);
-		List<CartView> cartList = cartService.list(userId);
+		List<CartView> cartList = cartService.list(userId); // ✅ 最新反映
 
 		if (cartList == null || cartList.isEmpty()) {
 			model.addAttribute("errorMessage", "カートが空です。");
@@ -117,25 +110,23 @@ public class PurchaseController {
 		model.addAttribute("cartItems", cartList);
 		model.addAttribute("totalPrice", totalPrice);
 		model.addAttribute("paymentMethod", paymentMethod);
-
 		return "shop/purchase/purchase_confirm";
 	}
 
 	// ==============================
-	// ✅ 購入完了画面
+	// ✅ 購入完了処理
 	// ==============================
 	@PostMapping("/complete")
 	@Transactional
 	public String completePurchase(@RequestParam("paymentMethod") String paymentMethod,
 			Principal principal,
 			Model model) {
-		if (principal == null) {
+		if (principal == null)
 			return "redirect:/login";
-		}
 
 		long userId = currentUserId(principal);
 		String username = principal.getName();
-		List<CartView> cartList = cartService.list(userId);
+		List<CartView> cartList = cartService.list(userId); // ✅ 最新反映
 
 		if (cartList == null || cartList.isEmpty()) {
 			model.addAttribute("errorMessage", "カートが空です。");
@@ -164,7 +155,7 @@ public class PurchaseController {
 			orderItemService.addOrderItem(orderItem);
 		}
 
-		// ✅ カートを空にする
+		// ✅ カートクリア
 		cartService.clearCart(username);
 
 		model.addAttribute("orderListId", orderList.getId());

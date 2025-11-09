@@ -32,32 +32,8 @@
 			margin: 0 auto;
 		}
 
-		.cart-buttons {
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			gap: 10px;
-			height: 100%;
-		}
-
-		.cart-buttons button {
-			padding: 6px 12px;
-			border: 1px solid #999;
-			background-color: #eee;
-			cursor: pointer;
-			height: 36px;
-			line-height: 1.2;
-			display: flex;
-			align-items: center;
-		}
-
-		.cart-buttons button:hover {
-			background-color: #ddd;
-		}
-
 		tbody tr {
 			height: 120px;
-			/* 商品A画像の高さと揃える */
 		}
 
 		.cart-actions {
@@ -96,6 +72,10 @@
 		.cart-actions a:hover {
 			background-color: #ddd;
 		}
+
+		.subtotal {
+			font-weight: bold;
+		}
 	</style>
 </head>
 
@@ -106,13 +86,14 @@
 	<main>
 		<section>
 			<h2>ショッピングカート</h2>
-			<table>
+			<table id="cart-table">
 				<thead>
 					<tr>
 						<th>商品画像</th>
 						<th>商品名</th>
 						<th>価格</th>
 						<th>数量</th>
+						<th>小計</th>
 						<th>操作</th>
 					</tr>
 				</thead>
@@ -125,10 +106,13 @@
 							</a>
 						</td>
 						<td th:text="${cv.item.name}">商品名</td>
-						<td th:text="${cv.item.price}">価格</td>
+						<td class="price" th:text="${cv.item.price}">1000</td>
 						<td>
-							<input type="number" th:value="${cv.cart.quantity}" min="1" style="width:60px;"
-								class="cart-quantity" th:data-id="${cv.cart.id}">
+							<input type="number" class="cart-quantity" th:value="${cv.cart.quantity}" min="1"
+								style="width:60px;" th:data-id="${cv.cart.id}">
+						</td>
+						<td class="subtotal" th:text="${cv.item.price * cv.cart.quantity}">
+							1000
 						</td>
 						<td>
 							<form th:action="@{/voidrshop/cart/remove}" method="post">
@@ -138,13 +122,12 @@
 						</td>
 					</tr>
 				</tbody>
-
 			</table>
 
 			<div class="cart-actions">
 				<a th:href="@{/voidrshop/items}" class="btn btn-outline-secondary">買い物を続ける</a>
 				<div>
-					<strong>合計金額: ¥<span th:text="${total}">0</span></strong>
+					<strong>合計金額: ¥<span id="total-price" th:text="${total}">0</span></strong>
 					<button th:onclick="|location.href='@{/voidrshop/purchase}'|">購入画面へ進む</button>
 				</div>
 			</div>
@@ -152,6 +135,47 @@
 	</main>
 
 	<div th:replace="fragments/footer :: footer"></div>
+
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+			const quantityInputs = document.querySelectorAll(".cart-quantity");
+
+			quantityInputs.forEach(input => {
+				input.addEventListener("change", async function () {
+					const row = input.closest("tr");
+					const price = parseInt(row.querySelector(".price").textContent);
+					const quantity = parseInt(input.value);
+					const subtotalCell = row.querySelector(".subtotal");
+
+					// 小計更新
+					const subtotal = price * quantity;
+					subtotalCell.textContent = subtotal.toLocaleString();
+
+					// 合計更新
+					updateTotal();
+
+					// サーバー側も更新（非同期POST）
+					const cartId = input.dataset.id;
+					const formData = new FormData();
+					formData.append("cartId", cartId);
+					formData.append("quantity", quantity);
+
+					await fetch("/voidrshop/cart/change", {
+						method: "POST",
+						body: formData
+					});
+				});
+			});
+
+			function updateTotal() {
+				let total = 0;
+				document.querySelectorAll(".subtotal").forEach(cell => {
+					total += parseInt(cell.textContent.replace(/,/g, "")) || 0;
+				});
+				document.getElementById("total-price").textContent = total.toLocaleString();
+			}
+		});
+	</script>
 
 </body>
 

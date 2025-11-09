@@ -35,16 +35,14 @@ public class CartController {
 	private final AccountService accountService;
 
 	/** ログイン中ユーザーのID取得 */
-	private long currentUserId(Principal principal) 
-	{
+	private long currentUserId(Principal principal) {
 		Account acc = accountService.findByUsername(principal.getName());
 		return acc.getId();
 	}
 
-	/** カート一覧 */
+	/** カート一覧表示 */
 	@GetMapping
-	public String list(Model model, Principal principal) 
-	{
+	public String list(Model model, Principal principal) {
 		long userId = currentUserId(principal);
 		List<CartView> items = cartService.list(userId);
 		int total = cartService.sumTotal(userId);
@@ -53,13 +51,12 @@ public class CartController {
 		return "shop/cart/list";
 	}
 
-	/** 追加：AJAXならJSON、非AJAXは画面遷移 */
+	/** 商品追加（Ajax対応） */
 	@PostMapping("/add")
 	public Object add(@RequestParam("itemId") long itemId,
 			@RequestParam(name = "quantity", defaultValue = "1") int quantity,
 			Principal principal,
-			HttpServletRequest request) 
-	{
+			HttpServletRequest request) {
 		long userId = currentUserId(principal);
 		cartService.addItem(userId, itemId, Math.max(1, quantity));
 
@@ -69,31 +66,30 @@ public class CartController {
 		return "redirect:/voidrshop/cart";
 	}
 
-	/** 数量変更 */
+	/** 数量変更（DBに即反映） */
 	@PostMapping("/change")
 	public String change(@RequestParam("cartId") long cartId,
 			@RequestParam("quantity") int quantity,
-			Principal principal) 
-	{
+			Principal principal) {
 		long userId = currentUserId(principal);
 		cartService.changeQuantity(userId, cartId, Math.max(1, quantity));
+
+		// ✅ 購入画面へ進んでも反映されるように、DBを更新した時点で完結
 		return "redirect:/voidrshop/cart";
 	}
 
 	/** 削除 */
 	@PostMapping("/remove")
-	public String remove(@RequestParam("cartId") long cartId, Principal principal) 
-	{
+	public String remove(@RequestParam("cartId") long cartId, Principal principal) {
 		long userId = currentUserId(principal);
 		cartService.remove(userId, cartId);
 		return "redirect:/voidrshop/cart";
 	}
 
-	/** バッジ用：現在の合計数量を返す（JSON） */
+	/** バッジ用：カート内商品数を返す（JSON） */
 	@GetMapping("/count")
 	@ResponseBody
-	public Map<String, Integer> count(Principal principal) 
-	{
+	public Map<String, Integer> count(Principal principal) {
 		long userId = currentUserId(principal);
 		return Map.of("count", cartService.countInBadge(userId));
 	}
