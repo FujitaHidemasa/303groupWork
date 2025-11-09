@@ -28,7 +28,15 @@ public class SecurityConfig {
 						.requestMatchers("/css/**", "/js/**", "/images/**", "/image/**", "/webjars/**").permitAll()
 
 						// ★公開ページ（未ログインでもOK）
-						.requestMatchers("/", "/login", "/signup", "/public/**").permitAll()
+						.requestMatchers
+										(
+										"/",
+										"/login",
+										"/signup",
+										"/signup/**",
+										"/public/**"
+										)
+						.permitAll()
 						.requestMatchers("/voidrshop").permitAll()
 						.requestMatchers(HttpMethod.GET,
 								// ストア閲覧系（一覧・詳細・検索）はGETで公開
