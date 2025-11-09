@@ -1,11 +1,14 @@
 package com.example.voidr.controller;
 
 import java.security.Principal;
+import java.util.Collections;
 import java.util.List;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,8 +26,10 @@ import com.example.voidr.view.CartView;
 import lombok.RequiredArgsConstructor;
 
 @Controller
-@RequestMapping("/voidrshop")
+@RequestMapping("/voidrshop/purchase")
 @RequiredArgsConstructor
+@Validated
+@PreAuthorize("isAuthenticated()") // ✅ ログイン必須
 public class PurchaseController {
 
 	private final CartService cartService;
@@ -32,19 +37,29 @@ public class PurchaseController {
 	private final OrderItemService orderItemService;
 	private final AccountService accountService;
 
-	// ==============================
-	// ✅ 購入画面
-	// ==============================
-	@GetMapping("/purchase")
-	public String showPurchasePage(Model model, Principal principal) {
-		String username = principal.getName();
-		Account account = accountService.findByUsername(username);
-		long userId = (account != null) ? account.getId() : 0L;
+	/** 現在ログイン中のユーザーIDを取得 */
+	private long currentUserId(Principal principal) {
+		if (principal == null) {
+			throw new IllegalStateException("未ログインの状態でアクセスしました。");
+		}
+		Account acc = accountService.findByUsername(principal.getName());
+		return acc != null ? acc.getId() : 0L;
+	}
 
-		List<CartView> cartList = cartService.list(userId); // CartViewにはitem情報入り
+	// ==============================
+	// ✅ 購入画面表示
+	// ==============================
+	@GetMapping
+	public String showPurchasePage(Model model, Principal principal) {
+		if (principal == null) {
+			return "redirect:/login"; // ✅ 未ログインならログイン画面へ
+		}
+
+		long userId = currentUserId(principal);
+		List<CartView> cartList = cartService.list(userId);
 
 		if (cartList == null || cartList.isEmpty()) {
-			model.addAttribute("cartItems", java.util.Collections.emptyList());
+			model.addAttribute("cartItems", Collections.emptyList());
 			model.addAttribute("totalPrice", 0);
 			model.addAttribute("message", "カートに商品がありません。");
 			return "shop/purchase/purchase";
@@ -60,19 +75,34 @@ public class PurchaseController {
 	}
 
 	// ==============================
+	// ✅ 商品詳細 → 購入処理（カートに追加して購入画面へ）
+	// ==============================
+	@PostMapping
+	public String goToPurchase(@RequestParam("itemId") long itemId,
+			@RequestParam(value = "quantity", defaultValue = "1") int quantity,
+			Principal principal) {
+		if (principal == null) {
+			return "redirect:/login";
+		}
+
+		long userId = currentUserId(principal);
+		cartService.addItem(userId, itemId, quantity);
+
+		return "redirect:/voidrshop/purchase";
+	}
+
+	// ==============================
 	// ✅ 購入確認画面
 	// ==============================
-	@PostMapping("/purchase/confirm")
-	public String confirmPurchase(
-			@RequestParam("paymentMethod") String paymentMethod,
+	@PostMapping("/confirm")
+	public String confirmPurchase(@RequestParam("paymentMethod") String paymentMethod,
 			Model model,
 			Principal principal) {
+		if (principal == null) {
+			return "redirect:/login";
+		}
 
-		String username = principal.getName();
-		Account account = accountService.findByUsername(username);
-		long userId = (account != null) ? account.getId() : 0L;
-
-		// ✅ CartViewで取得（Item情報含む）
+		long userId = currentUserId(principal);
 		List<CartView> cartList = cartService.list(userId);
 
 		if (cartList == null || cartList.isEmpty()) {
@@ -94,17 +124,17 @@ public class PurchaseController {
 	// ==============================
 	// ✅ 購入完了画面
 	// ==============================
-	@PostMapping("/purchase/complete")
+	@PostMapping("/complete")
 	@Transactional
-	public String completePurchase(
-			@RequestParam("paymentMethod") String paymentMethod,
+	public String completePurchase(@RequestParam("paymentMethod") String paymentMethod,
 			Principal principal,
 			Model model) {
+		if (principal == null) {
+			return "redirect:/login";
+		}
 
+		long userId = currentUserId(principal);
 		String username = principal.getName();
-		Account account = accountService.findByUsername(username);
-		long userId = (account != null) ? account.getId() : 0L;
-
 		List<CartView> cartList = cartService.list(userId);
 
 		if (cartList == null || cartList.isEmpty()) {

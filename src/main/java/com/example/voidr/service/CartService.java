@@ -6,23 +6,27 @@ import com.example.voidr.entity.Cart;
 import com.example.voidr.view.CartView;
 
 public interface CartService {
-	// ★追加：アイテム追加（数量指定、同一商品は加算）
+	/** アイテム追加（数量指定、同一商品は加算） */
 	void addItem(long userId, long itemId, int quantity);
 
-	// ★追加：数量直接変更（カート行ID指定）
+	/** 数量直接変更（カート行ID指定） */
 	void changeQuantity(long userId, long cartId, int quantity);
 
-	// ★追加：行削除
+	/** カート行削除 */
 	void remove(long userId, long cartId);
 
-	// ★追加：一覧と合計・件数
+	/** カート一覧（JOIN済ビュー） */
 	List<CartView> list(long userId);
 
+	/** 合計金額 */
 	int sumTotal(long userId);
 
+	/** バッジ表示用件数 */
 	int countInBadge(long userId);
 
+	/** ユーザー名でカート取得 */
 	List<Cart> findByUsername(String username);
 
+	/** カートクリア */
 	void clearCart(String username);
 }

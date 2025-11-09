@@ -23,7 +23,7 @@ public class CartServiceImpl implements CartService {
 	private final CartListMapper cartListMapper;
 
 	/**
-	 * ユーザーの cart_list を取得 or 作成
+	 * ✅ ユーザーに紐づく CartList を取得 or 作成
 	 */
 	private long ensureCartListId(long userId) {
 		CartList found = cartListMapper.findByUserId(userId);
@@ -39,7 +39,7 @@ public class CartServiceImpl implements CartService {
 	}
 
 	/**
-	 * カートに商品追加（同一商品は数量加算）
+	 * ✅ カートに商品追加（同一商品は数量加算）
 	 */
 	@Override
 	public void addItem(long userId, long itemId, int quantity) {
@@ -51,15 +51,15 @@ public class CartServiceImpl implements CartService {
 		c.setItemId(itemId);
 		c.setQuantity(q);
 
-		// 同一商品は数量加算 or 新規登録
+		// 同一商品なら数量加算、なければ新規追加
 		cartMapper.upsert(c);
 
-		// カートリスト更新日時更新
+		// カートリストの更新日時更新
 		cartListMapper.touchUpdatedAt(cartListId);
 	}
 
 	/**
-	 * 数量変更
+	 * ✅ 数量変更
 	 */
 	@Override
 	public void changeQuantity(long userId, long cartId, int quantity) {
@@ -71,7 +71,7 @@ public class CartServiceImpl implements CartService {
 	}
 
 	/**
-	 * 削除
+	 * ✅ カート行削除
 	 */
 	@Override
 	public void remove(long userId, long cartId) {
@@ -79,7 +79,7 @@ public class CartServiceImpl implements CartService {
 	}
 
 	/**
-	 * カート一覧（JOIN済み表示用ビュー）
+	 * ✅ カート一覧（JOIN済みビュー）
 	 */
 	@Override
 	@Transactional(readOnly = true)
@@ -89,34 +89,37 @@ public class CartServiceImpl implements CartService {
 	}
 
 	/**
-	 * 合計金額
+	 * ✅ 合計金額
 	 */
 	@Override
 	@Transactional(readOnly = true)
 	public int sumTotal(long userId) {
-		return cartMapper.sumTotalByUserId(userId);
+		Integer total = cartMapper.sumTotalByUserId(userId);
+		return (total != null) ? total : 0;
 	}
 
 	/**
-	 * バッジ表示用件数
+	 * ✅ バッジ表示用件数
 	 */
 	@Override
 	@Transactional(readOnly = true)
 	public int countInBadge(long userId) {
-		return cartMapper.countItemsByUserId(userId);
+		Integer count = cartMapper.countItemsByUserId(userId);
+		return (count != null) ? count : 0;
 	}
 
 	/**
-	 * ユーザー名でカート取得
+	 * ✅ ユーザー名でカート取得
 	 */
 	@Override
 	@Transactional(readOnly = true)
 	public List<Cart> findByUsername(String username) {
-		return cartMapper.findByUsername(username);
+		List<Cart> list = cartMapper.findByUsername(username);
+		return (list != null) ? list : java.util.Collections.emptyList();
 	}
 
 	/**
-	 * カートクリア
+	 * ✅ カートクリア
 	 */
 	@Override
 	public void clearCart(String username) {
