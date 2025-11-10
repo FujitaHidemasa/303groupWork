@@ -16,6 +16,13 @@ public interface AccountService
 			String displayName, String email, // ★追加（NOT NULL）
 			String address, String phoneNumber); // ★追加（NULL可）
 
+	
+	 // 11/10（藤田）追加：会員情報の更新メソッド
+    void updateAccount(String username, Account updatedAccount);
+    
+    //11/10(藤田）会員情報の削除メソッド
+    void deleteAccountByUsername(String username);
+
 }
 
 

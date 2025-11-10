@@ -14,4 +14,10 @@ public interface AccountMapper {
 
     /** 新規ユーザー登録 */
     void insertAccount(Account user);
+    
+    /** ユーザー情報の変更**/
+    void updateAccount(Account account);
+    
+    /**ユーザー情報の削除**/
+    void deleteByUsername(@Param("username") String username);
 }

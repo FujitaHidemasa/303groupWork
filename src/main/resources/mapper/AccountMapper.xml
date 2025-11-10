@@ -64,6 +64,28 @@
       <if test="phoneNumber != null">#{phoneNumber},</if>
     </trim>
   </insert>
+  
+  
+  
+  <!-- 11/10追加（藤田）：ユーザー情報更新 -->
+	<update id="updateAccount" parameterType="com.example.voidr.entity.Account">
+		UPDATE login_user
+		SET
+			display_name = #{displayName},
+			email = #{email},
+			address = #{address},
+			phone_number = #{phoneNumber},
+			updated_at = CURRENT_TIMESTAMP
+		WHERE username = #{username}
+	</update>
+	
+	
+	
+	<!-- 11/10追加（藤田）　：ユーザー情報削除 -->
+	<delete id="deleteByUsername" parameterType="string">
+    DELETE FROM login_user WHERE username = #{username}
+	</delete>
+	
 
 
 </mapper>

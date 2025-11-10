@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>退会確認 | VOIDR</title>
+<link rel="stylesheet" th:href="@{/css/mypage/mypage.css}">
+<link rel="stylesheet" th:href="@{/css/ec/header.css}">
+</head>
+<body>
+
+<div th:replace="fragments/header :: header"></div>
+
+<main class="mypage-container">
+  <aside class="mypage-sidebar">
+    <h2>メニュー</h2>
+    <ul>
+      <li><a th:href="@{/mypage}">マイページTOP</a></li>
+      <li><a th:href="@{/mypage/edit}">会員情報変更</a></li>
+      <li><a th:href="@{/mypage/address}">お届け先管理</a></li>
+      <li><a th:href="@{/mypage/wishlist}">お気に入り</a></li>
+      <li><a th:href="@{/mypage/delete}" class="active">退会手続き</a></li>
+    </ul>
+  </aside>
+
+  <section class="mypage-content">
+    <h2>退会確認</h2>
+    <p>以下の理由で退会されます：</p>
+    <p th:text="${reason}" class="username"></p>
+
+    <p>この操作は取り消せません。<br>アカウント情報・購入履歴など全て削除されます。</p>
+
+    <form th:action="@{/mypage/delete/execute}" method="post">
+      <input type="hidden" name="reason" th:value="${reason}">
+      <div class="form-actions">
+        <button type="submit" class="btn">退会を確定する</button>
+        <a th:href="@{/mypage}" class="btn" style="background:#555;">キャンセル</a>
+      </div>
+    </form>
+  </section>
+</main>
+
+<footer class="main-footer">
+  <p>&copy; 2025 VOIDR STORE. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

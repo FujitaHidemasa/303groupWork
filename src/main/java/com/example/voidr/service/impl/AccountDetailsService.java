@@ -13,15 +13,19 @@ import lombok.RequiredArgsConstructor;
 
 
 // 10/27 谷口
-
+// ユーザー登録・検索を担当するサービスクラス
+// Spring Security + MyBatis連携
 @Service
 @RequiredArgsConstructor
 public class AccountDetailsService implements AccountService
 {
-	   // ★追加：DBアクセスとパスワードハッシュ用
+    // ★追加：DBアクセスとパスワードハッシュ用
     private final AccountMapper accountMapper;
     private final PasswordEncoder passwordEncoder;
 
+    // ==========================
+    // ユーザー名で検索
+    // ==========================
     @Override
     public Account findByUsername(String username)
     {
@@ -29,7 +33,9 @@ public class AccountDetailsService implements AccountService
         return accountMapper.selectByUsername(username);
     }
 
+    // ==========================
     // 旧シグネチャ互換（呼ばれた場合のフォールバック）
+    // ==========================
     @Override
     public void registerAccount(String username, String rawPassword, Role authority)
     {
@@ -40,7 +46,10 @@ public class AccountDetailsService implements AccountService
                         null, null);                // address/phoneNumber
     }
 
-    // ★新シグネチャ（実処理）：displayName/email 必須、address/phone は任意
+    // ==========================
+    // ★新シグネチャ（実処理）
+    // displayName/email 必須、address/phone は任意
+    // ==========================
     @Transactional
     @Override
     public void registerAccount(String username, String rawPassword, Role authority,
@@ -67,17 +76,40 @@ public class AccountDetailsService implements AccountService
         accountMapper.insertAccount(a);
     }
 
+    // ==========================
+    // ★追加：会員情報更新機能
+    // ==========================
+    @Transactional
+    @Override
+    public void updateAccount(String username, Account updatedAccount)
+    {
+        // ★既存データ取得
+        Account existing = accountMapper.selectByUsername(username);
+        if (existing == null)
+        {
+            throw new IllegalArgumentException("ユーザーが存在しません: " + username);
+        }
+
+        // ★更新可能項目を反映（パスワード・権限は除外）
+        existing.setDisplayName(updatedAccount.getDisplayName());
+        existing.setEmail(updatedAccount.getEmail());
+        existing.setAddress(updatedAccount.getAddress());
+        existing.setPhoneNumber(updatedAccount.getPhoneNumber());
+
+        // ★DB更新
+        accountMapper.updateAccount(existing);
+    }
+    
+    
+    
+ // ==========================
+    // ★追加：会員情報削除機能
+    // ==========================
+    
+    @Transactional
+    @Override
+    public void deleteAccountByUsername(String username) {
+        accountMapper.deleteByUsername(username);
+    }
+
 }
-
-
-// 変更前 10/27
-//	@Override
-//	public Account findByUsername(String username)
-//	{
-//		return null;
-//	}
-//
-//	@Override
-//	public void registerAccount(String username, String rawPassword, Role authority)
-//	{
-//	}
