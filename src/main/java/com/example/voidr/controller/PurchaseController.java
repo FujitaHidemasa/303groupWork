@@ -29,7 +29,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/voidrshop/purchase")
 @RequiredArgsConstructor
 @Validated
-@PreAuthorize("isAuthenticated()") // ✅ ログイン必須
+@PreAuthorize("isAuthenticated()")
 public class PurchaseController {
 
 	private final CartService cartService;
@@ -37,22 +37,17 @@ public class PurchaseController {
 	private final OrderItemService orderItemService;
 	private final AccountService accountService;
 
-	/** 現在ログイン中のユーザーIDを取得 */
+	/** ログイン中ユーザーのID取得 */
 	private long currentUserId(Principal principal) {
 		Account acc = accountService.findByUsername(principal.getName());
 		return acc != null ? acc.getId() : 0L;
 	}
 
-	// ==============================
-	// ✅ 購入画面表示（常に最新のカート情報を取得）
-	// ==============================
+	/** 購入画面表示（カート内商品一覧） */
 	@GetMapping
 	public String showPurchasePage(Model model, Principal principal) {
-		if (principal == null)
-			return "redirect:/login";
-
 		long userId = currentUserId(principal);
-		List<CartView> cartList = cartService.list(userId); // ✅ 最新のDB状態を取得
+		List<CartView> cartList = cartService.list(userId);
 
 		if (cartList == null || cartList.isEmpty()) {
 			model.addAttribute("cartItems", Collections.emptyList());
@@ -65,41 +60,37 @@ public class PurchaseController {
 				.mapToInt(cv -> cv.getItem().getPrice() * cv.getCart().getQuantity())
 				.sum();
 
-		model.addAttribute("cartItems", cartList);
-		model.addAttribute("totalPrice", total);
+		model.addAttribute("cartItems", cartList); // ← ここで全商品情報を渡す
+		model.addAttribute("totalPrice", total); // ← 合計金額も渡す
 		return "shop/purchase/purchase";
 	}
 
-	// ==============================
-	// ✅ 商品詳細 → 購入画面へ（カートに追加して遷移）
-	// ==============================
+	/** 商品詳細ページから直接購入ボタンで送られる POST */
 	@PostMapping
-	public String goToPurchase(@RequestParam("itemId") long itemId,
-			@RequestParam(value = "quantity", defaultValue = "1") int quantity,
+	public String addItemAndRedirectToPurchase(
+			@RequestParam("itemId") Long itemId,
+			@RequestParam(name = "quantity", defaultValue = "1") int quantity,
 			Principal principal) {
-		if (principal == null)
-			return "redirect:/login";
 
-		long userId = currentUserId(principal);
-		cartService.addItem(userId, itemId, quantity);
+		if (principal != null) {
+			cartService.addItem(principal.getName(), itemId, quantity);
+		}
+
 		return "redirect:/voidrshop/purchase";
 	}
 
-	// ==============================
-	// ✅ 購入確認画面
-	// ==============================
+	/** 購入確認画面 */
 	@PostMapping("/confirm")
-	public String confirmPurchase(@RequestParam("paymentMethod") String paymentMethod,
+	public String confirmPurchase(
+			@RequestParam("paymentMethod") String paymentMethod,
+			@RequestParam("address") String address,
 			Model model,
 			Principal principal) {
-		if (principal == null)
-			return "redirect:/login";
 
 		long userId = currentUserId(principal);
-		List<CartView> cartList = cartService.list(userId); // ✅ 最新反映
+		List<CartView> cartList = cartService.list(userId);
 
 		if (cartList == null || cartList.isEmpty()) {
-			model.addAttribute("errorMessage", "カートが空です。");
 			return "redirect:/voidrshop/cart";
 		}
 
@@ -110,26 +101,26 @@ public class PurchaseController {
 		model.addAttribute("cartItems", cartList);
 		model.addAttribute("totalPrice", totalPrice);
 		model.addAttribute("paymentMethod", paymentMethod);
+		model.addAttribute("address", address);
 		return "shop/purchase/purchase_confirm";
 	}
 
-	// ==============================
-	// ✅ 購入完了処理
-	// ==============================
+	/** 購入完了処理 */
 	@PostMapping("/complete")
 	@Transactional
-	public String completePurchase(@RequestParam("paymentMethod") String paymentMethod,
+	public String completePurchase(
+			@RequestParam("paymentMethod") String paymentMethod,
+			@RequestParam("address") String address,
 			Principal principal,
 			Model model) {
-		if (principal == null)
+
+		if (principal == null) {
 			return "redirect:/login";
+		}
 
 		long userId = currentUserId(principal);
-		String username = principal.getName();
-		List<CartView> cartList = cartService.list(userId); // ✅ 最新反映
-
+		List<CartView> cartList = cartService.list(userId);
 		if (cartList == null || cartList.isEmpty()) {
-			model.addAttribute("errorMessage", "カートが空です。");
 			return "redirect:/voidrshop/cart";
 		}
 
@@ -137,15 +128,16 @@ public class PurchaseController {
 				.mapToInt(cv -> cv.getItem().getPrice() * cv.getCart().getQuantity())
 				.sum();
 
-		// ✅ 注文リスト作成
+		// 注文リスト登録
 		OrderList orderList = new OrderList();
-		orderList.setAccountId(userId);
-		orderList.setUsername(username);
+		orderList.setUserId(userId);
 		orderList.setTotalPrice(totalPrice);
 		orderList.setPaymentMethod(paymentMethod);
+		orderList.setAddress(address);
+
 		orderListService.createOrderList(orderList);
 
-		// ✅ 注文アイテム登録
+		// 注文アイテム登録
 		for (CartView cv : cartList) {
 			OrderItem orderItem = new OrderItem();
 			orderItem.setOrderListId(orderList.getId());
@@ -155,12 +147,12 @@ public class PurchaseController {
 			orderItemService.addOrderItem(orderItem);
 		}
 
-		// ✅ カートクリア
-		cartService.clearCart(username);
+		cartService.clearCart(principal.getName());
 
 		model.addAttribute("orderListId", orderList.getId());
 		model.addAttribute("totalPrice", totalPrice);
 		model.addAttribute("paymentMethod", paymentMethod);
+		model.addAttribute("address", address);
 
 		return "shop/purchase/purchase_complete";
 	}

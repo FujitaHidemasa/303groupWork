@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- インターフェイス: com.example.voidr.repository.OrderListMapper メソッド : List<OrderList> 
-	findByUserId(@Param("userId") long userId) void insertOrderList(OrderList 
-	orderList) スキーマ : order_list -->
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.voidr.repository.OrderListMapper">
 
@@ -12,11 +10,13 @@
 		SELECT
 		id,
 		user_id,
+		total_price,
+		payment_method,
+		address,
 		created_at,
 		updated_at
 		FROM order_list
-		WHERE
-		user_id = #{userId}
+		WHERE user_id = #{userId}
 		ORDER BY created_at DESC, id DESC
 	</select>
 
@@ -26,17 +26,23 @@
 		useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO order_list (
 		user_id,
+		total_price,
+		payment_method,
+		address,
 		created_at,
 		updated_at
 		)
 		VALUES (
 		#{userId},
+		#{totalPrice},
+		#{paymentMethod},
+		#{address},
 		CURRENT_TIMESTAMP,
 		CURRENT_TIMESTAMP
 		)
 	</insert>
 
-	<!-- OrderListMapper.xml -->
+	<!-- ユーザー名から注文リストを取得 -->
 	<select id="findByUserName" parameterType="String"
 		resultType="com.example.voidr.entity.OrderList">
 		SELECT ol.*
@@ -44,7 +50,5 @@
 		JOIN login_user u ON ol.user_id = u.id
 		WHERE u.username = #{username}
 	</select>
-
-
 
 </mapper>

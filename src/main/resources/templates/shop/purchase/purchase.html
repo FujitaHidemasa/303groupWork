@@ -26,7 +26,6 @@
 		th {
 			background-color: #f5f5f5;
 			color: black;
-			/* ヘッダー文字を黒に設定 */
 		}
 
 		img {
@@ -47,11 +46,8 @@
 			padding-top: 15px;
 		}
 
-		.purchase-actions strong {
-			font-size: 1.1rem;
-		}
-
-		select {
+		select,
+		input[type="text"] {
 			padding: 6px 10px;
 			font-size: 1rem;
 			border: 1px solid #aaa;
@@ -69,18 +65,6 @@
 			background-color: #bbb;
 		}
 
-		.purchase-actions a {
-			text-decoration: none;
-			color: black;
-			background-color: #eee;
-			padding: 10px 15px;
-			border: 1px solid #ccc;
-		}
-
-		.purchase-actions a:hover {
-			background-color: #ddd;
-		}
-
 		h2 {
 			margin-top: 20px;
 			text-align: center;
@@ -89,8 +73,6 @@
 </head>
 
 <body>
-
-	<!-- 共通ヘッダー -->
 	<div th:replace="fragments/header :: header"></div>
 
 	<main>
@@ -115,16 +97,15 @@
 								onerror="this.onerror=null;this.src='/image/no_image.png';" alt="商品画像" width="80">
 						</td>
 						<td th:text="${cv.item.name}">商品名</td>
-						<td th:text="${cv.cart != null ? cv.cart.quantity : 1}">1</td>
+						<td th:text="${cv.cart.quantity}">1</td>
 						<td th:text="${#numbers.formatInteger(cv.item.price, 1, 'COMMA')} + '円'">0円</td>
-						<td
-							th:text="${#numbers.formatInteger(cv.item.price * (cv.cart != null ? cv.cart.quantity : 1), 1, 'COMMA')} + '円'">
-							0円</td>
+						<td th:text="${#numbers.formatInteger(cv.item.price * cv.cart.quantity, 1, 'COMMA')} + '円'">0円
+						</td>
 					</tr>
 				</tbody>
 			</table>
 
-			<!-- 合計金額と支払い方法 -->
+			<!-- 購入情報入力 -->
 			<form th:action="@{/voidrshop/purchase/confirm}" method="post">
 				<div class="purchase-actions">
 					<a th:href="@{/voidrshop/cart}">カートに戻る</a>
@@ -135,10 +116,18 @@
 							<option value="銀行振込">銀行振込</option>
 							<option value="コンビニ払い">コンビニ払い</option>
 						</select>
-						<strong style="margin-left:20px;">合計金額：
+
+						<br><br>
+						<label for="address"><strong>配送先住所：</strong></label>
+						<input type="text" id="address" name="address" placeholder="例：東京都渋谷区1-2-3" required
+							style="width:300px; margin-left:10px;">
+
+						<br><br>
+						<strong>合計金額：
 							¥<span th:text="${#numbers.formatInteger(totalPrice, 1, 'COMMA')}">0</span>
 						</strong>
-						<button type="submit">購入内容を確認する</button>
+
+						<button type="submit" style="margin-left:20px;">購入内容を確認する</button>
 					</div>
 				</div>
 			</form>
@@ -146,7 +135,6 @@
 	</main>
 
 	<div th:replace="fragments/footer :: footer"></div>
-
 </body>
 
 </html>

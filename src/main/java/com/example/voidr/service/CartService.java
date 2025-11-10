@@ -6,8 +6,12 @@ import com.example.voidr.entity.Cart;
 import com.example.voidr.view.CartView;
 
 public interface CartService {
+
 	/** アイテム追加（数量指定、同一商品は加算） */
 	void addItem(long userId, long itemId, int quantity);
+
+	/** アイテム追加（ユーザー名指定） */
+	void addItem(String username, long itemId, int quantity);
 
 	/** 数量直接変更（カート行ID指定） */
 	void changeQuantity(long userId, long cartId, int quantity);

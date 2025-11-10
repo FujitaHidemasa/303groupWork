@@ -4,9 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.example.voidr.entity.Account;
 import com.example.voidr.entity.OrderList;
-import com.example.voidr.repository.AccountMapper;
 import com.example.voidr.repository.OrderListMapper;
 import com.example.voidr.service.OrderListService;
 
@@ -17,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 public class OrderListServiceImpl implements OrderListService {
 
 	private final OrderListMapper orderListMapper;
-	private final AccountMapper accountMapper;
 
 	@Override
 	public List<OrderList> getOrderListsByUserId(long userId) {
@@ -26,13 +23,9 @@ public class OrderListServiceImpl implements OrderListService {
 
 	@Override
 	public void createOrderList(OrderList orderList) {
-		// username からユーザー情報を取得
-		Account account = accountMapper.selectByUsername(orderList.getUsername());
-		if (account == null) {
-			throw new IllegalArgumentException("ユーザーが存在しません: " + orderList.getUsername());
+		if (orderList.getUserId() <= 0) {
+			throw new IllegalArgumentException("ユーザーIDが無効です");
 		}
-
-		orderList.setUserId(account.getId());
 
 		// 注文リストを登録
 		orderListMapper.insertOrderList(orderList);
@@ -40,6 +33,7 @@ public class OrderListServiceImpl implements OrderListService {
 
 	@Override
 	public OrderList findByUserName(String username) {
-		return orderListMapper.findByUserName(username);
+		// username で検索する必要があれば mapper 側で対応
+		throw new UnsupportedOperationException("username での検索は未対応");
 	}
 }

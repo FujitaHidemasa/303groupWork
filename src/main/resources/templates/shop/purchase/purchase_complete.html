@@ -4,26 +4,101 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>購入完了 | FPS GEAR STORE</title>
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+	<link rel="stylesheet" th:href="@{/css/ec/main.css}">
+	<link rel="stylesheet" th:href="@{/css/ec/header.css}">
+	<link rel="stylesheet" th:href="@{/css/ec/footer.css}">
+	<title>購入完了 - FPS GEAR STORE</title>
+	<style>
+		main {
+			width: 80%;
+			margin: 60px auto;
+			text-align: center;
+		}
+
+		h2 {
+			font-size: 1.8rem;
+			color: #222;
+			margin-bottom: 20px;
+		}
+
+		p {
+			font-size: 1.1rem;
+			color: #333;
+			margin-bottom: 30px;
+		}
+
+		.order-info {
+			background-color: #fafafa;
+			border: 1px solid #ccc;
+			border-radius: 8px;
+			padding: 20px;
+			width: 60%;
+			margin: 20px auto;
+			box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+		}
+
+		.order-info span {
+			font-weight: bold;
+			color: #000;
+		}
+
+		.action-buttons {
+			margin-top: 40px;
+			display: flex;
+			justify-content: center;
+			gap: 20px;
+		}
+
+		.action-buttons a {
+			display: inline-block;
+			padding: 12px 30px;
+			font-size: 1rem;
+			border-radius: 6px;
+			text-decoration: none;
+			transition: background-color 0.3s, color 0.3s;
+		}
+
+		.btn-history {
+			background-color: #007bff;
+			color: white;
+		}
+
+		.btn-history:hover {
+			background-color: #0069d9;
+		}
+
+		.btn-top {
+			background-color: #eee;
+			color: #333;
+			border: 1px solid #ccc;
+		}
+
+		.btn-top:hover {
+			background-color: #ddd;
+		}
+	</style>
 </head>
 
 <body>
 	<div th:replace="fragments/header :: header"></div>
 
-	<main class="container mt-5 text-center">
-		<h1 class="mb-4">ご購入ありがとうございます！</h1>
-		<p class="fs-5">ご注文番号：<span th:text="${orderListId}"></span></p>
+	<main>
+		<section>
+			<h2>ご購入ありがとうございます！</h2>
+			<p>ご注文が正常に完了しました。<br>下記のご注文番号をお控えください。</p>
 
-		<div class="mt-4">
-			<a th:href="@{/order_history}" class="btn btn-primary btn-lg">購入履歴を見る</a>
-			<a th:href="@{/}" class="btn btn-outline-secondary btn-lg ms-3">トップに戻る</a>
-		</div>
+			<div class="order-info">
+				<p>ご注文番号：<span th:text="${orderListId}">00000001</span></p>
+			</div>
+
+			<div class="action-buttons">
+				<a th:href="@{/order_history}" class="btn-history">購入履歴を見る</a>
+				<a th:href="@{/}" class="btn-top">トップに戻る</a>
+			</div>
+		</section>
 	</main>
 
-	<footer class="text-center mt-5">
-		<p>© 2025 FPS GEAR STORE</p>
-	</footer>
+	<div th:replace="fragments/footer :: footer"></div>
 </body>
 
 </html>
