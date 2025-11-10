@@ -1,0 +1,21 @@
+<div th:fragment="sidebar">
+  <aside class="sidebar">
+    <div>
+      <div class="sidebar-title">管理コンソール</div>
+      <nav>
+		<!-- リンク先は(仮) -->
+        <a th:href="@{/admin/news}" th:classappend="${active == 'news'} ? 'active'">新着情報管理</a>
+        <a th:href="@{/admin/items}" th:classappend="${active == 'products'} ? 'active'">商品管理</a>
+        <a th:href="@{/admin/orders}" th:classappend="${active == 'orders'} ? 'active'">注文管理</a>
+        <a th:href="@{/admin/members}" th:classappend="${active == 'members'} ? 'active'">会員管理</a>
+        <a th:href="@{/admin/inquiries}" th:classappend="${active == 'inquiry'} ? 'active'">お問い合わせ管理</a>
+      </nav>
+    </div>
+
+    <div class="sidebar-footer">
+      <form th:action="@{/logout}" method="post">
+        <button type="submit" class="logout-btn">ログアウト</button>
+      </form>
+    </div>
+  </aside>
+</div>
