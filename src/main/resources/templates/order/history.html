@@ -1,185 +1,149 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="ja">
 
 <head>
 	<meta charset="UTF-8">
-	<title>購入履歴</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" th:href="@{/css/ec/main.css}">
+	<link rel="stylesheet" th:href="@{/css/ec/header.css}">
+	<link rel="stylesheet" th:href="@{/css/ec/footer.css}">
+	<title>購入履歴 - FPS GEAR STORE</title>
 	<style>
-		body {
-			font-family: "Segoe UI", sans-serif;
-			margin: 40px;
-			background-color: #fafafa;
-			text-align: center;
-		}
-
-		h2 {
-			color: #333;
-			margin-bottom: 30px;
-		}
-
 		table {
-			width: 90%;
-			margin: 0 auto 40px;
 			border-collapse: collapse;
-			box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
-			background-color: #fff;
+			width: 100%;
+			margin-top: 20px;
 		}
 
 		th,
 		td {
-			padding: 14px;
-			border-bottom: 1px solid #ddd;
+			padding: 12px 14px;
+			border-bottom: 1px solid #ccc;
 			text-align: center;
 			vertical-align: middle;
 		}
 
 		th {
-			background-color: #f8f8f8;
-			font-weight: 600;
-		}
-
-		tr:hover {
-			background-color: #f9f9f9;
+			background-color: #f5f5f5;
+			color: black;
 		}
 
 		img {
-			width: 70px;
-			height: 70px;
+			display: block;
+			margin: 0 auto;
+			width: 80px;
+			height: 80px;
 			object-fit: cover;
-			border-radius: 8px;
+			border-radius: 4px;
 		}
 
-		.status-hold {
-			color: #f39c12;
-			font-weight: bold;
-		}
-
-		.status-fixed {
-			color: #27ae60;
-			font-weight: bold;
-		}
-
-		.price {
-			color: #333;
-			font-weight: bold;
+		tbody tr {
+			height: 120px;
 		}
 
 		.action-buttons button {
-			background-color: #3498db;
-			color: white;
-			border: none;
-			padding: 8px 14px;
 			margin: 0 5px;
+			padding: 8px 14px;
+			border: none;
 			border-radius: 6px;
 			cursor: pointer;
-			transition: 0.2s;
 		}
 
-		.action-buttons button:hover {
+		.action-buttons .detail {
+			background-color: #3498db;
+			color: #fff;
+		}
+
+		.action-buttons .detail:hover {
 			background-color: #2980b9;
 		}
 
 		.action-buttons .reorder {
 			background-color: #2ecc71;
+			color: #fff;
 		}
 
 		.action-buttons .reorder:hover {
 			background-color: #27ae60;
 		}
 
-		.no-history {
-			text-align: center;
-			color: #666;
-			font-size: 1.2em;
-			margin-top: 50px;
+		.cart-actions {
+			margin-top: 30px;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			border-top: 1px solid #ccc;
+			padding-top: 15px;
 		}
 
-		.button-group {
-			margin-top: 40px;
-		}
-
-		.button-group a {
-			display: inline-block;
+		.cart-actions a {
 			text-decoration: none;
-			background-color: #3498db;
-			color: white;
-			padding: 10px 20px;
-			margin: 0 10px;
-			border-radius: 6px;
-			transition: 0.2s;
+			color: black;
+			background-color: #eee;
+			padding: 10px 15px;
+			border: 1px solid #ccc;
 		}
 
-		.button-group a:hover {
-			background-color: #2980b9;
+		.cart-actions a:hover {
+			background-color: #ddd;
 		}
 	</style>
 </head>
 
 <body>
+	<div th:replace="fragments/header :: header"></div>
 
-<!--	 ✅ ヘッダー読み込み -->
-<!--	<div th:replace="fragments/header :: header"></div>-->
+	<main>
+		<section>
+			<h2>購入履歴</h2>
 
-	<h2>購入履歴</h2>
+			<table th:if="${orders != null and !orders.isEmpty()}">
+				<thead>
+					<tr>
+						<th>注文ID</th>
+						<th>商品画像</th>
+						<th>商品名</th>
+						<th>数量</th>
+						<th>価格</th>
+						<th>状態</th>
+						<th>注文日</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="order : ${orders}">
+						<td th:text="${order.id}"></td>
+						<td>
+							<img th:src="@{'/images/' + ${order.imageName}}" alt="商品画像"
+								onerror="this.onerror=null;this.src='/image/no_image.png';">
+						</td>
+						<td th:text="${order.itemName}"></td>
+						<td th:text="${order.quantity}"></td>
+						<td th:text="'¥' + ${#numbers.formatInteger(order.price, 0)}"></td>
+						<td th:text="${order.isHold ? '保留中' : '発送済み'}"></td>
+						<td th:text="${#temporals.format(order.createdAt, 'yyyy/MM/dd HH:mm')}"></td>
+						<td class="action-buttons">
+							<button class="detail"
+								th:onclick="'location.href=\'/order/detail/' + ${order.id} + '\';'">詳細を見る</button>
+							<button class="reorder"
+								th:onclick="'location.href=\'/order/reorder/' + ${order.itemId} + '\';'">再購入</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
 
-	<!-- 購入履歴がある場合 -->
-	<table th:if="${orders != null and !orders.isEmpty()}">
-		<thead>
-			<tr>
-				<th>注文ID</th>
-				<th>商品画像</th>
-				<th>商品名</th>
-				<th>数量</th>
-				<th>価格</th>
-				<th>状態</th>
-				<th>注文日</th>
-				<th>操作</th>
-			</tr>
-		</thead>
+			<p class="no-history" th:unless="${orders != null and !orders.isEmpty()}">
+				購入履歴がありません。
+			</p>
 
-		<tbody>
-			<tr th:each="order : ${orders}">
-				<td th:text="${order.id}"></td>
+			<div class="cart-actions">
+				<a th:href="@{/voidrshop}">トップページへ戻る</a>
+				<a th:href="@{/voidrshop/items}">ストアを見る</a>
+			</div>
+		</section>
+	</main>
 
-				<td>
-					<img th:src="@{'/images/' + ${order.imageName}}" alt="商品画像">
-				</td>
-
-				<td th:text="${order.itemName}"></td>
-
-				<td th:text="${order.quantity}"></td>
-
-				<td th:text="'¥' + ${#numbers.formatInteger(order.price, 0)}" class="price"></td>
-
-				<td th:text="${order.isHold ? '保留中' : '発送済み'}"
-					th:classappend="${order.isHold} ? 'status-hold' : 'status-fixed'"></td>
-
-				<td th:text="${#temporals.format(order.createdAt, 'yyyy/MM/dd HH:mm')}"></td>
-
-				<td class="action-buttons">
-					<button th:onclick="'location.href=\'/order/detail/' + ${order.id} + '\';'">詳細を見る</button>
-					<button class="reorder"
-						th:onclick="'location.href=\'/order/reorder/' + ${order.itemId} + '\';'">再購入</button>
-				</td>
-			</tr>
-		</tbody>
-	</table>
-
-	<!-- 購入履歴がない場合 -->
-	<p class="no-history" th:unless="${orders != null and !orders.isEmpty()}">
-		購入履歴がありません。
-	</p>
-
-	<div style="text-align: center; margin-top: 30px;">
-		<a th:href="@{/voidrshop}" style="margin-right: 15px; text-decoration: none; color: #3498db;">
-			トップページへ戻る
-			<a th:href="@{/voidrshop/items}" style="text-decoration: none; color: #3498db;">
-				ストアを見る
-			</a>
-	</div>
-
-
-
+	<div th:replace="fragments/footer :: footer"></div>
 </body>
 
 </html>
