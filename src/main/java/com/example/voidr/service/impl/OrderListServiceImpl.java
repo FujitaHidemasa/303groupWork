@@ -26,13 +26,13 @@ public class OrderListServiceImpl implements OrderListService {
 		if (orderList.getUserId() <= 0) {
 			throw new IllegalArgumentException("ユーザーIDが無効です");
 		}
-
-		// 注文リストを登録
 		orderListMapper.insertOrderList(orderList);
 	}
 
 	@Override
-	public OrderList findByUserName(String username) {
+	public List<OrderList> findByUserName(String username) {
+		// 複数件対応
 		return orderListMapper.findByUserName(username);
 	}
+
 }
