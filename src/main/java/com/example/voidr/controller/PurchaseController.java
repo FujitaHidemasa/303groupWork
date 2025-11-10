@@ -15,12 +15,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.voidr.entity.Account;
+import com.example.voidr.entity.Order;
 import com.example.voidr.entity.OrderItem;
 import com.example.voidr.entity.OrderList;
 import com.example.voidr.service.AccountService;
 import com.example.voidr.service.CartService;
 import com.example.voidr.service.OrderItemService;
 import com.example.voidr.service.OrderListService;
+import com.example.voidr.service.OrderService;
 import com.example.voidr.view.CartView;
 
 import lombok.RequiredArgsConstructor;
@@ -34,6 +36,7 @@ public class PurchaseController {
 
 	private final CartService cartService;
 	private final OrderListService orderListService;
+	private final OrderService orderService;
 	private final OrderItemService orderItemService;
 	private final AccountService accountService;
 
@@ -60,8 +63,8 @@ public class PurchaseController {
 				.mapToInt(cv -> cv.getItem().getPrice() * cv.getCart().getQuantity())
 				.sum();
 
-		model.addAttribute("cartItems", cartList); // ← ここで全商品情報を渡す
-		model.addAttribute("totalPrice", total); // ← 合計金額も渡す
+		model.addAttribute("cartItems", cartList);
+		model.addAttribute("totalPrice", total);
 		return "shop/purchase/purchase";
 	}
 
@@ -128,27 +131,41 @@ public class PurchaseController {
 				.mapToInt(cv -> cv.getItem().getPrice() * cv.getCart().getQuantity())
 				.sum();
 
-		// 注文リスト登録
+		// =====================
+		// 1. 注文リスト登録
+		// =====================
 		OrderList orderList = new OrderList();
 		orderList.setUserId(userId);
-		orderList.setTotalPrice(totalPrice);
-		orderList.setPaymentMethod(paymentMethod);
-		orderList.setAddress(address);
-
 		orderListService.createOrderList(orderList);
 
-		// 注文アイテム登録
+		// =====================
+		// 2. 個々の注文（order）登録
+		// =====================
 		for (CartView cv : cartList) {
+			Order order = new Order();
+			order.setOrderListId(orderList.getId());
+			order.setItemId(cv.getItem().getId());
+			orderService.createOrder(order); // DB登録後、order.id が自動セットされる想定
+
+			// =====================
+			// 3. 注文アイテム登録
+			// =====================
 			OrderItem orderItem = new OrderItem();
-			orderItem.setOrderListId(orderList.getId());
+			orderItem.setOrderId(order.getId()); // order.id をセット
 			orderItem.setItemId(cv.getItem().getId());
 			orderItem.setQuantity(cv.getCart().getQuantity());
 			orderItem.setPrice(cv.getItem().getPrice());
 			orderItemService.addOrderItem(orderItem);
 		}
 
+		// =====================
+		// 4. カートを空にする
+		// =====================
 		cartService.clearCart(principal.getName());
 
+		// =====================
+		// 5. ビュー用データ
+		// =====================
 		model.addAttribute("orderListId", orderList.getId());
 		model.addAttribute("totalPrice", totalPrice);
 		model.addAttribute("paymentMethod", paymentMethod);
