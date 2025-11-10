@@ -11,13 +11,19 @@
 		LIMIT 1
 	</select>
 
+	<!-- ★修正：INSERT 前に cart_list.id のシーケンスを MAX(id) に同期してから挿入 -->
 	<insert id="insert"
 		parameterType="com.example.voidr.entity.CartList"
 		useGeneratedKeys="true" keyProperty="id">
-		INSERT INTO cart_list (user_id,
-		is_login_user, created_at, updated_at)
-		VALUES (#{userId}, TRUE,
-		CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+		WITH seq_name AS (
+		SELECT pg_get_serial_sequence('public.cart_list','id') AS seq
+		), synced AS (
+		SELECT setval(seq, (SELECT COALESCE(MAX(id),0) FROM public.cart_list))
+		FROM seq_name
+		)
+		INSERT INTO cart_list (user_id, is_login_user, created_at, updated_at)
+		VALUES (#{userId}, TRUE, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+		RETURNING id
 	</insert>
 
 	<update id="touchUpdatedAt" parameterType="long">
