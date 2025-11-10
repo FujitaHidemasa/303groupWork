@@ -35,6 +35,13 @@
 					<input type="text" name="keyword" placeholder="商品を検索" th:value="${keyword}">
 					<button type="submit">検索</button>
 				</form>
+				
+				<!-- ★追加：お気に入り（ログイン中のみ表示） -->
+				<a th:href="@{/favorites/{userId}(userId=${#authentication.principal.id})}" class="cart-link"
+					sec:authorize="isAuthenticated()">
+					<img th:src="@{/images/ui/header_favoicon.png}" alt="Favorite Icon">
+					<span>お気に入り</span>
+				</a>
 
 				<a th:href="@{/voidrshop/cart}" class="cart-link">
 					<img th:src="@{/images/ui/header_carticon.png}" alt="Cart Icon">
@@ -44,12 +51,4 @@
 			</div>
 		</header>
 	</div>
-</div>
-<a th:href="@{/voidrshop/cart}" class="cart-link">
-	<img th:src="@{/image/ui/header_carticon.png}" alt="Cart Icon">
-	<span>カート</span>
-</a>
-</div>
-</header>
-</div>
 </div>
