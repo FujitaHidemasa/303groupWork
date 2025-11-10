@@ -51,8 +51,18 @@ public class FavoriteController {
 	@PostMapping("/toggle/{userId}/{itemId}")
 	@ResponseBody
 	public String toggleFavorite(@PathVariable Long userId, @PathVariable Long itemId) {
-	    boolean isNowFavorite = favoriteService.toggleFavorite(userId, itemId);
-	    // 戻り値として現在のお気に入り状態を返す（JavaScriptでボタンの表示切替に使用）
-	    return isNowFavorite ? "favorite" : "not_favorite";
+		boolean isNowFavorite = favoriteService.toggleFavorite(userId, itemId);
+		// 戻り値として現在のお気に入り状態を返す（JavaScriptでボタンの表示切替に使用）
+		return isNowFavorite ? "favorite" : "not_favorite";
+	}
+	
+	// ★追加: /favorites と /favorites/ を受ける
+	@GetMapping({ "", "/" })
+	public String myFavorites(
+			@org.springframework.security.core.annotation.AuthenticationPrincipal com.example.voidr.entity.LoginUser loginUser) {
+		if (loginUser == null) {
+			return "redirect:/login";
+		}
+		return "redirect:/favorites/" + loginUser.getId();
 	}
 }
