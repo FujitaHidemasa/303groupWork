@@ -35,6 +35,12 @@
 			width: 60%;
 			margin: 20px auto;
 			box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+			text-align: left;
+		}
+
+		.order-info p {
+			margin: 10px 0;
+			font-size: 1rem;
 		}
 
 		.order-info span {
@@ -42,39 +48,39 @@
 			color: #000;
 		}
 
-		.action-buttons {
+		.cart-actions {
 			margin-top: 40px;
 			display: flex;
 			justify-content: center;
 			gap: 20px;
 		}
 
-		.action-buttons a {
+		.cart-actions a {
 			display: inline-block;
 			padding: 12px 30px;
 			font-size: 1rem;
 			border-radius: 6px;
 			text-decoration: none;
 			transition: background-color 0.3s, color 0.3s;
+			border: 1px solid #ccc;
 		}
 
-		.btn-history {
+		.cart-actions .btn-top {
+			background-color: #eee;
+			color: #333;
+		}
+
+		.cart-actions .btn-top:hover {
+			background-color: #ddd;
+		}
+
+		.cart-actions .btn-history {
 			background-color: #007bff;
 			color: white;
 		}
 
-		.btn-history:hover {
+		.cart-actions .btn-history:hover {
 			background-color: #0069d9;
-		}
-
-		.btn-top {
-			background-color: #eee;
-			color: #333;
-			border: 1px solid #ccc;
-		}
-
-		.btn-top:hover {
-			background-color: #ddd;
 		}
 	</style>
 </head>
@@ -85,15 +91,18 @@
 	<main>
 		<section>
 			<h2>ご購入ありがとうございます！</h2>
-			<p>ご注文が正常に完了しました。<br>下記のご注文番号をお控えください。</p>
+			<p>ご注文が正常に完了しました。<br>下記の内容をご確認ください。</p>
 
 			<div class="order-info">
 				<p>ご注文番号：<span th:text="${orderListId}">00000001</span></p>
+				<p>合計金額：<span th:text="'¥' + ${totalPrice}">¥0</span></p>
+				<p>支払い方法：<span th:text="${paymentMethod}">クレジットカード</span></p>
+				<p>お届け先：<span th:text="${address}">東京都〇〇区〇〇</span></p>
 			</div>
 
-			<div class="action-buttons">
-				<a th:href="@{/order_history}" class="btn-history">購入履歴を見る</a>
-				<a th:href="@{/}" class="btn-top">トップに戻る</a>
+			<div class="cart-actions">
+				<a th:href="@{/mypage/orders}" class="btn-history">購入履歴を見る</a>
+				<a th:href="@{/voidrshop}" class="btn-top">トップページへ戻る</a>
 			</div>
 		</section>
 	</main>
