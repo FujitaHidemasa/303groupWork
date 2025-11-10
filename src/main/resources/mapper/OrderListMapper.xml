@@ -10,14 +10,14 @@
 		SELECT
 		id,
 		user_id,
-		total_price,
 		payment_method,
 		address,
 		created_at,
 		updated_at
 		FROM order_list
 		WHERE user_id = #{userId}
-		ORDER BY created_at DESC, id DESC
+		ORDER BY created_at DESC, id
+		DESC
 	</select>
 
 	<!-- 新しい購入履歴（注文リスト）を作成 -->
@@ -26,7 +26,6 @@
 		useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO order_list (
 		user_id,
-		total_price,
 		payment_method,
 		address,
 		created_at,
@@ -34,7 +33,6 @@
 		)
 		VALUES (
 		#{userId},
-		#{totalPrice},
 		#{paymentMethod},
 		#{address},
 		CURRENT_TIMESTAMP,
@@ -47,7 +45,8 @@
 		resultType="com.example.voidr.entity.OrderList">
 		SELECT ol.*
 		FROM order_list ol
-		JOIN login_user u ON ol.user_id = u.id
+		JOIN login_user u ON
+		ol.user_id = u.id
 		WHERE u.username = #{username}
 	</select>
 

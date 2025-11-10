@@ -33,7 +33,6 @@ public class OrderListServiceImpl implements OrderListService {
 
 	@Override
 	public OrderList findByUserName(String username) {
-		// username で検索する必要があれば mapper 側で対応
-		throw new UnsupportedOperationException("username での検索は未対応");
+		return orderListMapper.findByUserName(username);
 	}
 }
