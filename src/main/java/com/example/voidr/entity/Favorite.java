@@ -20,5 +20,7 @@ public class Favorite {
 	private LocalDateTime createdAt;
 	
 	
+	// ★追加: テンプレで参照している関連アイテム
+	private Item item;
 
 }
