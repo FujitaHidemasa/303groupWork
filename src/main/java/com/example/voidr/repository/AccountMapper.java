@@ -10,7 +10,7 @@ import com.example.voidr.entity.Account;
 public interface AccountMapper {
 
     /** ユーザー名で検索 */
-	Account selectByUsername(@Param("username") String username);
+	Account findByUsername(@Param("username") String username);
 
     /** 新規ユーザー登録 */
     void insertAccount(Account user);

@@ -27,7 +27,7 @@ public class OrderListServiceImpl implements OrderListService {
 	@Override
 	public void createOrderList(OrderList orderList) {
 		// username からユーザー情報を取得
-		Account account = accountMapper.selectByUsername(orderList.getUsername());
+		Account account = accountMapper.findByUsername(orderList.getUsername());
 		if (account == null) {
 			throw new IllegalArgumentException("ユーザーが存在しません: " + orderList.getUsername());
 		}

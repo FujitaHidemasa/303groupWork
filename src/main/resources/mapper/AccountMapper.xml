@@ -23,7 +23,7 @@
 	
 	<!-- 10/27 追加 谷口  -->
   <!-- ユーザー名で1件取得（ログイン用） -->
-  <select id="selectByUsername" parameterType="string" resultMap="AccountMap">
+  <select id="findByUsername" parameterType="string" resultMap="AccountMap">
     SELECT
       id,
       username,
