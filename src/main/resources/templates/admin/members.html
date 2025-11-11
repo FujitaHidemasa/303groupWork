@@ -1,0 +1,74 @@
+<!-- ============================================================
+  会員管理（Wireframe Version）
+  現在はDB未連携のため、仮データを静的に表示しています。
+
+  【今後の実装方針】
+  ・このページでは login_user テーブルを利用し、
+    会員の一覧・検索を行えるようにします。
+  ・Service/Mapper は既存の AccountService / AccountMapper を再利用します。
+  ・Spring Security により /admin/** を認可制限予定。
+============================================================= -->
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja"
+      th:replace="layout/admin_base :: admin_base(~{::content}, '会員管理', ~{::assets})">
+
+<th:block th:fragment="content">
+	<div class="table-container">
+	<section class="section">
+	  <h1>会員管理</h1>
+	  
+	   <p style="margin-bottom:16px; color:#666;">
+	    ※このページは現在ワイヤーフレーム段階です。<br>
+	    後に login_user テーブルと連携して、登録済みユーザー情報を表示・検索できるようにします。
+	  </p>
+
+	  <div class="search-area">
+	    <input type="text" placeholder="ユーザーID・氏名で検索">
+	    <button>検索</button>
+	  </div>
+
+	    <table>
+	      <thead>
+	        <tr>
+	          <th>ID</th>
+	          <th>ユーザーID</th>
+	          <th>氏名</th>
+	          <th>権限</th>
+	          <th>Email</th>
+	          <th>登録日</th>
+	          <th>操作</th>
+	        </tr>
+	      </thead>
+	      <tbody>
+	        <tr>
+	          <td>1</td>
+	          <td>test_user01</td>
+	          <td>佐藤 試作</td>
+	          <td>USER</td>
+	          <td>testuser01@example.com</td>
+	          <td>2025/09/01</td>
+	          <td class="actions">
+	            <button class="btn btn-edit">編集</button>
+	            <button class="btn btn-delete">削除</button>
+	          </td>
+	        </tr>
+	        <tr>
+	          <td>2</td>
+	          <td>admin_test</td>
+	          <td>管理者（テスト）</td>
+	          <td>ADMIN</td>
+	          <td>admin_test@example.com</td>
+	          <td>2025/08/20</td>
+	          <td class="actions">
+	            <button class="btn btn-edit">編集</button>
+	            <button class="btn btn-delete">削除</button>
+	          </td>
+	        </tr>
+	      </tbody>
+	    </table>
+	  </div>
+	</section>
+
+</th:block>
+</html>
