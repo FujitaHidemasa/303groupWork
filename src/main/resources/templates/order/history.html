@@ -237,11 +237,20 @@
 									<td th:text="'¥' + ${#numbers.formatInteger(order.price, 0)}"></td>
 									<td th:text="${order.isHold ? '保留中' : '発送済み'}"></td>
 									<td class="action-buttons">
-										<button class="detail"
-											th:onclick="'location.href=\'/order/detail/' + ${order.id} + '\';'">詳細</button>
+										<!-- 詳細ボタン -->
 										<button class="reorder"
-											th:onclick="'location.href=\'/order/reorder/' + ${order.itemId} + '\';'">再購入</button>
+											th:onclick="'location.href=\'' + @{/voidrshop/items/{id}(id=${order.itemId})} + '\';'">
+											詳細
+										</button>
+
+										<!-- 再購入ボタン -->
+										<button class="reorder"
+											th:onclick="'location.href=\'' + @{/voidrshop/items/{id}(id=${order.itemId})} + '\';'">
+											再購入
+										</button>
+
 									</td>
+
 								</tr>
 							</tbody>
 						</table>
