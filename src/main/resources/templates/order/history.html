@@ -38,9 +38,16 @@
 			flex-wrap: wrap;
 		}
 
+		/* ★注文番号・注文日・合計金額すべてを黒で固定表示 */
+		.order-header p {
+			color: #000 !important;
+			font-weight: 600;
+			margin: 4px 0;
+		}
+
 		.order-header span {
 			font-weight: bold;
-			color: #222;
+			color: #000 !important;
 		}
 
 		table {
@@ -154,7 +161,6 @@
 							<p>合計金額：
 								<span th:text="${#numbers.formatInteger(totalPriceMap[entry.key], 0)}"></span>円
 							</p>
-
 						</div>
 					</div>
 
