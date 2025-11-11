@@ -34,20 +34,26 @@
 						<th>購入</th>
 						<td>
 							<div class="action-buttons">
-								<button>購入画面へ</button>
+								<form th:action="@{/voidrshop/purchase}" method="post">
+									<input type="hidden" name="itemId" th:value="${item.id}">
+									<input type="hidden" name="quantity" value="1">
+									<button type="submit" class="btn btn-primary">購入画面へ</button>
+								</form>
+
+
 								<form th:action="@{/voidrshop/cart/add}" method="post">
+									<!-- ★追加：CSRF トークン（Spring Security 有効時は必須） -->
+									<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 									<input type="hidden" name="itemId" th:value="${item.id}">
 									<button type="submit" class="cart-add-btn">カートに追加</button>
 								</form>
 
-								<!--
-									 お気に入りボタン
-								<button type="button"
-								        th:attr="data-item-id=${item.id}"
-								        class="favorite-btn"
-								        th:text="${isFavorite} ? '★ お気に入り' : '☆ お気に入り'">
+
+
+								<button type="button" th:attr="data-item-id=${item.id}" class="favorite-btn"
+									th:text="${isFavorite} ? '★ お気に入り' : '☆ お気に入り'">
 								</button>
-								-->
+
 
 							</div>
 						</td>

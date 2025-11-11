@@ -32,8 +32,13 @@ public class OrderItem {
 	// 作成日時
 	private LocalDateTime createdAt;
 
-	public void setOrderListId(long id2) {
-		// TODO 自動生成されたメソッド・スタブ
-		
+	/**
+	 * 注文リストIDからセットするユーティリティ（コントローラーで使用）
+	 * OrderList → OrderItem の紐付け時に便利
+	 */
+	public void setOrderListId(long orderListId) {
+		// order_item テーブルでは orderId が "注文" ID なので
+		// コントローラーで登録前に必ず "order" の ID をセットする必要あり
+		this.orderId = orderListId;
 	}
 }

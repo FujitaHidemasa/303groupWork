@@ -19,26 +19,7 @@
 		<result property="createdAt" column="created_at" />
 		<result property="updatedAt" column="updated_at" />
 	</resultMap>
-	
-	
-	<!-- 10/27 追加 谷口  -->
-  <!-- ユーザー名で1件取得（ログイン用） -->
-  <select id="selectByUsername" parameterType="string" resultMap="AccountMap">
-    SELECT
-      id,
-      username,
-      password,
-      authority,
-      display_name,
-      email,
-      address,
-      phone_number,
-      created_at,
-      updated_at
-    FROM login_user
-    WHERE username = #{username}
-    LIMIT 1
-  </select>
+
 
   <!-- 新規登録：email は必須、address/phone_number は任意（存在時のみ列を追加） -->
   <insert id="insertAccount"
@@ -87,5 +68,25 @@
 	</delete>
 	
 
+
+
+	<!-- findByUsername を追加 -->
+	<select id="findByUsername" parameterType="string"
+		resultMap="AccountMap">
+		SELECT
+		id,
+		username,
+		password,
+		authority,
+		display_name,
+		email,
+		address,
+		phone_number,
+		created_at,
+		updated_at
+		FROM login_user
+		WHERE username = #{username}
+		LIMIT 1
+	</select>
 
 </mapper>

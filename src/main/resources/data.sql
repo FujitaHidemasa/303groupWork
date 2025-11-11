@@ -20,11 +20,12 @@ VALUES
 -- ===============================
 -- カートリスト（3件）
 -- ===============================
-INSERT INTO cart_list (id, user_id, created_at)
+-- ★修正：idはDBに任せる
+INSERT INTO cart_list (user_id, created_at)
 VALUES
-(1, 1, CURRENT_TIMESTAMP),
-(2, 2, CURRENT_TIMESTAMP),
-(3, 3, CURRENT_TIMESTAMP);
+(1, CURRENT_TIMESTAMP),
+(2, CURRENT_TIMESTAMP),
+(3, CURRENT_TIMESTAMP);
 
 -- ===============================
 -- カート（3件）
