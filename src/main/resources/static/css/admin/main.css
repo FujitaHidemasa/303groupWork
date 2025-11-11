@@ -1,0 +1,86 @@
+@charset "UTF-8";
+
+/* ==============================
+   管理画面 共通レイアウト
+============================== */
+body {
+  margin: 0;
+  font-family: "Segoe UI", "Noto Sans JP", sans-serif;
+  background-color: #f5f6fa;
+  color: #2f3640;
+  min-height: 100vh;
+}
+
+/* メインコンテンツ配置調整 */
+.admin-main {
+  position: relative;
+  left: 240px;
+  width: calc(100% - 240px);
+  padding: 40px;
+  background-color: #f5f6fa;
+  box-sizing: border-box;
+  min-height: 100vh;
+  z-index: 1; /* ← サイドバーの下に潜り込まないように */
+}
+
+/* タイトル・本文 */
+h1 {
+  font-size: 1.6em;
+  margin-bottom: 20px;
+  color: #2f3640;
+}
+p {
+  color: #444;
+  line-height: 1.6;
+}
+
+/* セクション */
+.section {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  margin-bottom: 20px;
+  border: 1px solid #e1e4e8;
+}
+
+/* テーブル */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #fff;
+}
+th, td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #eaecef;
+}
+th {
+  background-color: #f1f3f6;
+  font-weight: 600;
+  color: #2f3640;
+}
+tr:hover td {
+  background-color: #f9fafc;
+}
+
+/* ボタン */
+button, .btn {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  color: #fff;
+  background-color: #1d72b8;
+  transition: 0.2s;
+}
+button:hover, .btn:hover {
+  background-color: #3498db;
+}
+.btn-danger {
+  background-color: #e84118;
+}
+.btn-danger:hover {
+  background-color: #ff4d4d;
+}
