@@ -9,10 +9,44 @@
 	<link rel="stylesheet" th:href="@{/css/ec/footer.css}">
 	<title>購入履歴 - FPS GEAR STORE</title>
 	<style>
+		main {
+			width: 85%;
+			margin: 40px auto;
+		}
+
+		h2 {
+			text-align: center;
+			color: #222;
+			margin-bottom: 30px;
+		}
+
+		.order-block {
+			border: 1px solid #ccc;
+			border-radius: 8px;
+			margin-bottom: 40px;
+			box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+			background: #fff;
+		}
+
+		.order-header {
+			background-color: #f5f5f5;
+			padding: 15px 20px;
+			border-bottom: 1px solid #ddd;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			flex-wrap: wrap;
+		}
+
+		.order-header span {
+			font-weight: bold;
+			color: #222;
+		}
+
 		table {
 			border-collapse: collapse;
 			width: 100%;
-			margin-top: 20px;
+			margin-top: 0;
 		}
 
 		th,
@@ -21,11 +55,11 @@
 			border-bottom: 1px solid #ccc;
 			text-align: center;
 			vertical-align: middle;
+			color: #222;
 		}
 
 		th {
-			background-color: #f5f5f5;
-			color: black;
+			background-color: #fafafa;
 		}
 
 		img {
@@ -38,7 +72,7 @@
 		}
 
 		tbody tr {
-			height: 120px;
+			height: 100px;
 		}
 
 		.action-buttons button {
@@ -82,10 +116,17 @@
 			background-color: #eee;
 			padding: 10px 15px;
 			border: 1px solid #ccc;
+			border-radius: 5px;
 		}
 
 		.cart-actions a:hover {
 			background-color: #ddd;
+		}
+
+		.no-history {
+			text-align: center;
+			margin: 60px 0;
+			color: #555;
 		}
 	</style>
 </head>
@@ -97,42 +138,60 @@
 		<section>
 			<h2>購入履歴</h2>
 
-			<table th:if="${orders != null and !orders.isEmpty()}">
-				<thead>
-					<tr>
-						<th>注文ID</th>
-						<th>商品画像</th>
-						<th>商品名</th>
-						<th>数量</th>
-						<th>価格</th>
-						<th>状態</th>
-						<th>注文日</th>
-						<th>操作</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr th:each="order : ${orders}">
-						<td th:text="${order.id}"></td>
-						<td>
-							<img th:src="@{'/images/' + ${order.imageName}}" alt="商品画像"
-								onerror="this.onerror=null;this.src='/image/no_image.png';">
-						</td>
-						<td th:text="${order.itemName}"></td>
-						<td th:text="${order.quantity}"></td>
-						<td th:text="'¥' + ${#numbers.formatInteger(order.price, 0)}"></td>
-						<td th:text="${order.isHold ? '保留中' : '発送済み'}"></td>
-						<td th:text="${#temporals.format(order.createdAt, 'yyyy/MM/dd HH:mm')}"></td>
-						<td class="action-buttons">
-							<button class="detail"
-								th:onclick="'location.href=\'/order/detail/' + ${order.id} + '\';'">詳細を見る</button>
-							<button class="reorder"
-								th:onclick="'location.href=\'/order/reorder/' + ${order.itemId} + '\';'">再購入</button>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+			<!-- 注文ごとにブロック表示 -->
+			<div th:if="${groupedOrders != null and !groupedOrders.isEmpty()}" th:each="entry : ${groupedOrders}">
+				<div class="order-block">
+					<div class="order-header">
+						<div>
+							<p>注文番号：<span th:text="${entry.key}"></span></p>
+							<p th:if="${#lists.size(entry.value) > 0}">
+								注文日：
+								<span
+									th:text="${#temporals.format(entry.value[0].createdAt, 'yyyy/MM/dd HH:mm')}"></span>
+							</p>
+						</div>
+						<div>
+							<p>合計金額：
+								<span th:text="${#numbers.formatInteger(totalPriceMap[entry.key], 0)}"></span>円
+							</p>
 
-			<p class="no-history" th:unless="${orders != null and !orders.isEmpty()}">
+						</div>
+					</div>
+
+					<table>
+						<thead>
+							<tr>
+								<th>商品画像</th>
+								<th>商品名</th>
+								<th>数量</th>
+								<th>価格</th>
+								<th>状態</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="order : ${entry.value}">
+								<td>
+									<img th:src="@{'/images/' + ${order.imageName}}" alt="商品画像"
+										onerror="this.onerror=null;this.src='/image/no_image.png';">
+								</td>
+								<td th:text="${order.itemName}"></td>
+								<td th:text="${order.quantity}"></td>
+								<td th:text="'¥' + ${#numbers.formatInteger(order.price, 0)}"></td>
+								<td th:text="${order.isHold ? '保留中' : '発送済み'}"></td>
+								<td class="action-buttons">
+									<button class="detail"
+										th:onclick="'location.href=\'/order/detail/' + ${order.id} + '\';'">詳細</button>
+									<button class="reorder"
+										th:onclick="'location.href=\'/order/reorder/' + ${order.itemId} + '\';'">再購入</button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+			<p class="no-history" th:unless="${groupedOrders != null and !groupedOrders.isEmpty()}">
 				購入履歴がありません。
 			</p>
 
