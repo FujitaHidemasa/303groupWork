@@ -40,18 +40,20 @@ public class PurchaseController {
 	private final OrderItemService orderItemService;
 	private final AccountService accountService;
 
-	/** ログイン中ユーザーのID取得 */
-	private long currentUserId(Principal principal) {
-		Account acc = accountService.findByUsername(principal.getName());
-		return acc != null ? acc.getId() : 0L;
+	/** ログイン中ユーザー情報取得 */
+	private Account currentUser(Principal principal) {
+		return accountService.findByUsername(principal.getName());
 	}
 
-	/** 購入画面表示（カート内商品一覧） */
+	/** 購入画面表示 */
 	@GetMapping
 	public String showPurchasePage(Model model, Principal principal) {
-		long userId = currentUserId(principal);
-		List<CartView> cartList = cartService.list(userId);
+		Account account = currentUser(principal);
+		if (account == null) {
+			return "redirect:/login";
+		}
 
+		List<CartView> cartList = cartService.list(account.getId());
 		if (cartList == null || cartList.isEmpty()) {
 			model.addAttribute("cartItems", Collections.emptyList());
 			model.addAttribute("totalPrice", 0);
@@ -68,7 +70,7 @@ public class PurchaseController {
 		return "shop/purchase/purchase";
 	}
 
-	/** 商品詳細ページから直接購入ボタンで送られる POST */
+	/** 商品詳細ページから直接購入ボタン */
 	@PostMapping
 	public String addItemAndRedirectToPurchase(
 			@RequestParam("itemId") Long itemId,
@@ -78,7 +80,6 @@ public class PurchaseController {
 		if (principal != null) {
 			cartService.addItem(principal.getName(), itemId, quantity);
 		}
-
 		return "redirect:/voidrshop/purchase";
 	}
 
@@ -90,9 +91,12 @@ public class PurchaseController {
 			Model model,
 			Principal principal) {
 
-		long userId = currentUserId(principal);
-		List<CartView> cartList = cartService.list(userId);
+		Account account = currentUser(principal);
+		if (account == null) {
+			return "redirect:/login";
+		}
 
+		List<CartView> cartList = cartService.list(account.getId());
 		if (cartList == null || cartList.isEmpty()) {
 			return "redirect:/voidrshop/cart";
 		}
@@ -117,12 +121,12 @@ public class PurchaseController {
 			Principal principal,
 			Model model) {
 
-		if (principal == null) {
+		Account account = currentUser(principal);
+		if (account == null) {
 			return "redirect:/login";
 		}
 
-		long userId = currentUserId(principal);
-		List<CartView> cartList = cartService.list(userId);
+		List<CartView> cartList = cartService.list(account.getId());
 		if (cartList == null || cartList.isEmpty()) {
 			return "redirect:/voidrshop/cart";
 		}
@@ -135,23 +139,23 @@ public class PurchaseController {
 		// 1. 注文リスト登録
 		// =====================
 		OrderList orderList = new OrderList();
-		orderList.setUserId(userId);
-		orderListService.createOrderList(orderList);
+		orderList.setUsername(account.getUsername()); // ← usernameを設定（OrderListServiceImpl仕様）
+		orderListService.createOrderList(orderList); // DB登録 + userId自動セット
 
 		// =====================
-		// 2. 個々の注文（order）登録
+		// 2. 個々の注文登録
 		// =====================
 		for (CartView cv : cartList) {
 			Order order = new Order();
 			order.setOrderListId(orderList.getId());
 			order.setItemId(cv.getItem().getId());
-			orderService.createOrder(order); // DB登録後、order.id が自動セットされる想定
+			orderService.createOrder(order);
 
 			// =====================
 			// 3. 注文アイテム登録
 			// =====================
 			OrderItem orderItem = new OrderItem();
-			orderItem.setOrderId(order.getId()); // order.id をセット
+			orderItem.setOrderId(order.getId());
 			orderItem.setItemId(cv.getItem().getId());
 			orderItem.setQuantity(cv.getCart().getQuantity());
 			orderItem.setPrice(cv.getItem().getPrice());
@@ -161,7 +165,7 @@ public class PurchaseController {
 		// =====================
 		// 4. カートを空にする
 		// =====================
-		cartService.clearCart(principal.getName());
+		cartService.clearCart(account.getUsername());
 
 		// =====================
 		// 5. ビュー用データ
