@@ -50,8 +50,10 @@
 
 
 
-								<button type="button" th:attr="data-item-id=${item.id}" class="favorite-btn"
-									th:text="${isFavorite} ? '★ お気に入り' : '☆ お気に入り'">
+								<button type="button" class="favorite-btn"
+									th:attr="data-item-id=${item.id}, aria-pressed=${isFavorite}, data-fav=${isFavorite}">
+									<span class="star" th:text="${isFavorite} ? '★' : '☆'">☆</span>
+									<span class="label"> お気に入り</span>
 								</button>
 
 
@@ -173,6 +175,11 @@
 		.add-cart-btn:hover {
 			background-color: #21867a;
 		}
+		
+		/* ★追加：お気に入りON時（data-fav=true）は★だけ黄色にする */
+		.favorite-btn .star { transition: color 0.15s ease; }
+		.favorite-btn[data-fav="true"] .star { color: #FFD700; } /* gold */
+		
 	</style>
 
 	<!-- お気に入り機能のスクリプト -->
