@@ -116,17 +116,21 @@
 			border: none;
 			border-radius: 6px;
 			cursor: pointer;
+			font-weight: 600;
+			transition: background-color 0.2s ease;
 		}
 
+		/* 詳細ボタン（明るい水色） */
 		.action-buttons .detail {
-			background-color: #3498db;
+			background-color: #00bfff;
 			color: #fff;
 		}
 
 		.action-buttons .detail:hover {
-			background-color: #2980b9;
+			background-color: #0099cc;
 		}
 
+		/* 再購入ボタン（緑） */
 		.action-buttons .reorder {
 			background-color: #2ecc71;
 			color: #fff;
@@ -237,20 +241,19 @@
 									<td th:text="'¥' + ${#numbers.formatInteger(order.price, 0)}"></td>
 									<td th:text="${order.isHold ? '保留中' : '発送済み'}"></td>
 									<td class="action-buttons">
-										<!-- 詳細ボタン -->
-										<button class="reorder"
+										<!-- 詳細ボタン（水色） -->
+										<button class="detail"
 											th:onclick="'location.href=\'' + @{/voidrshop/items/{id}(id=${order.itemId})} + '\';'">
 											詳細
 										</button>
 
-										<!-- 再購入ボタン -->
-										<button class="reorder"
-											th:onclick="'location.href=\'' + @{/voidrshop/items/{id}(id=${order.itemId})} + '\';'">
-											再購入
-										</button>
-
+										<!-- 再購入ボタン（カート追加→リダイレクト） -->
+										<form th:action="@{/voidrshop/cart/add}" method="post" style="display:inline;">
+											<input type="hidden" name="itemId" th:value="${order.itemId}">
+											<input type="hidden" name="quantity" value="1">
+											<button type="submit" class="reorder">再購入</button>
+										</form>
 									</td>
-
 								</tr>
 							</tbody>
 						</table>
