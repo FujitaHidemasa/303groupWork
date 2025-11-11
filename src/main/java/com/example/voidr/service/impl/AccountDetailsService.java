@@ -30,7 +30,7 @@ public class AccountDetailsService implements AccountService
     public Account findByUsername(String username)
     {
         // ★DBから1件取得（null許容）
-        return accountMapper.selectByUsername(username);
+        return accountMapper.findByUsername(username);
     }
 
     // ==========================
@@ -84,7 +84,7 @@ public class AccountDetailsService implements AccountService
     public void updateAccount(String username, Account updatedAccount)
     {
         // ★既存データ取得
-        Account existing = accountMapper.selectByUsername(username);
+        Account existing = accountMapper.findByUsername(username);
         if (existing == null)
         {
             throw new IllegalArgumentException("ユーザーが存在しません: " + username);
