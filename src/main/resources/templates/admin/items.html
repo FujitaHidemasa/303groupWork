@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja"
+	th:replace="layout/admin_base :: admin_base(~{::content}, '商品管理', ~{::assets})">
+<head>
+<meta charset="UTF-8">
+<title>商品管理</title>
+<th:block th:fragment="assets">
+	<link rel="stylesheet" th:href="@{css/admin/main.css}">
+	<link rel="stylesheet" th:href="@{css/admin/sidebar.css}">
+</th:block>
+</head>
+
+<!-- 本文 -->
+<body>
+	<th:block th:fragment="content">
+	<section class="item-management"> <!--商品管理-->
+		
+	<h1>商品管理</h1>
+	
+<!-- 新規商品登録ボタン -->	
+	<div class="new-item"> <!--新規商品-->
+		   <a class="btn btn-primary" th:href="@{/admin/items/new}">＋ 新規商品登録</a>
+	</div>
+	
+<!-- 商品一覧テーブル -->
+	<table class="item-table"><!-- 商品一覧 -->
+		<thead>
+			<tr>
+			 <th>ID</th>
+			 <th>商品名</th>
+			 <th>カテゴリ</th>
+			 <th>価格</th>
+			 <th>DL商品</th>
+			 <th>作成日</th>
+			 <th>登録日</th>
+			 <th>操作</th>
+			</tr>
+		</thead>
+		
+	<tbody><!-- 商品リストをループ表示 -->
+		<tr th:each="item : ${items}"><!-- 中身を一つずつitemとして取り出して表にする-->
+			<td th:text="${item.id}">1</td><!-- 商品IDの表示 -->
+			<td th:text="${item.name}">サンプル商品</td><!-- 商品名の表示-->
+			<td th:text="${#strings.listJoin(item.categoryList, ',')}">サンプル</td><!-- カテゴリの表示-->
+			<td th:text="${#numbers.formatInteger(item.price, 0)} + '円'">1000円</td><!-- 価格の表示 -->
+			<td th:text="${item.isDownload}? '〇':'×'">×</td><!-- DL商品かどうかの表示 -->
+			<td th:text="${#temporals.format(item.createdAt, 'yyyy/MM/dd')}">2025/11/11</td><!-- 商品作成日 -->
+			<td th:text="${#temporals.format(item.updatedAt, 'yyyy/MM/dd')}">2025/11/11</td><!-- 商品登録日 -->
+			<td><!-- 操作 -->
+				<a class="btn btn-edit" th:href="@{'/admin/items/edit/' + ${item.id}}">編集</a><!-- 編集ボタン -->
+				<a class="btn btn-delete" th:href="@{'/admin/items/delete/' + ${item.id}}" onclick="return confirm('削除してもよろしいですか？');">削除</a><!-- 削除ボタン -->
+			</td>
+		</tr>
+	</tbody>
+	</table>
+
+<!-- データが無いとき -->	
+	<p th:if="${#lists.isEmpty(items)}"class="no-data">登録された商品がありません。</p>
+	
+	</section>
+	</th:block>
+</body>
+</html>
