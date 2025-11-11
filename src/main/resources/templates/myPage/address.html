@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>お届け先管理｜VOIDR</title>
+  <link rel="stylesheet" th:href="@{/css/mypage/mypage.css}">
+  <link rel="stylesheet" th:href="@{/css/ec/header.css}">
+</head>
+<body>
+
+  <!-- 共通ヘッダー -->
+  <div th:replace="fragments/header :: header"></div>
+
+  <main class="mypage-container">
+    <aside class="mypage-sidebar">
+      <h2>メニュー</h2>
+      <ul>
+        <li><a th:href="@{/mypage}">マイページTOP</a></li>
+        <li><a th:href="@{/mypage/edit}">会員情報変更</a></li>
+        <li><a th:href="@{/mypage/wishlist}">お気に入り</a></li>
+        <li><a href="#">退会手続き</a></li>
+      </ul>
+    </aside>
+
+    <section class="mypage-content">
+      <h2>お届け先管理</h2>
+
+      <div class="address-list">
+        <h3>登録済み住所</h3>
+        <ul>
+          <li th:each="addr : ${addresses}">
+            <span th:text="${addr}">住所</span>
+            <button class="btn">削除</button>
+          </li>
+        </ul>
+
+        <h3>新しいお届け先を追加</h3>
+        <form class="member-form">
+          <div class="form-group">
+            <label for="newAddress">住所</label>
+            <input type="text" id="newAddress" name="newAddress" placeholder="例：東京都新宿区1-2-3">
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn">追加</button>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="main-footer">
+    <p>&copy; 2025 VOIDR STORE. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.voidr.repository.AddressMapper">
+
+  <resultMap id="AddressMap" type="com.example.voidr.entity.Address">
+    <id property="id" column="id" />
+    <result property="userId" column="user_id" />
+    <result property="recipientName" column="recipient_name" />
+    <result property="postalCode" column="postal_code" />
+    <result property="address" column="address" />
+    <result property="phone" column="phone" />
+    <result property="createdAt" column="created_at" />
+    <result property="updatedAt" column="updated_at" />
+  </resultMap>
+
+  <select id="findByUserId" parameterType="long" resultMap="AddressMap">
+    SELECT * FROM delivery_address
+    WHERE user_id = #{userId}
+    ORDER BY created_at DESC
+  </select>
+
+  <insert id="insertAddress" parameterType="com.example.voidr.entity.Address"
+          useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO delivery_address (
+      user_id, recipient_name, postal_code, address, phone
+    )
+    VALUES (
+      #{userId}, #{recipientName}, #{postalCode}, #{address}, #{phone}
+    )
+  </insert>
+
+  <delete id="deleteAddress" parameterType="long">
+    DELETE FROM delivery_address WHERE id = #{id}
+  </delete>
+
+</mapper>

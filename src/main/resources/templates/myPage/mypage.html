@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ja"
+	  xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>マイページ｜VOIDR</title>
+<link rel="stylesheet" th:href="@{/css/mypage/mypage.css}">
+<link rel="stylesheet" th:href="@{/css/ec/header.css}">
+</head>
+<body>
+	
+	<!--共通ヘッダーの呼び出し-->
+	<div th:replace="fragments/header :: header"></div>
+	
+	<!--メインコンテンツ-->
+	<main class="mypage-container">
+		<aside class="mypage-sidebar">
+			<h2>メニュー</h2>
+			<ul>
+				<li>
+					<a th:href="@{/mypage/orders}" 
+					   th:classappend="${currentPath == '/mypage/orders'} ? 'active'">
+					   購入履歴
+					</a>
+				</li>
+				<li>
+					<a th:href="@{/mypage/edit}" 
+					   th:classappend="${currentPath == '/mypage/edit'} ? 'active'">
+					   会員情報変更
+					</a>
+				</li>
+				<li>
+					<a th:href="@{/mypage/address}" 
+					   th:classappend="${currentPath == '/mypage/address'} ? 'active'">
+					   お届け先管理
+					</a>
+				</li>
+				<li>
+					<a th:href="@{/mypage/wishlist}" 
+					   th:classappend="${currentPath == '/mypage/wishlist'} ? 'active'">
+					   お気に入り
+					</a>
+				</li>
+				<li>
+					<a th:href="@{/mypage/delete}" 
+					   th:classappend="${currentPath == '/mypage/delete'} ? 'active'">
+					   退会手続き
+					</a>
+				</li>
+			</ul>
+		</aside>
+		
+		<section class="mypage-content">
+			<!-- ログイン済み -->
+			<h2>ようこそ、<span th:text="${account.displayName}">ユーザー名</span> さん！</h2>
+
+			<!-- 未ログイン -->
+			<h2 sec:authorize="!isAuthenticated()">
+			  ようこそ、ゲストさん！
+			</h2>
+			
+			<div class="mypage-sections">
+			  <div class="card">
+			    <h3>会員情報</h3>
+			    <a th:href="@{/mypage/edit}" class="btn">編集する</a>
+			  </div>
+
+			  <div class="card">
+			    <h3>購入履歴</h3>
+			    <a th:href="@{/mypage/orders}" class="btn">表示する</a>
+			  </div>
+
+			  <div class="card">
+			    <h3>お気に入り</h3>
+			    <a th:href="@{/mypage/wishlist}" class="btn">見る</a>
+			  </div>
+			</div>
+
+		</section>
+	</main>
+	
+	<footer class="main-footer">
+	    <p>&copy; 2025 VOIDR STORE. All rights reserved.</p>
+	</footer>
+
+</body>
+</html>

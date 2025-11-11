@@ -9,11 +9,16 @@ import com.example.voidr.entity.Account;
 public interface AccountMapper {
 
 	/** ユーザー名で検索（既存） */
-	Account selectByUsername(@Param("username") String username);
-
-	/** 新規ユーザー登録 */
-	void insertAccount(Account user);
-
-	/** findByUsername で XML と紐づける */
 	Account findByUsername(@Param("username") String username);
+
+
+    /** 新規ユーザー登録 */
+    void insertAccount(Account user);
+    
+    /** ユーザー情報の変更**/
+    void updateAccount(Account account);
+    
+    /**ユーザー情報の削除**/
+    void deleteByUsername(@Param("username") String username);
 }
+
