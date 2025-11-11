@@ -2,16 +2,16 @@
  * お気に入り機能のJavaScript　item/detail.htmlで使用
  */
 document.addEventListener("DOMContentLoaded", () => {
-    const button = document.querySelector(".favorite-btn");
+	const button = document.querySelector(".favorite-btn");
 
-    if (!button) return; // ボタンが無ければ処理を終了
-	
+	if (!button) return; // ボタンが無ければ処理を終了
+
 	// ★追加 11/06 谷口：CSRFメタから取得
 	const token = document.querySelector('meta[name="_csrf"]')?.getAttribute("content");
 	const headerName = document.querySelector('meta[name="_csrf_header"]')?.getAttribute("content");
 
-    button.addEventListener("click", async () => {
-        const itemId = button.getAttribute("data-item-id");
+	button.addEventListener("click", async () => {
+		const itemId = button.getAttribute("data-item-id");
 
 		try {
 			// ★修正：POST先を /voidrshop/items/{itemId}/favorite に変更
@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
 				credentials: "same-origin", // ★念のためクッキー送信を明示
 				redirect: "follow",         // ★リダイレクト検知用に明示（デフォルト）
 			});
-			
+
 			// 302で /login に飛ばされた場合
 			if (response.redirected) {
 				const nextRaw = location.pathname + location.search; // ← 生のパス
@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
 				window.location.href = url.toString();
 				return;
 			}
-			
+
 			if (!response.ok) {
 				const text = await response.text().catch(() => "");
 				console.error("favorite toggle error:", response.status, text);
@@ -60,7 +60,11 @@ document.addEventListener("DOMContentLoaded", () => {
 			}
 
 			const isFavorite = await response.json(); // true/false
-			button.textContent = isFavorite ? "★ お気に入り" : "☆ お気に入り";
+			// CSS判定用：true のとき★が黄色になる
+			button.dataset.fav = isFavorite ? "true" : "false";
+			// ★/☆ のみを更新（「お気に入り」テキストはそのまま）
+			const starEl = button.querySelector(".star");
+			if (starEl) starEl.textContent = isFavorite ? "★" : "☆";
 		} catch (e) {
 			console.error(e);
 			alert("通信エラーが発生しました");

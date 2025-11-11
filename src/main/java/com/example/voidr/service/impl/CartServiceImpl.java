@@ -5,8 +5,10 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.voidr.entity.Account;
 import com.example.voidr.entity.Cart;
 import com.example.voidr.entity.CartList;
+import com.example.voidr.repository.AccountMapper;
 import com.example.voidr.repository.CartListMapper;
 import com.example.voidr.repository.CartMapper;
 import com.example.voidr.service.CartService;
@@ -21,10 +23,9 @@ public class CartServiceImpl implements CartService {
 
 	private final CartMapper cartMapper;
 	private final CartListMapper cartListMapper;
+	private final AccountMapper accountMapper;
 
-	/**
-	 * ユーザーの cart_list を取得 or 作成
-	 */
+	/** ✅ ユーザーに紐づく CartList を取得 or 作成 */
 	private long ensureCartListId(long userId) {
 		CartList found = cartListMapper.findByUserId(userId);
 		if (found != null) {
@@ -38,9 +39,7 @@ public class CartServiceImpl implements CartService {
 		return created.getId();
 	}
 
-	/**
-	 * カートに商品追加（同一商品は数量加算）
-	 */
+	/** ✅ カートに商品追加（同一商品は数量加算） */
 	@Override
 	public void addItem(long userId, long itemId, int quantity) {
 		int q = Math.max(1, quantity);
@@ -51,16 +50,25 @@ public class CartServiceImpl implements CartService {
 		c.setItemId(itemId);
 		c.setQuantity(q);
 
-		// 同一商品は数量加算 or 新規登録
+		// 同一商品なら数量加算、なければ新規追加
 		cartMapper.upsert(c);
 
-		// カートリスト更新日時更新
+		// カートリストの更新日時更新
 		cartListMapper.touchUpdatedAt(cartListId);
 	}
 
-	/**
-	 * 数量変更
-	 */
+	/** ✅ ユーザー名指定で商品追加（コントローラーで Principal.getName() 使用） */
+	@Override
+	public void addItem(String username, long itemId, int quantity) {
+		Account acc = accountMapper.findByUsername(username);
+		if (acc != null) {
+			addItem(acc.getId(), itemId, quantity);
+		} else {
+			throw new IllegalArgumentException("ユーザーが見つかりません: " + username);
+		}
+	}
+
+	/** ✅ 数量変更 */
 	@Override
 	public void changeQuantity(long userId, long cartId, int quantity) {
 		int q = Math.max(1, quantity);
@@ -70,17 +78,13 @@ public class CartServiceImpl implements CartService {
 		cartMapper.updateQuantityByCart(c);
 	}
 
-	/**
-	 * 削除
-	 */
+	/** ✅ カート行削除 */
 	@Override
 	public void remove(long userId, long cartId) {
 		cartMapper.deleteById(cartId);
 	}
 
-	/**
-	 * カート一覧（JOIN済み表示用ビュー）
-	 */
+	/** ✅ カート一覧（JOIN済みビュー） */
 	@Override
 	@Transactional(readOnly = true)
 	public List<CartView> list(long userId) {
@@ -88,36 +92,31 @@ public class CartServiceImpl implements CartService {
 		return (list != null) ? list : java.util.Collections.emptyList();
 	}
 
-	/**
-	 * 合計金額
-	 */
+	/** ✅ 合計金額 */
 	@Override
 	@Transactional(readOnly = true)
 	public int sumTotal(long userId) {
-		return cartMapper.sumTotalByUserId(userId);
+		Integer total = cartMapper.sumTotalByUserId(userId);
+		return (total != null) ? total : 0;
 	}
 
-	/**
-	 * バッジ表示用件数
-	 */
+	/** ✅ バッジ表示用件数 */
 	@Override
 	@Transactional(readOnly = true)
 	public int countInBadge(long userId) {
-		return cartMapper.countItemsByUserId(userId);
+		Integer count = cartMapper.countItemsByUserId(userId);
+		return (count != null) ? count : 0;
 	}
 
-	/**
-	 * ユーザー名でカート取得
-	 */
+	/** ✅ ユーザー名でカート取得 */
 	@Override
 	@Transactional(readOnly = true)
 	public List<Cart> findByUsername(String username) {
-		return cartMapper.findByUsername(username);
+		List<Cart> list = cartMapper.findByUsername(username);
+		return (list != null) ? list : java.util.Collections.emptyList();
 	}
 
-	/**
-	 * カートクリア
-	 */
+	/** ✅ カートクリア */
 	@Override
 	public void clearCart(String username) {
 		cartMapper.deleteAllByUsername(username);

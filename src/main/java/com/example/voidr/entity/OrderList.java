@@ -10,41 +10,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderList {
-	
-	//id 主キー
-	private long id;
-	
-	//ユーザーid
-	private long userId;
-	
-	//作成日
-	private LocalDateTime createdAt;
-	
-	//更新日
-	private LocalDateTime updatedAt;
 
-	public void setUsername(String username) {
-		// TODO 自動生成されたメソッド・スタブ
-		
-	}
-
-	public void setTotalPrice(int totalPrice) {
-		// TODO 自動生成されたメソッド・スタブ
-		
-	}
-
-	public void setPaymentMethod(String paymentMethod) {
-		// TODO 自動生成されたメソッド・スタブ
-		
-	}
-
-	public String getUsername() {
-		// TODO 自動生成されたメソッド・スタブ
-		return null;
-	}
-
-	public void setAccountId(long userId2) {
-		// TODO 自動生成されたメソッド・スタブ
-		
-	}
+	private long id; // 注文リストID
+	private long userId; // ユーザーID
+	private LocalDateTime createdAt; // 作成日時
+	private LocalDateTime updatedAt; // 更新日時
 }

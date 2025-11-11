@@ -19,6 +19,7 @@
 		<result property="createdAt" column="created_at" />
 		<result property="updatedAt" column="updated_at" />
 	</resultMap>
+
 	
 	
 	<!-- 10/27 追加 谷口  -->
@@ -39,6 +40,7 @@
     WHERE username = #{username}
     LIMIT 1
   </select>
+
 
   <!-- 新規登録：email は必須、address/phone_number は任意（存在時のみ列を追加） -->
   <insert id="insertAccount"
@@ -85,7 +87,5 @@
 	<delete id="deleteByUsername" parameterType="string">
     DELETE FROM login_user WHERE username = #{username}
 	</delete>
-	
-
 
 </mapper>

@@ -27,31 +27,25 @@ public class OrderController {
 
 	/**
 	 * 購入履歴一覧を表示
-	 * ログイン中ユーザーの注文リストを取得し、購入履歴を表示する
 	 */
 	@GetMapping
 	public String showOrderHistory(Model model, Principal principal) {
 		if (principal == null) {
-			// ログインしていない場合はログインページへリダイレクト
 			return "redirect:/login";
 		}
 
 		String username = principal.getName();
 
-		// ユーザーの注文リストを取得
-		OrderList orderList = orderListService.findByUserName(username);
+		// ユーザーの注文リストを複数取得
+		List<OrderList> orderLists = orderListService.findByUserName(username);
 
-		List<Order> orders;
-		if (orderList == null) {
-			// 注文履歴が無い場合は空リスト
-			orders = List.of();
-		} else {
-			// 購入履歴を取得
-			orders = orderService.getOrderHistory(orderList.getId());
-		}
+		// 各注文リストごとの注文履歴をまとめる
+		List<Order> orders = orderLists.stream()
+				.flatMap(ol -> orderService.getOrderHistory(ol.getId()).stream())
+				.toList();
 
 		model.addAttribute("orders", orders);
-		return "order/history"; // templates/order/history.html を参照
+		return "order/history";
 	}
 
 	/**

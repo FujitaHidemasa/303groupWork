@@ -5,6 +5,12 @@
 		<div class="top-bar">
 			<span sec:authorize="isAuthenticated()">
 				こんにちは、<span sec:authentication="principal.displayName"></span> さん
+				<!-- ★追加: ログアウト（POST, CSRF対応） -->
+				<form th:action="@{/logout}" method="post" class="logout-form" style="display:inline; margin-left: 8px;">
+					<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+					<button type="submit" class="logout-btn">ログアウト</button>
+				</form>
+				<!-- ★追加ここまで -->
 			</span>
 			<a th:href="@{/login}" sec:authorize="!isAuthenticated()">ログイン</a>
 			<span class="separator">｜</span>
@@ -29,6 +35,13 @@
 					<input type="text" name="keyword" placeholder="商品を検索" th:value="${keyword}">
 					<button type="submit">検索</button>
 				</form>
+				
+				<!-- ★追加：お気に入り（ログイン中のみ表示） -->
+				<a th:href="@{/favorites/{userId}(userId=${#authentication.principal.id})}" class="cart-link"
+					sec:authorize="isAuthenticated()">
+					<img th:src="@{/images/ui/header_favoicon.png}" alt="Favorite Icon">
+					<span>お気に入り</span>
+				</a>
 
 				<a th:href="@{/voidrshop/cart}" class="cart-link">
 					<img th:src="@{/images/ui/header_carticon.png}" alt="Cart Icon">
@@ -38,12 +51,4 @@
 			</div>
 		</header>
 	</div>
-</div>
-<a th:href="@{/voidrshop/cart}" class="cart-link">
-	<img th:src="@{/image/ui/header_carticon.png}" alt="Cart Icon">
-	<span>カート</span>
-</a>
-</div>
-</header>
-</div>
 </div>
