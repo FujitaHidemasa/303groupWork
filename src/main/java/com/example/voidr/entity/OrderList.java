@@ -13,6 +13,7 @@ public class OrderList {
 
 	private long id; // 注文リストID
 	private long userId; // ユーザーID
+	private String username;//ユーザーネーム
 	private LocalDateTime createdAt; // 作成日時
 	private LocalDateTime updatedAt; // 更新日時
 }

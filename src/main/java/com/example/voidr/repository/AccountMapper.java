@@ -8,7 +8,8 @@ import com.example.voidr.entity.Account;
 @Mapper
 public interface AccountMapper {
 
-	/** ユーザー名で検索（既存） */
+
+    /** ユーザー名で検索 */
 	Account findByUsername(@Param("username") String username);
 
 
