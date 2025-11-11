@@ -4,9 +4,7 @@
 
 <mapper namespace="com.example.voidr.repository.OrderItemMapper">
 
-	<!-- ========================================================= -->
 	<!-- 注文IDに紐づく商品明細を取得 -->
-	<!-- ========================================================= -->
 	<select id="findByOrderId" parameterType="long"
 		resultType="com.example.voidr.entity.OrderItem">
 		SELECT
@@ -17,13 +15,12 @@
 		quantity,
 		created_at AS createdAt
 		FROM order_item
-		WHERE order_id = #{orderId}
+		WHERE order_id =
+		#{orderId}
 		ORDER BY id ASC
 	</select>
 
-	<!-- ========================================================= -->
 	<!-- 商品明細の登録 -->
-	<!-- ========================================================= -->
 	<insert id="insertOrderItem"
 		parameterType="com.example.voidr.entity.OrderItem"
 		useGeneratedKeys="true" keyProperty="id">

@@ -17,7 +17,8 @@ public interface OrderListService {
 	void createOrderList(OrderList orderList);
 
 	/**
-	 * ユーザー名から注文リストを取得（1ユーザー1リスト想定）
+	 * ユーザー名から注文リストを取得（複数件対応）
 	 */
-	OrderList findByUserName(String username);
+	List<OrderList> findByUserName(String username);
+
 }

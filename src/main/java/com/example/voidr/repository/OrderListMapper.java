@@ -15,6 +15,6 @@ public interface OrderListMapper {
     // 新しい購入履歴（注文リスト）を作成
     void insertOrderList(OrderList orderList);
 
-	OrderList findByUserName(String username);
+	List<OrderList> findByUserName(String username);
 
 }
