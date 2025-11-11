@@ -23,9 +23,11 @@
 		.order-block {
 			border: 1px solid #ccc;
 			border-radius: 8px;
-			margin-bottom: 40px;
+			margin-bottom: 30px;
 			box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 			background: #fff;
+			overflow: hidden;
+			transition: all 0.3s ease;
 		}
 
 		.order-header {
@@ -36,9 +38,10 @@
 			justify-content: space-between;
 			align-items: center;
 			flex-wrap: wrap;
+			cursor: pointer;
 		}
 
-		/* ★注文番号・注文日・合計金額すべてを黒で固定表示 */
+		/* 見た目を黒で統一 */
 		.order-header p {
 			color: #000 !important;
 			font-weight: 600;
@@ -48,6 +51,25 @@
 		.order-header span {
 			font-weight: bold;
 			color: #000 !important;
+		}
+
+		.order-header:hover {
+			background-color: #e8e8e8;
+		}
+
+		.order-content {
+			display: none;
+			animation: fadeIn 0.3s ease;
+		}
+
+		@keyframes fadeIn {
+			from {
+				opacity: 0;
+			}
+
+			to {
+				opacity: 1;
+			}
 		}
 
 		table {
@@ -135,6 +157,17 @@
 			margin: 60px 0;
 			color: #555;
 		}
+
+		.toggle-icon {
+			font-size: 20px;
+			color: #000;
+			margin-left: 10px;
+			transition: transform 0.3s ease;
+		}
+
+		.order-header.active .toggle-icon {
+			transform: rotate(90deg);
+		}
 	</style>
 </head>
 
@@ -146,9 +179,10 @@
 			<h2>購入履歴</h2>
 
 			<!-- 注文ごとにブロック表示 -->
-			<div th:if="${groupedOrders != null and !groupedOrders.isEmpty()}" th:each="entry : ${groupedOrders}">
+			<div th:if="${groupedOrders != null and !groupedOrders.isEmpty()}"
+				th:each="entry, iterStat : ${groupedOrders}">
 				<div class="order-block">
-					<div class="order-header">
+					<div class="order-header" th:onclick="'toggleOrder(' + ${iterStat.index} + ')'">
 						<div>
 							<p>注文番号：<span th:text="${entry.key}"></span></p>
 							<p th:if="${#lists.size(entry.value) > 0}">
@@ -160,40 +194,44 @@
 						<div>
 							<p>合計金額：
 								<span th:text="${#numbers.formatInteger(totalPriceMap[entry.key], 0)}"></span>円
+								<span class="toggle-icon">▶</span>
 							</p>
 						</div>
 					</div>
 
-					<table>
-						<thead>
-							<tr>
-								<th>商品画像</th>
-								<th>商品名</th>
-								<th>数量</th>
-								<th>価格</th>
-								<th>状態</th>
-								<th>操作</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr th:each="order : ${entry.value}">
-								<td>
-									<img th:src="@{'/images/' + ${order.imageName}}" alt="商品画像"
-										onerror="this.onerror=null;this.src='/image/no_image.png';">
-								</td>
-								<td th:text="${order.itemName}"></td>
-								<td th:text="${order.quantity}"></td>
-								<td th:text="'¥' + ${#numbers.formatInteger(order.price, 0)}"></td>
-								<td th:text="${order.isHold ? '保留中' : '発送済み'}"></td>
-								<td class="action-buttons">
-									<button class="detail"
-										th:onclick="'location.href=\'/order/detail/' + ${order.id} + '\';'">詳細</button>
-									<button class="reorder"
-										th:onclick="'location.href=\'/order/reorder/' + ${order.itemId} + '\';'">再購入</button>
-								</td>
-							</tr>
-						</tbody>
-					</table>
+					<!-- 開閉する注文内容 -->
+					<div class="order-content" th:id="'order-content-' + ${iterStat.index}">
+						<table>
+							<thead>
+								<tr>
+									<th>商品画像</th>
+									<th>商品名</th>
+									<th>数量</th>
+									<th>価格</th>
+									<th>状態</th>
+									<th>操作</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="order : ${entry.value}">
+									<td>
+										<img th:src="@{'/images/' + ${order.imageName}}" alt="商品画像"
+											onerror="this.onerror=null;this.src='/image/no_image.png';">
+									</td>
+									<td th:text="${order.itemName}"></td>
+									<td th:text="${order.quantity}"></td>
+									<td th:text="'¥' + ${#numbers.formatInteger(order.price, 0)}"></td>
+									<td th:text="${order.isHold ? '保留中' : '発送済み'}"></td>
+									<td class="action-buttons">
+										<button class="detail"
+											th:onclick="'location.href=\'/order/detail/' + ${order.id} + '\';'">詳細</button>
+										<button class="reorder"
+											th:onclick="'location.href=\'/order/reorder/' + ${order.itemId} + '\';'">再購入</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
 				</div>
 			</div>
 
@@ -209,6 +247,21 @@
 	</main>
 
 	<div th:replace="fragments/footer :: footer"></div>
+
+	<script>
+		function toggleOrder(index) {
+			const content = document.getElementById(`order-content-${index}`);
+			const header = content.previousElementSibling;
+
+			if (content.style.display === "block") {
+				content.style.display = "none";
+				header.classList.remove("active");
+			} else {
+				content.style.display = "block";
+				header.classList.add("active");
+			}
+		}
+	</script>
 </body>
 
 </html>
