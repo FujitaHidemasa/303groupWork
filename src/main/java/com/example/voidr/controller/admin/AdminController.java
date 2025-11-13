@@ -19,4 +19,6 @@ public class AdminController {
         model.addAttribute("pageTitle", "管理ダッシュボード");
         return "admin/pre_dashboard"; // templates/admin/pre_dashboard.html を返す
     }
+
 }
+
