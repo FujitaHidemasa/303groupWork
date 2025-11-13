@@ -116,10 +116,12 @@
 		<section>
 			<h2>購入内容の確認</h2>
 
-			<!-- 支払い方法と住所（見やすくボックス化） -->
+			<!-- 支払い方法・住所・配達希望日（表示用） -->
 			<div class="info-section">
 				<p><strong>支払い方法：</strong><span th:text="${paymentMethod}">クレジットカード</span></p>
 				<p><strong>配送先住所：</strong><span th:text="${address}">大阪府大阪市島之内</span></p>
+				<p><strong>配達希望日：</strong><span th:text="${deliveryDate}">2025-11-13</span></p>
+				<p><strong>配達希望時間：</strong><span th:text="${deliveryTime}">指定なし</span></p>
 			</div>
 
 			<!-- 商品一覧 -->
@@ -156,16 +158,17 @@
 			<!-- 購入確定ボタン -->
 			<div class="purchase-actions">
 				<form th:action="@{/voidrshop/purchase/complete}" method="post">
+					<!-- hidden で全ての情報を送信 -->
 					<input type="hidden" name="paymentMethod" th:value="${paymentMethod}">
 					<input type="hidden" name="address" th:value="${address}">
+					<input type="hidden" name="deliveryDate" th:value="${deliveryDate}">
+					<input type="hidden" name="deliveryTime" th:value="${deliveryTime}">
 					<button type="submit" class="btn-confirm">購入を確定する</button>
 				</form>
-
 
 				<form th:action="@{/voidrshop/purchase}" method="get">
 					<button type="submit" class="btn-back">戻る</button>
 				</form>
-
 			</div>
 		</section>
 	</main>
