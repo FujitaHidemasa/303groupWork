@@ -2,20 +2,15 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="ja"
 	th:replace="layout/shop_base :: base_layout(~{::content}, ${item.name} + '商品詳細', null)">
 
-
 <th:block th:fragment="content">
-
 
 	<main>
 		<section>
 			<h2 style="text-align: center;" th:text="${item.name}">商品の詳細</h2>
 
-
 			<div class="product-detail">
 				<img th:src="@{/images/{file}(file=${item.thumbsImageName})}"
 					onerror="this.onerror=null;this.src='/image/no_image.png';">
-
-
 
 				<table>
 					<tr>
@@ -34,26 +29,23 @@
 						<th>購入</th>
 						<td>
 							<div class="action-buttons">
-								<form th:action="@{/voidrshop/purchase}" method="post">
-									<input type="hidden" name="itemId" th:value="${item.id}">
-									<input type="hidden" name="quantity" value="1">
-									<button type="submit" class="btn btn-primary">購入画面へ</button>
-								</form>
-
 
 								<form th:action="@{/voidrshop/cart/add}" method="post">
-									<!-- ★追加：CSRF トークン（Spring Security 有効時は必須） -->
 									<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 									<input type="hidden" name="itemId" th:value="${item.id}">
-									<button type="submit" class="cart-add-btn">カートに追加</button>
+
+									<!-- 🛒 カートボタン -->
+									<button type="submit" class="cart-add-btn">
+										<span class="cart-icon">🛒</span>
+										<span class="label">カートに追加</span>
+									</button>
 								</form>
 
-
-
-								<button type="button" th:attr="data-item-id=${item.id}" class="favorite-btn"
-									th:text="${isFavorite} ? '★ お気に入り' : '☆ お気に入り'">
+								<button type="button" class="favorite-btn"
+									th:attr="data-item-id=${item.id}, aria-pressed=${isFavorite}, data-fav=${isFavorite}">
+									<span class="star" th:text="${isFavorite} ? '★' : '☆'">☆</span>
+									<span class="label"> お気に入り</span>
 								</button>
-
 
 							</div>
 						</td>
@@ -69,27 +61,17 @@
 		</section>
 	</main>
 
-	<!--
-    　このページ専用スタイル
-    　他のページには影響しません。
-    　共通CSSを上書きしたい場合はここに追記してください。
-	-->
-
 	<style>
 		body {
 			text-align: center;
 			font-family: "Noto Sans JP", "Segoe UI", "Helvetica Neue", sans-serif;
-
 		}
-
 
 		main {
 			max-width: 1000px;
 			margin: 30px auto;
 			text-align: left;
-
 		}
-
 
 		.product-detail {
 			display: flex;
@@ -98,24 +80,18 @@
 			gap: 40px;
 			margin: 20px auto;
 			width: fit-content;
-
 		}
-
 
 		.product-detail img {
 			width: 400px;
 			height: auto;
 			border: 1px solid #ccc;
-
 		}
-
 
 		table {
 			border-collapse: collapse;
 			width: 450px;
-
 		}
-
 
 		th,
 		td {
@@ -123,16 +99,12 @@
 			border-bottom: 1px solid #ccc;
 			text-align: left;
 			vertical-align: top;
-
 		}
-
 
 		th {
 			width: 120px;
 			white-space: nowrap;
-
 		}
-
 
 		.action-buttons {
 			display: flex;
@@ -159,29 +131,66 @@
 			border-radius: 4px;
 		}
 
-		/* カート追加ボタン */
-		.add-cart-btn {
-			background-color: #2a9d8f;
+		/* ✅ カート追加ボタン（青系・全体色付き） */
+		.cart-add-btn {
+			background-color: #1E40FF;
+			/* メイン青 */
 			color: #fff;
-			padding: 10px 16px;
-			border-radius: 5px;
+			padding: 10px 18px;
+			border-radius: 6px;
 			text-decoration: none;
 			font-weight: bold;
-			transition: background-color 0.3s;
+			display: flex;
+			align-items: center;
+			gap: 8px;
+			border: none;
+			cursor: pointer;
+			font-size: 15px;
+			transition: background-color 0.2s, box-shadow 0.2s;
 		}
 
-		.add-cart-btn:hover {
-			background-color: #21867a;
+		.cart-add-btn:hover {
+			background-color: #1533CC;
+			/* 濃い青 */
+			box-shadow: 0 0 8px rgba(30, 64, 255, 0.4);
+		}
+
+		.cart-add-btn .cart-icon {
+			font-size: 18px;
+			line-height: 1;
+		}
+
+		/* ★お気に入りボタン */
+		.favorite-btn {
+			background: #f5f5f5;
+			border: 1px solid #ccc;
+			border-radius: 6px;
+			padding: 10px 14px;
+			cursor: pointer;
+			font-weight: bold;
+			display: flex;
+			align-items: center;
+			gap: 4px;
+			transition: background-color 0.2s;
+		}
+
+		.favorite-btn:hover {
+			background-color: #e8e8e8;
+		}
+
+		.favorite-btn .star {
+			transition: color 0.15s ease;
+			font-size: 18px;
+		}
+
+		.favorite-btn[data-fav="true"] .star {
+			color: #FFD700;
 		}
 	</style>
 
 	<!-- お気に入り機能のスクリプト -->
 	<script th:src="@{/js/favorite.js}"></script>
 
-
-
-
 </th:block>
-
 
 </html>

@@ -1,7 +1,9 @@
 package com.example.voidr.controller;
 
 import java.security.Principal;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,6 +30,7 @@ public class OrderController {
 	/**
 	 * 購入履歴一覧を表示
 	 */
+	// OrderController.java 内
 	@GetMapping
 	public String showOrderHistory(Model model, Principal principal) {
 		if (principal == null) {
@@ -35,16 +38,26 @@ public class OrderController {
 		}
 
 		String username = principal.getName();
-
-		// ユーザーの注文リストを複数取得
 		List<OrderList> orderLists = orderListService.findByUserName(username);
 
-		// 各注文リストごとの注文履歴をまとめる
-		List<Order> orders = orderLists.stream()
-				.flatMap(ol -> orderService.getOrderHistory(ol.getId()).stream())
-				.toList();
+		// Map<Long, List<Order>> を作成（注文リストIDごとにまとめる）
+		Map<Long, List<Order>> groupedOrders = new LinkedHashMap<>();
+		Map<Long, Integer> totalPriceMap = new LinkedHashMap<>();
 
-		model.addAttribute("orders", orders);
+		for (OrderList ol : orderLists) {
+			List<Order> orderHistory = orderService.getOrderHistory(ol.getId());
+			groupedOrders.put(ol.getId(), orderHistory);
+
+			// 注文ごとの合計金額を計算
+			int total = orderHistory.stream()
+					.mapToInt(Order::getPrice)
+					.sum();
+			totalPriceMap.put(ol.getId(), total);
+		}
+
+		model.addAttribute("groupedOrders", groupedOrders);
+		model.addAttribute("totalPriceMap", totalPriceMap);
+
 		return "order/history";
 	}
 

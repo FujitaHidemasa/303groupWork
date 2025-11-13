@@ -1,0 +1,54 @@
+<!-- ============================================================
+  新着情報管理（Wireframe Version）
+  現在はDB未連携のため、仮データを静的に表示しています。
+  ※ニューステーブルはまだ未作成です。
+  今後このページで「ショップトップに表示される新着情報」を
+  確認をできるようにする予定です。
+============================================================= -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja"
+      th:replace="layout/admin_base :: admin_base(~{::content}, '新着情報管理', ~{::assets})">
+
+<th:block th:fragment="content">
+	<div class="table-container">
+  <section class="section">
+    <h1>新着情報管理</h1>
+    <p style="margin-bottom: 16px; color: #666;">
+      ※このページは現在ワイヤーフレーム段階です。  
+      新着情報テーブル作成後にDBと連携します。
+    </p>
+
+    <button class="btn btn-add">＋ 新規追加</button>
+
+    <table>
+      <thead>
+        <tr>
+          <th>日付</th>
+          <th>内容</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>2025/11/07</td>
+          <td>新商品の予約受付を開始しました。</td>
+          <td>
+            <button class="btn">編集</button>
+            <button class="btn btn-danger">削除</button>
+          </td>
+        </tr>
+        <tr>
+          <td>2025/11/01</td>
+          <td>サイトメンテナンスを実施しました。</td>
+          <td>
+            <button class="btn">編集</button>
+            <button class="btn btn-danger">削除</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+	</div>
+  </disection>
+</th:block>
+
+</html>

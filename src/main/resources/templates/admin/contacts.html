@@ -1,0 +1,125 @@
+<!-- ============================================================
+  お問い合わせ管理（Wireframe Version）
+  現在はDB未連携のため、仮データを静的に表示しています。
+
+  【今後の実装方針】
+  ・このページでは「contacts」テーブル(未作成)を利用し、
+    ユーザーからのお問い合わせ内容を一覧表示します。
+  ・返信済み／未返信を replied_at の有無で区別します。
+  ・管理画面専用の Controller（AdminContactController）を追加し、
+    一般ユーザー用の ContactController とはURLを分離します。
+  ・Service / Mapper は新規に作成します。
+  ・この画面下部に選択した問い合わせの詳細と返信フォームを表示し、
+    ブラウザ上から直接返信できるようにします。
+============================================================= -->
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja"
+      th:replace="layout/admin_base :: admin_base(~{::content}, 'お問い合わせ管理', ~{::assets})">
+
+<th:block th:fragment="content">
+	<div class="table-container">
+  <section class="section">
+    <h1>お問い合わせ管理</h1>
+
+    <p style="margin-bottom:16px; color:#666;">
+      ※このページは現在ワイヤーフレーム段階です。<br>
+      後に <code>contacts</code> テーブルを連携し、ユーザーからの問い合わせ内容を確認・返信できるようにします。
+    </p>
+
+    <!-- 一覧テーブル -->
+    <table id="inquiryTable">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>名前</th>
+          <th>Email</th>
+          <th>件名</th>
+          <th>メッセージ</th>
+          <th>ステータス</th>
+          <th>返信日</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr onclick="selectInquiry(this)" data-id="1" data-name="佐藤花子" data-email="hanako@example.com"
+            data-subject="商品について" data-message="商品の発送時期を教えてください。" data-status="未返信">
+          <td>1</td>
+          <td>佐藤花子</td>
+          <td>hanako@example.com</td>
+          <td>商品について</td>
+          <td>商品の発送時期を教えてください。</td>
+          <td><span style="color:red;">未返信</span></td>
+          <td>-</td>
+        </tr>
+        <tr onclick="selectInquiry(this)" data-id="2" data-name="山本太郎" data-email="taro@example.com"
+            data-subject="返品について" data-message="サイズ違いの商品を返品したいです。" data-status="返信済み" data-reply="サイズ変更について案内済みです。"
+            data-date="2025/11/05">
+          <td>2</td>
+          <td>山本太郎</td>
+          <td>taro@example.com</td>
+          <td>返品について</td>
+          <td>サイズ違いの商品を返品したいです。</td>
+          <td><span style="color:green;">返信済み</span></td>
+          <td>2025/11/05</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- 選択した問い合わせの詳細と返信フォーム -->
+    <div id="replySection" style="margin-top: 32px; border-top: 2px solid #ccc; padding-top: 24px;">
+      <h2 style="margin-bottom: 12px;">選択中のお問い合わせ</h2>
+
+      <div id="selectedInfo" style="margin-bottom: 16px; color:#333;">
+        <p>選択されていません。</p>
+      </div>
+
+      <div id="replyForm" style="display: none;">
+        <label for="replyMessage" style="display:block; margin-bottom:8px; font-weight:bold;">返信内容</label>
+        <textarea id="replyMessage" rows="6" placeholder="ここに返信内容を入力"
+                  style="width:100%; padding:10px; border:1px solid #ccc; border-radius:8px; resize:vertical;"></textarea>
+
+        <div style="margin-top:16px; text-align:right;">
+          <button class="btn">返信を送信</button>
+        </div>
+      </div>
+    </div>
+	</section>
+  </section>
+
+  <script>
+    function selectInquiry(row) {
+      // 行データを取得
+      const name = row.dataset.name;
+      const email = row.dataset.email;
+      const subject = row.dataset.subject;
+      const message = row.dataset.message;
+      const status = row.dataset.status;
+      const reply = row.dataset.reply || "";
+      const date = row.dataset.date || "-";
+
+      const infoDiv = document.getElementById("selectedInfo");
+      const replyForm = document.getElementById("replyForm");
+      const textarea = document.getElementById("replyMessage");
+
+      // 詳細を表示
+      infoDiv.innerHTML = `
+        <p><strong>名前:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>件名:</strong> ${subject}</p>
+        <p><strong>メッセージ:</strong><br>${message}</p>
+        <p><strong>ステータス:</strong> ${status}</p>
+        <p><strong>返信日:</strong> ${date}</p>
+      `;
+
+      // 返信済みならフォーム非表示
+      if (status === "返信済み") {
+        replyForm.style.display = "none";
+      } else {
+        replyForm.style.display = "block";
+        textarea.value = "";
+      }
+    }
+  </script>
+</th:block>
+
+</html>

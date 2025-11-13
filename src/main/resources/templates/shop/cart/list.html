@@ -3,6 +3,12 @@
 
 <head>
 	<meta charset="UTF-8">
+	
+	<!-- 11/11 CSRFメタ 追加 -->
+	<meta name="_csrf" th:content="${_csrf.token}">
+	<meta name="_csrf_header" th:content="${_csrf.headerName}">
+
+	
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" th:href="@{/css/ec/main.css}">
 	<link rel="stylesheet" th:href="@{/css/ec/header.css}">
@@ -142,30 +148,59 @@
 		document.addEventListener("DOMContentLoaded", function () {
 			const quantityInputs = document.querySelectorAll(".cart-quantity");
 
+			// CSRF トークンをメタから取得
+			const csrfToken = document.querySelector('meta[name="_csrf"]')?.getAttribute("content");
+			const csrfHeader = document.querySelector('meta[name="_csrf_header"]')?.getAttribute("content") || "X-CSRF-TOKEN";
+
 			quantityInputs.forEach(input => {
+				// 初期値保持（誤発火対策は任意で）
+				input.dataset.initial = input.value;
+
 				input.addEventListener("change", async function () {
 					const row = input.closest("tr");
-					const price = parseInt(row.querySelector(".price").textContent);
-					const quantity = parseInt(input.value);
+					const price = parseInt(row.querySelector(".price").textContent.replace(/,/g, "")) || 0;
 					const subtotalCell = row.querySelector(".subtotal");
+					const cartId = input.dataset.id;
 
-					// 小計更新
-					const subtotal = price * quantity;
-					subtotalCell.textContent = subtotal.toLocaleString();
+					// 値チェック
+					const quantity = Math.max(1, parseInt(input.value) || 1);
 
-					// 合計更新
+					// フロント表示を先に更新
+					subtotalCell.textContent = (price * quantity).toLocaleString();
 					updateTotal();
 
-					// サーバー側も更新（非同期POST）
-					const cartId = input.dataset.id;
+					// サーバ更新（CSRFヘッダ付き）
 					const formData = new FormData();
 					formData.append("cartId", cartId);
 					formData.append("quantity", quantity);
 
-					await fetch("/voidrshop/cart/change", {
-						method: "POST",
-						body: formData
-					});
+					try {
+						const res = await fetch("/voidrshop/cart/change", {
+							method: "POST",
+							headers: csrfToken ? {[csrfHeader]: csrfToken} : {},
+							body: formData,
+							credentials: "same-origin"
+						});
+
+						if (!res.ok) {
+							// 失敗時は元に戻す
+							alert("数量の更新に失敗しました（" + res.status + "）。再読み込みしてやり直してください。");
+							// 可能ならサーバ値再取得または直前の initial に戻す
+							input.value = input.dataset.initial || "1";
+							subtotalCell.textContent = (price * (parseInt(input.value) || 1)).toLocaleString();
+							updateTotal();
+							return;
+						}
+
+						// 成功したら initial を更新
+						input.dataset.initial = String(quantity);
+					} catch (e) {
+						console.error(e);
+						alert("通信エラーが発生しました。ネットワークを確認してください。");
+						input.value = input.dataset.initial || "1";
+						subtotalCell.textContent = (price * (parseInt(input.value) || 1)).toLocaleString();
+						updateTotal();
+					}
 				});
 			});
 
@@ -174,10 +209,21 @@
 				document.querySelectorAll(".subtotal").forEach(cell => {
 					total += parseInt(cell.textContent.replace(/,/g, "")) || 0;
 				});
-				document.getElementById("total-price").textContent = total.toLocaleString();
+				const tp = document.getElementById("total-price");
+				if (tp) tp.textContent = total.toLocaleString();
 			}
+
+			// 追加オプション：戻る（BFCache）時の誤発火/不一致対策
+			window.addEventListener("pageshow", function (ev) {
+				if (ev.persisted) {
+					document.querySelectorAll(".cart-quantity").forEach(input => {
+						input.dataset.initial = input.value;
+					});
+				}
+			});
 		});
 	</script>
+
 
 </body>
 
