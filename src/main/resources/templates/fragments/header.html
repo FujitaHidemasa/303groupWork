@@ -78,13 +78,29 @@
 	<style>
 		.cart-icon-wrap {
 			position: relative;
-			display: inline-block;
+			display: inline-flex;
+			/* ✅ flex に変更 */
+			align-items: center;
+			/* ✅ アイコンと文字を縦中央揃え */
+			gap: 4px;
+			/* ✅ アイコンと文字の間隔 */
+			padding: 2px 6px;
+			/* 必要に応じて余白 */
+		}
+
+		.cart-icon-wrap img {
+			display: block;
+			width: 24px;
+			/* アイコンサイズ調整 */
+			height: 24px;
+			position: relative;
+			top: 7px; /* アイコンを少し下に */
 		}
 
 		.cart-count-badge {
 			position: absolute;
 			top: -5px;
-			right: -10px;
+			right: -8px;
 			background-color: red;
 			color: white;
 			font-size: 12px;
@@ -96,5 +112,23 @@
 			line-height: 1.2;
 			display: none;
 		}
+		
+		/* お気に入りボタン調整 */
+		.cart-link img {
+		    display: block;
+		    width: 24px;
+		    height: 24px;
+		    position: relative;
+		    top: 2px; /* アイコンを少し下に */
+		}
+
+		.cart-link span {
+		    vertical-align: middle; /* アイコンに対して文字を中央寄せ */
+		}
+		
+		
+
 	</style>
+
+
 </div>
