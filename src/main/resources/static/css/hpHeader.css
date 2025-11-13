@@ -20,6 +20,9 @@ header, .main-header {
   padding: 0 40px;
   height: 80px;
   box-sizing: border-box; 
+  font-family: 'Orbitron', 'Segoe UI', 'Meiryo', sans-serif !important;
+  
+
 }
 
 /* ロゴ */
@@ -61,6 +64,7 @@ header, .main-header {
   padding: 10px 0;
   border-radius: 8px;
   min-width: 160px;
+  list-style: none;
 }
 .submenu li a {
   display: block;

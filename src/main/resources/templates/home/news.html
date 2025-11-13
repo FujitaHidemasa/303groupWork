@@ -4,16 +4,38 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ニュース | VOIDR</title>
-  <!-- 共通CSS -->
-    <link rel="stylesheet" href="/css/hpHeader.css">
+
+  <!-- ▼ 共通フォント（Orbitron） -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+
+  <!-- ▼ 共通CSS -->
+  <link rel="stylesheet" href="/css/Homepage.css">
+  <link rel="stylesheet" href="/css/hpHeader.css">
+
+  <!-- ▼ ニュース専用CSS -->
   <link rel="stylesheet" href="/css/news.css">
 </head>
 <body>
 
-	<!-- ヘッダー -->
-	<div th:replace="fragments/hpheader :: header"></div>
+  <!-- ▼ 共通モーダル（HOME と同じ） -->
+  <div id="storeModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <a href="https://www.ea.com/ja-jp/ea-app" class="store-btn ea">Windows用EA appでダウンロード</a>
+      <a href="https://store.steampowered.com/" class="store-btn steam">Steamストアに進む</a>
+      <a href="https://store.epicgames.com/" class="store-btn epic">Epic Gamesストアに進む</a>
+      <a href="https://store.playstation.com/" class="store-btn ps4">PlayStation®4ストアに進む</a>
+      <a href="https://store.playstation.com/" class="store-btn ps5">PlayStation®5ストアに進む</a>
+      <a href="https://www.nintendo.co.jp/software/" class="store-btn switch">Nintendo Switchストアに進む</a>
+      <a href="https://www.xbox.com/ja-JP/microsoft-store" class="store-btn xbox">Xboxストアに進む</a>
+    </div>
+  </div>
 
-  <!-- 注目ニュース -->
+  <!-- ▼ 共通ヘッダー -->
+  <div th:replace="fragments/hpheader :: header"></div>
+
+
+  <!-- ▼ 注目ニュース -->
   <section class="featured-news">
     <h1>注目のニュース</h1>
     <div class="featured-container">
@@ -22,12 +44,13 @@
         <h2>VOIDR 世界大会開幕！</h2>
         <p>2025世界大会開幕！🎮 eスポーツの頂点「VOIDR Worlds 2025」が日本を舞台に激戦スタート</p>
       </div>
+
       <div class="featured-item">
         <img src="/images/news/Sinkyara2.jpg" alt="ニュース2">
         <h2>新キャラクター「Dr.ヴォルテク」登場</h2>
-        <p>「倫理は古い。真理は、ヴォイドの中にある！」
-狂気の天才科学者 ドクター・ヴォルテク が、自らが開発した狂気の兵器と共に戦場に参戦。</p>
+        <p>「倫理は古い。真理は、ヴォイドの中にある！」狂気の天才科学者 ドクター・ヴォルテク が、自らが開発した狂気の兵器と共に戦場に参戦。</p>
       </div>
+
       <div class="featured-item">
         <img src="/images/news/New_Map2.jpg" alt="ニュース3">
         <h2>新マップ【エッセンス・ネクサス】登場</h2>
@@ -36,16 +59,17 @@
     </div>
   </section>
 
-  <!-- 通常ニュース -->
+
+  <!-- ▼ 通常ニュース -->
   <section class="news-list">
     <h2>すべてのニュース</h2>
     <div class="news-cards">
+
       <div class="news-card">
         <img src="/images/news/jyu_apude.jpeg" alt="ニュースA">
         <div class="text">
           <h3>アップデート1.3配信開始</h3>
-          <p>新型エネルギー銃クォンタム・ブラスターが追加されるとともに
-            新たな交戦ルートや遮蔽物を設けるマップ環境の大規模な調整が実施されました。</p>
+          <p>新型エネルギー銃クォンタム・ブラスターが追加されるとともに、新たな交戦ルートや遮蔽物を設ける大規模な調整が実施されました。</p>
         </div>
       </div>
 
@@ -61,55 +85,56 @@
         <img src="/images/news/Kinkyu_News.jpg" alt="ニュースC">
         <div class="text">
           <h3>⚠️緊急メンテナンスのお知らせ⚠️</h3>
-          <p>誠に申し訳ございませんが、11月11日（火）午前3:00から午前6:00（予定）まで
-            緊急メンテナンスを実施させていただきます。</p>
+          <p>11月11日（火）午前3:00〜6:00（予定）まで緊急メンテナンスを実施します。</p>
         </div>
       </div>
- <!-- ✅ 以下、追加分！ -->
-    <div class="news-card">
-      <img src="/images/news/Present1_News.jpeg" alt="ニュースD">
-      <div class="text">
-        <h3>プレゼントキャンペーン開催🎉</h3>
-        <p>感謝を込めて！ログインするだけで、好きなレジェンドのレア限定スキンと
-          レジェンドトークンがもらえる記念キャンペーンを実施中！</p>
+
+      <!-- ▼ 追加分 -->
+      <div class="news-card">
+        <img src="/images/news/Present1_News.jpeg" alt="ニュースD">
+        <div class="text">
+          <h3>プレゼントキャンペーン開催🎉</h3>
+          <p>ログインだけで限定スキンとレジェンドトークンがもらえるキャンペーン開催中！</p>
+        </div>
       </div>
-    </div>
 
-    <div class="news-card">
-      <img src="/images/news/New_item1.jpg" alt="ニュースE">
-      <div class="text">
-        <h3>新アイテム【ハザード・スフィア 】登場！</h3>
-        <p>投擲時に地面や壁に吸着する特殊なグレネードであり、
-          着弾後に展開される強力な有害ガスフィールドは敵の体力を削り、機動力を奪います。</p>
+      <div class="news-card">
+        <img src="/images/news/New_item1.jpg" alt="ニュースE">
+        <div class="text">
+          <h3>新アイテム【ハザード・スフィア 】登場！</h3>
+          <p>着弾後に有害ガスフィールドを展開する特殊グレネードが追加。</p>
+        </div>
       </div>
-    </div>
 
-    <div class="news-card">
-      <img src="/images/news/haarowen.jpg" alt="ニュースF">
-      <div class="text">
-        <h3>期間限定👻ハロウィンイベント開催</h3>
-        <p>限定報酬が手に入る特別ミッションが登場。</p>
+      <div class="news-card">
+        <img src="/images/news/haarowen.jpg" alt="ニュースF">
+        <div class="text">
+          <h3>期間限定👻ハロウィンイベント開催</h3>
+          <p>限定報酬が手に入る特別ミッションが登場。</p>
+        </div>
       </div>
-    </div>
 
-    <div class="news-card">
-      <img src="/images/news/Kyara_tyousei.jpg" alt="ニュースG">
-      <div class="text">
-        <h3>キャラクター調整</h3>
-        <p>戦闘環境のバランスを最適化するため、一部のレジェンドのアビリティに関する大幅な性能調整を実施しました。</p>
+      <div class="news-card">
+        <img src="/images/news/Kyara_tyousei.jpg" alt="ニュースG">
+        <div class="text">
+          <h3>キャラクター調整</h3>
+          <p>戦闘環境のバランス最適化のため一部キャラを調整しました。</p>
+        </div>
       </div>
+
+      <div class="news-card">
+        <img src="/images/news/guzzu.jpg" alt="ニュースH">
+        <div class="text">
+          <h3>グッズ販売スタート！</h3>
+          <p>VOIDR公式Tシャツやぬいぐるみがオンライン販売開始！</p>
+        </div>
+      </div>
+
     </div>
+  </section>
 
-    <div class="news-card">
-  <img src="/images/news/guzzu.jpg" alt="ニュースH">
-  <div class="text">
-    <h3>グッズ販売スタート！</h3>
-    <p>VOIDR公式Tシャツやぬいぐるみがオンラインストアで販売開始。</p>
-  </div>
-</div>
-
-  </div>
-</section>
+  <!-- ▼ モーダルJS（HOME と同じ） -->
+  <script src="/js/hpHeader.js"></script>
 
 </body>
 </html>

@@ -1,66 +1,69 @@
 <!DOCTYPE html>
 <html lang="ja">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ストーリー | VOIDR</title>
+	<head>
+	  <meta charset="UTF-8">
 
-  <!-- 共通CSS -->
-  <link rel="stylesheet" href="/css/hpHeader.css">
+	  <!-- 共通フォント -->
+	  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;700&display=swap" rel="stylesheet">
-  
+	  <!-- 共通CSS -->
+	  <link rel="stylesheet" href="/css/Homepage.css">
+	  <link rel="stylesheet" href="/css/hpHeader.css">
 
-
-  <!-- ストーリーページ専用CSS -->
-  <link rel="stylesheet" href="/css/storyPage.css">
-</head>
+	  <!-- Story専用CSS -->
+	  <link rel="stylesheet" href="/css/storyPage.css">
+	</head>
 <body>
 
-  <!-- ヘッダー -->
-	<div th:replace="fragments/hpheader :: header"></div>
 
- <!-- 背景動画＋テキスト＋ボタン -->
-<section class="story-hero">
-  <video autoplay muted loop playsinline class="bg-video">
-    <source src="/videos/story_bg.mp4" type="video/mp4">
-  </video>
 
-  <!-- 最初に見えているタイトルテキスト（クリックで消える） -->
-  <div class="text-layer" id="textLayer">
-    <h1>VOIDR</h1>
-    <p>眠れる力が目覚めた時、世界は新たな相克へと導かれる。</p>
-  </div>
+  <!-- ▼ HOME と同じヘッダー -->
+  <div th:replace="fragments/hpheader :: header"></div>
 
-  <!-- 次へボタン（常に表示） -->
-   <div class="button-wrapper">
-  <button id="prevBtn" class="story-btn jp-font">戻る</button>
-  <button id="nextBtn" class="story-btn jp-font"> 次へ</button>
-</div>
 
-  <!-- 画像＋右テキストを横並びにするコンテナ（初期は非表示） -->
-  <div id="storyContainer" class="hidden">
-    <!-- 左：画像 -->
-    <div id="storyImageWrapper">
-      <img id="storyImage" src="" alt="Story Image">
+  <!-- ▼ ストーリー セクション（既存そのまま） -->
+  <section class="story-hero">
+    <video autoplay muted loop playsinline class="bg-video">
+      <source src="/videos/story_bg.mp4" type="video/mp4">
+    </video>
+
+    <!-- 最初のテキスト -->
+    <div class="text-layer" id="textLayer">
+      <h1>VOIDR</h1>
+      <p>眠れる力が目覚めた時、世界は新たな相克へと導かれる。</p>
     </div>
 
-    <!-- 右：テキスト（innerHTMLで挿入する） -->
-    <div id="storyText" class="story-text"></div>
-  </div>
-</section>
+    <!-- 次へ / 戻る ボタン -->
+    <div class="button-wrapper">
+      <button id="prevBtn" class="story-btn jp-font">戻る</button>
+      <button id="nextBtn" class="story-btn jp-font">次へ</button>
+    </div>
+
+    <!-- ストーリーコンテンツ -->
+    <div id="storyContainer" class="hidden">
+      <div id="storyImageWrapper">
+        <img id="storyImage" src="" alt="Story Image">
+      </div>
+
+      <div id="storyText" class="story-text"></div>
+    </div>
+  </section>
+
 
   <!-- フッター -->
   <footer class="main-footer">
     <p>&copy; 2025 VOIDR. All Rights Reserved.</p>
   </footer>
 
-  <!-- ストーリー用JS -->
+  <!-- ストーリー JavaScript -->
   <script src="/js/story.js"></script>
 
-  <!--ホームボタンに戻るボタン-->
-  <a href="/voidr" id="scroll-top-btn" class="story-btn scroll-top-btn">トップへ▲</a>
+  <!-- モーダルJS（必須） -->
+  <script src="/js/hpHeader.js"></script>
+
+  <!-- トップへ戻る -->
+  <a href="/voidr" id="scrollTopBtn" class="story-btn scroll-top-btn">トップへ▲</a>
+
 
 </body>
 </html>

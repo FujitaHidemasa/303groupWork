@@ -37,4 +37,11 @@ public interface ItemService
      * XMLとDBを同期する
      */
     void syncItems();
+    
+    /*ランダムで4件取得*/
+    
+    public List<Item> getRandom4Items();
+
+    
+
 }

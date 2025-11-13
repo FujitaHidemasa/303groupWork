@@ -1,10 +1,129 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MAPS | VOIDR</title>
+
+  <!-- 共通CSS -->
+  <link rel="stylesheet" href="/css/Homepage.css">
+  <link rel="stylesheet" th:href="@{/css/hpHeader.css}">
+
+  <!-- MAPページ専用 -->
+  <link rel="stylesheet" href="/css/hp/map.css">
 </head>
 <body>
+
+  <!-- ▼ モーダル（必ず body 内） ▼ -->
+  <div id="storeModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <a href="https://www.ea.com/ja-jp/ea-app" class="store-btn ea">Windows用EA appでダウンロード</a>
+      <a href="https://store.steampowered.com/" class="store-btn steam">Steamストアに進む</a>
+      <a href="https://store.epicgames.com/" class="store-btn epic">Epic Gamesストアに進む</a>
+      <a href="https://store.playstation.com/" class="store-btn ps4">PlayStation®4ストアに進む</a>
+      <a href="https://store.playstation.com/" class="store-btn ps5">PlayStation®5ストアに進む</a>
+      <a href="https://www.xbox.com/ja-JP/microsoft-store" class="store-btn xbox">Xboxストアに進む</a>
+      <a href="https://www.nintendo.co.jp/software/" class="store-btn switch">Nintendo Switchストアに進む</a>
+    </div>
+  </div>
+
+  <!-- ヘッダー -->
+  <div th:replace="fragments/hpheader :: header"></div>
+
+
+  <section class="maps-section">
+    <h1>MAPS</h1>
+
+    <div class="maps-container">
+
+      <div class="map-card">
+        <img src="/images/map/neon_Map.jpg" alt="MAP 1">
+        <div class="text">
+           <h3>ネオン・ヴォイド</h3> 
+          <h2>Neon Void</h2>
+          <p>ヴォイド・リフト事件の後、空間が最も不安定になった高層ビル群のコアエリア。
+            このマップは、巨大な摩天楼の屋上と、それらを繋ぐ不安定な空中通路によって構成されている。
+            マップ中央には、エッセンスの流入源である巨大な「共鳴コア」が出現し、これを巡っての激しい戦闘が展開される。</p>
+        </div>
+      </div>
+
+      <div class="map-card">
+        <img src="/images/map/kontena_map.jpeg" alt="MAP 2">
+        <div class="text">
+        <h3>ダウン・リフト</h3> 
+          <h2>Dawn Rift</h2>
+          <p>ヴォイド・リフトが最初に地球に現れたとされる、霧深い港湾エリア。
+            無数の巨大な輸送コンテナが積み重なり、複雑な通路と高所からの狙撃ポイントを形成している。
+            マップ中央のクレーンの下には、あの「灰色の朝」に海が裂けた場所の痕跡として、「初期ヴォイド・リフト」が不気味な稲妻を放ちながら存在している。</p>
+        </div>
+      </div>
+
+      <div class="map-card">
+        <img src="/images/map/Suramu_Kakutyou.jpeg" alt="MAP 3">
+        <div class="text">
+            <h3>コア・シャックル</h3> 
+          <h2>Core Shackle</h2>
+          <p>かつては忘れ去られた都市の片隅にあったスラム街が、ヴォイド・リフトの発生とヴォイド・エッセンスの流入によって、
+            奇妙な円形の集落へと変貌した。マップ中央には、エッセンスが凝縮され輝く「虚無のクリスタル」が鎮座しており、
+            その周囲は廃材や錆びた車体で築かれた迷路のような通路に囲まれている。</p>
+        </div>
+      </div>
+
+      <div class="map-card">
+        <img src="/images/map/Yuki_Map.jpg" alt="MAP 4">
+        <div class="text">
+            <h3>アバランチ・ピーク</h3> 
+          <h2>Avalanche Peak</h2>
+          <p>山岳要塞が、ヴォイド・リフトの影響によって突如として再活性化したマップ。
+            周囲は常に激しい吹雪と凍えるような冷気に包まれ、城壁や通路は厚い氷に覆われている。
+            マップの最深部には、「ヴォイド・エッセンス」が凝縮された「アバター・ゲート」が異彩を放ち、別次元への通路を開いている。</p>
+        </div>
+      </div>
+
+      <div class="map-card">
+        <img src="/images/map/sabaku_Map.jpg" alt="MAP 5">
+        <div class="text">
+            <h3>サイクロプス・クレイドル</h3> 
+          <h2>Cyclops Cradle</h2>
+          <p>砂漠の奥底から突如として地上に姿を現した広大な古代都市の遺跡。
+            中央の広場は特にヴォイド・エッセンスの密度が高く複数の共鳴場（レゾナンス・フィールド）が形成されている。
+            これらのフィールドは、プレイヤーの「信念」や「後悔」を具現化しようとするように、ヴォイド・アバターの形態を歪ませることがある。</p>
+        </div>
+      </div>
+
+      <div class="map-card">
+        <img src="/images/map/kennkyuujyo_map.jpeg" alt="MAP 6">
+        <div class="text">
+            <h3>セクター・ゼロ</h3> 
+          <h2>Sector Zero</h2>
+          <p>ヴォイド・エッセンスを研究・封じ込めようと地下深くに建設された、かつての「ヴォイド・エージェント計画」の中枢施設。
+            しかし、エッセンスの暴走により施設は破壊され、現在は制御不能な共鳴場（レゾナンス・フィールド）となっている。
+            マップは、上層の監視デッキ、中央の広大な実験フロア、そして下層の機器室という三層構造になっている。</p>
+        </div>
+      </div>
+
+      <div class="map-card">
+        <img src="/images/map/Mori_Map2.jpg" alt="MAP 7">
+        <div class="text">
+            <h3>エッセンス・グローブ</h3> 
+          <h2>Essence Grove</h2>
+          <p>ヴォイド・エッセンスが最も純粋な形で流れ込み、その力によって地球の生態系の法則が書き換えられた共鳴場（レゾナンス・フィールド）。
+            巨大な古木と紫色の植物が、幻想的でありながらも不気味な居住空間を形成している。建物と建物の間は、不安定な吊り橋や樹の根の通路で結ばれ、
+            中央を流れる川がマップの主要な境界線となっている。</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ▼ HOMEに戻るボタン ▼ -->
+  <div class="home-btn-wrapper">
+    <a href="/voidr" class="home-btn">HOMEに戻る</a>
+  </div>
+
+  <!-- モーダルJS -->
+  <script src="/js/hpHeader.js"></script>
 
 </body>
 </html>
