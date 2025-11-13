@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ja"
-	th:replace="layout/admin_base :: admin_base(~{::content}, '管理ダッシュボード', ~{::assets})">
+      th:replace="layout/admin_base :: admin_base(~{::content}, '管理ダッシュボード', ~{::assets})">
 
 <th:block th:fragment="assets">
-	
 </th:block>
 
 <th:block th:fragment="content">
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa<br>
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaa11111111111111111111111111111111111
+  <section class="section">
+    <h1>管理ダッシュボード</h1>
+    <p>abcdefghijklmnopqrstuvwxyzおおおおおおおおおおおおおおおおおお</p>
+  </section>
 </th:block>
 
 </html>

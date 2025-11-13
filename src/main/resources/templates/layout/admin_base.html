@@ -4,7 +4,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title th:text="${pageTitle} ?: '管理コンソール'"></title>
-	
+
 	<!--  
 	<meta name="_csrf" th:content="${_csrf.token}">
 	<meta name="_csrf_header" th:content="${_csrf.headerName}">
@@ -12,8 +12,7 @@
 
 	<!-- 共通CSS -->
 	<link rel="stylesheet" th:href="@{/css/admin/sidebar.css}">
-	<link rel="stylesheet" th:href="@{/css/admin/main.css?v=7}">
-
+	<link rel="stylesheet" th:href="@{/css/admin/main.css}">
 
 	<!-- ページ固有のCSS/JS -->
 	<th:block th:if="${assets != null}">
@@ -25,8 +24,9 @@
 	<!-- サイドバー -->
 	<div th:replace="fragments/admin_sidebar :: sidebar"></div>
 
-	<!-- 各ページ固有の内容がここに入ります -->
-	<main class="admin-main" th:replace="${content}">
+	<!-- 各ページ固有の内容 -->
+	<main class="admin-main">
+		<th:block th:replace="${content}"></th:block>
 	</main>
 </body>
 
