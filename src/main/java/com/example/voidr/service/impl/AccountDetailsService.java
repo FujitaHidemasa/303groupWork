@@ -1,5 +1,7 @@
 package com.example.voidr.service.impl;
 
+import java.util.List;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -110,6 +112,23 @@ public class AccountDetailsService implements AccountService
     @Override
     public void deleteAccountByUsername(String username) {
         accountMapper.deleteByUsername(username);
+    }
+    
+    // =====================================
+    //  会員一覧取得（管理画面用）
+    // =====================================
+    @Override
+    public List<Account> findAll() {
+        return accountMapper.findAll();
+    }
+    
+    // ==========================
+    // 会員検索（ユーザーID／氏名／メールで部分一致検索）
+    // 管理画面の検索フォームから利用
+    // ==========================
+    @Override
+    public List<Account> searchMembers(String keyword) {
+        return accountMapper.searchMembers(keyword);
     }
 
 }
