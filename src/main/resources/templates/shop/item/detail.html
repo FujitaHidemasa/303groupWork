@@ -29,13 +29,9 @@
 						<th>購入</th>
 						<td>
 							<div class="action-buttons">
-
-								<!-- ✅ フォームにID追加 -->
 								<form id="cartForm" th:action="@{/voidrshop/cart/add}" method="post">
 									<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 									<input type="hidden" name="itemId" th:value="${item.id}">
-
-									<!-- 🛒 カートボタン -->
 									<button type="submit" class="cart-add-btn">
 										<span class="cart-icon">🛒</span>
 										<span class="label">カートに追加</span>
@@ -47,7 +43,6 @@
 									<span class="star" th:text="${isFavorite} ? '★' : '☆'">☆</span>
 									<span class="label"> お気に入り</span>
 								</button>
-
 							</div>
 						</td>
 					</tr>
@@ -160,6 +155,33 @@
 			color: #FFD700;
 		}
 
+		/* ✅ カートバッジ */
+		.cart-link {
+			position: relative;
+			display: inline-block;
+		}
+
+		.cart-badge {
+			position: absolute;
+			top: -6px;
+			right: -10px;
+			background-color: #ff2e2e;
+			color: #fff;
+			font-size: 12px;
+			font-weight: bold;
+			border-radius: 50%;
+			width: 18px;
+			height: 18px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			visibility: hidden;
+		}
+
+		.cart-badge.active {
+			visibility: visible;
+		}
+
 		/* ✅ ポップアップ全体 */
 		.popup-overlay {
 			position: fixed;
@@ -186,11 +208,8 @@
 		.popup-content h3 {
 			margin-bottom: 15px;
 			color: #000;
-			/* ← これを追加！黒文字 */
 			font-weight: bold;
-			/* ← 強調表示で見やすく */
 		}
-
 
 		.popup-buttons {
 			display: flex;
@@ -234,19 +253,19 @@
 			const cartForm = document.getElementById("cartForm");
 			const popup = document.getElementById("cartPopup");
 			const closePopup = document.getElementById("closePopup");
+			const cartBadge = document.querySelector(".cart-badge");
 
 			cartForm.addEventListener("submit", (e) => {
-				e.preventDefault(); // ページ遷移防止
+				e.preventDefault();
 
-				// フォームデータ送信
 				fetch(cartForm.action, {
 					method: "POST",
 					body: new FormData(cartForm),
 				})
 					.then(response => {
 						if (!response.ok) throw new Error("エラー発生");
-						// 成功したらポップアップ表示
 						popup.style.display = "flex";
+						updateCartCount(); // ✅ カート数を更新
 					})
 					.catch(err => {
 						alert("カート追加に失敗しました。");
@@ -257,6 +276,25 @@
 			closePopup.addEventListener("click", () => {
 				popup.style.display = "none";
 			});
+
+			// ✅ カート数を取得してバッジ更新
+			function updateCartCount() {
+				fetch("/voidrshop/cart/count")
+					.then(res => res.json())
+					.then(data => {
+						if (cartBadge) {
+							if (data.count > 0) {
+								cartBadge.textContent = data.count;
+								cartBadge.classList.add("active");
+							} else {
+								cartBadge.classList.remove("active");
+							}
+						}
+					})
+					.catch(err => console.error("カート数取得エラー:", err));
+			}
+
+			updateCartCount(); // ✅ 初期表示時にも更新
 		});
 	</script>
 

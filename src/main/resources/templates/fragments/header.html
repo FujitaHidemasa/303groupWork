@@ -5,12 +5,11 @@
 		<div class="top-bar">
 			<span sec:authorize="isAuthenticated()">
 				こんにちは、<span sec:authentication="principal.displayName"></span> さん
-				<!-- ★追加: ログアウト（POST, CSRF対応） -->
-				<form th:action="@{/logout}" method="post" class="logout-form" style="display:inline; margin-left: 8px;">
+				<form th:action="@{/logout}" method="post" class="logout-form"
+					style="display:inline; margin-left: 8px;">
 					<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
 					<button type="submit" class="logout-btn">ログアウト</button>
 				</form>
-				<!-- ★追加ここまで -->
 			</span>
 			<a th:href="@{/login}" sec:authorize="!isAuthenticated()">ログイン</a>
 			<span class="separator">｜</span>
@@ -35,20 +34,67 @@
 					<input type="text" name="keyword" placeholder="商品を検索" th:value="${keyword}">
 					<button type="submit">検索</button>
 				</form>
-				
-				<!-- ★追加：お気に入り（ログイン中のみ表示） -->
+
+				<!-- お気に入り -->
 				<a th:href="@{/favorites/{userId}(userId=${#authentication.principal.id})}" class="cart-link"
 					sec:authorize="isAuthenticated()">
 					<img th:src="@{/images/ui/header_favoicon.png}" alt="Favorite Icon">
 					<span>お気に入り</span>
 				</a>
 
-				<a th:href="@{/voidrshop/cart}" class="cart-link">
+				<!-- ✅ カートアイコン（数字バッジ付き） -->
+				<a th:href="@{/voidrshop/cart}" class="cart-link cart-icon-wrap">
 					<img th:src="@{/images/ui/header_carticon.png}" alt="Cart Icon">
 					<span>カート</span>
+					<span id="cart-count" class="cart-count-badge">0</span>
 				</a>
-
 			</div>
 		</header>
 	</div>
+
+	<!-- ✅ カート数取得スクリプト -->
+	<script>
+		document.addEventListener("DOMContentLoaded", () => {
+			const cartCountBadge = document.getElementById("cart-count");
+			if (!cartCountBadge) return;
+
+			function updateCartCount() {
+				fetch("/voidrshop/cart/count")
+					.then(res => res.json())
+					.then(data => {
+						const count = data.count ?? 0;
+						cartCountBadge.textContent = count;
+						cartCountBadge.style.display = count > 0 ? "inline-block" : "none";
+					})
+					.catch(err => console.error("カート数取得エラー:", err));
+			}
+
+			updateCartCount(); // 初回読み込み時
+			window.addEventListener("cart-updated", updateCartCount); // ✅ 他ページ更新イベントを監視
+		});
+	</script>
+
+	<!-- ✅ CSS -->
+	<style>
+		.cart-icon-wrap {
+			position: relative;
+			display: inline-block;
+		}
+
+		.cart-count-badge {
+			position: absolute;
+			top: -5px;
+			right: -10px;
+			background-color: red;
+			color: white;
+			font-size: 12px;
+			font-weight: bold;
+			border-radius: 50%;
+			padding: 2px 6px;
+			min-width: 18px;
+			text-align: center;
+			line-height: 1.2;
+			display: none;
+		}
+	</style>
 </div>
