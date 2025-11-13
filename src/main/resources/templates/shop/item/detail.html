@@ -253,50 +253,55 @@
 			const cartForm = document.getElementById("cartForm");
 			const popup = document.getElementById("cartPopup");
 			const closePopup = document.getElementById("closePopup");
-			const cartBadge = document.querySelector(".cart-badge");
+			const headerCartCount = document.getElementById("cart-count");
 
 			cartForm.addEventListener("submit", (e) => {
 				e.preventDefault();
 
 				fetch(cartForm.action, {
 					method: "POST",
+					headers: {"X-Requested-With": "XMLHttpRequest"},
 					body: new FormData(cartForm),
+					credentials: "same-origin"
 				})
 					.then(response => {
-						if (!response.ok) throw new Error("エラー発生");
-						popup.style.display = "flex";
-						updateCartCount(); // ✅ カート数を更新
+						// ✅ 未ログインなら /login にリダイレクトされる
+						if (response.redirected && response.url.includes("/login")) {
+							// 現在のページURLを取得して ?next= に付ける
+							const currentUrl = window.location.pathname + window.location.search;
+							window.location.href = `/login?next=${encodeURIComponent(currentUrl)}`;
+							return;
+						}
+
+						if (!response.ok) throw new Error("サーバーエラー");
+						return response.json();
+					})
+					.then(data => {
+						if (!data) return; // ログインリダイレクト済み
+
+						if (data.status === "ok") {
+							// ✅ カート数更新
+							if (headerCartCount) {
+								headerCartCount.textContent = data.count ?? 0;
+								headerCartCount.style.display = (data.count > 0) ? "inline-block" : "none";
+							}
+							// ✅ ポップアップ表示
+							popup.style.display = "flex";
+						} else {
+							alert("カート追加に失敗しました。");
+						}
 					})
 					.catch(err => {
-						alert("カート追加に失敗しました。");
-						console.error(err);
+						console.error("カート追加エラー:", err);
 					});
 			});
 
 			closePopup.addEventListener("click", () => {
 				popup.style.display = "none";
 			});
-
-			// ✅ カート数を取得してバッジ更新
-			function updateCartCount() {
-				fetch("/voidrshop/cart/count")
-					.then(res => res.json())
-					.then(data => {
-						if (cartBadge) {
-							if (data.count > 0) {
-								cartBadge.textContent = data.count;
-								cartBadge.classList.add("active");
-							} else {
-								cartBadge.classList.remove("active");
-							}
-						}
-					})
-					.catch(err => console.error("カート数取得エラー:", err));
-			}
-
-			updateCartCount(); // ✅ 初期表示時にも更新
 		});
 	</script>
+
 
 </th:block>
 
