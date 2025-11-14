@@ -3,7 +3,6 @@ package com.example.voidr.controller;
 import java.security.Principal;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -61,13 +60,10 @@ public class PurchaseController {
 		return date;
 	}
 
-	/** 配達希望日の候補（注文から2〜3営業日以内） */
-	private List<LocalDate> getDeliveryOptions() {
+	/** 最短配達日を取得（注文から2営業日後） */
+	private LocalDate getEarliestDeliveryDate() {
 		LocalDate today = LocalDate.now();
-		List<LocalDate> options = new ArrayList<>();
-		options.add(getNextBusinessDay(today.plusDays(2)));
-		options.add(getNextBusinessDay(today.plusDays(3)));
-		return options;
+		return getNextBusinessDay(today.plusDays(2));
 	}
 
 	/** 購入画面表示 */
@@ -100,8 +96,8 @@ public class PurchaseController {
 		model.addAttribute("shippingFee", shippingFee);
 		model.addAttribute("finalTotal", finalTotal);
 
-		// 配達希望日候補
-		model.addAttribute("deliveryOptions", getDeliveryOptions());
+		// 最短配達日をセット（HTMLでmin属性として使用）
+		model.addAttribute("earliestDeliveryDate", getEarliestDeliveryDate());
 
 		return "shop/purchase/purchase";
 	}
@@ -187,25 +183,19 @@ public class PurchaseController {
 		int shippingFee = calcShippingFee(totalPrice);
 		int finalTotal = totalPrice + shippingFee;
 
-		// =====================
 		// 1. 注文リスト登録
-		// =====================
 		OrderList orderList = new OrderList();
 		orderList.setUsername(account.getUsername());
 		orderListService.createOrderList(orderList);
 
-		// =====================
 		// 2. 個々の注文登録
-		// =====================
 		for (CartView cv : cartList) {
 			Order order = new Order();
 			order.setOrderListId(orderList.getId());
 			order.setItemId(cv.getItem().getId());
 			orderService.createOrder(order);
 
-			// =====================
 			// 3. 注文アイテム登録
-			// =====================
 			OrderItem orderItem = new OrderItem();
 			orderItem.setOrderId(order.getId());
 			orderItem.setItemId(cv.getItem().getId());
@@ -214,36 +204,27 @@ public class PurchaseController {
 			orderItemService.addOrderItem(orderItem);
 		}
 
-		// =====================
 		// 4. カートを空にする
-		// =====================
 		cartService.clearCart(account.getUsername());
 
-		// =====================
 		// 5. ビュー用データ
-		// =====================
 		model.addAttribute("orderListId", orderList.getId());
 		model.addAttribute("totalPrice", totalPrice);
 		model.addAttribute("shippingFee", shippingFee);
 		model.addAttribute("finalTotal", finalTotal);
-
 		model.addAttribute("paymentMethod", paymentMethod);
 		model.addAttribute("address", address);
 
-		// 配達希望日（注文から2〜3営業日以内の範囲チェック）
+		// 配達希望日チェック（最短日以降）
 		LocalDate deliveryDateValue = LocalDate.parse(deliveryDate);
-		LocalDate earliest = getDeliveryOptions().get(0);
-		LocalDate latest = getDeliveryOptions().get(1);
-
-		if (deliveryDateValue.isBefore(earliest))
+		LocalDate earliest = getEarliestDeliveryDate();
+		if (deliveryDateValue.isBefore(earliest)) {
 			deliveryDateValue = earliest;
-		if (deliveryDateValue.isAfter(latest))
-			deliveryDateValue = latest;
-
+		}
 		model.addAttribute("deliveryDate", deliveryDateValue);
 		model.addAttribute("deliveryTime", deliveryTime);
 
-		// メール送信などもここで可能（別途サービスを作成して送る）
+		// メール送信通知メッセージ
 		model.addAttribute("emailNotice", "ご登録のメールアドレスに注文詳細をお送りしました。");
 
 		return "shop/purchase/purchase_complete";
