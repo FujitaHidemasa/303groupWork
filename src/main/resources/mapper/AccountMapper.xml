@@ -40,7 +40,47 @@
     WHERE username = #{username}
     LIMIT 1
   </select>
+  
+  <!-- 全ユーザー取得（会員一覧表示用） -->
+  <select id="findAll" resultType="com.example.voidr.entity.Account">
+    SELECT 
+      id, 
+      username, 
+      password,
+      authority,
+      display_name,
+      email,
+      address,
+      phone_number,
+      created_at,
+      updated_at
+    FROM login_user
+    ORDER BY id;
+  </select>
 
+  <!-- ユーザーID・氏名・メールアドレスを対象とした部分一致検索（会員検索用） -->
+  <select id="searchMembers" resultType="com.example.voidr.entity.Account">
+    SELECT 
+      id, username, password, authority, display_name, email,
+      address, phone_number, created_at, updated_at
+    FROM login_user
+    WHERE 
+      username ILIKE CONCAT('%', #{keyword}, '%')
+      OR REPLACE(display_name, ' ', '') ILIKE CONCAT('%', REPLACE(#{keyword}, ' ', ''), '%')
+      OR email ILIKE CONCAT('%', #{keyword}, '%')
+  </select>
+
+	<!-- 11/13追加（谷口） メールアドレスで1件取得 -->
+	<select id="findByEmail" parameterType="string"
+		resultMap="AccountMap">
+		SELECT
+		id, username, password, authority,
+		display_name, email, address, phone_number,
+		created_at, updated_at
+		FROM login_user
+		WHERE email = #{email}
+		LIMIT 1
+	</select>
 
   <!-- 新規登録：email は必須、address/phone_number は任意（存在時のみ列を追加） -->
   <insert id="insertAccount"
@@ -68,7 +108,6 @@
   </insert>
   
   
-  
   <!-- 11/10追加（藤田）：ユーザー情報更新 -->
 	<update id="updateAccount" parameterType="com.example.voidr.entity.Account">
 		UPDATE login_user
@@ -81,7 +120,13 @@
 		WHERE username = #{username}
 	</update>
 	
-	
+	<!-- 11/13追加（谷口） メールアドレスでパスワード更新 -->
+	<update id="updatePasswordByEmail">
+		UPDATE login_user
+		SET password = #{passwordHash},
+		updated_at = CURRENT_TIMESTAMP
+		WHERE email = #{email}
+	</update>
 	
 	<!-- 11/10追加（藤田）　：ユーザー情報削除 -->
 	<delete id="deleteByUsername" parameterType="string">

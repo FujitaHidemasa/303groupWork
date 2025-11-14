@@ -24,7 +24,9 @@ public class Account
 	@NotBlank(message = "ユーザー名は必須です")
 	private String username;
 	
-	@Size(min = 4, message = "パスワードは4文字以上で入力してください。")
+	// 11/13変更（谷口） 4→8〜20 に統一＋英数字のみ
+	@Size(min = 8, max = 20, message = "パスワードは8〜20文字で入力してください。")
+	@Pattern(regexp = "^[A-Za-z0-9]+$", message = "パスワードは英数字のみ使用できます。")
 	private String password;
 
 	private Role authority;

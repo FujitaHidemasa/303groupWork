@@ -47,7 +47,8 @@
 		}
 
 		select,
-		input[type="text"] {
+		input[type="text"],
+		input[type="date"] {
 			padding: 6px 10px;
 			font-size: 1rem;
 			border: 1px solid #aaa;
@@ -68,6 +69,10 @@
 		h2 {
 			margin-top: 20px;
 			text-align: center;
+		}
+
+		label {
+			font-weight: bold;
 		}
 	</style>
 </head>
@@ -110,22 +115,42 @@
 				<div class="purchase-actions">
 					<a th:href="@{/voidrshop/cart}">カートに戻る</a>
 					<div>
-						<label for="paymentMethod"><strong>支払い方法：</strong></label>
+						<label for="paymentMethod">支払い方法：</label>
 						<select id="paymentMethod" name="paymentMethod" required>
-							<option value="クレジットカード" selected>クレジットカード</option>
+							<option value="クレジットカード" selected>着払い</option>
 							<option value="銀行振込">銀行振込</option>
 							<option value="コンビニ払い">コンビニ払い</option>
 						</select>
 
 						<br><br>
-						<label for="address"><strong>配送先住所：</strong></label>
+						<label for="address">配送先住所：</label>
 						<input type="text" id="address" name="address" placeholder="例：東京都渋谷区1-2-3" required
 							style="width:300px; margin-left:10px;">
 
 						<br><br>
-						<strong>合計金額：
-							¥<span th:text="${#numbers.formatInteger(totalPrice, 1, 'COMMA')}">0</span>
-						</strong>
+						<!-- 配達希望日 -->
+						<label for="deliveryDate"><strong>配達希望日：</strong></label>
+						<input type="date" id="deliveryDate" name="deliveryDate" th:value="${deliveryDate}"
+							th:attr="min=${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}" style="margin-left:10px;"
+							required>
+
+
+						<br><br>
+						<!-- 配達希望時間帯 -->
+						<label for="deliveryTime">配達希望時間帯：</label>
+						<select id="deliveryTime" name="deliveryTime" style="margin-left:10px;" required>
+							<option value="" disabled selected>--選択してください--</option>
+							<option value="午前中" th:selected="${deliveryTime == '午前中'}">午前中</option>
+							<option value="12時～14時" th:selected="${deliveryTime == '12時～14時'}">12時～14時</option>
+							<option value="14時～16時" th:selected="${deliveryTime == '14時～16時'}">14時～16時</option>
+							<option value="16時～18時" th:selected="${deliveryTime == '16時～18時'}">16時～18時</option>
+							<option value="18時～20時" th:selected="${deliveryTime == '18時～20時'}">18時～20時</option>
+							<option value="19時～21時" th:selected="${deliveryTime == '19時～21時'}">19時～21時</option>
+						</select>
+
+						<br><br>
+						<strong>合計金額： ¥<span
+								th:text="${#numbers.formatInteger(totalPrice, 1, 'COMMA')}">0</span></strong>
 
 						<button type="submit" style="margin-left:20px;">購入内容確認画面へ</button>
 					</div>

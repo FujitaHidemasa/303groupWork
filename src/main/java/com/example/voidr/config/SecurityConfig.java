@@ -43,13 +43,23 @@ public class SecurityConfig {
 								"/voidrshop/items",
 								"/voidrshop/items/**")
 						.permitAll()
+						
+						// ★カート内件数APIだけは未ログインでもOK（ヘッダーのバッジ用）
+						.requestMatchers(HttpMethod.GET, "/voidrshop/cart/count").permitAll()
 
-						// ★カート操作はログイン必須（/voidrshop/cart/**）
+						// ★それ以外のカート操作はログイン必須（/voidrshop/cart/**）
 						.requestMatchers("/voidrshop/cart/**").authenticated()
 
 						// ★お気に入りトグルPOST 認証必須
 						.requestMatchers(HttpMethod.POST,
 								"/voidrshop/items/*/favorite").authenticated()
+						
+						   // 11/13 ★追加: パスワード再設定は未ログインでも許可
+						.requestMatchers(
+								"/password/forgot",
+								"/password/forgot/send",
+								"/password/reset/submit")
+						.permitAll()
 						
 						// それ以外は公開（必要に応じてauthenticated()に切替）
 						.anyRequest().permitAll())

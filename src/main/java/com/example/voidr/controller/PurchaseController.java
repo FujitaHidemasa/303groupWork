@@ -88,6 +88,8 @@ public class PurchaseController {
 	public String confirmPurchase(
 			@RequestParam("paymentMethod") String paymentMethod,
 			@RequestParam("address") String address,
+			@RequestParam("deliveryDate") String deliveryDate, 
+			@RequestParam("deliveryTime") String deliveryTime,// ← 追加
 			Model model,
 			Principal principal) {
 
@@ -109,6 +111,9 @@ public class PurchaseController {
 		model.addAttribute("totalPrice", totalPrice);
 		model.addAttribute("paymentMethod", paymentMethod);
 		model.addAttribute("address", address);
+		model.addAttribute("deliveryDate", deliveryDate);
+		model.addAttribute("deliveryTime", deliveryTime);// ← 追加
+
 		return "shop/purchase/purchase_confirm";
 	}
 
@@ -118,6 +123,8 @@ public class PurchaseController {
 	public String completePurchase(
 			@RequestParam("paymentMethod") String paymentMethod,
 			@RequestParam("address") String address,
+			@RequestParam("deliveryDate") String deliveryDate,
+			@RequestParam("deliveryTime") String deliveryTime,// ← 追加
 			Principal principal,
 			Model model) {
 
@@ -139,8 +146,8 @@ public class PurchaseController {
 		// 1. 注文リスト登録
 		// =====================
 		OrderList orderList = new OrderList();
-		orderList.setUsername(account.getUsername()); // ← usernameを設定（OrderListServiceImpl仕様）
-		orderListService.createOrderList(orderList); // DB登録 + userId自動セット
+		orderList.setUsername(account.getUsername());
+		orderListService.createOrderList(orderList);
 
 		// =====================
 		// 2. 個々の注文登録
@@ -174,7 +181,10 @@ public class PurchaseController {
 		model.addAttribute("totalPrice", totalPrice);
 		model.addAttribute("paymentMethod", paymentMethod);
 		model.addAttribute("address", address);
+		model.addAttribute("deliveryDate", deliveryDate);
+		model.addAttribute("deliveryTime", deliveryTime);// ← 追加
 
 		return "shop/purchase/purchase_complete";
 	}
+
 }

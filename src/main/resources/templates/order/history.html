@@ -239,7 +239,7 @@
 									<td th:text="${order.itemName}"></td>
 									<td th:text="${order.quantity}"></td>
 									<td th:text="'¥' + ${#numbers.formatInteger(order.price, 0)}"></td>
-									<td th:text="${order.isHold ? '保留中' : '発送済み'}"></td>
+									<td th:text="${order.isHold ? '保留中' : '注文受付'}"></td>
 									<td class="action-buttons">
 										<!-- 詳細ボタン（水色） -->
 										<button class="detail"

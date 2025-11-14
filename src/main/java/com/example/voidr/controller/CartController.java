@@ -60,9 +60,16 @@ public class CartController {
 		long userId = currentUserId(principal);
 		cartService.addItem(userId, itemId, Math.max(1, quantity));
 
+		// Ajaxの場合はJSONを返す
 		if ("XMLHttpRequest".equalsIgnoreCase(request.getHeader("X-Requested-With"))) {
-			return ResponseEntity.ok(Map.of("status", "ok", "message", "商品をカートに追加しました"));
+			int newCount = cartService.countInBadge(userId); // ✅ 追加後のバッジ数を返す
+			return ResponseEntity.ok(Map.of(
+					"status", "ok",
+					"message", "商品をカートに追加しました",
+					"count", newCount));
 		}
+
+		// 通常のフォーム送信時はカートページへリダイレクト
 		return "redirect:/voidrshop/cart";
 	}
 
@@ -73,8 +80,6 @@ public class CartController {
 			Principal principal) {
 		long userId = currentUserId(principal);
 		cartService.changeQuantity(userId, cartId, Math.max(1, quantity));
-
-		// ✅ 購入画面へ進んでも反映されるように、DBを更新した時点で完結
 		return "redirect:/voidrshop/cart";
 	}
 
@@ -86,10 +91,14 @@ public class CartController {
 		return "redirect:/voidrshop/cart";
 	}
 
-	/** バッジ用：カート内商品数を返す（JSON） */
+	/** ✅ バッジ用：カート内商品数を返す（JSON） */
+	@PreAuthorize("permitAll()") /** 11/13追加（谷口）：バッジ用APIは未ログインでもOKにする */
 	@GetMapping("/count")
 	@ResponseBody
 	public Map<String, Integer> count(Principal principal) {
+		if (principal == null) {
+			return Map.of("count", 0);
+		}
 		long userId = currentUserId(principal);
 		return Map.of("count", cartService.countInBadge(userId));
 	}
