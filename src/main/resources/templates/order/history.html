@@ -97,7 +97,8 @@
 			background-color: #fafafa;
 		}
 
-		img {
+		/* 🔥 修正ポイント：商品画像だけに適用 */
+		.order-content table img {
 			display: block;
 			margin: 0 auto;
 			width: 80px;
@@ -120,7 +121,7 @@
 			transition: background-color 0.2s ease;
 		}
 
-		/* 詳細ボタン（明るい水色） */
+		/* 詳細ボタン（水色） */
 		.action-buttons .detail {
 			background-color: #00bfff;
 			color: #fff;
@@ -210,18 +211,15 @@
 							</p>
 						</div>
 						<div>
-							<!-- 送料を追加 -->
 							<p>送料：
 								<span th:text="${#numbers.formatInteger(shippingFeeMap[entry.key], 0)}"></span>円
 							</p>
-							<!-- 合計金額 -->
 							<p>合計金額（税込）：
 								<span th:text="${#numbers.formatInteger(totalPriceMap[entry.key], 0)}"></span>円
 								<span class="toggle-icon">▶</span>
 							</p>
 						</div>
 					</div>
-
 
 					<!-- 開閉する注文内容 -->
 					<div class="order-content" th:id="'order-content-' + ${iterStat.index}">
@@ -239,7 +237,7 @@
 							<tbody>
 								<tr th:each="order : ${entry.value}">
 									<td>
-										<img th:src="@{'/images/' + ${order.imageName}}" alt="商品画像"
+										<img th:src="@{'/images/' + ${order.imageName}}"
 											onerror="this.onerror=null;this.src='/image/no_image.png';">
 									</td>
 									<td th:text="${order.itemName}"></td>
@@ -247,13 +245,11 @@
 									<td th:text="'¥' + ${#numbers.formatInteger(order.price, 0)}"></td>
 									<td th:text="${order.isHold ? '保留中' : '注文受付'}"></td>
 									<td class="action-buttons">
-										<!-- 詳細ボタン（水色） -->
 										<button class="detail"
 											th:onclick="'location.href=\'' + @{/voidrshop/items/{id}(id=${order.itemId})} + '\';'">
 											詳細
 										</button>
 
-										<!-- 再購入ボタン（カート追加→リダイレクト） -->
 										<form th:action="@{/voidrshop/cart/add}" method="post" style="display:inline;">
 											<input type="hidden" name="itemId" th:value="${order.itemId}">
 											<input type="hidden" name="quantity" value="1">
@@ -264,6 +260,7 @@
 							</tbody>
 						</table>
 					</div>
+
 				</div>
 			</div>
 
@@ -294,6 +291,7 @@
 			}
 		}
 	</script>
+
 </body>
 
 </html>
