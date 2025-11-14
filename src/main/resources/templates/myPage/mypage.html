@@ -38,10 +38,12 @@
 					</a>
 				</li>
 				<li>
-					<a th:href="@{/mypage/wishlist}" 
-					   th:classappend="${currentPath == '/mypage/wishlist'} ? 'active'">
+					<a th:href="@{/favorites/{userId}(userId=${#authentication.principal.id})}" 
+					   th:classappend="${currentPath == '/mypage/wishlist'} ? 'active'"
+					   sec:authorize="isAuthenticated()">
 					   お気に入り
 					</a>
+
 				</li>
 				<li>
 					<a th:href="@{/mypage/delete}" 
@@ -74,8 +76,13 @@
 
 			  <div class="card">
 			    <h3>お気に入り</h3>
-			    <a th:href="@{/mypage/wishlist}" class="btn">見る</a>
+			    <a th:href="@{/favorites/{userId}(userId=${#authentication.principal.id})}"
+			       class="btn"
+			       sec:authorize="isAuthenticated()">
+			       表示する
+			    </a>
 			  </div>
+
 			</div>
 
 		</section>

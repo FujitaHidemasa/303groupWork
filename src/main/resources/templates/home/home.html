@@ -4,238 +4,227 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>VOIDR | 公式サイト</title>
+
   <link rel="stylesheet" href="/css/Homepage.css">
   <link rel="stylesheet" th:href="@{/css/hpHeader.css}">
-  <div id="storeModal" class="modal">
-      <div class="modal-content">
-        <span class="close">&times;</span>
-        <a href="https://www.ea.com/ja-jp/ea-app" class="store-btn ea">Windows用EA appでダウンロード</a>
-        <a href="https://store.steampowered.com/" class="store-btn steam">Steamストアに進む</a>
-        <a href="https://store.epicgames.com/" class="store-btn epic">Epic Gamesストアに進む</a>
-        <a href="https://store.playstation.com/" class="store-btn ps4">PlayStation®4ストアに進む</a>
-        <a href="https://store.playstation.com/" class="store-btn ps5">PlayStation®5ストアに進む</a>
-        <a href="https://www.xbox.com/ja-JP/microsoft-store" class="store-btn xbox">Xboxストアに進む</a>
-        <a href="https://www.nintendo.co.jp/software/" class="store-btn switch">Nintendo Switchストアに進む</a>
-      </div>
-    </div>
-  <!-- 未来的フォント Orbitron -->
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
 </head>
+
 <body>
- 
-<!-- ロード画面 -->
-<div id="loading-screen">
-  <div class="logo-container">
-    <img src="images/logo.png" alt="VOIDRロゴ" class="logo">
-    <p class="roading-text">Loading...</p>
+
+  <!-- ▼ モーダル -->
+  <div id="storeModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <a href="https://www.ea.com/ja-jp/ea-app" class="store-btn ea">Windows用EA appでダウンロード</a>
+      <a href="https://store.steampowered.com/" class="store-btn steam">Steamストアに進む</a>
+      <a href="https://store.epicgames.com/" class="store-btn epic">Epic Gamesストアに進む</a>
+      <a href="https://store.playstation.com/" class="store-btn ps4">PlayStation®4ストアに進む</a>
+      <a href="https://store.playstation.com/" class="store-btn ps5">PlayStation®5ストアに進む</a>
+      <a href="https://www.xbox.com/ja-JP/microsoft-store" class="store-btn xbox">Xboxストアに進む</a>
+      <a href="https://www.nintendo.co.jp/software/" class="store-btn switch">Nintendo Switchストアに進む</a>
+    </div>
   </div>
-  <canvas id="particle-canvas"></canvas>
-</div>
 
+  <!-- ▼ ロード画面 -->
+  <div id="loading-screen">
+    <div class="logo-container">
+      <img src="images/logo.png" alt="VOIDRロゴ" class="logo">
+      <p class="roading-text">Loading...</p>
+    </div>
+    <canvas id="particle-canvas"></canvas>
+  </div>
 
-<!-- JS をここに直接記述 -->
-<script>
-  // canvas サイズ対応
-  const canvas = document.getElementById('particle-canvas');
-  const ctx = canvas.getContext('2d');
-
-  function resizeCanvas(){
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  }
-  resizeCanvas();
-  window.addEventListener('resize', resizeCanvas);
-
-  // 粒子生成
-  const particles = [];
-  for(let i=0; i<150; i++){
-    particles.push({
-      x: Math.random()*canvas.width,
-      y: Math.random()*canvas.height,
-      r: Math.random()*2+1,
-      dx: (Math.random()-0.5)*1.5,
-      dy: (Math.random()-0.5)*1.5
-    });
-  }
-
-  function animateParticles(){
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    particles.forEach(p => {
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
-      ctx.fillStyle = 'rgba(255,255,255,0.7)';
-      ctx.fill();
-      p.x += p.dx;
-      p.y += p.dy;
-
-      if(p.x<0) p.x = canvas.width;
-      if(p.x>canvas.width) p.x = 0;
-      if(p.y<0) p.y = canvas.height;
-      if(p.y>canvas.height) p.y = 0;
-    });
-    requestAnimationFrame(animateParticles);
-  }
-  animateParticles();
-
-  // ロード画面フェードアウト
-  window.addEventListener('load', () => {
+  <!-- ★ HP初回アクセスのみロード画面を表示する処理（sessionStorage版） -->
+  <script>
     const loadingScreen = document.getElementById('loading-screen');
     const logo = document.querySelector('.logo');
     const roadingText = document.querySelector('.roading-text');
 
-    setTimeout(() => {
-      logo.style.opacity = '0';
-      roadingText.style.opacity = '0';
-    }, 1000);
+    const firstVisit = !sessionStorage.getItem('hp_visited');
 
-    setTimeout(() => {
-      loadingScreen.style.opacity = '0';
-      setTimeout(() => {
-        loadingScreen.style.display = 'none';
-      }, 1000);
-    }, 4000);
-  });
-</script>
+    if (!firstVisit) {
+      // 2回目以降（同タブ内）はロード画面なし
+      loadingScreen.style.display = 'none';
+    } else {
+      // 初回アクセス
+      sessionStorage.setItem('hp_visited', 'true');
 
-<!-- ✅ 共通ヘッダーを読み込む -->
-<div th:replace="fragments/hpheader :: header"></div>
+      window.addEventListener('load', () => {
+        setTimeout(() => {
+          logo.style.opacity = '0';
+          roadingText.style.opacity = '0';
+        }, 1000);
 
-  <!-- 動画背景セクション -->
+        setTimeout(() => {
+          loadingScreen.style.opacity = '0';
+          setTimeout(() => {
+            loadingScreen.style.display = 'none';
+          }, 1000);
+        }, 4000);
+      });
+    }
+  </script>
+
+  <!-- ▼ 背景粒子アニメーション（変更なし） -->
+  <script>
+    const canvas = document.getElementById('particle-canvas');
+    const ctx = canvas.getContext('2d');
+
+    function resizeCanvas(){
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    const particles = [];
+    for(let i=0; i<150; i++){
+      particles.push({
+        x: Math.random()*canvas.width,
+        y: Math.random()*canvas.height,
+        r: Math.random()*2+1,
+        dx: (Math.random()-0.5)*1.5,
+        dy: (Math.random()-0.5)*1.5
+      });
+    }
+
+    function animateParticles(){
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      particles.forEach(p => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+        ctx.fillStyle = 'rgba(255,255,255,0.7)';
+        ctx.fill();
+        p.x += p.dx;
+        p.y += p.dy;
+
+        if(p.x<0) p.x = canvas.width;
+        if(p.x>canvas.width) p.x = 0;
+        if(p.y<0) p.y = canvas.height;
+        if(p.y>canvas.height) p.y = 0;
+      });
+      requestAnimationFrame(animateParticles);
+    }
+    animateParticles();
+  </script>
+
+  <!-- ▼ 共通ヘッダー -->
+  <div th:replace="fragments/hpheader :: header"></div>
+
+  <!-- ▼ 動画背景 -->
   <section class="hero">
     <video autoplay muted loop playsinline class="background-video">
       <source src="/videos/downloade.mp4" type="video/mp4">
-      お使いのブラウザは動画をサポートしていません。
     </video>
 
     <div class="hero-content">
       <h1 class="site-title">
         <div class="title-logo-container">
-        <img src="images/title_logo.png" alt="VOIDR" class="title-logo">
-    </div>
+          <img src="images/title_logo.png" alt="VOIDR" class="title-logo">
+        </div>
       </h1>
 
-
       <p>新たな戦いが、今ここに。</p>
-      <a href="#" class="btn">今すぐダウンロード</a>
+      <a href="#" class="btn" id="openStoreModal">今すぐダウンロード</a>
     </div>
   </section>
 
-  <!-- ゲーム概要セクション -->
+  <!-- ▼ ゲーム紹介 -->
   <section class="game-overview">
     <div class="content">
       <div class="text">
         <h2>ゲーム紹介</h2>
         <p>
-  『VOIDR（ヴォイダー）』は、ヴォイド・エッセンスによって崩壊した近未来を舞台にした4vs4の戦術FPS。<br>
-  各プレイヤーは「ヴォイド・アバター」として、個々の感情や記憶を具現化した異能を駆使し動的な戦場での制圧戦を繰り広げる。<br>
-  戦術・心理・スキルが交錯する、次世代のチームバトルがここに。
-</p>
+          『VOIDR（ヴォイダー）』は、ヴォイド・エッセンスによって崩壊した近未来を舞台にした4vs4の戦術FPS。<br>
+          各プレイヤーは「ヴォイド・アバター」として異能を駆使し戦いに挑む。<br>
+          戦術・心理・スキルが交錯する、新時代のチームバトル。
+        </p>
+      </div>
     </div>
   </section>
 
-  <!-- キャラクター紹介セクション -->
+  <!-- ▼ キャラクター -->
   <section class="character-intro">
     <div class="content reverse">
-
       <div class="text">
         <h2>キャラクター</h2>
         <p>
-   『VOIDR（ヴォイダー）』の戦闘者はヴォイド・エッセンスに適合し“感情”や“記憶”を異能として扱う存在<br>
-   元兵士・研究者・異能者・企業実験体など、経歴も目的も異なり、それぞれの信念と虚無が力となる。<br>
-   戦場では唯一無二の能力を発現する。
-
+          『VOIDR』の戦闘者は、感情や記憶を“異能”として発現する存在。<br>
+          多彩なバックボーンと能力を持つアバターたちが戦場でぶつかり合う。
         </p>
-     <div class="see-more-wrap">
-  <a class="see-more" href="/voidr/character" title="キャラクター詳細ページへ移動">
-    もっと見る
-    <span class="arrow">→</span>
-  </a>
-</div>
-  </section>
-
-  <!-- ニュースセクション -->
-  <section class="news-section">
-    <div class="content">
-      
-      <div class="text">
-        <h2>ニュース</h2>
-        <p>最新アップデート情報、イベント開催告知、開発チームからのメッセージなどをお届けします。</p>
-     <div class="see-more-wrap news-more">
-  <a class="see-more" href="/voidr/news" title="ニュース一覧ページへ">
-    もっと見る
-    <span class="arrow">→</span>
-  </a>
-</div>
-
+        <div class="see-more-wrap">
+          <a class="see-more" href="/voidr/character">
+            もっと見る <span class="arrow">→</span>
+          </a>
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- お問い合わせ・SNSセクション -->
-<section class="contact-section">
-  <div class="contact-content">
-    <!-- お問い合わせボタン（変更なし） -->
-    <a href="/voidr/contact" class="contact-btn">お問い合わせ</a>
+  <!-- ▼ ニュース -->
+  <section class="news-section">
+    <div class="content">
+      <div class="text">
+        <h2>ニュース</h2>
+        <p>最新情報・アップデート・イベント情報をお届けします。</p>
+        <div class="see-more-wrap news-more">
+          <a class="see-more" href="/voidr/news">
+            もっと見る <span class="arrow">→</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <!-- SNSアイコン部分）-->
-	<div class="social-links">
-	  <a href="https://twitter.com/elonmusk" target="_blank">
-	    <img src="images/twitter.png" alt="Twitter">
-	  </a>
+  <!-- ▼ お問い合わせ / SNS -->
+  <section class="contact-section">
+    <div class="contact-content">
+      <a href="/voidr/contact" class="contact-btn">お問い合わせ</a>
 
-	  <a href="https://www.youtube.com/" target="_blank">
-	    <img src="images/youtube.png" alt="YouTube">
-	  </a>
+      <div class="social-links">
+        <a href="https://twitter.com/elonmusk" target="_blank">
+          <img src="images/twitter.png" alt="Twitter">
+        </a>
+        <a href="https://www.youtube.com/" target="_blank">
+          <img src="images/youtube.png" alt="YouTube">
+        </a>
+        <a href="https://www.tiktok.com/" target="_blank">
+          <img src="images/tiktok.png" alt="TikTok">
+        </a>
+      </div>
+    </div>
+  </section>
 
-	  <a href="https://www.tiktok.com/" target="_blank">
-	    <img src="images/tiktok.png" alt="TikTok">
-	  </a>
-	</div>
-  </div>
-</section>
-
-
-
-  <!-- フッター -->
+  <!-- ▼ フッター -->
   <footer>
     <p>© 2025 VOIDR All rights reserved.</p>
   </footer>
-  <script>
-  // 要素を取得
-  const sections = document.querySelectorAll('.game-overview, .character-intro, .news-section');
 
-  // スクロール検知
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('slide-in');
-      } else {
-        // 再度スクロールしたときにも発火させたいので削除
-        entry.target.classList.remove('slide-in');
-      }
-    });
-  }, { threshold: 0.2 });
-
-  sections.forEach(section => observer.observe(section));
+  <!-- ▼ モーダルJS・スクロールアニメ -->
+  <script src="/js/hpHeader.js"></script>
   
-  document.addEventListener("DOMContentLoaded", () => {
-  	  const modal = document.getElementById("storeModal");
-  	  const playBtn = document.getElementById("playNowBtn");
-  	  const closeBtn = document.querySelector(".close");
+  <script>
+    // ▼ スクロールアニメ（復元）
+    document.addEventListener("DOMContentLoaded", () => {
+      const sections = document.querySelectorAll(
+        '.game-overview, .character-intro, .news-section'
+      );
 
-  	  console.log("modal:", modal);     
-  	  console.log("playBtn:", playBtn); 
-  	  console.log("closeBtn:", closeBtn); 
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('slide-in');
+          } else {
+            entry.target.classList.remove('slide-in');
+          }
+        });
+      }, { threshold: 0.2 });
 
-  	  if(modal && playBtn && closeBtn){
-  	    playBtn.addEventListener("click", () => {
-  	      console.log("ボタン押された！");
-  	      // CSSが適用されていればモーダルが表示される
-  	      modal.style.display = "flex"; 
-  	    });
-  	    closeBtn.addEventListener("click", () => modal.style.display = "none");
-  	    window.addEventListener("click", e => { if(e.target === modal) modal.style.display = "none"; });
-  	  }
-  	});
-</script>
+      sections.forEach(section => observer.observe(section));
+    });
+  </script>
+
+
 </body>
 </html>

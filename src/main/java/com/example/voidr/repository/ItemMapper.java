@@ -37,5 +37,7 @@ public interface ItemMapper
 	/** 商品を削除する */
 	void delete(@Param("id")Long id);
 	
-	
+	/**ランダム4件取得*/
+	List<Item> selectRandom4();
+
 }

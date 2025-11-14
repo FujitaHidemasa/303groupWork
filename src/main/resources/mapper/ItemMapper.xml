@@ -100,4 +100,14 @@
 	<delete id="delete">
 		DELETE FROM item WHERE id = #{id}
 	</delete>
+	
+	<select id="selectRandom4" resultMap="ItemMap">
+    SELECT id, name, price,
+           overview, is_download, thumbs_image_name,
+           created_at, updated_at
+    FROM item
+    ORDER BY RANDOM()
+    LIMIT 4
+</select>
+	
 </mapper>

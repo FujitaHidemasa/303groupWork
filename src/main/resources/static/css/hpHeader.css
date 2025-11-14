@@ -20,6 +20,9 @@ header, .main-header {
   padding: 0 40px;
   height: 80px;
   box-sizing: border-box; 
+  font-family: 'Orbitron', 'Segoe UI', 'Meiryo', sans-serif !important;
+  
+
 }
 
 /* ロゴ */
@@ -61,6 +64,7 @@ header, .main-header {
   padding: 10px 0;
   border-radius: 8px;
   min-width: 160px;
+  list-style: none;
 }
 .submenu li a {
   display: block;
@@ -72,19 +76,32 @@ header, .main-header {
 .submenu li a:hover { background-color: rgba(255,255,255,0.15); }
 .dropdown:hover .submenu { display: block; }
 
-/* 今すぐプレイボタン */
+/* 今すぐプレイボタン（VOIDRスタイル） */
 .play-now {
-  background: #ff3b3b;
+  background: linear-gradient(90deg, #a020f0, #7016a8); /* 紫グラデーション */
   color: #fff;
-  padding: 10px 20px;
-  border-radius: 6px;
+  padding: 12px 26px;
+  border: none;
+  border-radius: 30px; /* 丸みを強調 */
+  font-weight: 700;
+  font-size: 1rem;
   text-decoration: none;
-  font-weight: bold;
   cursor: pointer;
+  box-shadow: 0 0 12px rgba(160, 32, 240, 0.4); /* 紫発光 */
+  transition: all 0.3s ease;
 }
-.play-now:hover { background: #ff6666; }
 
-/* モーダル */
+.play-now:hover {
+  background: linear-gradient(90deg, #b84cff, #9020f0); /* 明るめ紫に */
+  box-shadow: 0 0 20px rgba(160, 32, 240, 0.7);
+  transform: translateY(-2px); /* ホバー時ふわっと */
+  filter: brightness(1.15);
+}
+
+
+/* ==============================
+   モーダル（VOIDR用デザイン）
+============================== */
 .modal {
   display: none;
   position: fixed;
@@ -93,44 +110,70 @@ header, .main-header {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(5, 5, 10, 0.85); /* 黒に近い半透明で高級感 */
   justify-content: center;
   align-items: center;
+  backdrop-filter: blur(6px); /* 背景をぼかす */
 }
 
+/* モーダル本体 */
 .modal-content {
-  background-color: #111;
-  padding: 30px;
-  border-radius: 12px;
-  width: 320px;
+  background: linear-gradient(135deg, #0b0b0b, #1a0820 80%); /* 暗紫グラデ */
+  border: 1px solid rgba(160, 32, 240, 0.4); /* 紫の発光フレーム */
+  box-shadow: 0 0 25px rgba(160, 32, 240, 0.4);
+  padding: 40px;
+  border-radius: 16px;
+  width: 520px; /* ← 横幅広めに変更 */
+  max-width: 90%;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 18px;
   position: relative;
-  box-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
+  color: #fff;
+  animation: fadeIn 0.4s ease;
 }
 
+/* 閉じる（×）ボタン */
 .close {
   position: absolute;
-  top: 10px;
-  right: 14px;
-  font-size: 28px;
-  color: #fff;
+  top: 14px;
+  right: 18px;
+  font-size: 30px;
+  font-weight: bold;
+  color: #c5a8ff; /* 淡い紫 */
   cursor: pointer;
-  transition: 0.3s;
+  transition: color 0.3s, transform 0.2s;
 }
-.close:hover { color: #ff3b3b; }
+.close:hover {
+  color: #a020f0; /* 鮮やかな紫に発光 */
+  transform: scale(1.2);
+  text-shadow: 0 0 10px #a020f0;
+}
 
+/* ストアボタン共通 */
 .store-btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #e60012;
+  background: linear-gradient(90deg, #a020f0, #7016a8);
   color: #fff;
-  padding: 12px;
-  border-radius: 8px;
+  padding: 14px;
+  border-radius: 10px;
   text-decoration: none;
   font-weight: 600;
-  transition: 0.3s;
+  font-size: 1rem;
+  transition: all 0.3s;
+  box-shadow: 0 0 10px rgba(160, 32, 240, 0.3);
 }
-.store-btn:hover { background: #ff3333; }
+.store-btn:hover {
+  background: linear-gradient(90deg, #b84cff, #9020f0);
+  box-shadow: 0 0 20px rgba(160, 32, 240, 0.6);
+  transform: translateY(-2px);
+}
+
+/* アニメーション */
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+

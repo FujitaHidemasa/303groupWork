@@ -27,7 +27,6 @@
 
 			<nav class="header-center">
 				<a th:href="@{/voidrshop/items}">商品一覧</a>
-				<a th:href="@{/mypage/orders}" sec:authorize="isAuthenticated()">購入履歴</a>
 			</nav>
 
 			<div class="header-right">
@@ -46,6 +45,12 @@
 				<a th:href="@{/voidrshop/cart}" class="cart-link">
 					<img th:src="@{/images/ui/header_carticon.png}" alt="Cart Icon">
 					<span>カート</span>
+				</a>
+				
+				<!-- ★マイページ -->
+				<a th:href="@{/mypage}" class="cart-link" sec:authorize="isAuthenticated()">
+				  <img th:src="@{/images/ui/header_mypageicon.jpg}" alt="MyPage Icon">
+				  <span>マイページ</span>
 				</a>
 
 			</div>
