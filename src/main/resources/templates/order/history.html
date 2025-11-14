@@ -14,17 +14,27 @@
 			margin: 40px auto;
 		}
 
-		/* ===== タイトル部分 ===== */
 		h2 {
 			text-align: center;
 			color: #fff;
 			background-color: #000;
 			padding: 15px 0;
 			border-radius: 8px;
-			margin-bottom: 30px;
+			margin-bottom: 20px;
 			font-size: 1.6em;
 			letter-spacing: 1px;
 			box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+		}
+
+		.sort-area {
+			text-align: right;
+			margin-bottom: 20px;
+		}
+
+		.sort-area select {
+			padding: 6px 10px;
+			border-radius: 6px;
+			border: 1px solid #aaa;
 		}
 
 		.order-block {
@@ -34,7 +44,6 @@
 			box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 			background: #fff;
 			overflow: hidden;
-			transition: all 0.3s ease;
 		}
 
 		.order-header {
@@ -57,10 +66,6 @@
 		.order-header span {
 			font-weight: bold;
 			color: #000 !important;
-		}
-
-		.order-header:hover {
-			background-color: #e8e8e8;
 		}
 
 		.order-content {
@@ -97,7 +102,7 @@
 			background-color: #fafafa;
 		}
 
-		img {
+		.order-content table img {
 			display: block;
 			margin: 0 auto;
 			width: 80px;
@@ -120,50 +125,18 @@
 			transition: background-color 0.2s ease;
 		}
 
-		/* 詳細ボタン（明るい水色） */
 		.action-buttons .detail {
 			background-color: #00bfff;
 			color: #fff;
 		}
 
-		.action-buttons .detail:hover {
-			background-color: #0099cc;
-		}
-
-		/* 再購入ボタン（緑） */
 		.action-buttons .reorder {
 			background-color: #2ecc71;
 			color: #fff;
 		}
 
-		.action-buttons .reorder:hover {
-			background-color: #27ae60;
-		}
-
-		.cart-actions {
-			margin-top: 30px;
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
-			border-top: 1px solid #ccc;
-			padding-top: 15px;
-		}
-
-		.cart-actions a {
-			text-decoration: none;
-			color: black;
-			background-color: #eee;
-			padding: 10px 15px;
-			border: 1px solid #ccc;
-			border-radius: 5px;
-		}
-
-		.cart-actions a:hover {
-			background-color: #ddd;
-		}
-
-		/* ===== 購入履歴がない場合 ===== */
-		.no-history {
+		.no-history,
+		.no-search-result {
 			text-align: center;
 			margin: 60px auto;
 			color: #fff;
@@ -186,6 +159,29 @@
 		.order-header.active .toggle-icon {
 			transform: rotate(90deg);
 		}
+
+		.cart-actions {
+			margin-top: 30px;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			border-top: 1px solid #ccc;
+			padding-top: 15px;
+		}
+
+		.cart-actions a {
+			text-decoration: none;
+			color: black;
+			background-color: #eee;
+			padding: 10px 20px;
+			border: 1px solid #ccc;
+			border-radius: 5px;
+			font-weight: 600;
+		}
+
+		.cart-actions a:hover {
+			background-color: #ddd;
+		}
 	</style>
 </head>
 
@@ -196,9 +192,25 @@
 		<section>
 			<h2>購入履歴</h2>
 
-			<!-- 注文ごとにブロック表示 -->
+			<!-- ▼ 並び替え + 検索エリア -->
+			<div class="sort-area">
+				<form method="get" th:action="@{/mypage/orders}">
+					<select name="sort" onchange="this.form.submit()">
+						<option value="desc" th:selected="${sort == 'desc'}">新しい順</option>
+						<option value="asc" th:selected="${sort == 'asc'}">古い順</option>
+					</select>
+
+					<input type="text" name="historyKeyword" placeholder="商品名で検索" th:value="${historyKeyword}"
+						style="padding:6px 10px; margin-left:10px; border-radius:6px; border:1px solid #aaa;">
+
+					<button type="submit" style="padding:6px 10px; margin-left:5px;">検索</button>
+				</form>
+			</div>
+
+			<!-- ▼ 通常の購入履歴表示 -->
 			<div th:if="${groupedOrders != null and !groupedOrders.isEmpty()}"
 				th:each="entry, iterStat : ${groupedOrders}">
+
 				<div class="order-block">
 					<div class="order-header" th:onclick="'toggleOrder(' + ${iterStat.index} + ')'">
 						<div>
@@ -210,14 +222,14 @@
 							</p>
 						</div>
 						<div>
-							<p>合計金額：
+							<p>送料：<span th:text="${#numbers.formatInteger(shippingFeeMap[entry.key], 0)}"></span>円</p>
+							<p>合計金額（税込）：
 								<span th:text="${#numbers.formatInteger(totalPriceMap[entry.key], 0)}"></span>円
 								<span class="toggle-icon">▶</span>
 							</p>
 						</div>
 					</div>
 
-					<!-- 開閉する注文内容 -->
 					<div class="order-content" th:id="'order-content-' + ${iterStat.index}">
 						<table>
 							<thead>
@@ -232,22 +244,15 @@
 							</thead>
 							<tbody>
 								<tr th:each="order : ${entry.value}">
-									<td>
-										<img th:src="@{'/images/' + ${order.imageName}}" alt="商品画像"
-											onerror="this.onerror=null;this.src='/image/no_image.png';">
-									</td>
+									<td><img th:src="@{'/images/' + ${order.imageName}}"
+											onerror="this.onerror=null;this.src='/image/no_image.png';"></td>
 									<td th:text="${order.itemName}"></td>
 									<td th:text="${order.quantity}"></td>
 									<td th:text="'¥' + ${#numbers.formatInteger(order.price, 0)}"></td>
 									<td th:text="${order.isHold ? '保留中' : '注文受付'}"></td>
 									<td class="action-buttons">
-										<!-- 詳細ボタン（水色） -->
 										<button class="detail"
-											th:onclick="'location.href=\'' + @{/voidrshop/items/{id}(id=${order.itemId})} + '\';'">
-											詳細
-										</button>
-
-										<!-- 再購入ボタン（カート追加→リダイレクト） -->
+											th:onclick="'location.href=\'' + @{/voidrshop/items/{id}(id=${order.itemId})} + '\';'">詳細</button>
 										<form th:action="@{/voidrshop/cart/add}" method="post" style="display:inline;">
 											<input type="hidden" name="itemId" th:value="${order.itemId}">
 											<input type="hidden" name="quantity" value="1">
@@ -258,10 +263,20 @@
 							</tbody>
 						</table>
 					</div>
+
 				</div>
 			</div>
 
-			<p class="no-history" th:unless="${groupedOrders != null and !groupedOrders.isEmpty()}">
+			<!-- ▼ 検索結果がない時専用メッセージ -->
+			<!-- ▼ 検索結果がない時専用メッセージ -->
+			<p class="no-history" th:if="${historyKeyword != null and historyKeyword != '' 
+			           and (groupedOrders == null or groupedOrders.isEmpty())}">
+				検索結果がありません。
+			</p>
+
+			<!-- ▼ 通常（検索していない）状態で履歴がゼロの場合 -->
+			<p class="no-history" th:if="${(historyKeyword == null or historyKeyword == '') 
+			           and (groupedOrders == null or groupedOrders.isEmpty())}">
 				購入履歴がありません。
 			</p>
 
@@ -288,6 +303,7 @@
 			}
 		}
 	</script>
+
 </body>
 
 </html>

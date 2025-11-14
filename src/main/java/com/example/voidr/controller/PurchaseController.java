@@ -1,6 +1,9 @@
 package com.example.voidr.controller;
 
 import java.security.Principal;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -45,6 +48,37 @@ public class PurchaseController {
 		return accountService.findByUsername(principal.getName());
 	}
 
+	/** 送料を計算（5000円以上 → 無料） */
+	private int calcShippingFee(int totalPrice) {
+		return (totalPrice >= 5000) ? 0 : 500;
+	}
+
+	/** 土日を考慮して翌営業日にする */
+	private LocalDate getNextBusinessDay(LocalDate date) {
+		while (date.getDayOfWeek() == DayOfWeek.SATURDAY || date.getDayOfWeek() == DayOfWeek.SUNDAY) {
+			date = date.plusDays(1);
+		}
+		return date;
+	}
+
+	/** 最短配達日を取得（注文から2営業日後） */
+	private LocalDate getEarliestDeliveryDate() {
+		LocalDate today = LocalDate.now();
+		return getNextBusinessDay(today.plusDays(2));
+	}
+
+	/** 配達希望日候補（最短日〜2週間後まで、営業日のみ） */
+	private List<LocalDate> getDeliveryOptions() {
+		List<LocalDate> options = new ArrayList<>();
+		LocalDate date = getEarliestDeliveryDate();
+		LocalDate endDate = date.plusDays(13); // 最短日含めて2週間分
+		while (!date.isAfter(endDate)) {
+			options.add(date);
+			date = getNextBusinessDay(date.plusDays(1));
+		}
+		return options;
+	}
+
 	/** 購入画面表示 */
 	@GetMapping
 	public String showPurchasePage(Model model, Principal principal) {
@@ -57,6 +91,8 @@ public class PurchaseController {
 		if (cartList == null || cartList.isEmpty()) {
 			model.addAttribute("cartItems", Collections.emptyList());
 			model.addAttribute("totalPrice", 0);
+			model.addAttribute("shippingFee", 0);
+			model.addAttribute("finalTotal", 0);
 			model.addAttribute("message", "カートに商品がありません。");
 			return "shop/purchase/purchase";
 		}
@@ -64,9 +100,17 @@ public class PurchaseController {
 		int total = cartList.stream()
 				.mapToInt(cv -> cv.getItem().getPrice() * cv.getCart().getQuantity())
 				.sum();
+		int shippingFee = calcShippingFee(total);
+		int finalTotal = total + shippingFee;
 
 		model.addAttribute("cartItems", cartList);
 		model.addAttribute("totalPrice", total);
+		model.addAttribute("shippingFee", shippingFee);
+		model.addAttribute("finalTotal", finalTotal);
+
+		// 配達希望日候補
+		model.addAttribute("deliveryOptions", getDeliveryOptions());
+
 		return "shop/purchase/purchase";
 	}
 
@@ -88,8 +132,8 @@ public class PurchaseController {
 	public String confirmPurchase(
 			@RequestParam("paymentMethod") String paymentMethod,
 			@RequestParam("address") String address,
-			@RequestParam("deliveryDate") String deliveryDate, 
-			@RequestParam("deliveryTime") String deliveryTime,// ← 追加
+			@RequestParam("deliveryDate") String deliveryDate,
+			@RequestParam("deliveryTime") String deliveryTime,
 			Model model,
 			Principal principal) {
 
@@ -106,13 +150,18 @@ public class PurchaseController {
 		int totalPrice = cartList.stream()
 				.mapToInt(cv -> cv.getItem().getPrice() * cv.getCart().getQuantity())
 				.sum();
+		int shippingFee = calcShippingFee(totalPrice);
+		int finalTotal = totalPrice + shippingFee;
 
 		model.addAttribute("cartItems", cartList);
 		model.addAttribute("totalPrice", totalPrice);
+		model.addAttribute("shippingFee", shippingFee);
+		model.addAttribute("finalTotal", finalTotal);
+
 		model.addAttribute("paymentMethod", paymentMethod);
 		model.addAttribute("address", address);
 		model.addAttribute("deliveryDate", deliveryDate);
-		model.addAttribute("deliveryTime", deliveryTime);// ← 追加
+		model.addAttribute("deliveryTime", deliveryTime);
 
 		return "shop/purchase/purchase_confirm";
 	}
@@ -124,9 +173,9 @@ public class PurchaseController {
 			@RequestParam("paymentMethod") String paymentMethod,
 			@RequestParam("address") String address,
 			@RequestParam("deliveryDate") String deliveryDate,
-			@RequestParam("deliveryTime") String deliveryTime,// ← 追加
-			Principal principal,
-			Model model) {
+			@RequestParam("deliveryTime") String deliveryTime,
+			Model model,
+			Principal principal) {
 
 		Account account = currentUser(principal);
 		if (account == null) {
@@ -141,26 +190,22 @@ public class PurchaseController {
 		int totalPrice = cartList.stream()
 				.mapToInt(cv -> cv.getItem().getPrice() * cv.getCart().getQuantity())
 				.sum();
+		int shippingFee = calcShippingFee(totalPrice);
+		int finalTotal = totalPrice + shippingFee;
 
-		// =====================
-		// 1. 注文リスト登録
-		// =====================
+		// 注文リスト登録
 		OrderList orderList = new OrderList();
 		orderList.setUsername(account.getUsername());
 		orderListService.createOrderList(orderList);
 
-		// =====================
-		// 2. 個々の注文登録
-		// =====================
+		// 個別注文登録
 		for (CartView cv : cartList) {
 			Order order = new Order();
 			order.setOrderListId(orderList.getId());
 			order.setItemId(cv.getItem().getId());
 			orderService.createOrder(order);
 
-			// =====================
-			// 3. 注文アイテム登録
-			// =====================
+			// 注文アイテム登録
 			OrderItem orderItem = new OrderItem();
 			orderItem.setOrderId(order.getId());
 			orderItem.setItemId(cv.getItem().getId());
@@ -169,22 +214,27 @@ public class PurchaseController {
 			orderItemService.addOrderItem(orderItem);
 		}
 
-		// =====================
-		// 4. カートを空にする
-		// =====================
+		// カートを空にする
 		cartService.clearCart(account.getUsername());
 
-		// =====================
-		// 5. ビュー用データ
-		// =====================
 		model.addAttribute("orderListId", orderList.getId());
 		model.addAttribute("totalPrice", totalPrice);
+		model.addAttribute("shippingFee", shippingFee);
+		model.addAttribute("finalTotal", finalTotal);
 		model.addAttribute("paymentMethod", paymentMethod);
 		model.addAttribute("address", address);
-		model.addAttribute("deliveryDate", deliveryDate);
-		model.addAttribute("deliveryTime", deliveryTime);// ← 追加
+
+		// 配達希望日チェック（最短日以降）
+		LocalDate deliveryDateValue = LocalDate.parse(deliveryDate);
+		LocalDate earliest = getEarliestDeliveryDate();
+		if (deliveryDateValue.isBefore(earliest)) {
+			deliveryDateValue = earliest;
+		}
+		model.addAttribute("deliveryDate", deliveryDateValue);
+		model.addAttribute("deliveryTime", deliveryTime);
+
+		model.addAttribute("emailNotice", "ご登録のメールアドレスに注文詳細をお送りしました。");
 
 		return "shop/purchase/purchase_complete";
 	}
-
 }

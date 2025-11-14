@@ -281,6 +281,13 @@
 				popup.style.display = "none";
 			});
 
+			// ポップアップ外側クリックで閉じる
+			popup.addEventListener("click", (e) => {
+				if (e.target === popup) {
+					popup.style.display = "none";
+				}
+			});
+
 			// === 🌟 お気に入りトグル ===
 			document.querySelectorAll(".favorite-btn").forEach(btn => {
 				btn.addEventListener("click", () => {

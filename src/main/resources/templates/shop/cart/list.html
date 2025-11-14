@@ -3,12 +3,12 @@
 
 <head>
 	<meta charset="UTF-8">
-	
+
 	<!-- 11/11 CSRFメタ 追加 -->
 	<meta name="_csrf" th:content="${_csrf.token}">
 	<meta name="_csrf_header" th:content="${_csrf.headerName}">
 
-	
+
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" th:href="@{/css/ec/main.css}">
 	<link rel="stylesheet" th:href="@{/css/ec/header.css}">
@@ -84,6 +84,24 @@
 		.subtotal {
 			font-weight: bold;
 		}
+
+		.cart-page img,
+		.purchase-page img,
+		.purchase-confirm-page img {
+			width: 100px;
+			/* 好きなサイズに調整OK */
+			height: 100px;
+			/* アスペクト比壊したくなければ auto に変更 */
+			object-fit: cover;
+			/* きれいにトリミング */
+		}
+		
+		td img {
+		    width: 80px !important;
+		    height: 80px !important;
+		    object-fit: cover;
+		}
+
 	</style>
 </head>
 
@@ -109,9 +127,10 @@
 					<tr th:each="cv : ${cartItems}">
 						<td>
 							<a href="#">
-								<img th:src="@{/image/{img}(img=${cv.item.thumbsImageName})}"
-									onerror="this.onerror=null;this.src='/image/no_image.png';" alt="商品画像">
+								<img th:src="@{'/images/' + ${cv.item.thumbsImageName}}"
+									onerror="this.onerror=null;this.src='/images/no_image.png';" alt="商品画像">
 							</a>
+
 						</td>
 						<td th:text="${cv.item.name}">商品名</td>
 						<td class="price" th:text="${cv.item.price}">1000</td>
