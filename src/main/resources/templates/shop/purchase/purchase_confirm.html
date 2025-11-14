@@ -153,9 +153,21 @@
 			</table>
 
 			<p class="fs-4 fw-bold text-center" style="margin-top: 20px;">
-				合計金額：
+				商品小計：
 				<span th:text="${#numbers.formatInteger(totalPrice, 1, 'COMMA')}"></span>円（税込）
 			</p>
+
+			<p class="fs-5 text-center" style="margin-top: 5px;">
+				送料：
+				<span
+					th:text="${shippingFee == 0 ? '無料' : #numbers.formatInteger(shippingFee, 1, 'COMMA') + '円'}"></span>
+			</p>
+
+			<p class="fs-3 fw-bold text-center" style="margin-top: 10px;">
+				支払金額合計：
+				<span th:text="${#numbers.formatInteger(finalTotal, 1, 'COMMA')}"></span>円
+			</p>
+
 
 			<!-- 購入確定ボタン -->
 			<div class="purchase-actions">

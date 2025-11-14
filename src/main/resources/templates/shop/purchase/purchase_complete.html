@@ -116,14 +116,27 @@
 			</div>
 
 			<!-- ✅ 注文情報ブロック（黒文字） -->
+			<!-- 注文情報ブロック -->
 			<div class="order-info">
 				<p>ご注文番号：<span th:text="${orderListId}">00000001</span></p>
-				<p>合計金額：<span th:text="'¥' + ${totalPrice}">¥0</span></p>
+
+				<!-- 商品小計 -->
+				<p>商品小計：<span th:text="'¥' + ${#numbers.formatInteger(totalPrice, 1, 'COMMA')}">¥0</span></p>
+
+				<!-- 送料 -->
+				<p>送料：<span
+						th:text="${shippingFee == 0 ? '無料' : '¥' + #numbers.formatInteger(shippingFee, 1, 'COMMA')}">¥500</span>
+				</p>
+
+				<!-- 支払合計 -->
+				<p>支払合計：<span th:text="'¥' + ${#numbers.formatInteger(finalTotal, 1, 'COMMA')}">¥0</span></p>
+
 				<p>支払い方法：<span th:text="${paymentMethod}">クレジットカード</span></p>
 				<p>お届け先：<span th:text="${address}">東京都〇〇区〇〇</span></p>
 				<p>配達希望日：<span th:text="${deliveryDate}">2025-11-13</span></p>
 				<p>配達希望時間：<span th:text="${deliveryTime}">指定なし</span></p>
 			</div>
+
 
 			<div class="cart-actions">
 				<a th:href="@{/mypage/orders}" class="btn-history">購入履歴を見る</a>
