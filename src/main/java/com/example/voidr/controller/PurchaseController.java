@@ -3,6 +3,7 @@ package com.example.voidr.controller;
 import java.security.Principal;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -66,6 +67,18 @@ public class PurchaseController {
 		return getNextBusinessDay(today.plusDays(2));
 	}
 
+	/** 配達希望日候補（最短日〜2週間後まで、営業日のみ） */
+	private List<LocalDate> getDeliveryOptions() {
+		List<LocalDate> options = new ArrayList<>();
+		LocalDate date = getEarliestDeliveryDate();
+		LocalDate endDate = date.plusDays(13); // 最短日含めて2週間分
+		while (!date.isAfter(endDate)) {
+			options.add(date);
+			date = getNextBusinessDay(date.plusDays(1));
+		}
+		return options;
+	}
+
 	/** 購入画面表示 */
 	@GetMapping
 	public String showPurchasePage(Model model, Principal principal) {
@@ -87,7 +100,6 @@ public class PurchaseController {
 		int total = cartList.stream()
 				.mapToInt(cv -> cv.getItem().getPrice() * cv.getCart().getQuantity())
 				.sum();
-
 		int shippingFee = calcShippingFee(total);
 		int finalTotal = total + shippingFee;
 
@@ -96,8 +108,8 @@ public class PurchaseController {
 		model.addAttribute("shippingFee", shippingFee);
 		model.addAttribute("finalTotal", finalTotal);
 
-		// 最短配達日をセット（HTMLでmin属性として使用）
-		model.addAttribute("earliestDeliveryDate", getEarliestDeliveryDate());
+		// 配達希望日候補
+		model.addAttribute("deliveryOptions", getDeliveryOptions());
 
 		return "shop/purchase/purchase";
 	}
@@ -138,7 +150,6 @@ public class PurchaseController {
 		int totalPrice = cartList.stream()
 				.mapToInt(cv -> cv.getItem().getPrice() * cv.getCart().getQuantity())
 				.sum();
-
 		int shippingFee = calcShippingFee(totalPrice);
 		int finalTotal = totalPrice + shippingFee;
 
@@ -179,23 +190,22 @@ public class PurchaseController {
 		int totalPrice = cartList.stream()
 				.mapToInt(cv -> cv.getItem().getPrice() * cv.getCart().getQuantity())
 				.sum();
-
 		int shippingFee = calcShippingFee(totalPrice);
 		int finalTotal = totalPrice + shippingFee;
 
-		// 1. 注文リスト登録
+		// 注文リスト登録
 		OrderList orderList = new OrderList();
 		orderList.setUsername(account.getUsername());
 		orderListService.createOrderList(orderList);
 
-		// 2. 個々の注文登録
+		// 個別注文登録
 		for (CartView cv : cartList) {
 			Order order = new Order();
 			order.setOrderListId(orderList.getId());
 			order.setItemId(cv.getItem().getId());
 			orderService.createOrder(order);
 
-			// 3. 注文アイテム登録
+			// 注文アイテム登録
 			OrderItem orderItem = new OrderItem();
 			orderItem.setOrderId(order.getId());
 			orderItem.setItemId(cv.getItem().getId());
@@ -204,10 +214,9 @@ public class PurchaseController {
 			orderItemService.addOrderItem(orderItem);
 		}
 
-		// 4. カートを空にする
+		// カートを空にする
 		cartService.clearCart(account.getUsername());
 
-		// 5. ビュー用データ
 		model.addAttribute("orderListId", orderList.getId());
 		model.addAttribute("totalPrice", totalPrice);
 		model.addAttribute("shippingFee", shippingFee);
@@ -224,10 +233,8 @@ public class PurchaseController {
 		model.addAttribute("deliveryDate", deliveryDateValue);
 		model.addAttribute("deliveryTime", deliveryTime);
 
-		// メール送信通知メッセージ
 		model.addAttribute("emailNotice", "ご登録のメールアドレスに注文詳細をお送りしました。");
 
 		return "shop/purchase/purchase_complete";
 	}
-
 }
