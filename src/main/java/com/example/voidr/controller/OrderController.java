@@ -34,7 +34,8 @@ public class OrderController {
 	public String showOrderHistory(
 			Model model,
 			Principal principal,
-			@RequestParam(name = "sort", defaultValue = "desc") String sort) {
+			@RequestParam(name = "sort", defaultValue = "desc") String sort,
+			@RequestParam(name = "keyword", required = false) String keyword) {
 
 		if (principal == null) {
 			return "redirect:/login";
@@ -43,29 +44,41 @@ public class OrderController {
 		String username = principal.getName();
 		List<OrderList> orderLists = orderListService.findByUserName(username);
 
-		// 並び替え（desc: 新しい順, asc: 古い順）
+		// ▼ 並び替え（既存処理）
 		if (sort.equals("asc")) {
 			orderLists.sort(Comparator.comparing(OrderList::getCreatedAt));
 		} else {
 			orderLists.sort(Comparator.comparing(OrderList::getCreatedAt).reversed());
 		}
 
-		// 注文リストIDごとに注文詳細をまとめる
+		// ▼ 注文リストごとに注文詳細をまとめる
 		Map<Long, List<Order>> groupedOrders = new LinkedHashMap<>();
 		Map<Long, Integer> totalPriceMap = new LinkedHashMap<>();
 		Map<Long, Integer> shippingFeeMap = new LinkedHashMap<>();
 
 		for (OrderList ol : orderLists) {
 			List<Order> orderHistory = orderService.getOrderHistory(ol.getId());
+
+			// ★ 検索キーワードがある場合 → 商品名でフィルタ
+			if (keyword != null && !keyword.trim().isEmpty()) {
+				String lower = keyword.toLowerCase();
+				orderHistory = orderHistory.stream()
+						.filter(o -> o.getItemName().toLowerCase().contains(lower))
+						.toList();
+			}
+
+			// ★ フィルタの結果、注文内容が0件ならこの注文リストを除外
+			if (orderHistory.isEmpty()) {
+				continue;
+			}
+
 			groupedOrders.put(ol.getId(), orderHistory);
 
-			// 商品合計（数量考慮）
 			int total = orderHistory.stream()
 					.mapToInt(order -> order.getPrice() * order.getQuantity())
 					.sum();
 
-			// 送料（5000円以上で無料）
-			int shippingFee = total >= 5000 ? 0 : 500;
+			int shippingFee = (total >= 5000) ? 0 : 500;
 
 			shippingFeeMap.put(ol.getId(), shippingFee);
 			totalPriceMap.put(ol.getId(), total + shippingFee);
@@ -75,7 +88,9 @@ public class OrderController {
 		model.addAttribute("totalPriceMap", totalPriceMap);
 		model.addAttribute("shippingFeeMap", shippingFeeMap);
 		model.addAttribute("sort", sort);
+		model.addAttribute("keyword", keyword);
 
 		return "order/history";
 	}
+
 }

@@ -200,6 +200,12 @@
 						<option value="desc" th:selected="${sort == 'desc'}">新しい順</option>
 						<option value="asc" th:selected="${sort == 'asc'}">古い順</option>
 					</select>
+
+					<!-- ▼ 商品名検索追加 -->
+					<input type="text" name="keyword" placeholder="商品名で検索" th:value="${keyword}"
+						style="padding:6px 10px; margin-left:10px; border-radius:6px; border:1px solid #aaa;">
+
+					<button type="submit" style="padding:6px 10px; margin-left:5px;">検索</button>
 				</form>
 			</div>
 
