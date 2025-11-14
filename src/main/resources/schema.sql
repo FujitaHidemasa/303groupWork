@@ -153,3 +153,25 @@ CREATE INDEX IF NOT EXISTS idx_favorite_item ON favorite(item_id);
 -- cart: 同じカートに同じ商品を重複追加できないようにする（何度実行しても安全）
 CREATE UNIQUE INDEX IF NOT EXISTS uq_cart_cartlist_item
   ON cart (cartlist_id, item_id);
+  
+-- ===============================
+--		11/13追加（谷口）
+--	パスワード再設定 PIN テーブル
+-- ===============================
+CREATE TABLE IF NOT EXISTS password_reset_pin (
+  id BIGSERIAL PRIMARY KEY,
+  email VARCHAR(100) NOT NULL,
+  pin CHAR(6) NOT NULL,
+  expire_at TIMESTAMP NOT NULL,
+  consumed BOOLEAN NOT NULL DEFAULT FALSE,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+-- ===============================
+--		11/13追加（谷口）
+--		インデックス
+-- ===============================
+
+CREATE INDEX IF NOT EXISTS idx_password_reset_pin_email ON password_reset_pin(email);
+CREATE INDEX IF NOT EXISTS idx_password_reset_pin_expire ON password_reset_pin(expire_at);
+

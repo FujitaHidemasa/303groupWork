@@ -51,6 +51,13 @@ public class SecurityConfig {
 						.requestMatchers(HttpMethod.POST,
 								"/voidrshop/items/*/favorite").authenticated()
 						
+						   // 11/13 ★追加: パスワード再設定は未ログインでも許可
+						.requestMatchers(
+								"/password/forgot",
+								"/password/forgot/send",
+								"/password/reset/submit")
+						.permitAll()
+						
 						// それ以外は公開（必要に応じてauthenticated()に切替）
 						.anyRequest().permitAll())
 
