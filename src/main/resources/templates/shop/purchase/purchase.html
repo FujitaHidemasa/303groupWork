@@ -131,11 +131,17 @@
 
 						<br><br>
 						<!-- 配達希望日 -->
+						<!-- 配達希望日部分のみ修正 -->
+						<!-- 元の <input type="date"> を削除して <select> に変更 -->
 						<label for="deliveryDate"><strong>配達希望日：</strong></label>
-						<input type="date" id="deliveryDate" name="deliveryDate" th:value="${deliveryDate}"
-							th:attr="min=${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}" style="margin-left:10px;"
-							required>
-
+						<select id="deliveryDate" name="deliveryDate" style="margin-left:10px;" required>
+							<option value="" disabled selected>--選択してください--</option>
+							<option th:each="date : ${deliveryOptions}"
+								th:value="${#temporals.format(date,'yyyy-MM-dd')}"
+								th:text="${#temporals.format(date,'yyyy年MM月dd日 (E)')}">
+								2025年11月14日
+							</option>
+						</select>
 
 						<br><br>
 						<!-- 配達希望時間帯 -->

@@ -1,6 +1,9 @@
 package com.example.voidr.controller;
 
 import java.security.Principal;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -50,6 +53,23 @@ public class PurchaseController {
 		return (totalPrice >= 5000) ? 0 : 500;
 	}
 
+	/** 土日を考慮して翌営業日にする */
+	private LocalDate getNextBusinessDay(LocalDate date) {
+		while (date.getDayOfWeek() == DayOfWeek.SATURDAY || date.getDayOfWeek() == DayOfWeek.SUNDAY) {
+			date = date.plusDays(1);
+		}
+		return date;
+	}
+
+	/** 配達希望日の候補（注文から2〜3営業日以内） */
+	private List<LocalDate> getDeliveryOptions() {
+		LocalDate today = LocalDate.now();
+		List<LocalDate> options = new ArrayList<>();
+		options.add(getNextBusinessDay(today.plusDays(2)));
+		options.add(getNextBusinessDay(today.plusDays(3)));
+		return options;
+	}
+
 	/** 購入画面表示 */
 	@GetMapping
 	public String showPurchasePage(Model model, Principal principal) {
@@ -79,6 +99,9 @@ public class PurchaseController {
 		model.addAttribute("totalPrice", total);
 		model.addAttribute("shippingFee", shippingFee);
 		model.addAttribute("finalTotal", finalTotal);
+
+		// 配達希望日候補
+		model.addAttribute("deliveryOptions", getDeliveryOptions());
 
 		return "shop/purchase/purchase";
 	}
@@ -206,8 +229,22 @@ public class PurchaseController {
 
 		model.addAttribute("paymentMethod", paymentMethod);
 		model.addAttribute("address", address);
-		model.addAttribute("deliveryDate", deliveryDate);
+
+		// 配達希望日（注文から2〜3営業日以内の範囲チェック）
+		LocalDate deliveryDateValue = LocalDate.parse(deliveryDate);
+		LocalDate earliest = getDeliveryOptions().get(0);
+		LocalDate latest = getDeliveryOptions().get(1);
+
+		if (deliveryDateValue.isBefore(earliest))
+			deliveryDateValue = earliest;
+		if (deliveryDateValue.isAfter(latest))
+			deliveryDateValue = latest;
+
+		model.addAttribute("deliveryDate", deliveryDateValue);
 		model.addAttribute("deliveryTime", deliveryTime);
+
+		// メール送信などもここで可能（別途サービスを作成して送る）
+		model.addAttribute("emailNotice", "ご登録のメールアドレスに注文詳細をお送りしました。");
 
 		return "shop/purchase/purchase_complete";
 	}
