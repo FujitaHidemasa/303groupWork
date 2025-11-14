@@ -210,12 +210,18 @@
 							</p>
 						</div>
 						<div>
-							<p>合計金額：
+							<!-- 送料を追加 -->
+							<p>送料：
+								<span th:text="${#numbers.formatInteger(shippingFeeMap[entry.key], 0)}"></span>円
+							</p>
+							<!-- 合計金額 -->
+							<p>合計金額（税込）：
 								<span th:text="${#numbers.formatInteger(totalPriceMap[entry.key], 0)}"></span>円
 								<span class="toggle-icon">▶</span>
 							</p>
 						</div>
 					</div>
+
 
 					<!-- 開閉する注文内容 -->
 					<div class="order-content" th:id="'order-content-' + ${iterStat.index}">

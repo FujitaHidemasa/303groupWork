@@ -8,9 +8,7 @@ import java.util.Map;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.voidr.entity.Order;
 import com.example.voidr.entity.OrderList;
@@ -33,40 +31,38 @@ public class OrderController {
 	// OrderController.java 内
 	@GetMapping
 	public String showOrderHistory(Model model, Principal principal) {
-		if (principal == null) {
-			return "redirect:/login";
-		}
+	    if (principal == null) {
+	        return "redirect:/login";
+	    }
 
-		String username = principal.getName();
-		List<OrderList> orderLists = orderListService.findByUserName(username);
+	    String username = principal.getName();
+	    List<OrderList> orderLists = orderListService.findByUserName(username);
 
-		// Map<Long, List<Order>> を作成（注文リストIDごとにまとめる）
-		Map<Long, List<Order>> groupedOrders = new LinkedHashMap<>();
-		Map<Long, Integer> totalPriceMap = new LinkedHashMap<>();
+	    // 注文リストIDごとに注文詳細をまとめる
+	    Map<Long, List<Order>> groupedOrders = new LinkedHashMap<>();
+	    Map<Long, Integer> totalPriceMap = new LinkedHashMap<>();
+	    Map<Long, Integer> shippingFeeMap = new LinkedHashMap<>();
 
-		for (OrderList ol : orderLists) {
-			List<Order> orderHistory = orderService.getOrderHistory(ol.getId());
-			groupedOrders.put(ol.getId(), orderHistory);
+	    for (OrderList ol : orderLists) {
+	        List<Order> orderHistory = orderService.getOrderHistory(ol.getId()); // List<Order> で取得
+	        groupedOrders.put(ol.getId(), orderHistory);
 
-			// 注文ごとの合計金額を計算
-			int total = orderHistory.stream()
-					.mapToInt(Order::getPrice)
-					.sum();
-			totalPriceMap.put(ol.getId(), total);
-		}
+	        // 商品合計
+	        int total = orderHistory.stream()
+	                .mapToInt(Order::getPrice)
+	                .sum();
 
-		model.addAttribute("groupedOrders", groupedOrders);
-		model.addAttribute("totalPriceMap", totalPriceMap);
+	        // 送料計算：商品合計が5000円未満なら500円、それ以上なら0円
+	        int shippingFee = total >= 5000 ? 0 : 500;
+	        shippingFeeMap.put(ol.getId(), shippingFee);
 
-		return "order/history";
-	}
+	        totalPriceMap.put(ol.getId(), total + shippingFee);
+	    }
 
-	/**
-	 * 購入確定処理（「購入する」ボタン押下時）
-	 */
-	@PostMapping("/confirm")
-	public String confirmPurchase(@RequestParam("orderListId") long orderListId) {
-		orderService.confirmPurchase(orderListId);
-		return "redirect:/mypage/orders";
+	    model.addAttribute("groupedOrders", groupedOrders);
+	    model.addAttribute("totalPriceMap", totalPriceMap);
+	    model.addAttribute("shippingFeeMap", shippingFeeMap);
+
+	    return "order/history";
 	}
 }
