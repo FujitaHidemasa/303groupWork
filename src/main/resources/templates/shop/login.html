@@ -207,6 +207,10 @@
 			<button type="submit">ログイン</button>
 		</form>
 
+		<!-- 11/13追加（谷口） パスワード再設定導線（新規登録リンクの上） -->
+		<div style="margin: 16px 0 0;">
+			<a th:href="@{/password/forgot}" class="signup-link">パスワードをお忘れの場合はこちら</a>
+		</div>
 
 		<!-- 新規登録ボタン -->
 		<a th:href="@{/signup}" class="signup-link">新規登録はこちら</a>

@@ -25,4 +25,17 @@ public class EmailServiceImpl implements EmailService
 		msg.setText("セキュリティコード: " + code + "\nこのコードは10分間有効です。");
 		mailSender.send(msg);
 	}
+	
+	// 11/13 追加★
+	@Override
+	public void sendPasswordResetPin(String toEmail, String pin) 
+	{
+		SimpleMailMessage msg = new SimpleMailMessage();
+		msg.setFrom("voidr.shop@gmail.com");
+		msg.setTo(toEmail);
+		msg.setSubject("【VOIDR】パスワード再設定用PINコード");
+		msg.setText
+		("パスワード再設定の確認コード（PIN）: " + pin + "\nこのコードは10分間有効です。");
+		mailSender.send(msg);
+	}
 }

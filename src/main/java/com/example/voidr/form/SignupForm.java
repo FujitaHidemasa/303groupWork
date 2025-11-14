@@ -22,9 +22,11 @@ public class SignupForm
     @Size(min = 3, max = 50)
     private String username;        // login_user.username
 
-    @NotBlank
-    @Size(min = 8, max = 100)
-    private String password;        // 平文 → 保存時にBCrypt
+	// 11/13変更（谷口） 8〜20に統一＋英数字のみ
+	@NotBlank
+	@Size(min = 8, max = 20, message = "パスワードは8〜20文字で入力してください。")
+	@Pattern(regexp = "^[A-Za-z0-9]+$", message = "パスワードは英数字のみ使用できます。")
+	private String password; // 平文 → 保存時にBCrypt
 
     @NotBlank
     @Size(max = 50)

@@ -26,7 +26,6 @@
 
 			<nav class="header-center">
 				<a th:href="@{/voidrshop/items}">商品一覧</a>
-				<a th:href="@{/mypage/orders}" sec:authorize="isAuthenticated()">購入履歴</a>
 			</nav>
 
 			<div class="header-right">
@@ -47,6 +46,12 @@
 					<img th:src="@{/images/ui/header_carticon.png}" alt="Cart Icon">
 					<span>カート</span>
 					<span id="cart-count" class="cart-count-badge">0</span>
+				</a>
+
+				<!-- ★マイページ -->
+				<a th:href="@{/mypage}" class="cart-link" sec:authorize="isAuthenticated()">
+					<img th:src="@{/images/ui/header_mypageicon.jpg}" alt="MyPage Icon">
+					<span>マイページ</span>
 				</a>
 			</div>
 		</header>
@@ -94,7 +99,8 @@
 			/* アイコンサイズ調整 */
 			height: 24px;
 			position: relative;
-			top: 7px; /* アイコンを少し下に */
+			top: 7px;
+			/* アイコンを少し下に */
 		}
 
 		.cart-count-badge {
@@ -112,23 +118,20 @@
 			line-height: 1.2;
 			display: none;
 		}
-		
-		/* お気に入りボタン調整 */
+
+		/* お気に入り・マイページボタン調整 */
 		.cart-link img {
-		    display: block;
-		    width: 24px;
-		    height: 24px;
-		    position: relative;
-		    top: 2px; /* アイコンを少し下に */
+			display: block;
+			width: 24px;
+			height: 24px;
+			position: relative;
+			top: 2px;
+			/* アイコンを少し下に */
 		}
 
 		.cart-link span {
-		    vertical-align: middle; /* アイコンに対して文字を中央寄せ */
+			vertical-align: middle;
+			/* アイコンに対して文字を中央寄せ */
 		}
-		
-		
-
 	</style>
-
-
 </div>

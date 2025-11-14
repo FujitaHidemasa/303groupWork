@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html lang="ja">  
-	<head>           
-	 <meta charset="UTF-8">
-    <title>VOIDR</title>  </head>
-<body>
+<html xmlns:th="http://www.thymeleaf.org">
+<th:block th:fragment="header">
+
   <!-- ヘッダー -->
   <header class="main-header">
-    <a href="/voidr" class="logo"><img src="/images/logo.png" alt="VOIDRロゴ"></a>
+    <a href="/voidr" class="logo">
+      <img src="/images/logo.png" alt="VOIDRロゴ">
+    </a>
 
     <nav class="nav-left">
       <ul class="nav-menu">
         <li class="dropdown">
-          <a href="#">ゲーム紹介 v</a>
+          <a href="#">ゲーム紹介 ▼</a>
           <ul class="submenu">
             <li><a href="/voidr/story">ストーリー</a></li>
             <li><a href="/voidr/map">マップ</a></li>
@@ -43,6 +43,5 @@
     </div>
   </div>
 
- 
-</body>
+</th:block>
 </html>

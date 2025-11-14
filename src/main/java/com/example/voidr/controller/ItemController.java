@@ -88,5 +88,20 @@ public class ItemController {
 		}
 		return favoriteService.toggleFavorite(loginUser.getId(), itemId);
 	}
+	
+	
+	/** ランダム4件表示（/voidrshop/items/random） */
+	@GetMapping("/random")
+	public String randomItems(Model model) 
+	{
+	    itemService.syncItems(); // 必要なら同期処理も実行
+	    List<Item> items = itemService.getRandom4Items();
+
+	    model.addAttribute("items", items);
+	    model.addAttribute("keyword", ""); 
+
+	    return "shop/item/list"; 
+	}
+
 
 }

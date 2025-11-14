@@ -260,4 +260,17 @@ public class ItemServiceImpl implements ItemService
 	public List<Item> getLatestItems() {
 	    return itemMapper.findLatestItems();
 	}
+	
+	@Override
+	public List<Item> getRandom4Items() {
+	    List<Item> dbItems = itemMapper.selectRandom4();
+
+	    for (Item item : dbItems) {
+	        item.setCategoryList(categoryMapper.findByItemId(item.getId()));
+	        item.setImagesName(imageMapper.findByItemId(item.getId()));
+	    }
+
+	    return dbItems;
+	}
+
 }

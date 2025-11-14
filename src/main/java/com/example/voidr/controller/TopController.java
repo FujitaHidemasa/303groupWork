@@ -24,11 +24,17 @@ public class TopController
 	@GetMapping
 	public String showMenu(Model model)
 	{
-		itemService.syncItems();
-		// 1~4の
-		List<Item> items = itemService.getLatestItems();
-		model.addAttribute("items", items);
-		return "shop/top";
+	    itemService.syncItems();
+
+	    // ランダム4件を取得
+	    List<Item> items = itemService.getRandom4Items();
+
+	    System.out.println("ランダム取得件数 = " + items.size());
+	    // items にセットしてHTMLへ渡す
+	    model.addAttribute("items", items);
+
+
+	    return "shop/top";
 	}
-	
+
 }

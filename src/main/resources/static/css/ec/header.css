@@ -64,7 +64,7 @@ header {
 /* ナビ中央 */
 .header-center {
   position: absolute;
-  left: 50%;
+  left: 20%;
   transform: translateX(-50%);
   display: flex;
   align-items: center;
@@ -89,6 +89,7 @@ nav a:hover {
   display: flex;
   align-items: center;
   gap: 28px;
+  margin-right: -30px;
 }
 
 .search-box {
@@ -110,7 +111,7 @@ nav a:hover {
   background: transparent;
   color: var(--color-text-main);
   outline: none;
-  width: 160px;
+  width: 320px;
 }
 .search-box input::placeholder {
   color: var(--color-text-dim);

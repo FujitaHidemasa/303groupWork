@@ -240,8 +240,10 @@
 
 			<div>
 				<label for="password">パスワード</label>
+				<!-- 11/13変更（谷口） -->
 				<input type="password" id="password" th:field="*{password}" placeholder="8〜20文字の英数字" required
-					autocomplete="new-password" />
+					autocomplete="new-password" minlength="8" maxlength="20" pattern="^[A-Za-z0-9]{8,20}$"
+					title="英数字8〜20文字で入力してください" />
 				<div class="error-msg" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
 			</div>
 
