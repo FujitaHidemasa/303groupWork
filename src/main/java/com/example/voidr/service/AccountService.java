@@ -1,5 +1,7 @@
 package com.example.voidr.service;
 
+import java.util.List;
+
 import com.example.voidr.entity.Account;
 import com.example.voidr.entity.Role;
 
@@ -22,7 +24,12 @@ public interface AccountService
     
     //11/10(藤田）会員情報の削除メソッド
     void deleteAccountByUsername(String username);
-
+    
+    // 全ユーザー取得（会員一覧ページの初期表示用）
+    List<Account> findAll();
+    
+    // 会員検索：ユーザーID・氏名・メールアドレスの部分一致検索に使用
+    List<Account> searchMembers(String keyword);
 }
 
 

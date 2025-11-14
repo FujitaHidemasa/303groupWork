@@ -1,0 +1,63 @@
+@charset "UTF-8";
+
+/* --- テーブル本体 --- */
+.table-container table {
+  width: 100% !important;
+  table-layout: fixed !important;
+  border-collapse: collapse;
+}
+
+/* ===== カラム幅（合計 100% に調整済み） ===== */
+
+/* ID */
+.table-container th:nth-child(1),
+.table-container td:nth-child(1) {
+  width: 6%;
+}
+
+/* ユーザーID */
+.table-container th:nth-child(2),
+.table-container td:nth-child(2) {
+  width: 13%;
+}
+
+/* 氏名 */
+.table-container th:nth-child(3),
+.table-container td:nth-child(3) {
+  width: 17%;
+}
+
+/* 権限 */
+.table-container th:nth-child(4),
+.table-container td:nth-child(4) {
+  width: 10%;
+}
+
+/* Email */
+.table-container th:nth-child(5),
+.table-container td:nth-child(5) {
+  width: 26%;
+}
+
+/* 登録日 */
+.table-container th:nth-child(6),
+.table-container td:nth-child(6) {
+  width: 12%;
+}
+
+/* 操作（ボタン2つが収まる最適値） */
+.table-container th:nth-child(7),
+.table-container td:nth-child(7) {
+  width: 18%;
+}
+
+/* ボタン横並び */
+.actions {
+  display: flex;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.table-container td.actions {
+  vertical-align: middle;
+}
