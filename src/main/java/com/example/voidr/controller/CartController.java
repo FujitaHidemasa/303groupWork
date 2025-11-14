@@ -92,6 +92,7 @@ public class CartController {
 	}
 
 	/** ✅ バッジ用：カート内商品数を返す（JSON） */
+	@PreAuthorize("permitAll()") /** 11/13追加（谷口）：バッジ用APIは未ログインでもOKにする */
 	@GetMapping("/count")
 	@ResponseBody
 	public Map<String, Integer> count(Principal principal) {
