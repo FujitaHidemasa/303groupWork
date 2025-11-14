@@ -1,4 +1,16 @@
 @charset "UTF-8";
+
+/* --- 背景動画設定 --- */
+.bg-video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: -1;
+  
+}
 /* ==================================
    ベース設定
 ================================== */
@@ -63,21 +75,26 @@ body {
   box-shadow: 0 0 45px rgba(100,150,255,0.4);
 }
 
+.map-card {
+  height: 300px; /* 好きな高さにする（例：350px） */
+}
+
 .map-card img {
   width: 50%;
+  height: 300px;     /* ← 好きな高さ */
   object-fit: cover;
 }
 
 .map-card .text {
-  flex: 0 0 40%;
-  padding: 40px;
+  flex: 1;
+  padding: 20px 30px;  
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
-
+	
 .map-card h3 {
-  font-size: 1rem;
+  font-size: 0.9rem;
   color: #999;
   letter-spacing: 2px;
   margin-bottom: -2px;
@@ -86,9 +103,9 @@ body {
 }
 
 .map-card h2 {
-  font-size: 2.1rem;
+  font-size: 1.6rem;
   letter-spacing: 2px;
-  margin-bottom: 25px;
+  margin-bottom: 18px;
   color: #7fc4ff;
   position: relative;
 }
@@ -104,7 +121,7 @@ body {
 }
 
 .map-card p {
-  font-size: 1.1rem;
+  font-size: 0.85rem;
   line-height: 1.9;
   color: #ddd;
 }
