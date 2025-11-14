@@ -135,7 +135,8 @@
 			color: #fff;
 		}
 
-		.no-history {
+		.no-history,
+		.no-search-result {
 			text-align: center;
 			margin: 60px auto;
 			color: #fff;
@@ -163,7 +164,6 @@
 			margin-top: 30px;
 			display: flex;
 			justify-content: space-between;
-			/* ← 左右に離す */
 			align-items: center;
 			border-top: 1px solid #ccc;
 			padding-top: 15px;
@@ -174,7 +174,6 @@
 			color: black;
 			background-color: #eee;
 			padding: 10px 20px;
-			/* ← 少し広めに */
 			border: 1px solid #ccc;
 			border-radius: 5px;
 			font-weight: 600;
@@ -193,7 +192,7 @@
 		<section>
 			<h2>購入履歴</h2>
 
-			<!-- ▼ 並び替え UI を追加 -->
+			<!-- ▼ 並び替え + 検索エリア -->
 			<div class="sort-area">
 				<form method="get" th:action="@{/mypage/orders}">
 					<select name="sort" onchange="this.form.submit()">
@@ -201,7 +200,6 @@
 						<option value="asc" th:selected="${sort == 'asc'}">古い順</option>
 					</select>
 
-					<!-- ▼ 商品名検索追加 -->
 					<input type="text" name="keyword" placeholder="商品名で検索" th:value="${keyword}"
 						style="padding:6px 10px; margin-left:10px; border-radius:6px; border:1px solid #aaa;">
 
@@ -209,7 +207,7 @@
 				</form>
 			</div>
 
-			<!-- ▼ 購入履歴表示 -->
+			<!-- ▼ 通常の購入履歴表示 -->
 			<div th:if="${groupedOrders != null and !groupedOrders.isEmpty()}"
 				th:each="entry, iterStat : ${groupedOrders}">
 
@@ -224,9 +222,7 @@
 							</p>
 						</div>
 						<div>
-							<p>送料：
-								<span th:text="${#numbers.formatInteger(shippingFeeMap[entry.key], 0)}"></span>円
-							</p>
+							<p>送料：<span th:text="${#numbers.formatInteger(shippingFeeMap[entry.key], 0)}"></span>円</p>
 							<p>合計金額（税込）：
 								<span th:text="${#numbers.formatInteger(totalPriceMap[entry.key], 0)}"></span>円
 								<span class="toggle-icon">▶</span>
@@ -248,20 +244,15 @@
 							</thead>
 							<tbody>
 								<tr th:each="order : ${entry.value}">
-									<td>
-										<img th:src="@{'/images/' + ${order.imageName}}"
-											onerror="this.onerror=null;this.src='/image/no_image.png';">
-									</td>
+									<td><img th:src="@{'/images/' + ${order.imageName}}"
+											onerror="this.onerror=null;this.src='/image/no_image.png';"></td>
 									<td th:text="${order.itemName}"></td>
 									<td th:text="${order.quantity}"></td>
 									<td th:text="'¥' + ${#numbers.formatInteger(order.price, 0)}"></td>
 									<td th:text="${order.isHold ? '保留中' : '注文受付'}"></td>
 									<td class="action-buttons">
 										<button class="detail"
-											th:onclick="'location.href=\'' + @{/voidrshop/items/{id}(id=${order.itemId})} + '\';'">
-											詳細
-										</button>
-
+											th:onclick="'location.href=\'' + @{/voidrshop/items/{id}(id=${order.itemId})} + '\';'">詳細</button>
 										<form th:action="@{/voidrshop/cart/add}" method="post" style="display:inline;">
 											<input type="hidden" name="itemId" th:value="${order.itemId}">
 											<input type="hidden" name="quantity" value="1">
@@ -276,9 +267,18 @@
 				</div>
 			</div>
 
-			<p class="no-history" th:unless="${groupedOrders != null and !groupedOrders.isEmpty()}">
+			<!-- ▼ 検索結果がない時専用メッセージ -->
+			<p class="no-history"
+				th:if="${keyword != null and keyword != '' and (groupedOrders == null or groupedOrders.isEmpty())}">
+				検索結果がありません。
+			</p>
+
+			<!-- ▼ 通常（検索していない）状態で履歴がゼロの場合 -->
+			<p class="no-history"
+				th:if="${(keyword == null or keyword == '') and (groupedOrders == null or groupedOrders.isEmpty())}">
 				購入履歴がありません。
 			</p>
+
 
 			<div class="cart-actions">
 				<a th:href="@{/voidrshop}">トップページへ戻る</a>
