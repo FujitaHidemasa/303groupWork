@@ -14,17 +14,27 @@
 			margin: 40px auto;
 		}
 
-		/* ===== タイトル部分 ===== */
 		h2 {
 			text-align: center;
 			color: #fff;
 			background-color: #000;
 			padding: 15px 0;
 			border-radius: 8px;
-			margin-bottom: 30px;
+			margin-bottom: 20px;
 			font-size: 1.6em;
 			letter-spacing: 1px;
 			box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+		}
+
+		.sort-area {
+			text-align: right;
+			margin-bottom: 20px;
+		}
+
+		.sort-area select {
+			padding: 6px 10px;
+			border-radius: 6px;
+			border: 1px solid #aaa;
 		}
 
 		.order-block {
@@ -34,7 +44,6 @@
 			box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 			background: #fff;
 			overflow: hidden;
-			transition: all 0.3s ease;
 		}
 
 		.order-header {
@@ -57,10 +66,6 @@
 		.order-header span {
 			font-weight: bold;
 			color: #000 !important;
-		}
-
-		.order-header:hover {
-			background-color: #e8e8e8;
 		}
 
 		.order-content {
@@ -97,7 +102,6 @@
 			background-color: #fafafa;
 		}
 
-		/* 🔥 修正ポイント：商品画像だけに適用 */
 		.order-content table img {
 			display: block;
 			margin: 0 auto;
@@ -121,49 +125,16 @@
 			transition: background-color 0.2s ease;
 		}
 
-		/* 詳細ボタン（水色） */
 		.action-buttons .detail {
 			background-color: #00bfff;
 			color: #fff;
 		}
 
-		.action-buttons .detail:hover {
-			background-color: #0099cc;
-		}
-
-		/* 再購入ボタン（緑） */
 		.action-buttons .reorder {
 			background-color: #2ecc71;
 			color: #fff;
 		}
 
-		.action-buttons .reorder:hover {
-			background-color: #27ae60;
-		}
-
-		.cart-actions {
-			margin-top: 30px;
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
-			border-top: 1px solid #ccc;
-			padding-top: 15px;
-		}
-
-		.cart-actions a {
-			text-decoration: none;
-			color: black;
-			background-color: #eee;
-			padding: 10px 15px;
-			border: 1px solid #ccc;
-			border-radius: 5px;
-		}
-
-		.cart-actions a:hover {
-			background-color: #ddd;
-		}
-
-		/* ===== 購入履歴がない場合 ===== */
 		.no-history {
 			text-align: center;
 			margin: 60px auto;
@@ -187,6 +158,31 @@
 		.order-header.active .toggle-icon {
 			transform: rotate(90deg);
 		}
+
+		.cart-actions {
+			margin-top: 30px;
+			display: flex;
+			justify-content: space-between;
+			/* ← 左右に離す */
+			align-items: center;
+			border-top: 1px solid #ccc;
+			padding-top: 15px;
+		}
+
+		.cart-actions a {
+			text-decoration: none;
+			color: black;
+			background-color: #eee;
+			padding: 10px 20px;
+			/* ← 少し広めに */
+			border: 1px solid #ccc;
+			border-radius: 5px;
+			font-weight: 600;
+		}
+
+		.cart-actions a:hover {
+			background-color: #ddd;
+		}
 	</style>
 </head>
 
@@ -197,9 +193,20 @@
 		<section>
 			<h2>購入履歴</h2>
 
-			<!-- 注文ごとにブロック表示 -->
+			<!-- ▼ 並び替え UI を追加 -->
+			<div class="sort-area">
+				<form method="get" th:action="@{/mypage/orders}">
+					<select name="sort" onchange="this.form.submit()">
+						<option value="desc" th:selected="${sort == 'desc'}">新しい順</option>
+						<option value="asc" th:selected="${sort == 'asc'}">古い順</option>
+					</select>
+				</form>
+			</div>
+
+			<!-- ▼ 購入履歴表示 -->
 			<div th:if="${groupedOrders != null and !groupedOrders.isEmpty()}"
 				th:each="entry, iterStat : ${groupedOrders}">
+
 				<div class="order-block">
 					<div class="order-header" th:onclick="'toggleOrder(' + ${iterStat.index} + ')'">
 						<div>
@@ -221,7 +228,6 @@
 						</div>
 					</div>
 
-					<!-- 開閉する注文内容 -->
 					<div class="order-content" th:id="'order-content-' + ${iterStat.index}">
 						<table>
 							<thead>
