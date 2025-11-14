@@ -151,8 +151,24 @@
 						</select>
 
 						<br><br>
-						<strong>合計金額： ¥<span
-								th:text="${#numbers.formatInteger(totalPrice, 1, 'COMMA')}">0</span></strong>
+						<!-- 小計 -->
+						<div style="margin-top:10px;">
+							<strong>小計：</strong>
+							¥<span th:text="${#numbers.formatInteger(totalPrice, 1, 'COMMA')}">0</span>
+						</div>
+
+						<!-- 送料 -->
+						<div>
+							<strong>送料：</strong>
+							<span
+								th:text="${shippingFee == 0 ? '無料' : '¥' + #numbers.formatInteger(shippingFee, 1, 'COMMA')}">¥500</span>
+						</div>
+
+						<!-- 総支払額（送料込み） -->
+						<div style="margin-top:5px; font-size:1.2rem;">
+							<strong>合計金額：</strong>
+							¥<span th:text="${#numbers.formatInteger(finalTotal, 1, 'COMMA')}">0</span>
+						</div>
 
 						<button type="submit" style="margin-left:20px;">購入内容確認画面へ</button>
 					</div>

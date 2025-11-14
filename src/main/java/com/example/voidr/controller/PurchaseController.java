@@ -45,6 +45,11 @@ public class PurchaseController {
 		return accountService.findByUsername(principal.getName());
 	}
 
+	/** 送料を計算（5000円以上 → 無料） */
+	private int calcShippingFee(int totalPrice) {
+		return (totalPrice >= 5000) ? 0 : 500;
+	}
+
 	/** 購入画面表示 */
 	@GetMapping
 	public String showPurchasePage(Model model, Principal principal) {
@@ -57,6 +62,8 @@ public class PurchaseController {
 		if (cartList == null || cartList.isEmpty()) {
 			model.addAttribute("cartItems", Collections.emptyList());
 			model.addAttribute("totalPrice", 0);
+			model.addAttribute("shippingFee", 0);
+			model.addAttribute("finalTotal", 0);
 			model.addAttribute("message", "カートに商品がありません。");
 			return "shop/purchase/purchase";
 		}
@@ -65,8 +72,14 @@ public class PurchaseController {
 				.mapToInt(cv -> cv.getItem().getPrice() * cv.getCart().getQuantity())
 				.sum();
 
+		int shippingFee = calcShippingFee(total);
+		int finalTotal = total + shippingFee;
+
 		model.addAttribute("cartItems", cartList);
 		model.addAttribute("totalPrice", total);
+		model.addAttribute("shippingFee", shippingFee);
+		model.addAttribute("finalTotal", finalTotal);
+
 		return "shop/purchase/purchase";
 	}
 
@@ -88,8 +101,8 @@ public class PurchaseController {
 	public String confirmPurchase(
 			@RequestParam("paymentMethod") String paymentMethod,
 			@RequestParam("address") String address,
-			@RequestParam("deliveryDate") String deliveryDate, 
-			@RequestParam("deliveryTime") String deliveryTime,// ← 追加
+			@RequestParam("deliveryDate") String deliveryDate,
+			@RequestParam("deliveryTime") String deliveryTime,
 			Model model,
 			Principal principal) {
 
@@ -107,12 +120,18 @@ public class PurchaseController {
 				.mapToInt(cv -> cv.getItem().getPrice() * cv.getCart().getQuantity())
 				.sum();
 
+		int shippingFee = calcShippingFee(totalPrice);
+		int finalTotal = totalPrice + shippingFee;
+
 		model.addAttribute("cartItems", cartList);
 		model.addAttribute("totalPrice", totalPrice);
+		model.addAttribute("shippingFee", shippingFee);
+		model.addAttribute("finalTotal", finalTotal);
+
 		model.addAttribute("paymentMethod", paymentMethod);
 		model.addAttribute("address", address);
 		model.addAttribute("deliveryDate", deliveryDate);
-		model.addAttribute("deliveryTime", deliveryTime);// ← 追加
+		model.addAttribute("deliveryTime", deliveryTime);
 
 		return "shop/purchase/purchase_confirm";
 	}
@@ -124,9 +143,9 @@ public class PurchaseController {
 			@RequestParam("paymentMethod") String paymentMethod,
 			@RequestParam("address") String address,
 			@RequestParam("deliveryDate") String deliveryDate,
-			@RequestParam("deliveryTime") String deliveryTime,// ← 追加
-			Principal principal,
-			Model model) {
+			@RequestParam("deliveryTime") String deliveryTime,
+			Model model,
+			Principal principal) {
 
 		Account account = currentUser(principal);
 		if (account == null) {
@@ -141,6 +160,9 @@ public class PurchaseController {
 		int totalPrice = cartList.stream()
 				.mapToInt(cv -> cv.getItem().getPrice() * cv.getCart().getQuantity())
 				.sum();
+
+		int shippingFee = calcShippingFee(totalPrice);
+		int finalTotal = totalPrice + shippingFee;
 
 		// =====================
 		// 1. 注文リスト登録
@@ -179,10 +201,13 @@ public class PurchaseController {
 		// =====================
 		model.addAttribute("orderListId", orderList.getId());
 		model.addAttribute("totalPrice", totalPrice);
+		model.addAttribute("shippingFee", shippingFee);
+		model.addAttribute("finalTotal", finalTotal);
+
 		model.addAttribute("paymentMethod", paymentMethod);
 		model.addAttribute("address", address);
 		model.addAttribute("deliveryDate", deliveryDate);
-		model.addAttribute("deliveryTime", deliveryTime);// ← 追加
+		model.addAttribute("deliveryTime", deliveryTime);
 
 		return "shop/purchase/purchase_complete";
 	}
