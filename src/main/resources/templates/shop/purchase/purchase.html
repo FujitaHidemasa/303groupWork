@@ -98,9 +98,11 @@
 				<tbody>
 					<tr th:each="cv : ${cartItems}">
 						<td>
-							<img th:src="${cv.item.imagePath != null ? cv.item.imagePath : '/images/default.png'}"
-								onerror="this.onerror=null;this.src='/image/no_image.png';" alt="商品画像" width="80">
+							<img th:src="@{'/images/' + ${cv.item.thumbsImageName}}"
+								onerror="this.onerror=null;this.src='/images/no_image.png';" alt="商品画像" width="80"
+								height="80" style="object-fit: cover;">
 						</td>
+
 						<td th:text="${cv.item.name}">商品名</td>
 						<td th:text="${cv.cart.quantity}">1</td>
 						<td th:text="${#numbers.formatInteger(cv.item.price, 1, 'COMMA')} + '円'">0円</td>
@@ -117,7 +119,7 @@
 					<div>
 						<label for="paymentMethod">支払い方法：</label>
 						<select id="paymentMethod" name="paymentMethod" required>
-							<option value="クレジットカード" selected>着払い</option>
+							<option value="着払い" selected>着払い</option>
 							<option value="銀行振込">銀行振込</option>
 							<option value="コンビニ払い">コンビニ払い</option>
 						</select>
