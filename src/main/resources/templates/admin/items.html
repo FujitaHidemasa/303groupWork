@@ -41,7 +41,7 @@
 		<tr th:each="item : ${items}"><!-- 中身を一つずつitemとして取り出して表にする-->
 			<td th:text="${item.id}">1</td><!-- 商品IDの表示 -->
 			<td th:text="${item.name}">サンプル商品</td><!-- 商品名の表示-->
-			<td th:text="${#strings.listJoin(item.categoryList, ',')}">サンプル</td><!-- カテゴリの表示-->
+			<td th:text="${#lists.isEmpty(item.categoryList) ? '' : item.categoryList[0]}">サンプル</td><!-- カテゴリの表示-->
 			<td th:text="${#numbers.formatInteger(item.price, 0)} + '円'">1000円</td><!-- 価格の表示 -->
 			<td th:text="${item.isDownload}? '〇':'×'">×</td><!-- DL商品かどうかの表示 -->
 			<td th:text="${#temporals.format(item.createdAt, 'yyyy/MM/dd')}">2025/11/11</td><!-- 商品作成日 -->
