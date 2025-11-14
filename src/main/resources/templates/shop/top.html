@@ -2,6 +2,13 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="ja"
 	th:replace="layout/shop_base :: base_layout(~{::content}, 'トップページ',  ~{::extraCss})">
 
+<!-- ページ固有CSS/JS/Fonts -->
+<th:block th:fragment="extraCss">
+	<link rel="stylesheet" th:href="@{/css/ec/list.css}">
+	<link rel="stylesheet" th:href="@{/css/ec/top.css}">
+	<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+</th:block>
+
 <th:block th:fragment="content">
 
 	<!-- ===============================
@@ -30,243 +37,29 @@
 	<section class="news-section">
 		<div class="news-container">
 			<h2 class="section-title">LATEST UPDATES</h2>
+
 			<ul class="news-list">
-				<li>
-					<span class="news-date">2025.10.20</span>
-					<span class="news-content">秋の新作グッズ発売</span>
-				</li>
-				<li>
-					<span class="news-date">2025.09.15</span>
-					<span class="news-content">イベント限定アイテム登場</span>
-				</li>
-				<li>
-					<span class="news-date">2025.08.01</span>
-					<span class="news-content">夏セール開催中</span>
+				<li th:each="n : ${newsList}">
+					<span class="news-date" th:text="${#temporals.format(n.newsDate, 'yyyy.MM.dd')}"></span>
+					<span class="news-content" th:text="${n.content}"></span>
 				</li>
 			</ul>
 		</div>
 	</section>
 
 	<!-- ===============================
-	     人気商品セクション
+	     注目商品セクション
 	=============================== -->
 	<section class="popular-section">
-		<h2 class="section-title">Best-selling items</h2>
+		<h2 class="section-title">FEATURED ITEMS</h2>
 		<div th:replace="fragments/itemList :: itemList(${items})"></div>
 	</section>
-	
-	
-	
-
-	<!--
-	  　 このページ専用スタイル
-	     他のページには影響しません。
-	     共通CSSを上書きしたい場合はここに追記してください。
-	-->
-	
-	<!-- ページ固有CSS -->
-	<th:block th:fragment="extraCss">
-	  <link rel="stylesheet" th:href="@{/css/ec/list.css}">
-	</th:block>
-
-	<style>
-
-		/* ========================================
-	HEROセクション
-	================================ */
-		.hero-section {
-			position: relative;
-			width: 100%;
-			height: 580px;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			overflow: hidden;
-			background: var(--color-bg-black);
-			border-bottom: 1px solid var(--color-border-light);
-			padding-top: 100px;
-		}
-
-		.hero-bg img {
-			width: 100%;
-			height: 100%;
-			object-fit: cover;
-			object-position: center right;
-			filter: brightness(0.9) contrast(1.2) saturate(1.15);
-			transition: transform 6s ease;
-		}
-
-		.hero-section:hover .hero-bg img {
-			transform: scale(1.03);
-		}
-
-		.hero-overlay {
-			position: absolute;
-			inset: 0;
-			display: flex;
-			align-items: center;
-			justify-content: flex-start;
-			padding-left: 8%;
-			z-index: 2;
-			background: linear-gradient(90deg,
-					rgba(0, 0, 0, 0.4) 20%,
-					rgba(0, 0, 0, 0.15) 55%,
-					rgba(0, 0, 0, 0));
-		}
-
-		.hero-text {
-			max-width: 680px;
-			text-align: left;
-			color: var(--color-text-main);
-			text-shadow: 0 0 14px rgba(0, 0, 0, 0.3);
-			animation: fadeIn 1.5s ease-out;
-		}
-
-		.hero-title {
-			font-size: 3.6rem;
-			font-weight: 800;
-			letter-spacing: 1.5px;
-			background: var(--grad-accent);
-			-webkit-background-clip: text;
-			-webkit-text-fill-color: transparent;
-			margin-bottom: 0.7rem;
-		}
-
-		.hero-sub {
-			font-size: 1.2rem;
-			color: var(--color-text-sub);
-			margin-bottom: 2rem;
-			letter-spacing: 0.15em;
-			opacity: 0.95;
-		}
-
-		.hero-buttons {
-			display: flex;
-			gap: 20px;
-		}
-
-		.btn-main,
-		.btn-sub {
-			padding: 12px 32px;
-			border-radius: 4px;
-			text-decoration: none;
-			font-weight: 600;
-			letter-spacing: 0.8px;
-			transition: 0.3s ease;
-		}
-
-		.btn-main {
-			background: var(--grad-accent);
-			color: var(--color-text-main);
-			box-shadow: 0 0 18px var(--color-shadow-glow);
-		}
-
-		.btn-main:hover {
-			transform: translateY(-2px);
-			box-shadow: 0 0 28px rgba(170, 130, 255, 0.8);
-		}
-
-		.btn-sub {
-			border: 2px solid var(--color-border-light);
-			color: var(--color-text-main);
-			background: var(--color-bg-glass);
-		}
-
-		.btn-sub:hover {
-			background: rgba(255, 255, 255, 0.15);
-			border-color: var(--color-accent-purple-light);
-		}
-
-		@keyframes fadeIn {
-			from {
-				opacity: 0;
-				transform: translateY(25px);
-			}
-
-			to {
-				opacity: 1;
-				transform: translateY(0);
-			}
-		}
-
-		@media (max-width: 768px) {
-			.hero-section {
-				height: 460px;
-			}
-
-			.hero-overlay {
-				justify-content: center;
-				padding-left: 0;
-				background: rgba(0, 0, 0, 0.5);
-			}
-
-			.hero-text {
-				text-align: center;
-				padding: 0 8%;
-			}
-
-			.hero-title {
-				font-size: 2.4rem;
-			}
-
-			.hero-buttons {
-				flex-direction: column;
-				align-items: center;
-			}
-		}
-
-		/* ===========================================
-	新着情報セクション（共通トーン対応）
-	=========================================== */
-		.news-section {
-			background: var(--color-bg-black);
-			padding: 60px 0 70px;
-			border-top: 1px solid var(--color-border-thin);
-		}
-
-		.news-container {
-			max-width: 900px;
-			margin: 0 auto;
-			padding: 0 20px;
-		}
-
-		.news-list {
-			list-style: none;
-			padding: 0;
-			margin: 10px 0 0;
-		}
-
-		.news-list li {
-			display: flex;
-			align-items: center;
-			gap: 18px;
-			color: var(--color-text-sub);
-			font-size: 1rem;
-			margin-bottom: 4px;
-			border-bottom: 1px solid var(--color-border-thin);
-			padding: 2px 0 4px;
-			transition: color 0.3s ease;
-			line-height: 1.4;
-		}
-
-		.news-list li:hover {
-			color: var(--color-text-accent);
-		}
-
-		.news-date {
-			color: var(--color-accent-purple-light);
-			font-family: "Orbitron", sans-serif;
-			font-size: 0.9rem;
-			min-width: 90px;
-			text-align: left;
-			letter-spacing: 0.5px;
-		}
-
-		.news-content {
-			color: var(--color-text-main);
-		}
-	</style>
 
 </th:block>
+
+	<!--/*
+	以前ここに記述していたスタイルは
+	static/css/ec/top.css に移動しました
+	*/-->
 
 </html>

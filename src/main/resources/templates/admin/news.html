@@ -1,10 +1,8 @@
 <!-- ============================================================
-  新着情報管理（Wireframe Version）
-  現在はDB未連携のため、仮データを静的に表示しています。
-  ※ニューステーブルはまだ未作成です。
-  今後このページで「ショップトップに表示される新着情報」を
-  確認をできるようにする予定です。
-============================================================= -->
+  新着情報管理ページ（DB連携済）
+  newsテーブルを作成し、DBの内容が一覧に表示されるようになりました。
+  ※現在「編集」「削除」「新規追加」ボタンは未実装です（見た目のみ）。
+=============================================================== -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ja"
       th:replace="layout/admin_base :: admin_base(~{::content}, '新着情報管理', ~{::assets})">
@@ -14,8 +12,7 @@
   <section class="section">
     <h1>新着情報管理</h1>
     <p style="margin-bottom: 16px; color: #666;">
-      ※このページは現在ワイヤーフレーム段階です。  
-      新着情報テーブル作成後にDBと連携します。
+      最新3件のみがストアのトップページに表示されます。
     </p>
 
     <button class="btn btn-add">＋ 新規追加</button>
@@ -28,24 +25,24 @@
           <th>操作</th>
         </tr>
       </thead>
-      <tbody>
-        <tr>
-          <td>2025/11/07</td>
-          <td>新商品の予約受付を開始しました。</td>
-          <td>
-            <button class="btn">編集</button>
-            <button class="btn btn-danger">削除</button>
-          </td>
-        </tr>
-        <tr>
-          <td>2025/11/01</td>
-          <td>サイトメンテナンスを実施しました。</td>
-          <td>
-            <button class="btn">編集</button>
-            <button class="btn btn-danger">削除</button>
-          </td>
-        </tr>
-      </tbody>
+	  <tbody>
+		<!--/* データがある場合 */-->
+	    <tr th:each="n : ${newsList}">
+	      <td th:text="${#temporals.format(n.newsDate, 'yyyy/MM/dd')}"></td>
+	      <td th:text="${n.content}"></td>
+	      <td>
+	        <button class="btn">編集</button>
+	        <button class="btn btn-danger">削除</button>
+	      </td>
+	    </tr>
+		
+		<!--/* データが0件の場合 */-->
+		<tr th:if="${#lists.isEmpty(newsList)}">
+		  <td colspan="3" style="text-align:center; padding:12px; color:#888;">
+		    新着情報がまだ登録されていません。
+		  </td>
+		</tr>
+	  </tbody>
     </table>
 	</div>
   </disection>
