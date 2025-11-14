@@ -26,6 +26,7 @@ public class OrderController {
 
 	private final OrderService orderService;
 	private final OrderListService orderListService;
+	private Object Keyword;
 
 	/**
 	 * 購入履歴一覧を表示（並び替え対応）
@@ -35,7 +36,7 @@ public class OrderController {
 			Model model,
 			Principal principal,
 			@RequestParam(name = "sort", defaultValue = "desc") String sort,
-			@RequestParam(name = "keyword", required = false) String keyword) {
+			@RequestParam(name = "historyKeyword", required = false) String keyword) {
 
 		if (principal == null) {
 			return "redirect:/login";
@@ -88,7 +89,7 @@ public class OrderController {
 		model.addAttribute("totalPriceMap", totalPriceMap);
 		model.addAttribute("shippingFeeMap", shippingFeeMap);
 		model.addAttribute("sort", sort);
-		model.addAttribute("keyword", keyword);
+		model.addAttribute("historyKeyword", keyword);
 
 		return "order/history";
 	}

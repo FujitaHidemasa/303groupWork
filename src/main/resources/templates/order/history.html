@@ -200,7 +200,7 @@
 						<option value="asc" th:selected="${sort == 'asc'}">古い順</option>
 					</select>
 
-					<input type="text" name="keyword" placeholder="商品名で検索" th:value="${keyword}"
+					<input type="text" name="historyKeyword" placeholder="商品名で検索" th:value="${historyKeyword}"
 						style="padding:6px 10px; margin-left:10px; border-radius:6px; border:1px solid #aaa;">
 
 					<button type="submit" style="padding:6px 10px; margin-left:5px;">検索</button>
@@ -268,17 +268,17 @@
 			</div>
 
 			<!-- ▼ 検索結果がない時専用メッセージ -->
-			<p class="no-history"
-				th:if="${keyword != null and keyword != '' and (groupedOrders == null or groupedOrders.isEmpty())}">
+			<!-- ▼ 検索結果がない時専用メッセージ -->
+			<p class="no-history" th:if="${historyKeyword != null and historyKeyword != '' 
+			           and (groupedOrders == null or groupedOrders.isEmpty())}">
 				検索結果がありません。
 			</p>
 
 			<!-- ▼ 通常（検索していない）状態で履歴がゼロの場合 -->
-			<p class="no-history"
-				th:if="${(keyword == null or keyword == '') and (groupedOrders == null or groupedOrders.isEmpty())}">
+			<p class="no-history" th:if="${(historyKeyword == null or historyKeyword == '') 
+			           and (groupedOrders == null or groupedOrders.isEmpty())}">
 				購入履歴がありません。
 			</p>
-
 
 			<div class="cart-actions">
 				<a th:href="@{/voidrshop}">トップページへ戻る</a>
