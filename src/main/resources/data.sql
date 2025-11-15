@@ -13,9 +13,9 @@ VALUES
 -- ===============================
 -- 商品テーブル（3件）
 -- ===============================
-INSERT INTO item (name, price, overview,is_download, thumbs_image_name)
-VALUES 
-('ダミー', 0, 'ダミー用',false, 'dummy.jpg');
+-- INSERT INTO item (name, price, overview,is_download, thumbs_image_name)
+-- VALUES 
+-- ('ダミー', 0, 'ダミー用',false, 'dummy.jpg');
 
 -- ===============================
 -- 新着情報テーブル（4件）

@@ -27,7 +27,8 @@ public class TopController
 	@GetMapping
 	public String showMenu(Model model)
 	{
-	    itemService.syncItems();
+		/** 削除した商品を復活させるためコメントアウト */
+	     // itemService.syncItems();
 
 	    // ランダム4件を取得
 	    List<Item> items = itemService.getRandom4Items();

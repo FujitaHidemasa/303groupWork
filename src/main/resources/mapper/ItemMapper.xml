@@ -76,6 +76,20 @@
 		LIMIT 4
 	</select>
 
+	<select id="selectRandom4" resultMap="ItemMap">
+		SELECT id, name, price,
+		overview, is_download, thumbs_image_name,
+		created_at, updated_at
+		FROM item
+		ORDER BY RANDOM()
+		LIMIT 4
+	</select>
+
+	<select id="countAll" resultType="int">
+		SELECT COUNT(*) FROM item;
+	</select>
+	
+
 	<!-- ============================== INSERT / UPDATE / DELETE ============================== -->
 	<insert id="insert">
 	INSERT INTO item (id, name, price, overview,is_download,
@@ -101,13 +115,5 @@
 		DELETE FROM item WHERE id = #{id}
 	</delete>
 	
-	<select id="selectRandom4" resultMap="ItemMap">
-    SELECT id, name, price,
-           overview, is_download, thumbs_image_name,
-           created_at, updated_at
-    FROM item
-    ORDER BY RANDOM()
-    LIMIT 4
-</select>
 	
 </mapper>

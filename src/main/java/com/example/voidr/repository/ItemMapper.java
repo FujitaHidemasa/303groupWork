@@ -40,4 +40,6 @@ public interface ItemMapper
 	/**ランダム4件取得*/
 	List<Item> selectRandom4();
 
+	/** 商品件数を返す */
+	int countAll();
 }

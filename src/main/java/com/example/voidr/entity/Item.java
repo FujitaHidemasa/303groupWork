@@ -15,19 +15,19 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Item {
 	/** 商品ID */
-	private long id;
+	private Long id;
 
 	/** 商品名 */
 	private String name;
 
 	/** 値段 */
-	private int price;
+	private Integer price;
 
 	/** 概要 */
 	private String overview;
 
 	/** ダウンロード商品かどうか */
-	private boolean isDownload;
+	private Boolean isDownload;
 
 	/** 作成日 */
 	private LocalDateTime createdAt;
