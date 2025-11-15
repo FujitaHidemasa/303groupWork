@@ -27,4 +27,13 @@ public interface NewsMapper {
      * @return 全ニュースリスト（id の降順で並ぶ）
      */
     List<News> findAll();
+    
+	// ★追加：ID指定で1件取得
+	News findById(Integer id);
+
+	// ★追加：1件更新
+	void update(News news);
+
+	// ★追加：1件削除
+	void delete(Integer id);
 }

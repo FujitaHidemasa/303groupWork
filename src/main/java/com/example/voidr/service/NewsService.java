@@ -20,4 +20,13 @@ public interface NewsService {
      * 全ニュースを新しい順で取得（管理画面用）
      */
     List<News> findAll();
+    
+	// ★追加：ID指定で1件取得（編集用）
+	News findById(Integer id);
+
+	// ★追加：1件更新
+	void update(News news);
+
+	// ★追加：1件削除
+	void delete(Integer id);
 }

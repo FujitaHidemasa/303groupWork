@@ -9,7 +9,7 @@
   <select id="findLatest3" resultType="com.example.voidr.entity.News">
     SELECT id, news_date, content
     FROM news
-    ORDER BY id DESC
+    ORDER BY news_date DESC, id DESC
     LIMIT 3
   </select>
 
@@ -23,7 +23,31 @@
   <select id="findAll" resultType="com.example.voidr.entity.News">
     SELECT id, news_date, content
     FROM news
-    ORDER BY id DESC
+    ORDER BY news_date DESC, id DESC
   </select>
+
+	<!-- ★追加：ID指定で1件取得 -->
+	<select id="findById" parameterType="int"
+		resultType="com.example.voidr.entity.News">
+		SELECT id, news_date, content
+		FROM news
+		WHERE id = #{id}
+	</select>
+
+	<!-- ★追加：1件更新 -->
+	<update id="update"
+		parameterType="com.example.voidr.entity.News">
+		UPDATE news
+		SET
+		news_date = #{newsDate},
+		content = #{content}
+		WHERE id = #{id}
+	</update>
+
+	<!-- ★追加：1件削除 -->
+	<delete id="delete" parameterType="int">
+		DELETE FROM news
+		WHERE id = #{id}
+	</delete>
 
 </mapper>
