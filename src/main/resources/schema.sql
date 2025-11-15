@@ -8,16 +8,21 @@ DROP TABLE IF EXISTS "order" CASCADE;
 DROP TABLE IF EXISTS order_list CASCADE;
 DROP TABLE IF EXISTS item CASCADE;
 DROP TABLE IF EXISTS item_category CASCADE;
+DROP TABLE IF EXISTS delivery_address CASCADE; --テスト用
 DROP TABLE IF EXISTS login_user CASCADE;
 DROP TABLE IF EXISTS item_image CASCADE;
 
--- ★追加：マッパーが参照する単数形を優先して削除
+-- マッパーが参照する単数形を優先して削除
 DROP TABLE IF EXISTS favorite CASCADE;
 
--- ★追加：既存の複数形を使っていた場合の掃除
+-- 既存の複数形を使っていた場合の掃除
 DROP TABLE IF EXISTS favorites CASCADE;
 
+-- 新着情報テーブルの削除 テスト用
+DROP TABLE IF EXISTS news CASCADE;
+
 DROP TYPE IF EXISTS role CASCADE;
+
 
 -- ===============================
 --  ENUM型定義（権限）
@@ -38,6 +43,20 @@ CREATE TABLE login_user (
     phone_number VARCHAR(20),               -- 電話番号
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+-- ===============================
+--	配送テーブル	テスト用
+-- ===============================
+CREATE TABLE delivery_address (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL REFERENCES login_user(id) ON DELETE CASCADE,
+    recipient_name VARCHAR(100) NOT NULL,
+    postal_code VARCHAR(10),
+    address TEXT NOT NULL,
+    phone VARCHAR(20),
+    created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
 -- ===============================
@@ -146,9 +165,15 @@ CREATE TABLE IF NOT EXISTS favorite (
 CREATE INDEX IF NOT EXISTS idx_favorite_user ON favorite(user_id);
 CREATE INDEX IF NOT EXISTS idx_favorite_item ON favorite(item_id);
 
--- ===============================
---  11/05 追加制約（存在チェック付き）
--- ===============================
+-- -------------------------------
+-- 新着情報テーブル
+-- -------------------------------
+CREATE TABLE news (
+	id SERIAL PRIMARY KEY,
+	news_date DATE NOT NULL,
+	content TEXT NOT NULL
+);
+
 
 -- cart: 同じカートに同じ商品を重複追加できないようにする（何度実行しても安全）
 CREATE UNIQUE INDEX IF NOT EXISTS uq_cart_cartlist_item
