@@ -99,10 +99,24 @@ CREATE TABLE item_image (
 --  購入履歴リスト（注文全体の単位）
 -- ===============================
 CREATE TABLE order_list (
-    id SERIAL PRIMARY KEY,
-    user_id INTEGER REFERENCES login_user(id) ON DELETE CASCADE,
-    created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP
+	id SERIAL PRIMARY KEY,
+	user_id INTEGER REFERENCES login_user(id) ON DELETE CASCADE,
+	
+	-- 購入画面でユーザーが入力した情報
+	payment_method VARCHAR(50),  -- 支払い方法
+	address        TEXT,         -- 配送先住所
+	delivery_date  DATE,         -- 配達希望日
+	delivery_time  VARCHAR(20),  -- 配達希望時間帯
+	
+	-- 注文ステータス
+	status VARCHAR(20) NOT NULL DEFAULT 'NEW',
+	
+	-- 金額情報（確定値として保存）
+	shipping_fee INTEGER NOT NULL DEFAULT 0,
+	final_total  INTEGER NOT NULL DEFAULT 0,
+
+	created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+	updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
 -- ===============================
