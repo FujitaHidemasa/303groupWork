@@ -46,8 +46,14 @@ public class CartController {
 		long userId = currentUserId(principal);
 		List<CartView> items = cartService.list(userId);
 		int total = cartService.sumTotal(userId);
+		
+		// 追加：販売終了の商品が含まれるかどうか
+		boolean hasDeletedItems = items.stream()
+				.anyMatch(cv -> cv != null && cv.isItemDeleted());
+		
 		model.addAttribute("cartItems", items);
 		model.addAttribute("total", total);
+		model.addAttribute("hasDeletedItems", hasDeletedItems);
 		return "shop/cart/list";
 	}
 

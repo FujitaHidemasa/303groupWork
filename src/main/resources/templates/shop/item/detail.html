@@ -28,7 +28,8 @@
 					<tr>
 						<th>購入</th>
 						<td>
-							<div class="action-buttons">
+							<!-- ★追加：削除されていない商品だけ購入ボタン＆お気に入りを表示 -->
+							<div class="action-buttons" th:if="${!item.isDeleted}">
 								<!-- 🛒 カート追加 -->
 								<form id="cartForm" th:action="@{/voidrshop/cart/add}" method="post">
 									<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
@@ -45,6 +46,13 @@
 									<span class="star" th:text="${isFavorite} ? '★' : '☆'">☆</span>
 									<span class="label"> お気に入り</span>
 								</button>
+							</div>
+							
+							<!-- ★追加：削除済み商品の場合のメッセージ表示 -->
+							<div th:if="${item.isDeleted}">
+								<p style="color:#f66; font-weight:bold; margin-top:8px;">
+									この商品は現在販売を終了しています。（購入履歴としてのみ表示されています）
+								</p>
 							</div>
 						</td>
 					</tr>
@@ -207,7 +215,7 @@
 			color: #333;
 		}
 
-		/* ★追加：お気に入りON時（data-fav=true）は★だけ黄色にする */
+		/* お気に入りON時（data-fav=true）は★だけ黄色にする */
 		.favorite-btn .star {
 			transition: color 0.15s ease;
 		}

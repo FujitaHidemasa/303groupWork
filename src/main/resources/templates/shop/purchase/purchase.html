@@ -84,6 +84,16 @@
 		<section>
 			<h2>購入画面</h2>
 
+			<!-- メッセージ（カート空 / 全て販売終了 等） -->
+			<p th:if="${message}" th:text="${message}"
+				style="margin-top:10px; text-align:center; color:#c00;"></p>
+
+			<!-- カートに販売終了品が含まれている場合の注意書き -->
+			<p th:if="${hasDeletedItems}"
+				style="margin-top:5px; text-align:center; color:#c00; font-size:0.9rem;">
+				※ カート内に販売終了の商品がありましたが、これらは購入内容には含まれていません。
+			</p>
+
 			<!-- 商品一覧 -->
 			<table>
 				<thead>
@@ -131,7 +141,6 @@
 
 						<br><br>
 						<!-- 配達希望日 -->
-						<!-- 配達希望日を最短日から2週間後まで選択できる <select> に変更 -->
 						<label for="deliveryDate"><strong>配達希望日：</strong></label>
 						<select id="deliveryDate" name="deliveryDate" style="margin-left:10px;" required>
 							<option value="" disabled selected>--選択してください--</option>

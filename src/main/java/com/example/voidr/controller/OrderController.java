@@ -6,14 +6,21 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.example.voidr.entity.Item;
+import com.example.voidr.entity.LoginUser;
 import com.example.voidr.entity.Order;
 import com.example.voidr.entity.OrderList;
+import com.example.voidr.service.CartService;
+import com.example.voidr.service.ItemService;
 import com.example.voidr.service.OrderListService;
 import com.example.voidr.service.OrderService;
 
@@ -26,7 +33,10 @@ public class OrderController {
 
 	private final OrderService orderService;
 	private final OrderListService orderListService;
-	private Object Keyword;
+	// ★追加：再購入で商品取得＆カート追加を行うため
+	private final ItemService itemService;
+	private final CartService cartService;
+	// private Object Keyword;
 
 	/**
 	 * 購入履歴一覧を表示（並び替え対応）
@@ -92,6 +102,46 @@ public class OrderController {
 		model.addAttribute("historyKeyword", keyword);
 
 		return "order/history";
+	}
+	
+	/**
+	 * ★再購入処理（1商品のみ）
+	 * 購入履歴の行から「再購入」された商品をカートに追加する。
+	 * 削除済み（販売終了）の商品は追加しない。
+	 */
+	@PostMapping("/reorder")
+	public String reorderSingleItem(
+			@RequestParam("itemId") Long itemId,
+			@RequestParam(name = "quantity", defaultValue = "1") Integer quantity,
+			@AuthenticationPrincipal LoginUser loginUser,
+			RedirectAttributes redirectAttributes) {
+
+		// ログインチェック
+		if (loginUser == null) {
+			return "redirect:/login";
+		}
+
+		Long userId = loginUser.getId();
+
+		// 商品取得
+		Item item = itemService.getItemById(itemId);
+
+		// 存在しない or 削除済みならカートに入れない
+		if (item == null || Boolean.TRUE.equals(item.getIsDeleted())) {
+			redirectAttributes.addFlashAttribute(
+					"errorMessage",
+					"この商品は現在販売を終了しているため、再購入できません。");
+			return "redirect:/mypage/orders";
+		}
+
+		// 生きている商品だけカートに追加
+		cartService.addItem(userId, itemId, quantity);
+
+		redirectAttributes.addFlashAttribute(
+				"successMessage",
+				"商品をカートに追加しました。");
+
+		return "redirect:/voidrshop/cart";
 	}
 
 }
