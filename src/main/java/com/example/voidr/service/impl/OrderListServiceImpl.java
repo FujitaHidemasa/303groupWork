@@ -4,10 +4,11 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.example.voidr.dto.MonthlySales;
 import com.example.voidr.entity.Account;
 import com.example.voidr.entity.OrderList;
-import com.example.voidr.repository.OrderListMapper;
 import com.example.voidr.repository.AccountMapper;
+import com.example.voidr.repository.OrderListMapper;
 import com.example.voidr.service.OrderListService;
 
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 public class OrderListServiceImpl implements OrderListService {
 
 	private final OrderListMapper orderListMapper;
-  private final AccountMapper accountMapper;
+	private final AccountMapper accountMapper;
 
 	@Override
 	public List<OrderList> getOrderListsByUserId(long userId) {
@@ -31,12 +32,16 @@ public class OrderListServiceImpl implements OrderListService {
 		Account account = accountMapper.findByUsername(orderList.getUsername());
 		if (account == null) {
 			throw new IllegalArgumentException("ユーザーが存在しません: " + orderList.getUsername());
-    }
-    orderList.setUserId(account.getId());
+		}
+		orderList.setUserId(account.getId());
 
-    
 		if (orderList.getUserId() <= 0) {
 			throw new IllegalArgumentException("ユーザーIDが無効です");
+		}
+
+		// 新規作成時のステータス（未出荷）
+		if (orderList.getStatus() == null || orderList.getStatus().isBlank()) {
+			orderList.setStatus("NEW"); // NEW = 未出荷
 		}
 		orderListMapper.insertOrderList(orderList);
 	}
@@ -47,4 +52,33 @@ public class OrderListServiceImpl implements OrderListService {
 		return orderListMapper.findByUserName(username);
 	}
 
+	@Override
+	public List<OrderList> getAllOrderListsWithUser() {
+		// 管理画面用：全ユーザー分の注文リスト＋ユーザー名
+		return orderListMapper.findAllWithUserName();
+	}
+
+	// ステータス更新（管理画面から使用）
+	@Override
+	public void updateStatus(long orderListId, String status) {
+		orderListMapper.updateStatus(orderListId, status);
+	}
+	
+	@Override
+	public OrderList getById(long orderListId) {
+		return orderListMapper.findById(orderListId);
+	}
+	
+	// 当月売上合計（出荷済みのみ）
+	@Override
+	public int getCurrentMonthSales() {
+		Integer result = orderListMapper.findCurrentMonthSales();
+		return (result != null) ? result : 0;
+	}
+	
+	// 過去12ヶ月の月別売上一覧（出荷済みのみ）
+	@Override
+	public List<MonthlySales> getMonthlySalesLast12Months() {
+		return orderListMapper.findMonthlySalesLast12Months();
+	}
 }

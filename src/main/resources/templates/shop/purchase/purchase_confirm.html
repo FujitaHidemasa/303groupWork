@@ -116,6 +116,12 @@
 		<section>
 			<h2>購入内容の確認</h2>
 
+			<!-- 販売終了品があった場合の注意 -->
+			<p th:if="${hasDeletedItems}"
+				style="text-align:center; color:#c00; margin-bottom:10px; font-size:0.9rem;">
+				※ カート内に販売終了の商品がありましたが、これらは注文内容に含まれていません。
+			</p>
+
 			<!-- 支払い方法・住所・配達希望日（表示用） -->
 			<div class="info-section">
 				<p><strong>支払い方法：</strong><span th:text="${paymentMethod}">着払い</span></p>

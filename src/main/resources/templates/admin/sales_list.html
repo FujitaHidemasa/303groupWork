@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja"
+	th:replace="layout/admin_base :: admin_base(~{::content}, '月別売上一覧', ~{::assets})">
+
+<th:block th:fragment="content">
+	<section class="section">
+		<h1>月別売上一覧（出荷済み）</h1>
+
+		<p style="margin-bottom: 12px; color: #ccc; font-size: 0.9rem;">
+			※ ステータスが「出荷済み」の注文のみを対象にしています。<br />
+			※ 最大で直近12ヶ月分まで表示されます。
+		</p>
+
+		<div class="table-container" th:if="${salesList != null and !salesList.isEmpty()}">
+			<table>
+				<thead>
+					<tr>
+						<th>年月</th>
+						<th>売上金額（出荷済み）</th>
+						<th>出荷済み件数</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="row : ${salesList}">
+						<!-- 年月（例：2025-11） -->
+						<td th:text="${row.yearMonth}">2025-11</td>
+
+						<!-- 売上金額 -->
+						<td th:text="${#numbers.formatInteger(row.totalSales, 1, 'COMMA')} + '円'">
+							120,000円
+						</td>
+
+						<!-- 出荷済み件数 -->
+						<td th:text="${row.orderCount} + '件'">8件</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<!-- データが無い場合 -->
+		<p th:if="${salesList == null or salesList.isEmpty()}" style="margin-top: 24px; color:#ccc;">
+			出荷済みの注文がないため、売上データがありません。
+		</p>
+
+		<div style="margin-top: 20px;">
+			<a th:href="@{/admin}" class="btn btn-primary">管理ダッシュボードへ戻る</a>
+		</div>
+	</section>
+</th:block>
+
+</html>

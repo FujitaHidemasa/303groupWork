@@ -13,10 +13,24 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CartView 
 {
-    private Cart cart;
-    private Item item;
-	public int getSubtotal() {
-		// TODO 自動生成されたメソッド・スタブ
-		return 0;
+	private Cart cart;
+	private Item item;
+
+	// 追加：この行が「販売終了」商品かどうか
+	public boolean isItemDeleted() 
+	{
+		return item != null && Boolean.TRUE.equals(item.getIsDeleted());
+	}
+
+	// 追加：小計（販売終了品は 0 円として扱う）
+	public int getSubtotal() 
+	{
+		if (cart == null || item == null) {
+			return 0;
+		}
+		if (isItemDeleted()) {
+			return 0;
+		}
+		return item.getPrice() * cart.getQuantity();
 	}
 }
