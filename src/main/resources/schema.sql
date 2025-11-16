@@ -70,7 +70,7 @@ CREATE TABLE item (
     is_download BOOLEAN NOT NULL,
     thumbs_image_name TEXT,
 
-	-- ★追加：ソフトデリート用フラグ（TRUEなら削除扱い）
+	-- 追加：ソフトデリート用フラグ（TRUEなら削除扱い）
 	is_deleted   BOOLEAN NOT NULL DEFAULT FALSE,
     
     created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
@@ -110,6 +110,10 @@ CREATE TABLE order_list (
 	
 	-- 注文ステータス
 	status VARCHAR(20) NOT NULL DEFAULT 'NEW',
+	
+	-- 金額情報（確定値として保存）
+	shipping_fee INTEGER NOT NULL DEFAULT 0,
+	final_total  INTEGER NOT NULL DEFAULT 0,
 
 	created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
 	updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP
@@ -165,7 +169,7 @@ CREATE TABLE cart (
 -- -------------------------------
 -- お気に入りテーブル
 -- -------------------------------
--- ★修正：Mapper が参照する単数形 "favorite" を作成
+-- Mapper が参照する単数形 "favorite" を作成
 CREATE TABLE IF NOT EXISTS favorite (
     id SERIAL PRIMARY KEY,
     user_id INTEGER NOT NULL REFERENCES login_user(id) ON DELETE CASCADE,
@@ -175,7 +179,7 @@ CREATE TABLE IF NOT EXISTS favorite (
     CONSTRAINT uq_favorite_user_item UNIQUE (user_id, item_id)
 );
 
--- ★追加：検索高速化
+-- 検索高速化
 CREATE INDEX IF NOT EXISTS idx_favorite_user ON favorite(user_id);
 CREATE INDEX IF NOT EXISTS idx_favorite_item ON favorite(item_id);
 
@@ -189,7 +193,7 @@ CREATE TABLE news (
 );
 
 
--- cart: 同じカートに同じ商品を重複追加できないようにする（何度実行しても安全）
+-- cart: 同じカートに同じ商品を重複追加できないようにする
 CREATE UNIQUE INDEX IF NOT EXISTS uq_cart_cartlist_item
   ON cart (cartlist_id, item_id);
   
