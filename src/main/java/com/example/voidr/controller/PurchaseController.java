@@ -252,6 +252,11 @@ public class PurchaseController {
 		orderList.setAddress(address);
 		orderList.setDeliveryDate(deliveryDateValue);
 		orderList.setDeliveryTime(deliveryTime);
+		
+		// 確定した送料・合計金額を保存
+		orderList.setShippingFee(shippingFee);
+		orderList.setFinalTotal(finalTotal);
+		
 		// status は OrderListServiceImpl.createOrderList() 側で NEW に初期化
 		orderListService.createOrderList(orderList);
 

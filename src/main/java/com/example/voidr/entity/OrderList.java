@@ -23,7 +23,8 @@ public class OrderList {
 	private String address;
 	private LocalDate deliveryDate;
 	private String deliveryTime;
-	
+	private int shippingFee; // 送料
+	private int finalTotal; // 支払金額合計
 	private LocalDateTime createdAt; // 作成日時
 	private LocalDateTime updatedAt; // 更新日時
 }

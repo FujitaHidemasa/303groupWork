@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.example.voidr.dto.MonthlySales;
 import com.example.voidr.entity.Account;
 import com.example.voidr.entity.OrderList;
 import com.example.voidr.repository.AccountMapper;
@@ -57,7 +58,7 @@ public class OrderListServiceImpl implements OrderListService {
 		return orderListMapper.findAllWithUserName();
 	}
 
-	// ★追加：ステータス更新（管理画面から使用）
+	// ステータス更新（管理画面から使用）
 	@Override
 	public void updateStatus(long orderListId, String status) {
 		orderListMapper.updateStatus(orderListId, status);
@@ -66,5 +67,18 @@ public class OrderListServiceImpl implements OrderListService {
 	@Override
 	public OrderList getById(long orderListId) {
 		return orderListMapper.findById(orderListId);
+	}
+	
+	// 当月売上合計（出荷済みのみ）
+	@Override
+	public int getCurrentMonthSales() {
+		Integer result = orderListMapper.findCurrentMonthSales();
+		return (result != null) ? result : 0;
+	}
+	
+	// 過去12ヶ月の月別売上一覧（出荷済みのみ）
+	@Override
+	public List<MonthlySales> getMonthlySalesLast12Months() {
+		return orderListMapper.findMonthlySalesLast12Months();
 	}
 }

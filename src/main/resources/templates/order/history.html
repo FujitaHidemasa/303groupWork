@@ -192,7 +192,7 @@
 		<section>
 			<h2>購入履歴</h2>
 			
-			<!-- ★追加：フラッシュメッセージ表示エリア -->
+			<!-- フラッシュメッセージ表示エリア -->
 			<div th:if="${errorMessage}" style="margin: 10px 0; padding: 10px 14px; border-radius: 6px;
 						            background-color: #ffe6e6; border: 1px solid #feb2b2; color:#b00020;">
 				<span th:text="${errorMessage}"></span>
@@ -266,7 +266,17 @@
 									<td th:text="${order.itemName}"></td>
 									<td th:text="${order.quantity}"></td>
 									<td th:text="'¥' + ${#numbers.formatInteger(order.price, 0)}"></td>
-									<td th:text="${order.isHold ? '保留中' : '注文受付'}"></td>
+									
+									<!-- 差し替え -->
+									<td>
+											<span th:switch="${statusMap[entry.key]}">
+												<span th:case="'NEW'">注文受付</span>
+												<span th:case="'SHIPPED'">出荷済み</span>
+												<span th:case="'CANCELLED'">キャンセル</span>
+												<span th:case="*">注文受付</span>
+											</span>
+									</td>
+									
 									<td class="action-buttons">
 										<button class="detail"
 											th:onclick="'location.href=\'' + @{/voidrshop/items/{id}(id=${order.itemId})} + '\';'">詳細</button>

@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import com.example.voidr.dto.MonthlySales;
 import com.example.voidr.entity.OrderList;
 //findByUserId(), insertOrderList()
 @Mapper
@@ -27,4 +28,10 @@ public interface OrderListMapper {
 	void updateStatus(
 			@Param("orderListId") long orderListId,
 			@Param("status") String status);
+	
+	// 当月の売上合計（出荷済みのみ）
+	Integer findCurrentMonthSales();
+	
+	// 過去12ヶ月の月別売上（出荷済みのみ）
+	List<MonthlySales> findMonthlySalesLast12Months();
 }

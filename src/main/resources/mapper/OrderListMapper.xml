@@ -10,51 +10,57 @@
 	<select id="findByUserId" parameterType="long"
 		resultType="com.example.voidr.entity.OrderList">
 		SELECT
-			ol.id,
-			ol.user_id,
-			ol.status,
-			ol.payment_method,
-			ol.address,
-			ol.delivery_date,
-			ol.delivery_time,
-			ol.created_at,
-			ol.updated_at,
-			u.username AS username
+		ol.id,
+		ol.user_id,
+		ol.status,
+		ol.payment_method,
+		ol.address,
+		ol.delivery_date,
+		ol.delivery_time,
+		ol.shipping_fee,
+		ol.final_total,
+		ol.created_at,
+		ol.updated_at,
+		u.username
 		FROM
-			order_list ol
+		order_list ol
 		JOIN
-			login_user u ON ol.user_id = u.id
+		login_user u ON ol.user_id = u.id
 		WHERE
-			ol.user_id = #{userId}
+		ol.user_id = #{userId}
 		ORDER BY
-			ol.created_at DESC,
-			ol.id DESC
+		ol.created_at DESC,
+		ol.id DESC
 	</select>
 
 	<!-- ========================================================= -->
-	<!-- 新しい購入履歴（注文リスト）を作成 -->
+	<!-- 新しい注文リストを作成 -->
 	<!-- ========================================================= -->
 	<insert id="insertOrderList"
 		parameterType="com.example.voidr.entity.OrderList"
 		useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO order_list (
-			user_id,
-			status,
-			payment_method,
-			address,
-			delivery_date,
-			delivery_time,
-			created_at,
-			updated_at
+		user_id,
+		status,
+		payment_method,
+		address,
+		delivery_date,
+		delivery_time,
+		shipping_fee,
+		final_total,
+		created_at,
+		updated_at
 		) VALUES (
-			#{userId},
-			#{status},
-			#{paymentMethod},
-			#{address},
-			#{deliveryDate},
-			#{deliveryTime},
-			CURRENT_TIMESTAMP,
-			CURRENT_TIMESTAMP
+		#{userId},
+		#{status},
+		#{paymentMethod},
+		#{address},
+		#{deliveryDate},
+		#{deliveryTime},
+		#{shippingFee},
+		#{finalTotal},
+		CURRENT_TIMESTAMP,
+		CURRENT_TIMESTAMP
 		)
 	</insert>
 
@@ -64,76 +70,115 @@
 	<select id="findByUserName" parameterType="string"
 		resultType="com.example.voidr.entity.OrderList">
 		SELECT
-			ol.id,
-			ol.user_id,
-			ol.status,
-			ol.payment_method,
-			ol.address,
-			ol.delivery_date,
-			ol.delivery_time,
-			ol.created_at,
-			ol.updated_at,
-			u.username AS username
+		ol.id,
+		ol.user_id,
+		ol.status,
+		ol.payment_method,
+		ol.address,
+		ol.delivery_date,
+		ol.delivery_time,
+		ol.shipping_fee,
+		ol.final_total,
+		ol.created_at,
+		ol.updated_at,
+		u.username
 		FROM
-			order_list ol
+		order_list ol
 		JOIN
-			login_user u ON ol.user_id = u.id
+		login_user u ON ol.user_id = u.id
 		WHERE
-			u.username = #{username}
+		u.username = #{username}
 		ORDER BY
-			ol.created_at DESC,
-			ol.id DESC
+		ol.created_at DESC,
+		ol.id DESC
 	</select>
 
 	<!-- ========================================================= -->
-	<!-- 管理者用：全ユーザーの注文リスト＋ユーザー名 -->
+	<!-- 管理者用：全ユーザー分の注文リスト＋ユーザー名 -->
 	<!-- ========================================================= -->
 	<select id="findAllWithUserName"
 		resultType="com.example.voidr.entity.OrderList">
 		SELECT
-			ol.id,
-			ol.user_id,
-			ol.status,
-			ol.payment_method,
-			ol.address,
-			ol.delivery_date,
-			ol.delivery_time,
-			ol.created_at,
-			ol.updated_at,
-			u.username AS username
+		ol.id,
+		ol.user_id,
+		ol.status,
+		ol.payment_method,
+		ol.address,
+		ol.delivery_date,
+		ol.delivery_time,
+		ol.shipping_fee,
+		ol.final_total,
+		ol.created_at,
+		ol.updated_at,
+		u.username
 		FROM
-			order_list ol
+		order_list ol
 		JOIN
-			login_user u ON ol.user_id = u.id
+		login_user u ON ol.user_id = u.id
 		ORDER BY
-			ol.created_at DESC,
-			ol.id DESC
+		ol.created_at DESC,
+		ol.id DESC
 	</select>
-	
+
 	<!-- ========================================================= -->
 	<!-- 管理者用：注文リストをIDで1件取得 -->
 	<!-- ========================================================= -->
 	<select id="findById" parameterType="long"
 		resultType="com.example.voidr.entity.OrderList">
 		SELECT
-			ol.id,
-			ol.user_id,
-			ol.status,
-			ol.payment_method,
-			ol.address,
-			ol.delivery_date,
-			ol.delivery_time,
-			ol.created_at,
-			ol.updated_at,
-			u.username AS username
+		ol.id,
+		ol.user_id,
+		ol.status,
+		ol.payment_method,
+		ol.address,
+		ol.delivery_date,
+		ol.delivery_time,
+		ol.shipping_fee,
+		ol.final_total,
+		ol.created_at,
+		ol.updated_at,
+		u.username
 		FROM
-			order_list ol
+		order_list ol
 		JOIN
-			login_user u ON ol.user_id = u.id
+		login_user u ON ol.user_id = u.id
 		WHERE
-			ol.id = #{id}
+		ol.id = #{id}
+		LIMIT 1
 	</select>
-	
+
+	<!-- ========================================================= -->
+	<!-- 当月売上合計（status=SHIPPED の final_total 合計） -->
+	<!-- ========================================================= -->
+	<select id="findCurrentMonthSales" resultType="int">
+		SELECT
+			COALESCE(SUM(final_total), 0)
+		FROM
+			order_list
+		WHERE
+			status = 'SHIPPED'
+			AND date_trunc('month', updated_at) = date_trunc('month', CURRENT_DATE)
+	</select>
+
+	<!-- ========================================================= -->
+	<!-- ★追加：過去12ヶ月の月別売上（status=SHIPPED の final_total 合計） -->
+	<!-- ========================================================= -->
+	<select id="findMonthlySalesLast12Months"
+		resultType="com.example.voidr.dto.MonthlySales">
+		SELECT
+		to_char(date_trunc('month', updated_at), 'YYYY-MM') AS year_month,
+		COALESCE(SUM(final_total), 0) AS total_sales,
+		COUNT(*) AS order_count
+		FROM
+		order_list
+		WHERE
+		status = 'SHIPPED'
+		GROUP BY
+		date_trunc('month', updated_at)
+		ORDER BY
+		date_trunc('month', updated_at) DESC
+		LIMIT 12
+	</select>
 
 	<!-- ========================================================= -->
 	<!-- ステータス更新 -->
@@ -141,10 +186,10 @@
 	<update id="updateStatus">
 		UPDATE order_list
 		SET
-			status = #{status},
-			updated_at = CURRENT_TIMESTAMP
+		status = #{status},
+		updated_at = CURRENT_TIMESTAMP
 		WHERE
-			id = #{orderListId}
+		id = #{orderListId}
 	</update>
 
 </mapper>

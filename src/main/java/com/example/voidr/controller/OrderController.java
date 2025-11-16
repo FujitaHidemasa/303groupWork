@@ -66,11 +66,12 @@ public class OrderController {
 		Map<Long, List<Order>> groupedOrders = new LinkedHashMap<>();
 		Map<Long, Integer> totalPriceMap = new LinkedHashMap<>();
 		Map<Long, Integer> shippingFeeMap = new LinkedHashMap<>();
+		Map<Long, String> statusMap = new LinkedHashMap<>();
 
 		for (OrderList ol : orderLists) {
 			List<Order> orderHistory = orderService.getOrderHistory(ol.getId());
 
-			// ★ 検索キーワードがある場合 → 商品名でフィルタ
+			// 検索キーワードがある場合 → 商品名でフィルタ
 			if (keyword != null && !keyword.trim().isEmpty()) {
 				String lower = keyword.toLowerCase();
 				orderHistory = orderHistory.stream()
@@ -78,7 +79,7 @@ public class OrderController {
 						.toList();
 			}
 
-			// ★ フィルタの結果、注文内容が0件ならこの注文リストを除外
+			// フィルタの結果、注文内容が0件ならこの注文リストを除外
 			if (orderHistory.isEmpty()) {
 				continue;
 			}
@@ -93,11 +94,13 @@ public class OrderController {
 
 			shippingFeeMap.put(ol.getId(), shippingFee);
 			totalPriceMap.put(ol.getId(), total + shippingFee);
+			statusMap.put(ol.getId(), ol.getStatus());
 		}
 
 		model.addAttribute("groupedOrders", groupedOrders);
 		model.addAttribute("totalPriceMap", totalPriceMap);
 		model.addAttribute("shippingFeeMap", shippingFeeMap);
+		model.addAttribute("statusMap", statusMap);
 		model.addAttribute("sort", sort);
 		model.addAttribute("historyKeyword", keyword);
 
