@@ -17,4 +17,6 @@ public interface OrderListMapper {
 
 	List<OrderList> findByUserName(String username);
 
+	// 管理画面用：全ユーザー分の注文リスト＋ユーザー名
+	List<OrderList> findAllWithUserName();
 }

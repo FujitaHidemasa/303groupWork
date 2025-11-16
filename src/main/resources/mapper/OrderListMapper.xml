@@ -50,5 +50,19 @@
 		ORDER BY ol.created_at DESC, ol.id DESC
 	</select>
 
-
+	<!-- ========================================================= -->
+	<!-- 管理者用：全ユーザーの注文リスト＋ユーザー名 -->
+	<!-- ========================================================= -->
+	<select id="findAllWithUserName"
+		resultType="com.example.voidr.entity.OrderList">
+		SELECT
+		ol.id,
+		ol.user_id,
+		ol.created_at,
+		ol.updated_at,
+		u.username AS username   <!-- ログインIDを OrderList.username にマッピング -->
+		FROM order_list ol
+		JOIN login_user u ON ol.user_id = u.id
+		ORDER BY ol.created_at DESC, ol.id DESC
+	</select>
 </mapper>

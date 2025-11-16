@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 
 import com.example.voidr.entity.Account;
 import com.example.voidr.entity.OrderList;
-import com.example.voidr.repository.OrderListMapper;
 import com.example.voidr.repository.AccountMapper;
+import com.example.voidr.repository.OrderListMapper;
 import com.example.voidr.service.OrderListService;
 
 import lombok.RequiredArgsConstructor;
@@ -45,6 +45,12 @@ public class OrderListServiceImpl implements OrderListService {
 	public List<OrderList> findByUserName(String username) {
 		// 複数件対応
 		return orderListMapper.findByUserName(username);
+	}
+
+	@Override
+	public List<OrderList> getAllOrderListsWithUser() {
+		// ★管理画面用：全ユーザー分の注文リスト＋ユーザー名
+		return orderListMapper.findAllWithUserName();
 	}
 
 }

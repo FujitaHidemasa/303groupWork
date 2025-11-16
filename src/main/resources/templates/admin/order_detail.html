@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja"
+	th:replace="layout/admin_base :: admin_base(~{::content}, '注文詳細', ~{::assets})">
+
+<th:block th:fragment="content">
+	<section class="section">
+		<h1>注文詳細</h1>
+
+		<!-- 注文の概要 -->
+		<div style="margin-bottom:16px;">
+			<p>注文ID：<span th:text="${orderListId}">1001</span></p>
+
+			<p th:if="${orderUserName != null}">
+				会員ID：<span th:text="${orderUserName}">sample_user</span>
+			</p>
+
+			<p th:if="${orderCreatedAt != null}">
+				注文日：
+				<span th:text="${#temporals.format(orderCreatedAt, 'yyyy/MM/dd HH:mm')}">
+					2025/11/01 10:00
+				</span>
+			</p>
+
+			<p>
+				合計金額：
+				<span th:text="'¥' + ${#numbers.formatInteger(totalPrice, 0)}">
+					¥8,200
+				</span>
+			</p>
+		</div>
+
+		<!-- 商品明細テーブル -->
+		<div class="table-container">
+			<table>
+				<thead>
+					<tr>
+						<th>商品画像</th>
+						<th>商品名</th>
+						<th>数量</th>
+						<th>単価</th>
+						<th>小計</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="order : ${orders}">
+						<td>
+							<img th:src="@{'/images/' + ${order.imageName}}" alt="商品画像"
+								style="width:64px; height:64px; object-fit:cover;"
+								onerror="this.onerror=null;this.src='/image/no_image.png';">
+						</td>
+						<td th:text="${order.itemName}">サンプル商品</td>
+						<td th:text="${order.quantity}">1</td>
+						<td th:text="'¥' + ${#numbers.formatInteger(order.price, 0)}">¥3,000</td>
+						<td th:text="'¥' + ${#numbers.formatInteger(order.price * order.quantity, 0)}">
+							¥3,000
+						</td>
+					</tr>
+
+					<!-- 商品が無い場合 -->
+					<tr th:if="${#lists.isEmpty(orders)}">
+						<td colspan="5" style="text-align:center; padding:12px; color:#888;">
+							注文に商品がありません。
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<!-- 戻るボタン -->
+		<div style="margin-top:20px;">
+			<a class="btn btn-primary" th:href="@{/admin/orders}">注文一覧に戻る</a>
+		</div>
+	</section>
+</th:block>
+
+</html>

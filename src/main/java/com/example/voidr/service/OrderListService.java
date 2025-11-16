@@ -21,4 +21,8 @@ public interface OrderListService {
 	 */
 	List<OrderList> findByUserName(String username);
 
+	/**
+	 * ★管理者用：全ユーザー分の注文リストを取得
+	 */
+	List<OrderList> getAllOrderListsWithUser();
 }

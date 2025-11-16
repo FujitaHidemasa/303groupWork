@@ -10,48 +10,67 @@
   ・Spring Security により /admin/** を認可制限予定。
 ============================================================= -->
 
+<!-- ============================================================
+				注文管理（DB連携版）
+============================================================= -->
+
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ja"
-      th:replace="layout/admin_base :: admin_base(~{::content}, '注文管理', ~{::assets})">
+	th:replace="layout/admin_base :: admin_base(~{::content}, '注文管理', ~{::assets})">
 
 
 <th:block th:fragment="content">
-	<div class="table-container">
-  <section class="section">
-    <h1>注文管理</h1>
-    <p style="margin-bottom:16px; color:#666;">
-      ※このページは現在ワイヤーフレーム段階です。<br>
-      後に全ユーザーの注文履歴をDBから取得して一覧表示します。
-    </p>
+	<section class="section">
+		<h1>注文管理</h1>
 
-	<table>
-	  <thead>
-	    <tr>
-	      <th>注文ID</th>
-	      <th>注文日</th>
-	      <th>会員名</th>
-	      <th>合計金額</th>
-	      <th>詳細</th>
-	    </tr>
-	  </thead>
-	  <tbody>
-	    <tr>
-	      <td>1002</td>
-	      <td>2025/11/06</td>
-	      <td>田中 太郎</td>
-	      <td>¥15,000</td>
-	      <td><button class="btn btn-edit">詳細</button></td>
-	    </tr>
-	    <tr>
-	      <td>1001</td>
-	      <td>2025/11/01</td>
-	      <td>山田 花子</td>
-	      <td>¥8,200</td>
-	      <td><button class="btn btn-edit">詳細</button></td>
-	    </tr>
-	  </tbody>
-	</table>
-	</div>
-  </section>
+		<!-- 注文がない場合 -->
+		<p th:if="${#lists.isEmpty(orderLists)}"
+			style="margin-bottom:16px; color:#666;">
+			現在、登録されている注文はありません。
+		</p>
+
+		<!-- 注文一覧テーブル -->
+		<div class="table-container" th:if="${!#lists.isEmpty(orderLists)}">
+			<table>
+				<thead>
+					<tr>
+						<th>注文ID</th>
+						<th>注文日</th>
+						<th>会員ID</th>
+						<th>合計金額</th>
+						<th>詳細</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="ol : ${orderLists}">
+						<!-- 注文ID -->
+						<td th:text="${ol.id}">1001</td>
+
+						<!-- 注文日 -->
+						<td th:text="${#temporals.format(ol.createdAt, 'yyyy/MM/dd HH:mm')}">
+							2025/11/01 10:00
+						</td>
+
+						<!-- 会員ID（login_user.username） -->
+						<td th:text="${ol.username}">sample_user</td>
+
+						<!-- 合計金額 -->
+						<td th:text="'¥' + ${#numbers.formatInteger(totalPriceMap[ol.id], 0)}">
+							¥8,200
+						</td>
+
+						<!-- 詳細ボタン -->
+						<td>
+							<a class="btn btn-edit"
+								th:href="@{/admin/orders/{id}(id=${ol.id})}">
+								詳細
+							</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</section>
 </th:block>
+
 </html>
