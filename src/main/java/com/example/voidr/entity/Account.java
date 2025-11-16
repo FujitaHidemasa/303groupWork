@@ -44,6 +44,9 @@ public class Account
 	/** 電話番号 */
 	 @Pattern(regexp = "^[0-9\\-]*$", message = "電話番号は数字とハイフンのみで入力してください。")
 	private String phoneNumber;
+	
+	/** 有効フラグ（退会済みかどうか） */
+	private boolean enabled;
 
 	/** 作成日 */
 	private LocalDateTime createdAt;

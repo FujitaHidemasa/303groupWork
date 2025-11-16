@@ -51,10 +51,12 @@ public class LoginUser implements UserDetails {
 		return true;
 	}
 
+	// 退会フラグと連動
+	@Override
+	public boolean isEnabled() {
+		return this.account.isEnabled();
+	}
 
-
-	
-	
 	public String getDisplayName()
 	{
 		return this.account.getDisplayName();

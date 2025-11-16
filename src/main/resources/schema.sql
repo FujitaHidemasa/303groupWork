@@ -41,6 +41,7 @@ CREATE TABLE login_user (
     email VARCHAR(100) NOT NULL,            -- メールアドレス
     address VARCHAR(255),                   -- 住所
     phone_number VARCHAR(20),               -- 電話番号
+    enabled BOOLEAN NOT NULL DEFAULT TRUE,	-- 退会フラグ
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );

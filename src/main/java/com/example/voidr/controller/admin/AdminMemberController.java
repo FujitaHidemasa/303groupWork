@@ -5,8 +5,10 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.voidr.entity.Account;
 import com.example.voidr.service.AccountService;
@@ -42,4 +44,21 @@ public class AdminMemberController {
         model.addAttribute("pageTitle", "会員管理");
         return "admin/members"; // templates/admin/members.html
     }
+    
+	// ==========================
+	// 会員削除（論理削除：enabled = false）
+	// ==========================
+	@PostMapping("/delete")
+	public String deleteMember(
+			@RequestParam("username") String username,
+			RedirectAttributes redirectAttributes) {
+
+		accountService.deleteAccountByUsername(username);
+
+		redirectAttributes.addFlashAttribute(
+				"successMessage",
+				"ユーザー「" + username + "」を退会扱いにしました。");
+
+		return "redirect:/admin/members";
+	}
 }
