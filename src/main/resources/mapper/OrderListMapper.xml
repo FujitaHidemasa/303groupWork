@@ -10,14 +10,25 @@
 	<select id="findByUserId" parameterType="long"
 		resultType="com.example.voidr.entity.OrderList">
 		SELECT
-		id,
-		user_id,
-		created_at,
-		updated_at
-		FROM order_list
+			ol.id,
+			ol.user_id,
+			ol.status,
+			ol.payment_method,
+			ol.address,
+			ol.delivery_date,
+			ol.delivery_time,
+			ol.created_at,
+			ol.updated_at,
+			u.username AS username
+		FROM
+			order_list ol
+		JOIN
+			login_user u ON ol.user_id = u.id
 		WHERE
-		user_id = #{userId}
-		ORDER BY created_at DESC, id DESC
+			ol.user_id = #{userId}
+		ORDER BY
+			ol.created_at DESC,
+			ol.id DESC
 	</select>
 
 	<!-- ========================================================= -->
@@ -27,27 +38,51 @@
 		parameterType="com.example.voidr.entity.OrderList"
 		useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO order_list (
-		user_id,
-		created_at,
-		updated_at
+			user_id,
+			status,
+			payment_method,
+			address,
+			delivery_date,
+			delivery_time,
+			created_at,
+			updated_at
 		) VALUES (
-		#{userId},
-		CURRENT_TIMESTAMP,
-		CURRENT_TIMESTAMP
+			#{userId},
+			#{status},
+			#{paymentMethod},
+			#{address},
+			#{deliveryDate},
+			#{deliveryTime},
+			CURRENT_TIMESTAMP,
+			CURRENT_TIMESTAMP
 		)
 	</insert>
 
 	<!-- ========================================================= -->
 	<!-- ユーザー名から注文リストを取得（複数件対応） -->
 	<!-- ========================================================= -->
-	<!-- ユーザー名から注文リストを取得（複数件対応） -->
-	<select id="findByUserName" parameterType="String"
+	<select id="findByUserName" parameterType="string"
 		resultType="com.example.voidr.entity.OrderList">
-		SELECT ol.*
-		FROM order_list ol
-		JOIN login_user u ON ol.user_id = u.id
-		WHERE u.username = #{username}
-		ORDER BY ol.created_at DESC, ol.id DESC
+		SELECT
+			ol.id,
+			ol.user_id,
+			ol.status,
+			ol.payment_method,
+			ol.address,
+			ol.delivery_date,
+			ol.delivery_time,
+			ol.created_at,
+			ol.updated_at,
+			u.username AS username
+		FROM
+			order_list ol
+		JOIN
+			login_user u ON ol.user_id = u.id
+		WHERE
+			u.username = #{username}
+		ORDER BY
+			ol.created_at DESC,
+			ol.id DESC
 	</select>
 
 	<!-- ========================================================= -->
@@ -56,13 +91,60 @@
 	<select id="findAllWithUserName"
 		resultType="com.example.voidr.entity.OrderList">
 		SELECT
-		ol.id,
-		ol.user_id,
-		ol.created_at,
-		ol.updated_at,
-		u.username AS username   <!-- ログインIDを OrderList.username にマッピング -->
-		FROM order_list ol
-		JOIN login_user u ON ol.user_id = u.id
-		ORDER BY ol.created_at DESC, ol.id DESC
+			ol.id,
+			ol.user_id,
+			ol.status,
+			ol.payment_method,
+			ol.address,
+			ol.delivery_date,
+			ol.delivery_time,
+			ol.created_at,
+			ol.updated_at,
+			u.username AS username
+		FROM
+			order_list ol
+		JOIN
+			login_user u ON ol.user_id = u.id
+		ORDER BY
+			ol.created_at DESC,
+			ol.id DESC
 	</select>
+	
+	<!-- ========================================================= -->
+	<!-- 管理者用：注文リストをIDで1件取得 -->
+	<!-- ========================================================= -->
+	<select id="findById" parameterType="long"
+		resultType="com.example.voidr.entity.OrderList">
+		SELECT
+			ol.id,
+			ol.user_id,
+			ol.status,
+			ol.payment_method,
+			ol.address,
+			ol.delivery_date,
+			ol.delivery_time,
+			ol.created_at,
+			ol.updated_at,
+			u.username AS username
+		FROM
+			order_list ol
+		JOIN
+			login_user u ON ol.user_id = u.id
+		WHERE
+			ol.id = #{id}
+	</select>
+	
+
+	<!-- ========================================================= -->
+	<!-- ステータス更新 -->
+	<!-- ========================================================= -->
+	<update id="updateStatus">
+		UPDATE order_list
+		SET
+			status = #{status},
+			updated_at = CURRENT_TIMESTAMP
+		WHERE
+			id = #{orderListId}
+	</update>
+
 </mapper>

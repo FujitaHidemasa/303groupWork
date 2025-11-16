@@ -37,7 +37,10 @@
 						<th>注文ID</th>
 						<th>注文日</th>
 						<th>会員ID</th>
+						<th>支払い方法</th>
+						<th>配達希望</th>
 						<th>合計金額</th>
+						<th>ステータス</th>
 						<th>詳細</th>
 					</tr>
 				</thead>
@@ -53,10 +56,35 @@
 
 						<!-- 会員ID（login_user.username） -->
 						<td th:text="${ol.username}">sample_user</td>
+						
+						<!-- 支払い方法 -->
+						<td th:text="${ol.paymentMethod}">着払い</td>
+
+						<!-- 配達希望 -->
+						<td>
+							<span th:if="${ol.deliveryDate != null}"
+								  th:text="${#temporals.format(ol.deliveryDate, 'yyyy/MM/dd')}"></span>
+							<span th:if="${ol.deliveryTime != null}"
+								  th:text="${' ' + ol.deliveryTime}"></span>
+						</td>
 
 						<!-- 合計金額 -->
 						<td th:text="'¥' + ${#numbers.formatInteger(totalPriceMap[ol.id], 0)}">
 							¥8,200
+						</td>
+						
+						<!-- ステータス（未出荷 / 出荷済み）-->
+						<td>
+							<form th:action="@{/admin/orders/{id}/status(id=${ol.id})}" method="post" class="status-form">
+								<!-- CSRFトークン -->
+								<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
+								<select name="status">
+									<option value="NEW" th:selected="${ol.status == 'NEW'}">未出荷</option>
+									<option value="SHIPPED" th:selected="${ol.status == 'SHIPPED'}">出荷済み</option>
+								</select>
+								<button type="submit" class="btn btn-edit btn-small">更新</button>
+							</form>
 						</td>
 
 						<!-- 詳細ボタン -->

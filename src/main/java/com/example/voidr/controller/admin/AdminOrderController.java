@@ -8,7 +8,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.voidr.entity.Order;
 import com.example.voidr.entity.OrderList;
@@ -22,11 +25,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AdminOrderController {
 	
-	// ★追加：注文リスト用サービス
+	// 注文リスト用サービス
 	private final OrderListService orderListService;
-	// ★追加：注文詳細用サービス
+	// 注文詳細用サービス
 	private final OrderService orderService;
 
+	/** 注文一覧（管理画面トップ） */
 	@GetMapping
 	public String showOrders(Model model) {
 
@@ -82,12 +86,37 @@ public class AdminOrderController {
 		model.addAttribute("totalPrice", total);
 
 		if (target != null) {
+			// 会員ID（ログインID）
 			model.addAttribute("orderUserName", target.getUsername());
+			// 注文日時
 			model.addAttribute("orderCreatedAt", target.getCreatedAt());
+			// ここから購入画面で入力された内容
+			model.addAttribute("paymentMethod", target.getPaymentMethod());
+			model.addAttribute("address", target.getAddress());
+			model.addAttribute("deliveryDate", target.getDeliveryDate());
+			model.addAttribute("deliveryTime", target.getDeliveryTime());
+			// ステータス（NEW / SHIPPED など）
+			model.addAttribute("status", target.getStatus());
 		}
 
 		model.addAttribute("pageTitle", "注文詳細");
 
 		return "admin/order_detail";
 	}
+	
+	// ステータス更新（NEW / SHIPPED など）
+	@PostMapping("/{orderListId}/status")
+	public String updateStatus(
+			@PathVariable("orderListId") long orderListId,
+			@RequestParam("status") String status,
+			RedirectAttributes redirectAttributes) {
+
+		orderListService.updateStatus(orderListId, status);
+		redirectAttributes.addFlashAttribute(
+				"successMessage",
+				"注文ID " + orderListId + " のステータスを更新しました。");
+
+		return "redirect:/admin/orders";
+	}
+
 }

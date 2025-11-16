@@ -21,6 +21,35 @@
 				</span>
 			</p>
 
+			<!-- ステータス表示（NEW / SHIPPED を日本語ラベルに） -->
+			<p th:if="${orderStatus != null}">
+				ステータス：
+				<span th:switch="${orderStatus}">
+					<span th:case="'NEW'">未出荷</span>
+					<span th:case="'SHIPPED'">出荷済み</span>
+					<span th:case="*" th:text="${orderStatus}">不明</span>
+				</span>
+			</p>
+			
+			<!-- 支払い方法 -->
+			<p th:if="${orderPaymentMethod != null}">
+				支払い方法：
+				<span th:text="${orderPaymentMethod}">着払い</span>
+			</p>
+			
+			<!-- 配送先 -->
+			<p th:if="${orderAddress != null}">
+				配送先住所：
+				<span th:text="${orderAddress}">東京都渋谷区…</span>
+			</p>
+			
+			<!-- 配達希望 -->
+			<p th:if="${orderDeliveryDate != null}">
+				配達希望：
+				<span th:text="${#temporals.format(orderDeliveryDate, 'yyyy/MM/dd')}"></span>
+				<span th:text="${orderDeliveryTime}"></span>
+			</p>
+
 			<p>
 				合計金額：
 				<span th:text="'¥' + ${#numbers.formatInteger(totalPrice, 0)}">

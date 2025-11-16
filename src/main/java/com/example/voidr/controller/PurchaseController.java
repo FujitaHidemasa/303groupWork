@@ -223,6 +223,7 @@ public class PurchaseController {
 			return "redirect:/login";
 		}
 
+		// カート取得（販売中のみ購入対象）
 		List<CartView> allCart = cartService.list(account.getId());
 		List<CartView> purchasable = filterPurchasable(allCart);
 
@@ -237,12 +238,24 @@ public class PurchaseController {
 		int shippingFee = calcShippingFee(totalPrice);
 		int finalTotal = totalPrice + shippingFee;
 
-		// 注文リスト登録
+		// ★配達希望日チェック（最短日以降に補正）→ DB保存にもこの値を使う
+		LocalDate deliveryDateValue = LocalDate.parse(deliveryDate);
+		LocalDate earliest = getEarliestDeliveryDate();
+		if (deliveryDateValue.isBefore(earliest)) {
+			deliveryDateValue = earliest;
+		}
+
+		// ★注文リスト登録（購入情報も一緒に保存）
 		OrderList orderList = new OrderList();
 		orderList.setUsername(account.getUsername());
+		orderList.setPaymentMethod(paymentMethod);
+		orderList.setAddress(address);
+		orderList.setDeliveryDate(deliveryDateValue);
+		orderList.setDeliveryTime(deliveryTime);
+		// status は OrderListServiceImpl.createOrderList() 側で NEW に初期化
 		orderListService.createOrderList(orderList);
 
-		// 個別注文登録（★販売中の商品だけ）
+		// 個別注文登録（販売中の商品だけ）
 		for (CartView cv : purchasable) {
 			Order order = new Order();
 			order.setOrderListId(orderList.getId());
@@ -261,24 +274,18 @@ public class PurchaseController {
 		// カートを空にする（販売終了品も含めてクリア）
 		cartService.clearCart(account.getUsername());
 
+		// 画面表示用
 		model.addAttribute("orderListId", orderList.getId());
 		model.addAttribute("totalPrice", totalPrice);
 		model.addAttribute("shippingFee", shippingFee);
 		model.addAttribute("finalTotal", finalTotal);
 		model.addAttribute("paymentMethod", paymentMethod);
 		model.addAttribute("address", address);
-
-		// 配達希望日チェック（最短日以降）
-		LocalDate deliveryDateValue = LocalDate.parse(deliveryDate);
-		LocalDate earliest = getEarliestDeliveryDate();
-		if (deliveryDateValue.isBefore(earliest)) {
-			deliveryDateValue = earliest;
-		}
 		model.addAttribute("deliveryDate", deliveryDateValue);
 		model.addAttribute("deliveryTime", deliveryTime);
-
 		model.addAttribute("emailNotice", "ご登録のメールアドレスに注文詳細をお送りしました。");
 
 		return "shop/purchase/purchase_complete";
 	}
+
 }

@@ -15,8 +15,16 @@ public interface OrderListMapper {
     // 新しい購入履歴（注文リスト）を作成
     void insertOrderList(OrderList orderList);
 
-	List<OrderList> findByUserName(String username);
+	List<OrderList> findByUserName(@Param("username") String username);
 
 	// 管理画面用：全ユーザー分の注文リスト＋ユーザー名
 	List<OrderList> findAllWithUserName();
+	
+	// 1件取得
+	OrderList findById(long id);
+	
+	// ステータス更新
+	void updateStatus(
+			@Param("orderListId") long orderListId,
+			@Param("status") String status);
 }
