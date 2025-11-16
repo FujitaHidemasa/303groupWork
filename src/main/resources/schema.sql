@@ -69,6 +69,10 @@ CREATE TABLE item (
     overview TEXT,
     is_download BOOLEAN NOT NULL,
     thumbs_image_name TEXT,
+
+	-- ★追加：ソフトデリート用フラグ（TRUEなら削除扱い）
+	is_deleted   BOOLEAN NOT NULL DEFAULT FALSE,
+    
     created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );

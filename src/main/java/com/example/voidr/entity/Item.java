@@ -46,4 +46,7 @@ public class Item {
 
 	/** 商品の代表画像パス（サムネイルや一覧表示用） */
 	private String imagePath; // ← これを追加
+	
+	/** ソフトデリート用フラグ（true なら削除扱い） */
+	private Boolean isDeleted;
 }

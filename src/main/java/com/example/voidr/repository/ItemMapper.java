@@ -35,7 +35,10 @@ public interface ItemMapper
 	void update(Item item);
 	
 	/** 商品を削除する */
-	void delete(@Param("id")Long id);
+	// void delete(@Param("id")Long id);
+	
+	// ソフトデリート（is_deleted = TRUE に更新）
+	void softDelete(Long id);
 	
 	/**ランダム4件取得*/
 	List<Item> selectRandom4();

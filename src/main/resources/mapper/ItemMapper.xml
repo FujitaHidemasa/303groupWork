@@ -15,88 +15,169 @@
 		<result property="thumbsImageName" column="thumbs_image_name" />
 		<result property="createdAt" column="created_at" />
 		<result property="updatedAt" column="updated_at" />
+		<!-- ★ソフトデリートフラグ -->
+		<result property="isDeleted" column="is_deleted" />
 	</resultMap>
 
 	<!-- ============================== SELECT文 ============================== -->
+
+	<!-- 一覧（管理・ショップ共通）※削除済みは除外 -->
 	<select id="selectAll" resultMap="ItemMap">
-		SELECT id, name, price,
-		overview,is_download, thumbs_image_name, created_at, updated_at
-		FROM
-		item
-		ORDER BY
-		id DESC
-	</select>
-
-	<select id="selectByRangeId" resultMap="ItemMap">
-		SELECT id, name, price,
-		overview,is_download, thumbs_image_name, created_at, updated_at
+		SELECT
+		id,
+		name,
+		price,
+		overview,
+		is_download,
+		thumbs_image_name,
+		created_at,
+		updated_at,
+		is_deleted
 		FROM item
-		WHERE id
-		BETWEEN #{min} AND #{max}
-	</select>
-
-	<select id="selectByCategory" resultMap="ItemMap">
-		SELECT i.id, i.name,
-		i.price, i.overview,i.is_download i.thumbs_image_name, i.created_at, i.updated_at
-		FROM item i
-		JOIN item_category c ON i.id = c.item_id
-		WHERE c.category =
-		#{category}
+		WHERE is_deleted = FALSE
 		ORDER BY id DESC
 	</select>
 
-	<select id="selectById" resultMap="ItemMap">
-		SELECT id, name, price,
-		overview,is_download, thumbs_image_name, created_at, updated_at
+	<!-- ID範囲で取得 ※削除済みは除外 -->
+	<select id="selectByRangeId" resultMap="ItemMap">
+		SELECT
+		id,
+		name,
+		price,
+		overview,
+		is_download,
+		thumbs_image_name,
+		created_at,
+		updated_at,
+		is_deleted
 		FROM item
-		WHERE id =
-		#{id}
+		WHERE id BETWEEN #{min} AND #{max}
+		AND is_deleted = FALSE
 	</select>
 
-	<select id="selectByKeyword" resultMap="ItemMap">
-		SELECT DISTINCT i.id,
-		i.name, i.price, i.overview,i.is_download,
-		i.thumbs_image_name, i.created_at,
-		i.updated_at
+	<!-- カテゴリで取得 ※削除済みは除外 -->
+	<select id="selectByCategory" resultMap="ItemMap">
+		SELECT
+		i.id,
+		i.name,
+		i.price,
+		i.overview,
+		i.is_download,
+		i.thumbs_image_name,
+		i.created_at,
+		i.updated_at,
+		i.is_deleted
 		FROM item i
-		LEFT JOIN item_category c ON i.id = c.item_id
-		WHERE
-		i.name ILIKE CONCAT('%', #{keyword}, '%')
-		OR i.overview ILIKE
-		CONCAT('%', #{keyword}, '%')
-		OR c.category ILIKE CONCAT('%',
-		#{keyword}, '%')
+		JOIN item_category c ON i.id = c.item_id
+		WHERE c.category = #{category}
+		AND i.is_deleted = FALSE
 		ORDER BY i.id DESC
 	</select>
-	
-	<select id="findLatestItems" resultType="com.example.voidr.entity.Item">
-		SELECT *
+
+	<!-- IDで1件取得（※削除済みも含めて取得） -->
+	<select id="selectById" resultMap="ItemMap">
+		SELECT
+		id,
+		name,
+		price,
+		overview,
+		is_download,
+		thumbs_image_name,
+		created_at,
+		updated_at,
+		is_deleted
 		FROM item
+		WHERE id = #{id}
+	</select>
+
+	<!-- キーワード検索 ※削除済みは除外 -->
+	<select id="selectByKeyword" resultMap="ItemMap">
+		SELECT DISTINCT
+		i.id,
+		i.name,
+		i.price,
+		i.overview,
+		i.is_download,
+		i.thumbs_image_name,
+		i.created_at,
+		i.updated_at,
+		i.is_deleted
+		FROM item i
+		LEFT JOIN item_category c ON i.id = c.item_id
+		WHERE i.is_deleted = FALSE
+		AND (
+		i.name ILIKE CONCAT('%', #{keyword}, '%')
+		OR i.overview ILIKE CONCAT('%', #{keyword}, '%')
+		OR c.category ILIKE CONCAT('%', #{keyword}, '%')
+		)
+		ORDER BY i.id DESC
+	</select>
+
+	<!-- トップ用：最新4件 ※削除済みは除外 -->
+	<select id="findLatestItems" resultMap="ItemMap">
+		SELECT
+		id,
+		name,
+		price,
+		overview,
+		is_download,
+		thumbs_image_name,
+		created_at,
+		updated_at,
+		is_deleted
+		FROM item
+		WHERE is_deleted = FALSE
 		ORDER BY id DESC
 		LIMIT 4
 	</select>
 
+	<!-- ランダム4件 ※削除済みは除外 -->
 	<select id="selectRandom4" resultMap="ItemMap">
-		SELECT id, name, price,
-		overview, is_download, thumbs_image_name,
-		created_at, updated_at
+		SELECT
+		id,
+		name,
+		price,
+		overview,
+		is_download,
+		thumbs_image_name,
+		created_at,
+		updated_at,
+		is_deleted
 		FROM item
+		WHERE is_deleted = FALSE
 		ORDER BY RANDOM()
 		LIMIT 4
 	</select>
 
+	<!-- 起動時同期用：件数カウント（削除済みも含む） -->
 	<select id="countAll" resultType="int">
 		SELECT COUNT(*) FROM item;
 	</select>
-	
 
 	<!-- ============================== INSERT / UPDATE / DELETE ============================== -->
+
 	<insert id="insert">
-	INSERT INTO item (id, name, price, overview,is_download,
-	thumbs_image_name, created_at, updated_at)
-	VALUES (#{id}, #{name},
-	#{price}, #{overview},#{isDownload}, #{thumbsImageName}, #{createdAt},
-	#{updatedAt})
+		INSERT INTO item (
+		id,
+		name,
+		price,
+		overview,
+		is_download,
+		thumbs_image_name,
+		created_at,
+		updated_at
+		-- is_deleted は DEFAULT FALSE を使用
+		)
+		VALUES (
+		#{id},
+		#{name},
+		#{price},
+		#{overview},
+		#{isDownload},
+		#{thumbsImageName},
+		#{createdAt},
+		#{updatedAt}
+		)
 	</insert>
 
 	<update id="update">
@@ -111,9 +192,18 @@
 		WHERE id = #{id}
 	</update>
 
+	<!-- ソフトデリート（is_deleted = TRUE に更新） -->
+	<update id="softDelete" parameterType="long">
+		UPDATE item
+		SET
+		is_deleted = TRUE,
+		updated_at = CURRENT_TIMESTAMP
+		WHERE id = #{id}
+	</update>
+
+	<!-- 物理削除（通常は使用しない前提） -->
 	<delete id="delete">
 		DELETE FROM item WHERE id = #{id}
 	</delete>
-	
-	
+
 </mapper>
