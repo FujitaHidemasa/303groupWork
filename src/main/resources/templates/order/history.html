@@ -13,13 +13,13 @@
 			background-color: #111;
 			font-family: 'Noto Sans JP', sans-serif;
 			color: #f5f5f5;
-			line-height: 1.5;
+			line-height: 1.5
 		}
 
 		main {
 			width: 100%;
 			max-width: 900px;
-			margin: 40px auto;
+			margin: 40px auto
 		}
 
 		h2 {
@@ -30,7 +30,7 @@
 			border-radius: 12px;
 			margin-bottom: 35px;
 			font-size: 2.2em;
-			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+			box-shadow: 0 4px 12px rgba(0, 0, 0, .6)
 		}
 
 		.sort-area {
@@ -38,18 +38,18 @@
 			justify-content: flex-end;
 			flex-wrap: wrap;
 			gap: 10px;
-			margin-bottom: 30px;
+			margin-bottom: 30px
 		}
 
 		.sort-area select,
-		.sort-area input[type="text"],
+		.sort-area input[type=text],
 		.sort-area button {
 			padding: 7px 14px;
 			border-radius: 6px;
 			border: 1px solid #555;
 			background-color: #222;
 			color: #f5f5f5;
-			font-size: 1em;
+			font-size: 1em
 		}
 
 		.order-card {
@@ -58,12 +58,12 @@
 			margin: 22px auto;
 			overflow: hidden;
 			max-width: 700px;
-			box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
-			transition: transform 0.2s ease;
+			box-shadow: 0 6px 20px rgba(0, 0, 0, .6);
+			transition: transform .2s ease
 		}
 
 		.order-card:hover {
-			transform: translateY(-4px);
+			transform: translateY(-4px)
 		}
 
 		.order-header {
@@ -72,57 +72,57 @@
 			cursor: pointer;
 			display: flex;
 			flex-direction: column;
-			gap: 10px;
+			gap: 10px
 		}
 
 		.order-header-row {
 			display: flex;
 			justify-content: space-between;
 			flex-wrap: wrap;
-			gap: 8px;
+			gap: 8px
 		}
 
 		.order-header-row.right {
 			justify-content: flex-end;
 			gap: 25px;
-			align-items: center;
+			align-items: center
 		}
 
 		.order-header p {
 			margin: 0;
 			font-weight: 600;
 			font-size: 1em;
-			color: #f5f5f5;
+			color: #f5f5f5
 		}
 
 		.order-header span {
 			font-weight: bold;
-			color: #f5f5f5;
+			color: #f5f5f5
 		}
 
 		.toggle-icon {
 			font-size: 18px;
-			transition: transform 0.3s ease;
+			transition: transform .3s ease
 		}
 
 		.order-header.active .toggle-icon {
-			transform: rotate(90deg);
+			transform: rotate(90deg)
 		}
 
 		.order-content {
 			display: none;
 			padding: 18px 22px;
-			animation: fadeIn 0.3s ease;
-			background-color: #2c2c2c;
+			animation: fadeIn .3s ease;
+			background-color: #2c2c2c
 		}
 
 		@keyframes fadeIn {
 			from {
-				opacity: 0;
+				opacity: 0
 			}
 
 			to {
-				opacity: 1;
+				opacity: 1
 			}
 		}
 
@@ -135,7 +135,7 @@
 			border-radius: 10px;
 			padding: 14px 16px;
 			margin-bottom: 14px;
-			box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+			box-shadow: 0 2px 8px rgba(0, 0, 0, .6)
 		}
 
 		.item-card img {
@@ -144,23 +144,23 @@
 			object-fit: cover;
 			border-radius: 8px;
 			flex-shrink: 0;
-			border: 1px solid #555;
+			border: 1px solid #555
 		}
 
 		.item-info {
-			flex: 1;
+			flex: 1
 		}
 
 		.item-info p {
 			margin: 4px 0;
 			font-size: 1em;
-			color: #f5f5f5;
+			color: #f5f5f5
 		}
 
 		.item-actions {
 			display: flex;
 			flex-direction: column;
-			gap: 7px;
+			gap: 7px
 		}
 
 		.item-actions button {
@@ -169,22 +169,22 @@
 			border-radius: 6px;
 			font-weight: 600;
 			cursor: pointer;
-			font-size: 0.95em;
-			transition: background-color 0.2s ease;
+			font-size: .95em;
+			transition: background-color .2s ease
 		}
 
 		.item-actions .detail {
 			background-color: #00bfff;
-			color: #fff;
+			color: #fff
 		}
 
 		.item-actions .reorder {
 			background-color: #2ecc71;
-			color: #fff;
+			color: #fff
 		}
 
 		.item-actions button:hover {
-			opacity: 0.9;
+			opacity: .9
 		}
 
 		.no-history {
@@ -197,7 +197,7 @@
 			border-radius: 12px;
 			font-size: 1.25em;
 			font-weight: 600;
-			box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+			box-shadow: 0 4px 12px rgba(0, 0, 0, .6)
 		}
 
 		.cart-actions {
@@ -205,7 +205,7 @@
 			justify-content: center;
 			gap: 18px;
 			margin-top: 45px;
-			flex-wrap: wrap;
+			flex-wrap: wrap
 		}
 
 		.cart-actions a {
@@ -216,11 +216,11 @@
 			border-radius: 8px;
 			font-weight: 600;
 			border: 1px solid #666;
-			transition: background 0.2s ease;
+			transition: background .2s ease
 		}
 
 		.cart-actions a:hover {
-			background-color: #555;
+			background-color: #555
 		}
 
 		.flash-message {
@@ -228,47 +228,79 @@
 			padding: 12px 16px;
 			border-radius: 6px;
 			font-weight: 600;
-			font-size: 1em;
+			font-size: 1em
 		}
 
 		.flash-error {
 			background-color: #661111;
 			color: #ffcccc;
-			border: 1px solid #aa4444;
+			border: 1px solid #aa4444
 		}
 
 		.flash-warning {
 			background-color: #665511;
 			color: #ffffcc;
-			border: 1px solid #aaaa44;
+			border: 1px solid #aaaa44
 		}
 
 		.flash-success {
 			background-color: #116611;
 			color: #ccffcc;
-			border: 1px solid #44aa44;
+			border: 1px solid #44aa44
+		}
+
+		#cancelPopup {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background-color: rgba(0, 0, 0, .75);
+			display: none;
+			justify-content: center;
+			align-items: center;
+			z-index: 9999
+		}
+
+		#cancelPopup .popup-box {
+			background: #222;
+			padding: 25px 30px;
+			border-radius: 12px;
+			width: 300px;
+			text-align: center;
+			box-shadow: 0 0 15px rgba(0, 0, 0, .6)
+		}
+
+		#cancelPopup button {
+			margin-top: 15px;
+			padding: 10px 20px;
+			border: none;
+			border-radius: 6px;
+			cursor: pointer;
+			font-weight: bold
+		}
+
+		#closeCancelPopup {
+			background: #555;
+			color: white
+		}
+
+		#confirmCancelBtn {
+			background: #e74c3c;
+			color: white
 		}
 	</style>
 </head>
 
 <body>
 	<div th:replace="fragments/header :: header"></div>
-
 	<main>
 		<h2>購入履歴</h2>
-
-		<!-- フラッシュメッセージ -->
-		<div th:if="${errorMessage}" class="flash-message flash-error">
-			<span th:text="${errorMessage}"></span>
+		<div th:if="${errorMessage}" class="flash-message flash-error"><span th:text="${errorMessage}"></span></div>
+		<div th:if="${warningMessage}" class="flash-message flash-warning"><span th:text="${warningMessage}"></span>
 		</div>
-		<div th:if="${warningMessage}" class="flash-message flash-warning">
-			<span th:text="${warningMessage}"></span>
+		<div th:if="${successMessage}" class="flash-message flash-success"><span th:text="${successMessage}"></span>
 		</div>
-		<div th:if="${successMessage}" class="flash-message flash-success">
-			<span th:text="${successMessage}"></span>
-		</div>
-
-		<!-- 並び替え + 検索 -->
 		<div class="sort-area">
 			<form method="get" th:action="@{/mypage/orders}">
 				<select name="sort" onchange="this.form.submit()">
@@ -280,7 +312,6 @@
 			</form>
 		</div>
 
-		<!-- 注文カード -->
 		<div th:if="${groupedOrders != null and !groupedOrders.isEmpty()}" th:each="entry, iterStat : ${groupedOrders}">
 			<div class="order-card">
 				<div class="order-header" th:onclick="'toggleOrder(' + ${iterStat.index} + ')'">
@@ -296,21 +327,12 @@
 								class="toggle-icon">▶</span></p>
 					</div>
 				</div>
-
 				<div class="order-content" th:id="'order-content-' + ${iterStat.index}">
-
-					<!-- 注文単位でキャンセルボタン -->
-					<div th:if="${statusMap[entry.key] == 'NEW'}" style="margin-bottom: 12px;">
-						<form th:action="@{/mypage/orders/cancel}" method="post">
-							<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-							<input type="hidden" name="orderListId" th:value="${entry.key}" />
-							<button type="submit" class="cancel" style="background-color:#e74c3c; color:white;">
-								この注文をキャンセル
-							</button>
-						</form>
+					<div th:if="${statusMap[entry.key] == 'NEW'}" style="margin-bottom:12px;">
+						<button class="cancel" th:attr="data-orderListId=${entry.key}"
+							style="background-color:#e74c3c;color:white;padding:10px 18px;border:none;border-radius:6px;">この注文をキャンセル</button>
 					</div>
 
-					<!-- 商品ごとの表示 -->
 					<div th:each="order : ${entry.value}" class="item-card">
 						<img th:src="@{'/images/' + ${order.imageName}}"
 							onerror="this.onerror=null;this.src='/image/no_image.png';">
@@ -338,7 +360,6 @@
 							</form>
 						</div>
 					</div>
-
 				</div>
 			</div>
 		</div>
@@ -358,19 +379,81 @@
 
 	<div th:replace="fragments/footer :: footer"></div>
 
+	<!-- キャンセルポップアップ -->
+	<div id="cancelPopup">
+		<div class="popup-box">
+			<p>この注文をキャンセルしますか？</p>
+			<input type="hidden" id="cancelOrderListId">
+			<input type="hidden" id="csrf_header" th:value="${_csrf.parameterName}">
+			<input type="hidden" id="csrf_token" th:value="${_csrf.token}">
+			<button id="confirmCancelBtn">キャンセルする</button>
+			<button id="closeCancelPopup">戻る</button>
+		</div>
+	</div>
+
 	<script>
 		function toggleOrder(index) {
 			const content = document.getElementById(`order-content-${index}`);
 			const header = content.previousElementSibling;
 			if (content.style.display === "block") {
 				content.style.display = "none";
-				header.classList.remove("active");
+				header.classList.remove("active")
 			} else {
 				content.style.display = "block";
-				header.classList.add("active");
+				header.classList.add("active")
 			}
 		}
+
+		document.addEventListener("DOMContentLoaded", () => {
+			const cancelPopup = document.getElementById("cancelPopup");
+			const closeCancelPopup = document.getElementById("closeCancelPopup");
+			const confirmCancelBtn = document.getElementById("confirmCancelBtn");
+			const cancelOrderIdInput = document.getElementById("cancelOrderListId");
+
+			let selectedOrderListId = null;
+
+			// キャンセルボタン押下
+			document.querySelectorAll(".cancel").forEach(btn => {
+				btn.addEventListener("click", () => {
+					selectedOrderListId = btn.dataset.orderlistid;
+					cancelOrderIdInput.value = selectedOrderListId; // hidden にセット
+					cancelPopup.style.display = "flex";
+				})
+			});
+
+			// キャンセル確定
+			confirmCancelBtn.addEventListener("click", () => {
+				const csrfToken = document.getElementById("csrf_token").value;
+				const csrfName = document.getElementById("csrf_header").value;
+
+				const form = document.createElement("form");
+				form.method = "POST";
+				form.action = "/mypage/orders/cancel";
+
+				const csrfInput = document.createElement("input");
+				csrfInput.type = "hidden";
+				csrfInput.name = csrfName;
+				csrfInput.value = csrfToken;
+
+				const idInput = document.createElement("input");
+				idInput.type = "hidden";
+				idInput.name = "orderListId";
+				idInput.value = cancelOrderIdInput.value;
+
+				form.appendChild(csrfInput);
+				form.appendChild(idInput);
+
+				document.body.appendChild(form);
+				form.submit();
+			});
+
+			// ポップアップ閉じる
+			closeCancelPopup.addEventListener("click", () => {
+				cancelPopup.style.display = "none";
+			});
+		});
 	</script>
+
 </body>
 
 </html>
