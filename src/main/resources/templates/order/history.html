@@ -237,9 +237,8 @@
 									th:text="${#temporals.format(entry.value[0].createdAt, 'yyyy/MM/dd HH:mm')}"></span>
 							</p>
 							<p>
-								配達予定日：
-								<span
-									th:text="${#temporals.format(orderListMap[entry.key].deliveryDate, 'yyyy/MM/dd')}"></span>
+								配達予定：
+								<span th:text="${deliveryMap[entry.key]}"></span>
 							</p>
 						</div>
 						<div>
