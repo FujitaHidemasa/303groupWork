@@ -41,4 +41,5 @@ public class Order {
 
 	// 購入数量
 	private int quantity;
+
 }

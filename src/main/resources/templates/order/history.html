@@ -296,7 +296,21 @@
 								class="toggle-icon">▶</span></p>
 					</div>
 				</div>
+
 				<div class="order-content" th:id="'order-content-' + ${iterStat.index}">
+
+					<!-- 注文単位でキャンセルボタン -->
+					<div th:if="${statusMap[entry.key] == 'NEW'}" style="margin-bottom: 12px;">
+						<form th:action="@{/mypage/orders/cancel}" method="post">
+							<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+							<input type="hidden" name="orderListId" th:value="${entry.key}" />
+							<button type="submit" class="cancel" style="background-color:#e74c3c; color:white;">
+								この注文をキャンセル
+							</button>
+						</form>
+					</div>
+
+					<!-- 商品ごとの表示 -->
 					<div th:each="order : ${entry.value}" class="item-card">
 						<img th:src="@{'/images/' + ${order.imageName}}"
 							onerror="this.onerror=null;this.src='/image/no_image.png';">
@@ -308,7 +322,7 @@
 								<span th:switch="${statusMap[entry.key]}">
 									<span th:case="'NEW'">注文受付</span>
 									<span th:case="'SHIPPED'">出荷済み</span>
-									<span th:case="'CANCELLED'">キャンセル</span>
+									<span th:case="'CANCELLED'">キャンセル済み</span>
 									<span th:case="*">注文受付</span>
 								</span>
 							</p>
@@ -324,6 +338,7 @@
 							</form>
 						</div>
 					</div>
+
 				</div>
 			</div>
 		</div>
