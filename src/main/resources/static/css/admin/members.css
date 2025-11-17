@@ -2,62 +2,82 @@
 
 /* --- テーブル本体 --- */
 .table-container table {
-  width: 100% !important;
-  table-layout: fixed !important;
-  border-collapse: collapse;
+	width: 100% !important;
+	table-layout: fixed !important;
+	border-collapse: collapse;
 }
 
-/* ===== カラム幅（合計 100% に調整済み） ===== */
+/* ===== カラム幅（8列で合計 100%） ===== */
 
-/* ID */
+/* 1: ID */
 .table-container th:nth-child(1),
 .table-container td:nth-child(1) {
-  width: 6%;
+	width: 6%;
 }
 
-/* ユーザーID */
+/* 2: ユーザーID */
 .table-container th:nth-child(2),
 .table-container td:nth-child(2) {
-  width: 13%;
+	width: 13%;
 }
 
-/* 氏名 */
+/* 3: 氏名 */
 .table-container th:nth-child(3),
 .table-container td:nth-child(3) {
-  width: 17%;
+	width: 17%;
 }
 
-/* 権限 */
+/* 4: 権限 */
 .table-container th:nth-child(4),
 .table-container td:nth-child(4) {
-  width: 10%;
+	width: 10%;
 }
 
-/* Email */
+/* 5: Email */
 .table-container th:nth-child(5),
 .table-container td:nth-child(5) {
-  width: 26%;
+	width: 24%;
 }
 
-/* 登録日 */
+/* 6: 登録日 */
 .table-container th:nth-child(6),
 .table-container td:nth-child(6) {
-  width: 12%;
+	width: 10%;
 }
 
-/* 操作（ボタン2つが収まる最適値） */
+/* 7: 状態 */
 .table-container th:nth-child(7),
 .table-container td:nth-child(7) {
-  width: 18%;
+	width: 8%;
 }
 
-/* ボタン横並び */
-.actions {
-  display: flex;
-  gap: 8px;
-  white-space: nowrap;
+/* 8: 操作 */
+.table-container th:nth-child(8),
+.table-container td:nth-child(8) {
+	width: 12%;
 }
 
-.table-container td.actions {
-  vertical-align: middle;
+/* --- 操作ボタンの横並び（div.actions にだけ適用） --- */
+.table-container td .actions {
+	display: inline-flex;
+	gap: 8px;
+	align-items: center;
+	justify-content: center;
+	white-space: nowrap;
+}
+
+/* 退会済みユーザーの行 */
+.disabled-row {
+	opacity: 0.5;
+	/* 全体を少し薄く */
+}
+
+/* 退会済みのテキストをグレーにしたい場合 */
+.disabled-row td {
+	color: #888;
+}
+
+/* ボタンを薄く・押せない感じにするなら */
+.disabled-row .btn-delete {
+	opacity: 0.6;
 }

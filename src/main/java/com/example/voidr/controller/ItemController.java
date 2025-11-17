@@ -36,7 +36,9 @@ public class ItemController {
 	@GetMapping
 	public String list(Model model) 
 	{
-		itemService.syncItems();
+		/** 削除した商品を復活させるためコメントアウト */
+		// itemService.syncItems();
+		
 		List<Item> items = itemService.getAllItems();
 		model.addAttribute("items", items);
 		model.addAttribute("keyword", "");
@@ -50,7 +52,9 @@ public class ItemController {
 		if (keyword == null || keyword.isBlank()) {
 			return "redirect:/voidrshop";
 		}
-		itemService.syncItems();
+		/** 削除した商品を復活させるためコメントアウト */
+		//itemService.syncItems();
+		
 		List<Item> items = itemService.searchItemsByKeyword(keyword);
 		model.addAttribute("items", items);
 		model.addAttribute("keyword", keyword);
@@ -94,7 +98,9 @@ public class ItemController {
 	@GetMapping("/random")
 	public String randomItems(Model model) 
 	{
+		/** 削除した商品を復活させるためコメントアウト */
 	    itemService.syncItems(); // 必要なら同期処理も実行
+	    
 	    List<Item> items = itemService.getRandom4Items();
 
 	    model.addAttribute("items", items);

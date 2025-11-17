@@ -15,58 +15,77 @@
 
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ja"
-      th:replace="layout/admin_base :: admin_base(~{::content}, '会員管理', ~{::assets})">
+	th:replace="layout/admin_base :: admin_base(~{::content}, '会員管理', ~{::assets})">
 
-	  <th:block th:fragment="assets">
-	    <link rel="stylesheet" th:href="@{/css/admin/members.css}">
-	  </th:block>
-	  
+<th:block th:fragment="assets">
+	<link rel="stylesheet" th:href="@{/css/admin/members.css}">
+</th:block>
+
 <th:block th:fragment="content">
 	<div class="table-container">
-	<section class="section">
-	  <h1>会員管理</h1>
+		<section class="section">
+			<h1>会員管理</h1>
 
-	  <div class="search-area">
-	    <form th:action="@{/admin/members}" method="get"
-	          class="search-area"
-	          style="display:flex; gap:8px; width:100%;">
+			<div class="search-area">
+				<form th:action="@{/admin/members}" method="get" class="search-area"
+					style="display:flex; gap:8px; width:100%;">
 
-	      <input type="text" name="keyword"
-	             placeholder="ユーザーID・氏名・メールアドレスで検索"
-	             th:value="${keyword}" style="flex:1;">
+					<input type="text" name="keyword" placeholder="ユーザーID・氏名・メールアドレスで検索" th:value="${keyword}"
+						style="flex:1;">
 
-	      <button type="submit">検索</button>
-	    </form>
-	  </div>
-	    <table>
-	      <thead>
-	        <tr>
-	          <th>ID</th>
-	          <th>ユーザーID</th>
-	          <th>氏名</th>
-	          <th>権限</th>
-	          <th>Email</th>
-	          <th>登録日</th>
-	          <th>操作</th>
-	        </tr>
-	      </thead>
-	      <tbody>
-			<tr th:each="m : ${members}">
-			  <td th:text="${m.id}"></td>
-			  <td th:text="${m.username}"></td>
-			  <td th:text="${m.displayName}"></td>
-			  <td th:text="${m.authority}"></td>
-			  <td th:text="${m.email}"></td>
-			  <td th:text="${#temporals.format(m.createdAt, 'yyyy/MM/dd')}"></td>
-			  <td class="actions">
-			    <button class="btn btn-edit">編集</button>
-			    <button class="btn btn-delete">削除</button>
-			  </td>
-			</tr>
-	      </tbody>
-	    </table>
-	</section>
+					<button type="submit">検索</button>
+				</form>
+			</div>
+			<table>
+				<thead>
+					<tr>
+						<th>ID</th>
+						<th>ユーザーID</th>
+						<th>氏名</th>
+						<th>権限</th>
+						<th>Email</th>
+						<th>登録日</th>
+						<th>状態</th>
+						<th>操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="m : ${members}" th:classappend="${!m.enabled} ? 'disabled-row' : ''">
+						<td th:text="${m.id}"></td>
+						<td th:text="${m.username}"></td>
+						<td th:text="${m.displayName}"></td>
+						<td th:text="${m.authority}"></td>
+						<td th:text="${m.email}"></td>
+						<td th:text="${#temporals.format(m.createdAt, 'yyyy/MM/dd')}"></td>
+						<td th:text="${m.enabled} ? '有効' : '退会'"></td>
+						<td>
+							<div class="actions">
+								<!-- 編集ボタンはまだダミーのまま（必要なら disabled にしておく） -->
+								<button type="button" class="btn btn-edit" disabled>編集</button>
+
+								<!-- 削除（退会）フォーム -->
+								<th:block th:if="${m.enabled}">
+									<form th:action="@{/admin/members/delete}" method="post" style="display:inline;">
+										<input type="hidden" name="username" th:value="${m.username}">
+										<input type="hidden" th:name="${_csrf.parameterName}"
+											th:value="${_csrf.token}" />
+										<button type="submit" class="btn btn-delete"
+											onclick="return confirm('本当に退会扱いにしますか？');">
+											削除
+										</button>
+									</form>
+								</th:block>
+
+								<!-- 退会済みの場合は「退会済」表示だけ -->
+								<span th:if="${!m.enabled}" style="color: #aaa;">退会済</span>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</section>
 	</div>
 
 </th:block>
+
 </html>

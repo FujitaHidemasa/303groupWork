@@ -1,63 +1,111 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ja"
 	th:replace="layout/admin_base :: admin_base(~{::content}, '商品管理', ~{::assets})">
-<head>
-<meta charset="UTF-8">
+
+
+
 <title>商品管理</title>
 <th:block th:fragment="assets">
-	<link rel="stylesheet" th:href="@{css/admin/main.css}">
-	<link rel="stylesheet" th:href="@{css/admin/sidebar.css}">
+	<link rel="stylesheet" th:href="@{/css/admin/main.css}">
+	<link rel="stylesheet" th:href="@{/css/admin/sidebar.css}">
 </th:block>
-</head>
+
 
 <!-- 本文 -->
-<body>
-	<th:block th:fragment="content">
-	<section class="item-management"> <!--商品管理-->
-		
-	<h1>商品管理</h1>
-	
-<!-- 新規商品登録ボタン -->	
-	<div class="new-item"> <!--新規商品-->
-		   <a class="btn btn-primary" th:href="@{/admin/items/new}">＋ 新規商品登録</a>
-	</div>
-	
-<!-- 商品一覧テーブル -->
-	<table class="item-table"><!-- 商品一覧 -->
-		<thead>
-			<tr>
-			 <th>ID</th>
-			 <th>商品名</th>
-			 <th>カテゴリ</th>
-			 <th>価格</th>
-			 <th>DL商品</th>
-			 <th>作成日</th>
-			 <th>登録日</th>
-			 <th>操作</th>
-			</tr>
-		</thead>
-		
-	<tbody><!-- 商品リストをループ表示 -->
-		<tr th:each="item : ${items}"><!-- 中身を一つずつitemとして取り出して表にする-->
-			<td th:text="${item.id}">1</td><!-- 商品IDの表示 -->
-			<td th:text="${item.name}">サンプル商品</td><!-- 商品名の表示-->
-			<td th:text="${#lists.isEmpty(item.categoryList) ? '' : item.categoryList[0]}">サンプル</td><!-- カテゴリの表示-->
-			<td th:text="${#numbers.formatInteger(item.price, 0)} + '円'">1000円</td><!-- 価格の表示 -->
-			<td th:text="${item.isDownload}? '〇':'×'">×</td><!-- DL商品かどうかの表示 -->
-			<td th:text="${#temporals.format(item.createdAt, 'yyyy/MM/dd')}">2025/11/11</td><!-- 商品作成日 -->
-			<td th:text="${#temporals.format(item.updatedAt, 'yyyy/MM/dd')}">2025/11/11</td><!-- 商品登録日 -->
-			<td><!-- 操作 -->
-				<a class="btn btn-edit" th:href="@{'/admin/items/edit/' + ${item.id}}">編集</a><!-- 編集ボタン -->
-				<a class="btn btn-delete" th:href="@{'/admin/items/delete/' + ${item.id}}" onclick="return confirm('削除してもよろしいですか？');">削除</a><!-- 削除ボタン -->
-			</td>
-		</tr>
-	</tbody>
-	</table>
+<th:block th:fragment="content">
 
-<!-- データが無いとき -->	
-	<p th:if="${#lists.isEmpty(items)}"class="no-data">登録された商品がありません。</p>
-	
+	<!--商品管理-->
+	<section class="item-management">
+
+		<h1>商品管理</h1>
+
+		<!-- フラッシュメッセージ -->
+		<div th:if="${successMessage}"
+			style="padding:8px; margin-bottom:12px; background:#e6ffed; border:1px solid #9ae6b4;">
+			<span th:text="${successMessage}"></span>
+		</div>
+		<div th:if="${errorMessage}"
+			style="padding:8px; margin-bottom:12px; background:#ffe6e6; border:1px solid #feb2b2;">
+			<span th:text="${errorMessage}"></span>
+		</div>
+
+		<!-- 新規商品登録ボタン -->
+		<div class="new-item" style="margin-bottom: 16px;">
+			<a class="btn btn-primary" th:href="@{/admin/items/new}">＋ 新規商品登録</a>
+		</div>
+
+		<!-- 商品一覧テーブル -->
+		<table class="item-table">
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>商品名</th>
+					<th>カテゴリ</th>
+					<th>価格</th>
+					<th>DL商品</th>
+					<th>作成日</th>
+					<th>登録日</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+
+			<tbody><!-- 商品リストをループ表示 -->
+				<tr th:each="item : ${items}">
+
+					<!-- 商品IDの表示 -->
+					<td th:text="${item.id}">1</td>
+
+					<!-- 商品名の表示-->
+					<td th:text="${item.name}">サンプル商品</td>
+
+					<!-- カテゴリの表示-->
+					<td th:text="${#lists.isEmpty(item.categoryList) ? '' : item.categoryList[0]}">サンプル</td>
+
+					<!-- 価格の表示 -->
+					<td th:text="${#numbers.formatInteger(item.price, 0)} + '円'">1000円</td>
+
+					<!-- DL商品かどうかの表示 -->
+					<td th:text="${item.isDownload} ? '〇':'×'">×</td>
+
+					<!-- 商品作成日 -->
+					<td th:text="${item.createdAt != null ? #temporals.format(item.createdAt, 'yyyy/MM/dd') : ''}">
+						2025/11/11
+					</td>
+					
+					<!-- 商品登録日 -->
+					<td th:text="${item.updatedAt != null ? #temporals.format(item.updatedAt, 'yyyy/MM/dd') : ''}">
+						2025/11/11
+					</td>
+
+					<td><!-- 操作 -->
+						<div style="display:flex; gap:8px;">
+
+							<!-- 編集ボタン -->
+							<a class="btn btn-edit"
+								th:href="@{/admin/items/edit/{id}(id=${item.id})}">編集</a>
+
+							<!-- 削除ボタン（POST + CSRF） -->
+							<form th:action="@{/admin/items/delete/{id}(id=${item.id})}" method="post"
+								onsubmit="return confirm('削除してもよろしいですか？');">
+								<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+								<button type="submit" class="btn btn-delete">削除</button>
+							</form>
+						</div>
+					</td>
+				</tr>
+
+
+				<!-- データが無いとき -->
+				<tr th:if="${#lists.isEmpty(items)}">
+					<td colspan="8" class="no-data" style="text-align:center; padding:12px; color:#888;">
+						登録された商品がありません。
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
 	</section>
-	</th:block>
-</body>
+</th:block>
+
+
 </html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ja"
+	th:replace="layout/admin_base :: admin_base(~{::content}, '注文詳細', ~{::assets})">
+
+<th:block th:fragment="content">
+	<section class="section">
+		<h1>注文詳細</h1>
+
+		<!-- 注文の概要 -->
+		<div style="margin-bottom:16px;">
+			<p>注文ID：<span th:text="${orderListId}">1001</span></p>
+
+			<p th:if="${orderUserName != null}">
+				会員ID：<span th:text="${orderUserName}">sample_user</span>
+			</p>
+
+			<p th:if="${orderCreatedAt != null}">
+				注文日：
+				<span th:text="${#temporals.format(orderCreatedAt, 'yyyy/MM/dd HH:mm')}">
+					2025/11/01 10:00
+				</span>
+			</p>
+
+			<!-- 最終更新日時 -->
+			<p th:if="${orderUpdatedAt != null}">
+				最終更新：
+				<span th:text="${#temporals.format(orderUpdatedAt, 'yyyy/MM/dd HH:mm')}">
+					2025/11/02 12:00
+				</span>
+			</p>
+
+			<!-- ステータス表示＋更新フォーム -->
+			<div style="margin-top:8px;">
+				<form th:action="@{/admin/orders/{id}/status(id=${orderListId})}" method="post"
+					class="status-form">
+					<label for="statusSelect">ステータス：</label>
+					<select id="statusSelect" name="status">
+						<option value="NEW" th:selected="${status == 'NEW'}">注文受付</option>
+						<option value="SHIPPED" th:selected="${status == 'SHIPPED'}">出荷済み</option>
+						<option value="CANCELLED" th:selected="${status == 'CANCELLED'}">キャンセル</option>
+					</select>
+					<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+					<button type="submit" class="btn btn-edit btn-small">更新</button>
+				</form>
+			</div>
+
+			<!-- 支払い方法 -->
+			<p th:if="${paymentMethod != null}" style="margin-top:8px;">
+				支払い方法：
+				<span th:text="${paymentMethod}">着払い</span>
+			</p>
+
+			<!-- 配送先住所 -->
+			<p th:if="${address != null}">
+				配送先：
+				<span th:text="${address}">東京都新宿区〜</span>
+			</p>
+
+			<!-- 配達希望 -->
+			<p th:if="${deliveryDate != null}">
+				配達希望：
+				<span th:text="${#temporals.format(deliveryDate, 'yyyy/MM/dd')}"></span>
+				<span th:text="${deliveryTime}"></span>
+			</p>
+
+			<!-- 金額表示を「商品小計 / 送料 / 支払金額合計」に揃える -->
+			<div style="margin-top:12px;">
+				<p style="margin:2px 0;">
+					商品小計：
+					<span th:text="${#numbers.formatInteger(totalPrice, 1, 'COMMA')}"></span>円（税込）
+				</p>
+
+				<p style="margin:2px 0;">
+					送料：
+					<span
+						th:text="${shippingFee == 0 ? '無料' : #numbers.formatInteger(shippingFee, 1, 'COMMA') + '円'}"></span>
+				</p>
+
+				<p style="margin:2px 0; font-weight:bold;">
+					支払金額合計：
+					<span th:text="${#numbers.formatInteger(finalTotal, 1, 'COMMA')}"></span>円
+				</p>
+			</div>
+		</div>
+
+		<!-- 商品一覧 -->
+		<div class="table-container">
+			<table>
+				<thead>
+					<tr>
+						<th>商品画像</th>
+						<th>商品名</th>
+						<th>数量</th>
+						<th>単価</th>
+						<th>小計</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="order : ${orders}">
+						<td>
+							<img th:src="@{'/images/' + ${order.imageName}}" alt="商品画像"
+								style="width:64px; height:64px; object-fit:cover;"
+								onerror="this.onerror=null;this.src='/image/no_image.png';">
+						</td>
+						<td th:text="${order.itemName}">サンプル商品</td>
+						<td th:text="${order.quantity}">1</td>
+						<!-- 金額フォーマットをユーザー側と揃える -->
+						<td
+							th:text="${#numbers.formatInteger(order.price, 1, 'COMMA')} + '円'">
+							3,000円
+						</td>
+						<td
+							th:text="${#numbers.formatInteger(order.price * order.quantity, 1, 'COMMA')} + '円'">
+							3,000円
+						</td>
+					</tr>
+
+					<!-- 商品が無い場合 -->
+					<tr th:if="${#lists.isEmpty(orders)}">
+						<td colspan="5" style="text-align:center; padding:12px; color:#888;">
+							注文に商品がありません。
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<!-- 戻るボタン -->
+		<div style="margin-top:20px;">
+			<a class="btn btn-primary" th:href="@{/admin/orders}">注文一覧に戻る</a>
+		</div>
+	</section>
+</th:block>
+
+</html>

@@ -79,6 +79,27 @@ public class PurchaseController {
 		return options;
 	}
 
+	// 追加：購入対象となる「販売中の商品」だけを抽出
+	private List<CartView> filterPurchasable(List<CartView> cartList) {
+		if (cartList == null) {
+			return Collections.emptyList();
+		}
+		return cartList.stream()
+				.filter(cv -> cv != null
+						&& cv.getItem() != null
+						&& !cv.isItemDeleted())
+				.toList();
+	}
+
+	// 追加：カート内に販売終了商品が含まれているか
+	private boolean hasDeletedItems(List<CartView> cartList) {
+		if (cartList == null) {
+			return false;
+		}
+		return cartList.stream()
+				.anyMatch(cv -> cv != null && cv.isItemDeleted());
+	}
+
 	/** 購入画面表示 */
 	@GetMapping
 	public String showPurchasePage(Model model, Principal principal) {
@@ -87,29 +108,42 @@ public class PurchaseController {
 			return "redirect:/login";
 		}
 
-		List<CartView> cartList = cartService.list(account.getId());
-		if (cartList == null || cartList.isEmpty()) {
+		List<CartView> allCart = cartService.list(account.getId());
+		List<CartView> purchasable = filterPurchasable(allCart);
+		boolean hasDeleted = hasDeletedItems(allCart);
+
+		// 購入可能な商品が 0 件の場合
+		if (purchasable.isEmpty()) {
 			model.addAttribute("cartItems", Collections.emptyList());
 			model.addAttribute("totalPrice", 0);
 			model.addAttribute("shippingFee", 0);
 			model.addAttribute("finalTotal", 0);
-			model.addAttribute("message", "カートに商品がありません。");
+			if (hasDeleted) {
+				model.addAttribute("message", "カート内の商品は現在すべて販売終了のため、ご購入いただけません。カート画面でご確認ください。");
+			} else {
+				model.addAttribute("message", "カートに商品がありません。");
+			}
+			model.addAttribute("deliveryOptions", getDeliveryOptions());
+			model.addAttribute("hasDeletedItems", hasDeleted);
 			return "shop/purchase/purchase";
 		}
 
-		int total = cartList.stream()
+		int total = purchasable.stream()
 				.mapToInt(cv -> cv.getItem().getPrice() * cv.getCart().getQuantity())
 				.sum();
 		int shippingFee = calcShippingFee(total);
 		int finalTotal = total + shippingFee;
 
-		model.addAttribute("cartItems", cartList);
+		model.addAttribute("cartItems", purchasable);
 		model.addAttribute("totalPrice", total);
 		model.addAttribute("shippingFee", shippingFee);
 		model.addAttribute("finalTotal", finalTotal);
 
 		// 配達希望日候補
 		model.addAttribute("deliveryOptions", getDeliveryOptions());
+
+		// 販売終了商品が含まれていた場合の注意（購入対象には含めない）
+		model.addAttribute("hasDeletedItems", hasDeleted);
 
 		return "shop/purchase/purchase";
 	}
@@ -142,18 +176,22 @@ public class PurchaseController {
 			return "redirect:/login";
 		}
 
-		List<CartView> cartList = cartService.list(account.getId());
-		if (cartList == null || cartList.isEmpty()) {
+		List<CartView> allCart = cartService.list(account.getId());
+		List<CartView> purchasable = filterPurchasable(allCart);
+		boolean hasDeleted = hasDeletedItems(allCart);
+
+		if (purchasable.isEmpty()) {
+			// 販売終了しかない場合はカートへ戻す
 			return "redirect:/voidrshop/cart";
 		}
 
-		int totalPrice = cartList.stream()
+		int totalPrice = purchasable.stream()
 				.mapToInt(cv -> cv.getItem().getPrice() * cv.getCart().getQuantity())
 				.sum();
 		int shippingFee = calcShippingFee(totalPrice);
 		int finalTotal = totalPrice + shippingFee;
 
-		model.addAttribute("cartItems", cartList);
+		model.addAttribute("cartItems", purchasable);
 		model.addAttribute("totalPrice", totalPrice);
 		model.addAttribute("shippingFee", shippingFee);
 		model.addAttribute("finalTotal", finalTotal);
@@ -162,6 +200,9 @@ public class PurchaseController {
 		model.addAttribute("address", address);
 		model.addAttribute("deliveryDate", deliveryDate);
 		model.addAttribute("deliveryTime", deliveryTime);
+
+		// 販売終了品がカートにあった場合の注意
+		model.addAttribute("hasDeletedItems", hasDeleted);
 
 		return "shop/purchase/purchase_confirm";
 	}
@@ -182,24 +223,45 @@ public class PurchaseController {
 			return "redirect:/login";
 		}
 
-		List<CartView> cartList = cartService.list(account.getId());
-		if (cartList == null || cartList.isEmpty()) {
+		// カート取得（販売中のみ購入対象）
+		List<CartView> allCart = cartService.list(account.getId());
+		List<CartView> purchasable = filterPurchasable(allCart);
+
+		if (purchasable.isEmpty()) {
+			// 有効な商品がなければカートへ
 			return "redirect:/voidrshop/cart";
 		}
 
-		int totalPrice = cartList.stream()
+		int totalPrice = purchasable.stream()
 				.mapToInt(cv -> cv.getItem().getPrice() * cv.getCart().getQuantity())
 				.sum();
 		int shippingFee = calcShippingFee(totalPrice);
 		int finalTotal = totalPrice + shippingFee;
 
-		// 注文リスト登録
+		// ★配達希望日チェック（最短日以降に補正）→ DB保存にもこの値を使う
+		LocalDate deliveryDateValue = LocalDate.parse(deliveryDate);
+		LocalDate earliest = getEarliestDeliveryDate();
+		if (deliveryDateValue.isBefore(earliest)) {
+			deliveryDateValue = earliest;
+		}
+
+		// ★注文リスト登録（購入情報も一緒に保存）
 		OrderList orderList = new OrderList();
 		orderList.setUsername(account.getUsername());
+		orderList.setPaymentMethod(paymentMethod);
+		orderList.setAddress(address);
+		orderList.setDeliveryDate(deliveryDateValue);
+		orderList.setDeliveryTime(deliveryTime);
+		
+		// 確定した送料・合計金額を保存
+		orderList.setShippingFee(shippingFee);
+		orderList.setFinalTotal(finalTotal);
+		
+		// status は OrderListServiceImpl.createOrderList() 側で NEW に初期化
 		orderListService.createOrderList(orderList);
 
-		// 個別注文登録
-		for (CartView cv : cartList) {
+		// 個別注文登録（販売中の商品だけ）
+		for (CartView cv : purchasable) {
 			Order order = new Order();
 			order.setOrderListId(orderList.getId());
 			order.setItemId(cv.getItem().getId());
@@ -214,27 +276,21 @@ public class PurchaseController {
 			orderItemService.addOrderItem(orderItem);
 		}
 
-		// カートを空にする
+		// カートを空にする（販売終了品も含めてクリア）
 		cartService.clearCart(account.getUsername());
 
+		// 画面表示用
 		model.addAttribute("orderListId", orderList.getId());
 		model.addAttribute("totalPrice", totalPrice);
 		model.addAttribute("shippingFee", shippingFee);
 		model.addAttribute("finalTotal", finalTotal);
 		model.addAttribute("paymentMethod", paymentMethod);
 		model.addAttribute("address", address);
-
-		// 配達希望日チェック（最短日以降）
-		LocalDate deliveryDateValue = LocalDate.parse(deliveryDate);
-		LocalDate earliest = getEarliestDeliveryDate();
-		if (deliveryDateValue.isBefore(earliest)) {
-			deliveryDateValue = earliest;
-		}
 		model.addAttribute("deliveryDate", deliveryDateValue);
 		model.addAttribute("deliveryTime", deliveryTime);
-
 		model.addAttribute("emailNotice", "ご登録のメールアドレスに注文詳細をお送りしました。");
 
 		return "shop/purchase/purchase_complete";
 	}
+
 }

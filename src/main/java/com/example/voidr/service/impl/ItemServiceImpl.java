@@ -102,14 +102,17 @@ public class ItemServiceImpl implements ItemService
 				}
 			}
 
-			// DELETE
+			// DELETE（XMLに存在しない商品をDB側から退役させる）
 			for (Item dbItem : dbItems)
 			{
 				if(!xmlMap.containsKey(dbItem.getId()))
 				{
+					// カテゴリ・画像は物理削除（カタログ用なのでOK）
 					categoryMapper.deleteByItemId(dbItem.getId());
 					imageMapper.deleteByItemId(dbItem.getId());
-					itemMapper.delete(dbItem.getId());
+					
+					// ★修正：物理削除 → ソフトデリート
+					itemMapper.softDelete(dbItem.getId());
 				}
 			}
 
@@ -251,9 +254,10 @@ public class ItemServiceImpl implements ItemService
 	@Override
 	public void deleteItem(Long id)
 	{
+		
 		categoryMapper.deleteByItemId(id);
 		imageMapper.deleteByItemId(id);
-		itemMapper.delete(id);
+		itemMapper.softDelete(id);
 	}
 	
 	@Override

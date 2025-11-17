@@ -37,4 +37,28 @@ public class NewsServiceImpl implements NewsService {
     public List<News> findAll() {
         return newsMapper.findAll();
     }
+    
+	// ★追加：ID指定で1件取得（編集画面などで使用可能）
+	@Override
+	public News findById(Integer id) {
+		return newsMapper.findById(id);
+	}
+
+	// ★追加：1件更新
+	@Override
+	public void update(News news) {
+
+		// 日付未設定なら今日を補完（insertと同じポリシー）
+		if (news.getNewsDate() == null) {
+			news.setNewsDate(LocalDate.now());
+		}
+
+		newsMapper.update(news);
+	}
+
+	// ★追加：1件削除
+	@Override
+	public void delete(Integer id) {
+		newsMapper.delete(id);
+	}
 }

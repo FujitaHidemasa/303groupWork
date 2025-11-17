@@ -191,6 +191,22 @@
 	<main>
 		<section>
 			<h2>購入履歴</h2>
+			
+			<!-- フラッシュメッセージ表示エリア -->
+			<div th:if="${errorMessage}" style="margin: 10px 0; padding: 10px 14px; border-radius: 6px;
+						            background-color: #ffe6e6; border: 1px solid #feb2b2; color:#b00020;">
+				<span th:text="${errorMessage}"></span>
+			</div>
+			
+			<div th:if="${warningMessage}" style="margin: 10px 0; padding: 10px 14px; border-radius: 6px;
+						            background-color: #fff8e1; border: 1px solid #ffecb3; color:#8a6d3b;">
+				<span th:text="${warningMessage}"></span>
+			</div>
+			
+			<div th:if="${successMessage}" style="margin: 10px 0; padding: 10px 14px; border-radius: 6px;
+						            background-color: #e6ffed; border: 1px solid #9ae6b4; color:#22543d;">
+				<span th:text="${successMessage}"></span>
+			</div>
 
 			<!-- ▼ 並び替え + 検索エリア -->
 			<div class="sort-area">
@@ -245,17 +261,33 @@
 							<tbody>
 								<tr th:each="order : ${entry.value}">
 									<td><img th:src="@{'/images/' + ${order.imageName}}"
-											onerror="this.onerror=null;this.src='/image/no_image.png';"></td>
+											onerror="this.onerror=null;this.src='/image/no_image.png';">
+									</td>
 									<td th:text="${order.itemName}"></td>
 									<td th:text="${order.quantity}"></td>
 									<td th:text="'¥' + ${#numbers.formatInteger(order.price, 0)}"></td>
-									<td th:text="${order.isHold ? '保留中' : '注文受付'}"></td>
+									
+									<!-- 差し替え -->
+									<td>
+											<span th:switch="${statusMap[entry.key]}">
+												<span th:case="'NEW'">注文受付</span>
+												<span th:case="'SHIPPED'">出荷済み</span>
+												<span th:case="'CANCELLED'">キャンセル</span>
+												<span th:case="*">注文受付</span>
+											</span>
+									</td>
+									
 									<td class="action-buttons">
 										<button class="detail"
 											th:onclick="'location.href=\'' + @{/voidrshop/items/{id}(id=${order.itemId})} + '\';'">詳細</button>
-										<form th:action="@{/voidrshop/cart/add}" method="post" style="display:inline;">
-											<input type="hidden" name="itemId" th:value="${order.itemId}">
-											<input type="hidden" name="quantity" value="1">
+
+										<!-- 修正：再購入は専用エンドポイントへ -->
+										<form th:action="@{/mypage/orders/reorder}" method="post"
+											style="display:inline;">
+											<input type="hidden" th:name="${_csrf.parameterName}"
+												th:value="${_csrf.token}" />
+											<input type="hidden" name="itemId" th:value="${order.itemId}" />
+											<input type="hidden" name="quantity" value="1" />
 											<button type="submit" class="reorder">再購入</button>
 										</form>
 									</td>

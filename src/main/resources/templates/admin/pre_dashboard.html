@@ -9,6 +9,26 @@
   <section class="section">
     <h1>管理ダッシュボード</h1>
     <p>誰でも入れるガバガバ管理者ページ</p>
+	
+	<!-- 当月売上金（出荷済みのみ） -->
+	<div style="margin-top: 20px; padding: 16px; border-radius: 8px;
+		            background-color: #111; color: #fff; max-width: 420px;">
+		<h2 style="margin-bottom: 10px; font-size: 1.2rem;">当月売上金（出荷済み）</h2>
+		<p style="font-size: 2rem; font-weight: bold; text-align: right;">
+			<span th:text="${#numbers.formatInteger(currentMonthSales, 1, 'COMMA')}"></span>円
+		</p>
+		<p style="font-size: 0.9rem; margin-top: 6px; color: #ccc;">
+			※ ステータスが「出荷済み」の注文のみ集計しています。<br />
+			※ 「出荷済み」を何度押しても、同じ注文は1回分としてのみカウントされます。
+		</p>
+	</div>
+	
+	<!-- 他の管理メニューへの導線（お好みで） -->
+	<div style="margin-top: 24px; display:flex; gap:12px; flex-wrap:wrap;">
+		<a th:href="@{/admin/orders}" class="btn btn-primary">注文管理へ</a>
+		<a th:href="@{/voidrshop}" class="btn btn-secondary">ストアトップへ</a>
+	</div>
+	
   </section>
 </th:block>
 

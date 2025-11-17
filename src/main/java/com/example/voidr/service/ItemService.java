@@ -30,7 +30,7 @@ public interface ItemService
     /** 商品更新 */
     void updateItem(Item item);
 
-    /** 商品削除 */
+    /** 商品をソフトデリート（is_deleted = TRUE）にする */
     void deleteItem(Long id);
 	
     /**

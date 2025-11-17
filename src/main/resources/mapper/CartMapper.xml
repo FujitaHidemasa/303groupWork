@@ -22,6 +22,7 @@
 			<result property="price" column="price" />
 			<result property="overview" column="overview" />
 			<result property="isDownload" column="is_download" />
+			<result property="isDeleted" column="is_deleted" />
 			<result property="thumbsImageName" column="thumbs_image_name" />
 			<result property="createdAt" column="i_created_at" />
 			<result property="updatedAt" column="i_updated_at" />
@@ -41,6 +42,7 @@
 			<id property="id" column="i_id" />
 			<result property="name" column="item_name" />
 			<result property="price" column="item_price" />
+			<result property="isDeleted" column="is_deleted" />
 		</association>
 	</resultMap>
 
@@ -63,6 +65,7 @@
 		i.price AS price,
 		i.overview AS overview,
 		i.is_download AS is_download,
+		i.is_deleted AS is_deleted,
 		i.thumbs_image_name AS thumbs_image_name,
 		i.created_at AS i_created_at,
 		i.updated_at AS i_updated_at
@@ -70,8 +73,7 @@
 		JOIN cart_list cl ON
 		c.cartlist_id = cl.id
 		JOIN item i ON c.item_id = i.id
-		WHERE cl.user_id =
-		#{userId}
+		WHERE cl.user_id = #{userId}
 		ORDER BY c.id DESC
 	</select>
 
@@ -81,9 +83,9 @@
 		SELECT COALESCE(SUM(i.price * c.quantity), 0)
 		FROM cart c
 		JOIN cart_list cl ON c.cartlist_id = cl.id
-		JOIN item i ON c.item_id =
-		i.id
+		JOIN item i ON c.item_id = i.id
 		WHERE cl.user_id = #{userId}
+			AND i.is_deleted = FALSE
 	</select>
 
 	<!-- バッジ用：合計数量 -->
@@ -91,9 +93,10 @@
 		resultType="int">
 		SELECT COALESCE(SUM(c.quantity), 0)
 		FROM cart c
-		JOIN
-		cart_list cl ON c.cartlist_id = cl.id
+		JOIN cart_list cl ON c.cartlist_id = cl.id
+		JOIN item i ON c.item_id = i.id
 		WHERE cl.user_id = #{userId}
+			AND i.is_deleted = FALSE
 	</select>
 
 	<!-- ✅ ユーザー名でカート一覧取得 -->
@@ -146,24 +149,22 @@
 		CURRENT_TIMESTAMP)
 		ON CONFLICT (cartlist_id, item_id)
 		DO UPDATE SET
-		quantity = cart.quantity + EXCLUDED.quantity,
-		updated_at =
-		CURRENT_TIMESTAMP
+			quantity = cart.quantity + EXCLUDED.quantity,
+			updated_at = CURRENT_TIMESTAMP
 	</insert>
 
 	<!-- 数量を直接セット -->
 	<update id="updateQuantityByCart"
 		parameterType="com.example.voidr.entity.Cart">
 		UPDATE cart
-		SET quantity = #{quantity}, updated_at =
-		CURRENT_TIMESTAMP
+		SET quantity = #{quantity},
+			updated_at = CURRENT_TIMESTAMP
 		WHERE id = #{id}
 	</update>
 
 	<!-- 削除 -->
 	<delete id="deleteById" parameterType="long">
-		DELETE FROM cart WHERE id
-		= #{id}
+		DELETE FROM cart WHERE id = #{id}
 	</delete>
 
 	<delete id="deleteByCartListId" parameterType="long">

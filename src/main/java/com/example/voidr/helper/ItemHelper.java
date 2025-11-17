@@ -19,7 +19,8 @@ public class ItemHelper
 	        xml.getThumbsImageName(),
 	        xml.getCategoryList(),
 	        xml.getImagesName(),
-	        "/images/" + xml.getThumbsImageName() // imagePath
+	        "/images/" + xml.getThumbsImageName(), // imagePath
+	        false // 11/16 追加
 	    );
 
 	    // imagePath をセット

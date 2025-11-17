@@ -13,9 +13,18 @@ VALUES
 -- ===============================
 -- 商品テーブル（3件）
 -- ===============================
-INSERT INTO item (name, price, overview,is_download, thumbs_image_name)
-VALUES 
-('ダミー', 0, 'ダミー用',false, 'dummy.jpg');
+-- INSERT INTO item (name, price, overview,is_download, thumbs_image_name)
+-- VALUES 
+-- ('ダミー', 0, 'ダミー用',false, 'dummy.jpg');
+
+-- ===============================
+-- 新着情報テーブル（4件）
+-- ===============================
+INSERT INTO news (news_date, content) VALUES
+('2025-10-17', 'ストア公開に向けた準備スタート'),
+('2025-11-07', '新商品をラインナップに追加'),
+('2025-11-17', 'VOIDR OFFICIAL STORE プレオープン'),
+('2025-11-20', 'VOIDR OFFICIAL STORE ローンチ予定');
 
 -- ===============================
 -- カートリスト（3件）
