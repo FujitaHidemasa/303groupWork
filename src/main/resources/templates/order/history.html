@@ -301,6 +301,7 @@
 		</div>
 		<div th:if="${successMessage}" class="flash-message flash-success"><span th:text="${successMessage}"></span>
 		</div>
+
 		<div class="sort-area">
 			<form method="get" th:action="@{/mypage/orders}">
 				<select name="sort" onchange="this.form.submit()">
@@ -317,19 +318,29 @@
 				<div class="order-header" th:onclick="'toggleOrder(' + ${iterStat.index} + ')'">
 					<div class="order-header-row">
 						<p>注文番号：<span th:text="${entry.key}"></span></p>
-						<p th:if="${#lists.size(entry.value) > 0}">注文日：<span
-								th:text="${#temporals.format(entry.value[0].createdAt,'yyyy/MM/dd HH:mm')}"></span></p>
+						<p th:if="${#lists.size(entry.value) > 0}">注文日：
+							<span th:text="${#temporals.format(entry.value[0].createdAt,'yyyy/MM/dd HH:mm')}"></span>
+						</p>
 						<p>配達予定：<span th:text="${deliveryMap[entry.key]}"></span></p>
 					</div>
 					<div class="order-header-row right">
 						<p>送料：<span th:text="${#numbers.formatInteger(shippingFeeMap[entry.key],0)}"></span>円</p>
-						<p>合計：<span th:text="${#numbers.formatInteger(totalPriceMap[entry.key],0)}"></span>円 <span
-								class="toggle-icon">▶</span></p>
+						<p>合計：<span th:text="${#numbers.formatInteger(totalPriceMap[entry.key],0)}"></span>円</p>
+						<p>状態：
+							<span th:switch="${statusMap[entry.key]}" th:id="'header-status-' + ${entry.key}">
+								<span th:case="'NEW'" style="color:#00bfff">注文受付</span>
+								<span th:case="'SHIPPED'" style="color:#f5a623">出荷済み</span>
+								<span th:case="'CANCELLED'" style="color:#e74c3c">キャンセル済み</span>
+								<span th:case="*">注文受付</span>
+							</span>
+						</p>
+						<span class="toggle-icon">▶</span>
 					</div>
 				</div>
+
 				<div class="order-content" th:id="'order-content-' + ${iterStat.index}">
 					<div th:if="${statusMap[entry.key] == 'NEW'}" style="margin-bottom:12px;">
-						<button class="cancel" th:attr="data-orderListId=${entry.key}"
+						<button class="cancel" th:attr="data-orderlistid=${entry.key}"
 							style="background-color:#e74c3c;color:white;padding:10px 18px;border:none;border-radius:6px;">この注文をキャンセル</button>
 					</div>
 
@@ -341,7 +352,7 @@
 							<p>数量：<span th:text="${order.quantity}"></span></p>
 							<p>価格：¥<span th:text="${#numbers.formatInteger(order.price,0)}"></span></p>
 							<p>状態：
-								<span th:switch="${statusMap[entry.key]}">
+								<span th:switch="${statusMap[entry.key]}" th:id="'item-status-' + ${order.orderListId}">
 									<span th:case="'NEW'">注文受付</span>
 									<span th:case="'SHIPPED'">出荷済み</span>
 									<span th:case="'CANCELLED'">キャンセル済み</span>
@@ -426,6 +437,19 @@
 				const csrfToken = document.getElementById("csrf_token").value;
 				const csrfName = document.getElementById("csrf_header").value;
 
+				// ここでヘッダーとアイテム状態を即時変更
+				const headerStatus = document.getElementById(`header-status-${selectedOrderListId}`);
+				if (headerStatus) {
+					headerStatus.textContent = "キャンセル済み";
+					headerStatus.style.color = "#e74c3c";
+				}
+				// 個別アイテムもすべてキャンセル済みに
+				document.querySelectorAll(`[id^="item-status-"]`).forEach(itemSpan => {
+					if (itemSpan.id.includes(selectedOrderListId)) {
+						itemSpan.textContent = "キャンセル済み";
+					}
+				});
+
 				const form = document.createElement("form");
 				form.method = "POST";
 				form.action = "/mypage/orders/cancel";
@@ -438,7 +462,7 @@
 				const idInput = document.createElement("input");
 				idInput.type = "hidden";
 				idInput.name = "orderListId";
-				idInput.value = cancelOrderIdInput.value;
+				idInput.value = selectedOrderListId;
 
 				form.appendChild(csrfInput);
 				form.appendChild(idInput);
