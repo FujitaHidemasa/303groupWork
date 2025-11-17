@@ -60,25 +60,42 @@
 		<h2 class="section-title">お問い合わせフォーム</h2>
 
 		<form th:action="@{/contact/submit}" th:object="${contactForm}" method="post" class="contact-form">
-			<div class="form-group">
-				<label for="name">お名前</label>
-				<input type="text" id="name" th:field="*{name}" required placeholder="商品を検索">
-			</div>
-			<div class="form-group">
-				<label for="email">メールアドレス</label>
-				<input type="email" id="email" th:field="*{email}" required>
-			</div>
-			<div class="form-group">
-				<label for="subject">件名</label>
-				<input type="text" id="subject" th:field="*{subject}">
-			</div>
-			<div class="form-group">
-				<label for="message">お問い合わせ内容</label>
-				<textarea id="message" th:field="*{message}" required></textarea>
-			</div>
-			<button type="submit" class="submit-btn">送信する</button>
+		    <div class="form-group">
+		        <label for="name">お名前</label>
+		        <input type="text" id="name" th:field="*{name}" required>
+		        <!-- エラー表示 -->
+		        <p class="error" th:if="${#fields.hasErrors('name')}"
+		           th:errors="*{name}">お名前エラー</p>
+		    </div>
+
+		    <div class="form-group">
+		        <label for="email">メールアドレス</label>
+		        <input type="email" id="email" th:field="*{email}" required>
+		        <!-- エラー表示 -->
+		        <p class="error" th:if="${#fields.hasErrors('email')}"
+		           th:errors="*{email}">メールアドレスエラー</p>
+		    </div>
+
+		    <div class="form-group">
+		        <label for="subject">件名</label>
+		        <input type="text" id="subject" th:field="*{subject}">
+		        <!-- エラー表示 -->
+		        <p class="error" th:if="${#fields.hasErrors('subject')}"
+		           th:errors="*{subject}">件名エラー</p>
+		    </div>
+
+		    <div class="form-group">
+		        <label for="message">お問い合わせ内容</label>
+		        <textarea id="message" th:field="*{message}" required></textarea>
+		        <!-- エラー表示 -->
+		        <p class="error" th:if="${#fields.hasErrors('message')}"
+		           th:errors="*{message}">お問い合わせ内容エラー</p>
+		    </div>
+
+		    <button type="submit" class="submit-btn">送信する</button>
 		</form>
 
+		<!-- 送信成功メッセージ -->
 		<p th:if="${successMessage}" th:text="${successMessage}" class="success-message"></p>
 	</section>
 
