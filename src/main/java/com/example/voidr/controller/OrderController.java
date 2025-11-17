@@ -33,10 +33,8 @@ public class OrderController {
 
 	private final OrderService orderService;
 	private final OrderListService orderListService;
-	// ★追加：再購入で商品取得＆カート追加を行うため
 	private final ItemService itemService;
 	private final CartService cartService;
-	// private Object Keyword;
 
 	/**
 	 * 購入履歴一覧を表示（並び替え対応）
@@ -55,7 +53,7 @@ public class OrderController {
 		String username = principal.getName();
 		List<OrderList> orderLists = orderListService.findByUserName(username);
 
-		// ▼ 並び替え（既存処理）
+		// ▼ 並び替え
 		if (sort.equals("asc")) {
 			orderLists.sort(Comparator.comparing(OrderList::getCreatedAt));
 		} else {
@@ -68,10 +66,17 @@ public class OrderController {
 		Map<Long, Integer> shippingFeeMap = new LinkedHashMap<>();
 		Map<Long, String> statusMap = new LinkedHashMap<>();
 
+		// ★追加：OrderList をそのまま保持する map（配達予定日などで使用）
+		Map<Long, OrderList> orderListMap = new LinkedHashMap<>();
+
 		for (OrderList ol : orderLists) {
+
+			// ★追加：orderListMap に登録
+			orderListMap.put(ol.getId(), ol);
+
 			List<Order> orderHistory = orderService.getOrderHistory(ol.getId());
 
-			// 検索キーワードがある場合 → 商品名でフィルタ
+			// 検索キーワードフィルタ
 			if (keyword != null && !keyword.trim().isEmpty()) {
 				String lower = keyword.toLowerCase();
 				orderHistory = orderHistory.stream()
@@ -79,17 +84,19 @@ public class OrderController {
 						.toList();
 			}
 
-			// フィルタの結果、注文内容が0件ならこの注文リストを除外
+			// 商品が0件ならスキップ
 			if (orderHistory.isEmpty()) {
 				continue;
 			}
 
 			groupedOrders.put(ol.getId(), orderHistory);
 
+			// 合計金額
 			int total = orderHistory.stream()
 					.mapToInt(order -> order.getPrice() * order.getQuantity())
 					.sum();
 
+			// 送料
 			int shippingFee = (total >= 5000) ? 0 : 500;
 
 			shippingFeeMap.put(ol.getId(), shippingFee);
@@ -101,16 +108,18 @@ public class OrderController {
 		model.addAttribute("totalPriceMap", totalPriceMap);
 		model.addAttribute("shippingFeeMap", shippingFeeMap);
 		model.addAttribute("statusMap", statusMap);
+
+		// ★追加：ビューで配達予定日を表示するために必要
+		model.addAttribute("orderListMap", orderListMap);
+
 		model.addAttribute("sort", sort);
 		model.addAttribute("historyKeyword", keyword);
 
 		return "order/history";
 	}
-	
+
 	/**
 	 * ★再購入処理（1商品のみ）
-	 * 購入履歴の行から「再購入」された商品をカートに追加する。
-	 * 削除済み（販売終了）の商品は追加しない。
 	 */
 	@PostMapping("/reorder")
 	public String reorderSingleItem(
@@ -119,17 +128,14 @@ public class OrderController {
 			@AuthenticationPrincipal LoginUser loginUser,
 			RedirectAttributes redirectAttributes) {
 
-		// ログインチェック
 		if (loginUser == null) {
 			return "redirect:/login";
 		}
 
 		Long userId = loginUser.getId();
 
-		// 商品取得
 		Item item = itemService.getItemById(itemId);
 
-		// 存在しない or 削除済みならカートに入れない
 		if (item == null || Boolean.TRUE.equals(item.getIsDeleted())) {
 			redirectAttributes.addFlashAttribute(
 					"errorMessage",
@@ -137,7 +143,6 @@ public class OrderController {
 			return "redirect:/mypage/orders";
 		}
 
-		// 生きている商品だけカートに追加
 		cartService.addItem(userId, itemId, quantity);
 
 		redirectAttributes.addFlashAttribute(
@@ -146,5 +151,4 @@ public class OrderController {
 
 		return "redirect:/voidrshop/cart";
 	}
-
 }
