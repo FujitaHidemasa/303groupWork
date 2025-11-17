@@ -31,7 +31,11 @@
 	      </a>
 	    </li>
 	    <li><a th:href="@{/mypage/address}">お届け先管理</a></li>
-	    <li><a th:href="@{/mypage/wishlist}">お気に入り</a></li>
+	    <li><a th:href="@{/favorites/{userId}(userId=${#authentication.principal.id})}" 
+				 th:classappend="${currentPath == '/mypage/wishlist'} ? 'active'"
+				 sec:authorize="isAuthenticated()">
+				 お気に入り
+		</a></li>
 	    <li><a th:href="@{/mypage/delete}">退会手続き</a></li>
 	  </ul>
 	</aside>

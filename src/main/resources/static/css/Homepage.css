@@ -385,7 +385,7 @@ header, .main-header {
   display: flex;
   justify-content: flex-end; /* 右寄せにしたい場合 */
   padding: 24px 10%;
-  margin-top: -78px; /* 必要なら微調整してセクションとの距離を調整 */
+  margin-top: 10px; /* 必要なら微調整してセクションとの距離を調整 */
   z-index: 2;
 }
 
@@ -406,6 +406,7 @@ header, .main-header {
   box-shadow: 0 6px 18px rgba(129,87,206,0.18);
   transition: transform .18s ease, box-shadow .18s ease, opacity .18s ease;
   backdrop-filter: blur(4px);
+  margin-bottom: 20px;
 }
 
 /* hover / focus */

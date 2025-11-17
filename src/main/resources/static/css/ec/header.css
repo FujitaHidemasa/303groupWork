@@ -97,19 +97,20 @@ nav a:hover {
   align-items: center;
   border: 1px solid var(--color-border-light);
   border-radius: 6px;
-  background: var(--color-bg-glass);
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(6px);
   padding: 4px 10px;
   transition: all 0.3s ease;
 }
 .search-box:focus-within {
-  border-color: var(--color-accent-purple);
-  box-shadow: 0 0 8px var(--color-shadow-glow);
+	border-color: #b15fff;
+	 box-shadow: 0 0 10px rgba(177, 95, 255, 0.6);
 }
 .search-box input {
   padding: 6px 10px;
   border: none;
   background: transparent;
-  color: var(--color-text-main);
+  color: #fff;
   outline: none;
   width: 320px;
 }

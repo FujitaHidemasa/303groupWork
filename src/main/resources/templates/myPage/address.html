@@ -12,15 +12,38 @@
   <div th:replace="fragments/header :: header"></div>
 
   <main class="mypage-container">
-    <aside class="mypage-sidebar">
-      <h2>メニュー</h2>
-      <ul>
-        <li><a th:href="@{/mypage}">マイページTOP</a></li>
-        <li><a th:href="@{/mypage/edit}">会員情報変更</a></li>
-        <li><a th:href="@{/mypage/wishlist}">お気に入り</a></li>
-        <li><a href="#">退会手続き</a></li>
-      </ul>
-    </aside>
+	<aside class="mypage-sidebar">
+	  <h2>メニュー</h2>
+
+	  <ul>
+	    <li><a th:href="@{/mypage}">マイページTOP</a></li>
+	    <li><a th:href="@{/mypage/edit}">会員情報変更</a></li>
+
+	    <li>
+	      <a th:href="@{/mypage/address}"
+	         th:classappend="${currentPath == '/mypage/address'} ? 'active' : ''">
+	        お届け先管理
+	      </a>
+	    </li>
+	    <li>
+	      <a th:href="@{/favorites/{userId}(userId=${#authentication.principal.id})}"
+	         th:classappend="${currentPath == '/favorites'} ? 'active' : ''"
+	         sec:authorize="isAuthenticated()">
+	        お気に入り
+	      </a>
+	    </li>
+
+
+	    <li>
+	      <a th:href="@{/mypage/delete}"
+	         th:classappend="${currentPath == '/mypage/delete'} ? 'active' : ''">
+	        退会手続き
+	      </a>
+	    </li>
+	  </ul>
+
+	</aside>
+
 
     <section class="mypage-content">
       <h2>お届け先管理</h2>
