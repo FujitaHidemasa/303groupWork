@@ -1,0 +1,46 @@
+@charset "UTF-8";
+
+/* ===============================
+   新着情報フォーム（横1列レイアウト）
+   =============================== */
+.news-inline-form {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  margin-top: 20px;
+}
+
+/* 日付 */
+.news-inline-form .date-input {
+  width: 150px;
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+/* 内容（広め） */
+.news-inline-form .content-input {
+  flex: 1;
+  max-width: 80%;
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+/* ボタン */
+.news-inline-form .btn-submit {
+  padding: 8px 16px;
+  background: #2980b9; /* 他ページの青に統一 */
+  border: none;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.news-inline-form .btn-submit:hover {
+  opacity: 0.9;
+}

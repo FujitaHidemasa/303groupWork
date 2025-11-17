@@ -1,12 +1,27 @@
-<!-- ============================================================
-  新着情報管理ページ（DB連携済）
-  newsテーブルを作成し、DBの内容が一覧に表示されるようになりました。
-  ※現在「編集」「削除」「新規追加」ボタンは未実装です（見た目のみ）。
-=============================================================== -->
+<!--/* ============================================================
+  新着情報管理ページ（11/17 更新）
+
+  【現在の実装状況】
+  ・news テーブルと連携し、新着情報の一覧表示を実装済み
+  ・新着情報の登録（追加）が可能
+  ・新着情報の編集／削除も実装済み
+  ・登録された新着情報はトップページに新しい順で表示される
+
+  【未実装部分】
+  ・特になし（今後、必要な場合に追記）
+
+  【補足】
+  ・Service / Mapper は NewsService / NewsMapper を利用
+  ・/admin/** へのアクセス制限は後日 Spring Security で設定予定
+=============================================================== */-->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ja"
 	th:replace="layout/admin_base :: admin_base(~{::content}, '新着情報管理', ~{::assets})">
 
+	<th:block th:fragment="assets">
+		<link rel="stylesheet" th:href="@{/css/admin/news.css}">
+	</th:block>
+	
 <th:block th:fragment="content">
 	<div class="table-container">
 		<section class="section">
@@ -24,29 +39,22 @@
 				style="padding:8px; margin-bottom:12px; background:#ffe6e6; border:1px solid #feb2b2;">
 				<span th:text="${errorMessage}"></span>
 			</div>
+			
+			<!-- 登録フォーム -->
+			    <form th:action="@{/admin/news/add}" method="post" class="news-inline-form">
 
-			<!-- 新規追加フォーム -->
-			<h2 style="margin-top: 8px; margin-bottom: 8px;">新規追加</h2>
-			<form th:action="@{/admin/news/create}" method="post"
-				style="display:flex; flex-wrap:wrap; gap:8px; align-items:flex-start; margin-bottom:20px;">
-				<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+			      <!-- 日付 -->
+			      <input type="date" name="date" required class="date-input">
 
-				<div style="display:flex; flex-direction:column;">
-					<label for="newsDate">日付（省略時は今日）</label>
-					<input type="date" id="newsDate" name="newsDate">
-				</div>
+			      <!-- 内容 -->
+			      <input type="text" name="content" placeholder="内容を入力（※日付が空欄の場合は自動的に今日の日付で登録）" required class="content-input">
 
-				<div style="display:flex; flex-direction:column; flex:1;">
-					<label for="content">内容</label>
-					<textarea id="content" name="content" rows="2" required
-						style="width:100%; min-width:260px;"></textarea>
-				</div>
+			      <!-- ボタン -->
+			      <button type="submit" class="btn-submit">＋ 登録</button>
 
-				<div style="display:flex; align-items:flex-end;">
-					<button type="submit">追加</button>
-				</div>
-			</form>
+			    </form>
 
+			
 			<!-- 一覧テーブル -->
 			<table class="admin-table">
 				<thead>
@@ -61,18 +69,18 @@
 					<!-- データが1件以上ある場合 -->
 					<tr th:each="n : ${newsList}">
 						<td th:text="${n.id}">1</td>
-						<td th:text="${#temporals.format(n.newsDate, 'yyyy.MM.dd')}">2025.11.20</td>
+						<td th:text="${#temporals.format(n.newsDate, 'yyyy/MM/dd')}">2025/11/20</td>
 						<td th:text="${n.content}">ニュース内容</td>
 						<td>
 							<div style="display:flex; gap:8px;">
 								<!-- 編集ボタン -->
-								<a th:href="@{/admin/news/{id}/edit(id=${n.id})}">編集</a>
+								<a th:href="@{/admin/news/{id}/edit(id=${n.id})}" class="btn btn-edit">編集</a>
 
 								<!-- 削除フォーム -->
 								<form th:action="@{/admin/news/{id}/delete(id=${n.id})}" method="post"
 									onsubmit="return confirm('この新着情報を削除してよろしいですか？');">
 									<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-									<button type="submit">削除</button>
+									<button type="submit" class="btn btn-delete">削除</button>
 								</form>
 							</div>
 						</td>
