@@ -18,6 +18,9 @@ DROP TABLE IF EXISTS favorite CASCADE;
 -- 既存の複数形を使っていた場合の掃除
 DROP TABLE IF EXISTS favorites CASCADE;
 
+-- お問い合わせテーブルも毎回ドロップ
+DROP TABLE IF EXISTS contact CASCADE;
+
 -- 新着情報テーブルの削除 テスト用
 DROP TABLE IF EXISTS news CASCADE;
 
@@ -71,7 +74,7 @@ CREATE TABLE item (
     is_download BOOLEAN NOT NULL,
     thumbs_image_name TEXT,
 
-	-- ★追加：ソフトデリート用フラグ（TRUEなら削除扱い）
+	-- ソフトデリート用フラグ（TRUEなら削除扱い）
 	is_deleted   BOOLEAN NOT NULL DEFAULT FALSE,
     
     created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
@@ -170,17 +173,17 @@ CREATE TABLE cart (
 -- -------------------------------
 -- お気に入りテーブル
 -- -------------------------------
--- ★修正：Mapper が参照する単数形 "favorite" を作成
+-- Mapper が参照する単数形 "favorite" を作成
 CREATE TABLE IF NOT EXISTS favorite (
     id SERIAL PRIMARY KEY,
     user_id INTEGER NOT NULL REFERENCES login_user(id) ON DELETE CASCADE,
     item_id INTEGER NOT NULL REFERENCES item(id) ON DELETE CASCADE,
     created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    -- ★追加：重複登録防止（user_id, item_id の一意制約）
+    -- 重複登録防止（user_id, item_id の一意制約）
     CONSTRAINT uq_favorite_user_item UNIQUE (user_id, item_id)
 );
 
--- ★追加：検索高速化
+-- 検索高速化
 CREATE INDEX IF NOT EXISTS idx_favorite_user ON favorite(user_id);
 CREATE INDEX IF NOT EXISTS idx_favorite_item ON favorite(item_id);
 
@@ -218,4 +221,29 @@ CREATE TABLE IF NOT EXISTS password_reset_pin (
 
 CREATE INDEX IF NOT EXISTS idx_password_reset_pin_email ON password_reset_pin(email);
 CREATE INDEX IF NOT EXISTS idx_password_reset_pin_expire ON password_reset_pin(expire_at);
+
+-- ===============================
+--  お問い合わせテーブル
+-- ===============================
+CREATE TABLE contact (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES login_user(id) ON DELETE SET NULL,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    subject VARCHAR(200) NOT NULL,
+    message TEXT NOT NULL,
+    -- ステータス: NEW（未対応） / IN_PROGRESS（対応中） / RESOLVED（対応済）
+    status VARCHAR(20) NOT NULL DEFAULT 'NEW',
+    admin_reply TEXT,
+    created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    replied_at TIMESTAMP WITHOUT TIME ZONE
+);
+
+-- 便利インデックス
+CREATE INDEX IF NOT EXISTS idx_contact_user_id
+  ON contact (user_id);
+
+CREATE INDEX IF NOT EXISTS idx_contact_status_created_at
+  ON contact (status, created_at DESC);
 

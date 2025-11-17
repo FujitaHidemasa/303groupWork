@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- ★新規作成：ContactMapper.xml -->
+<mapper namespace="com.example.voidr.repository.ContactMapper">
+
+	<!-- 共通カラム SELECT -->
+	<sql id="ContactColumns">
+		id,
+		user_id AS userId,
+		name,
+		email,
+		subject,
+		message,
+		status,
+		admin_reply AS adminReply,
+		created_at AS createdAt,
+		updated_at AS updatedAt,
+		replied_at AS repliedAt
+	</sql>
+
+	<!-- 新規登録 -->
+	<insert id="insert"
+		parameterType="com.example.voidr.entity.Contact"
+		useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO contact (
+		user_id,
+		name,
+		email,
+		subject,
+		message,
+		status,
+		admin_reply
+		)
+		VALUES (
+		#{userId},
+		#{name},
+		#{email},
+		#{subject},
+		#{message},
+		#{status},
+		#{adminReply}
+		)
+	</insert>
+
+	<!-- 全件取得（新しい順） -->
+	<select id="findAll"
+		resultType="com.example.voidr.entity.Contact">
+		SELECT
+		<include refid="ContactColumns" />
+		FROM contact
+		ORDER BY created_at DESC
+	</select>
+
+	<!-- ステータスで絞り込み -->
+	<select id="findByStatus" parameterType="string"
+		resultType="com.example.voidr.entity.Contact">
+		SELECT
+		<include refid="ContactColumns" />
+		FROM contact
+		WHERE status = #{status}
+		ORDER BY created_at DESC
+	</select>
+
+	<!-- 1件取得 -->
+	<select id="findById" parameterType="long"
+		resultType="com.example.voidr.entity.Contact">
+		SELECT
+		<include refid="ContactColumns" />
+		FROM contact
+		WHERE id = #{id}
+	</select>
+
+	<!-- 1件削除 -->
+	<delete id="deleteById" parameterType="long">
+		DELETE FROM contact
+		WHERE id = #{id}
+	</delete>
+
+	<!-- ステータス・返信内容の更新 -->
+	<update id="updateStatus">
+		UPDATE contact
+		SET
+		status = #{status},
+		admin_reply = #{adminReply},
+		replied_at = #{repliedAt},
+		updated_at = CURRENT_TIMESTAMP
+		WHERE id = #{id}
+	</update>
+
+</mapper>
