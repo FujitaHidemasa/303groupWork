@@ -187,7 +187,7 @@ public class PurchaseController {
 		// ▼ ★ 追加：配送先住所を取得
 	    List<Address> addresses = addressService.getAddressesByUserId(account.getId());
 	    
-	    System.out.println("★★ addresses = " + addresses);
+	    
 	    
 
 		if (purchasable.isEmpty()) {
@@ -242,42 +242,65 @@ public class PurchaseController {
 	/** 購入確認画面 */
 	@PostMapping("/confirm")
 	public String confirmPurchase(
-			@RequestParam("paymentMethod") String paymentMethod,
-			@RequestParam("address") String address,
-			@RequestParam("deliveryDate") String deliveryDate,
-			@RequestParam("deliveryTime") String deliveryTime,
-			Model model, Principal principal) {
+	        @RequestParam("paymentMethod") String paymentMethod,
+	        @RequestParam(value = "addressSelect", required = false) Long addressId,
+	        @RequestParam(value = "manualAddress", required = false) String manualAddress,
+	        @RequestParam("deliveryDate") String deliveryDate,
+	        @RequestParam("deliveryTime") String deliveryTime,
+	        Model model, Principal principal) {
 
-		Account account = currentUser(principal);
-		if (account == null)
-			return "redirect:/login";
+	    Account account = currentUser(principal);
+	    if (account == null)
+	        return "redirect:/login";
 
-		List<CartView> allCart = cartService.list(account.getId());
-		List<CartView> purchasable = filterPurchasable(allCart);
-		
-	    
-		if (purchasable.isEmpty())
-			return "redirect:/voidrshop/cart";
+	    List<CartView> allCart = cartService.list(account.getId());
+	    List<CartView> purchasable = filterPurchasable(allCart);
 
-		int total = purchasable.stream()
-				.mapToInt(cv -> cv.getItem().getPrice() * cv.getCart().getQuantity())
-				.sum();
-		int shippingFee = calcShippingFee(total);
-		int finalTotal = total + shippingFee;
+	    if (purchasable.isEmpty())
+	        return "redirect:/voidrshop/cart";
 
-		model.addAttribute("cartItems", purchasable);
-		model.addAttribute("totalPrice", total);
-		model.addAttribute("shippingFee", shippingFee);
-		model.addAttribute("finalTotal", finalTotal);
+	    int total = purchasable.stream()
+	            .mapToInt(cv -> cv.getItem().getPrice() * cv.getCart().getQuantity())
+	            .sum();
+	    int shippingFee = calcShippingFee(total);
+	    int finalTotal = total + shippingFee;
 
-		model.addAttribute("paymentMethod", paymentMethod);
-		model.addAttribute("address", address);
-		model.addAttribute("deliveryDate", deliveryDate);
-		model.addAttribute("deliveryTime", deliveryTime);
-		model.addAttribute("hasDeletedItems", hasDeletedItems(allCart));
+	    /* ▼▼ ここが最重要 ▼▼ */
+	    String finalAddress = "";
 
-		return "shop/purchase/purchase_confirm";
+	    if (addressId != null) {
+	        // 🔹 登録済み住所のIDが送られてきた場合は、DBから住所を取り出す
+	        Address addr = addressService.getAddressesByUserId(account.getId())
+	                .stream()
+	                .filter(a -> a.getId().equals(addressId))
+	                .findFirst()
+	                .orElse(null);
+
+	        if (addr != null) {
+	            finalAddress = addr.getAddress();  // ← 表示は「住所だけ」
+	        }
+
+	    } else if (manualAddress != null && !manualAddress.isBlank()) {
+	        // 🔹 手動入力の場合はこちら
+	        finalAddress = manualAddress;
+	    }
+
+	    /* ▲▲ ここまで最重要 ▲▲ */
+
+	    model.addAttribute("cartItems", purchasable);
+	    model.addAttribute("totalPrice", total);
+	    model.addAttribute("shippingFee", shippingFee);
+	    model.addAttribute("finalTotal", finalTotal);
+
+	    model.addAttribute("paymentMethod", paymentMethod);
+	    model.addAttribute("address", finalAddress);  // ← ここに住所だけが入る！
+	    model.addAttribute("deliveryDate", deliveryDate);
+	    model.addAttribute("deliveryTime", deliveryTime);
+	    model.addAttribute("hasDeletedItems", hasDeletedItems(allCart));
+
+	    return "shop/purchase/purchase_confirm";
 	}
+
 
 	/** 購入完了処理 */
 	@PostMapping("/complete")

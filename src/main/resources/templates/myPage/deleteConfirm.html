@@ -11,17 +11,43 @@
 <div th:replace="fragments/header :: header"></div>
 
 <main class="mypage-container">
-  <aside class="mypage-sidebar">
-    <h2>メニュー</h2>
-    <ul>
-      <li><a th:href="@{/mypage}">マイページTOP</a></li>
-      <li><a th:href="@{/mypage/edit}">会員情報変更</a></li>
-      <li><a th:href="@{/mypage/address}">お届け先管理</a></li>
-      <li><a th:href="@{/mypage/wishlist}">お気に入り</a></li>
-      <li><a th:href="@{/mypage/delete}" class="active">退会手続き</a></li>
-    </ul>
-  </aside>
+	<aside class="mypage-sidebar">
+				<h2>メニュー</h2>
+				<ul>
+					<li>
+						<a th:href="@{/mypage/orders}" 
+						   th:classappend="${currentPath == '/mypage/orders'} ? 'active'">
+						   購入履歴
+						</a>
+					</li>
+					<li>
+						<a th:href="@{/mypage/edit}" 
+						   th:classappend="${currentPath == '/mypage/edit'} ? 'active'">
+						   会員情報変更
+						</a>
+					</li>
+					<li>
+						<a th:href="@{/mypage/address}" 
+						   th:classappend="${currentPath == '/mypage/address'} ? 'active'">
+						   お届け先管理
+						</a>
+					</li>
+					<li>
+						<a th:href="@{/favorites/{userId}(userId=${#authentication.principal.id})}" 
+						   th:classappend="${currentPath == '/mypage/wishlist'} ? 'active'"
+						   sec:authorize="isAuthenticated()">
+						   お気に入り
+						</a>
 
+					</li>
+					<li>
+						<a th:href="@{/mypage/delete}" 
+						   th:classappend="${currentPath == '/mypage/delete'} ? 'active'">
+						   退会手続き
+						</a>
+					</li>
+				</ul>
+			</aside>
   <section class="mypage-content">
     <h2>退会確認</h2>
     <p>以下の理由で退会されます：</p>

@@ -33,7 +33,6 @@ public class TopController
 	    // ランダム4件を取得
 	    List<Item> items = itemService.getRandom4Items();
 
-	    System.out.println("ランダム取得件数 = " + items.size());
 	    // items にセットしてHTMLへ渡す
 	    model.addAttribute("items", items);
 	    

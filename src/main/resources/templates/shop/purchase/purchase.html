@@ -135,40 +135,52 @@
 						</select>
 
 						<br><br>
-						<label for="address">配送先住所：</label>
+						
+						<!-- ▼ 配送先住所 -->
+						<label for="addressSelect">配送先住所：</label>
 
-						<select id="addressSelect"
+						<select id="addressSelect" name="addressSelect"
 						        style="width:300px; margin-left:10px; padding:6px 10px;"
-						        onchange="toggleManualAddress()" required>
+						        onchange="toggleManualAddress()">
 
 						    <option value="" disabled selected>-- 配送先を選択してください --</option>
 
-						    <!-- 登録済み住所 -->
+						    <!-- 登録済み住所（表示は住所だけ / value は ID） -->
 						    <option th:each="addr : ${addresses}"
-						            th:value="${addr.address}"
-						            th:text="${addr.recipientName + ' ／ ' 
-						                     + addr.postalCode + ' ／ ' 
-						                     + addr.address}">
+						            th:value="${addr.id}"
+						            th:text="${addr.address}">
 						    </option>
 
 						    <!-- 手動入力 -->
 						    <option value="manual">直接入力する</option>
-						</select>
+
+							<script th:inline="javascript">
+							/*<![CDATA[*/
+							    const addressList = /*[[${addresses}]]*/ [];
+
+							    const addressMap = addressList.reduce((map, addr) => {
+							        map[addr.id] = addr.address;
+							        return map;
+							    }, {});
+
+							    window.addressMap = addressMap;
+							/*]]>*/
+							</script>
+
+
 
 
 						<!-- ▼ 手入力フォーム（最初は非表示） -->
 						<div id="manualAddressBox" style="display:none; margin-top:10px;">
-
 						    <input type="text"
 						           id="manualAddressInput"
 						           placeholder="住所を入力してください（例：東京都新宿区1-2-3）"
 						           style="width:300px; padding:6px 10px;"
 						           oninput="syncManualAddress()" />
-
-						    <!-- ▼ 実際に送信される値（hidden） -->
-						    <input type="hidden" id="finalAddress" name="address">
 						</div>
 
+						<!-- ▼ サーバーに送る最終住所 -->
+						<input type="hidden" id="finalAddress" name="address">
 
 
 

@@ -3,32 +3,42 @@
 <head>
 	<meta charset="utf-8">
 	<title>VOIDR｜武器紹介</title>
-	<!-- ✅ 共通CSSを読み込み -->
-	  <link rel="stylesheet" th:href="@{/css/hpHeader.css}">
-	  <div id="storeModal" class="modal">
-	        <div class="modal-content">
-	          <span class="close">&times;</span>
-	          <a href="https://www.ea.com/ja-jp/ea-app" class="store-btn ea">Windows用EA appでダウンロード</a>
-	          <a href="https://store.steampowered.com/" class="store-btn steam">Steamストアに進む</a>
-	          <a href="https://store.epicgames.com/" class="store-btn epic">Epic Gamesストアに進む</a>
-	          <a href="https://store.playstation.com/" class="store-btn ps4">PlayStation®4ストアに進む</a>
-	          <a href="https://store.playstation.com/" class="store-btn ps5">PlayStation®5ストアに進む</a>
-	          <a href="https://www.xbox.com/ja-JP/microsoft-store" class="store-btn xbox">Xboxストアに進む</a>
-	          <a href="https://www.nintendo.co.jp/software/" class="store-btn switch">Nintendo Switchストアに進む</a>
-	        </div>
-	      </div>
+
+	<!-- 共通CSS -->
+	<link rel="stylesheet" th:href="@{/css/hpHeader.css}">
+
 	<meta name="description" content="FPSゲーム『VOIDR』の公式サイト。 近未来　4v4のチーム戦　キャラクター、マップ、武器、ストーリー等の情報をお届けします。">
 	<meta name="keywords" content="FPS,オンラインゲーム,VOIDR,アクション,シューティング">
+
+	<!-- Weapon専用CSS -->
 	<link rel="stylesheet" th:href="@{/css/weapon.css}">
 </head>
 
 <body>
-<!-- ヘッダー -->
-<!-- ✅ 共通ヘッダーを読み込む -->
+
+<!-- ▼ モーダル（headから移動） -->
+<div id="storeModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <a href="https://www.ea.com/ja-jp/ea-app" class="store-btn ea">Windows用EA appでダウンロード</a>
+        <a href="https://store.steampowered.com/" class="store-btn steam">Steamストアに進む</a>
+        <a href="https://store.epicgames.com/" class="store-btn epic">Epic Gamesストアに進む</a>
+        <a href="https://store.playstation.com/" class="store-btn ps4">PlayStation®4ストアに進む</a>
+        <a href="https://store.playstation.com/" class="store-btn ps5">PlayStation®5ストアに進む</a>
+        <a href="https://www.xbox.com/ja-JP/microsoft-store" class="store-btn xbox">Xboxストアに進む</a>
+        <a href="https://www.nintendo.co.jp/software/" class="store-btn switch">Nintendo Switchストアに進む</a>
+    </div>
+</div>
+<!-- ▲ モーダル END -->
+
+
+<!-- ▼ 共通ヘッダー -->
 <div th:replace="fragments/hpheader :: header"></div>
-<!-- ヘッダー END -->
-		
-<!-- 本文 -->
+
+
+<!-- ===========================
+        本文
+=========================== -->
 <article>
 	<h1>Weapon（武器紹介）</h1>
 			
@@ -49,7 +59,7 @@
 			<h2>(FHBG-01)</h2>
 			<h3>重装式バースト・ショットガン（パワーウェポン・タイプ）</h3>
 			<h3>近距離～中距離</h3>
-			<h3>	散弾のバースト射撃を可能にする重装式ショットガン。</h3>
+			<h3>散弾のバースト射撃を可能にする重装式ショットガン。</h3>
 		</section>
 			
 		<section class="weapon-item">
@@ -90,31 +100,29 @@
 			
 	</div>		
 </article>
-<!-- 本文 END -->
-		
-<!-- フッター -->
+
+
+<!-- ▼ フッター -->
 <footer>© 2025 VOIDR All rights reserved.</footer>
-<!-- フッター END -->
+
+
+<!-- ▼ モーダルJS -->
 <script>
 	document.addEventListener("DOMContentLoaded", () => {
-		  const modal = document.getElementById("storeModal");
-		  const playBtn = document.getElementById("playNowBtn");
-		  const closeBtn = document.querySelector(".close");
+		const modal = document.getElementById("storeModal");
+		const playBtn = document.getElementById("playNowBtn");
+		const closeBtn = document.querySelector(".close");
 
-		  console.log("modal:", modal);     
-		  console.log("playBtn:", playBtn); 
-		  console.log("closeBtn:", closeBtn); 
-
-		  if(modal && playBtn && closeBtn){
-		    playBtn.addEventListener("click", () => {
-		      console.log("ボタン押された！");
-		      // CSSが適用されていればモーダルが表示される
-		      modal.style.display = "flex"; 
-		    });
-		    closeBtn.addEventListener("click", () => modal.style.display = "none");
-		    window.addEventListener("click", e => { if(e.target === modal) modal.style.display = "none"; });
-		  }
-		});
+		if(modal && playBtn && closeBtn){
+			playBtn.addEventListener("click", () => {
+				modal.style.display = "flex"; 
+			});
+			closeBtn.addEventListener("click", () => modal.style.display = "none");
+			window.addEventListener("click", e => {
+				if(e.target === modal) modal.style.display = "none";
+			});
+		}
+	});
 </script>
 
 </body>
