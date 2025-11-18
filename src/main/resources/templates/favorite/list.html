@@ -32,10 +32,12 @@
 				<div class="actions">
 					<!-- 8割：カートに追加 -->
 					<div class="actions-left">
-						<form th:action="@{/voidrshop/cart/add}" method="post" class="w-100">
+						<!-- fav-cart-form クラス（Ajax & ポップアップ用） -->
+						<form th:action="@{/voidrshop/cart/add}" method="post" class="w-100 fav-cart-form">
 							<!-- CSRF -->
 							<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 							<input type="hidden" name="itemId" th:value="${fav.itemId}" />
+							<!-- btn + btn-cart -->
 							<button type="submit" class="btn btn-cart w-100" aria-label="カートに追加">
 								<svg class="icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
 									<path
@@ -55,20 +57,51 @@
 						<form th:action="@{'/favorites/remove/' + ${fav.userId} + '/' + ${fav.itemId}}" method="post">
 							<!-- CSRF -->
 							<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-							<button type="submit" class="btn-icon btn-danger" aria-label="お気に入りから削除" title="削除">
-								<svg class="icon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
-									<path
-										d="M3 6h18M8 6v-1a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1m-1 0v13a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2V6m3 4v7m4-7v7"
-										fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
-										stroke-linejoin="round" />
+
+							<!-- ゴミ箱ボタン -->
+							<button type="submit"
+							        class="bin-button"
+							        aria-label="お気に入りから削除"
+							        title="削除">
+								<svg
+									class="bin-top"
+									viewBox="0 0 39 7"
+									fill="none"
+									xmlns="http://www.w3.org/2000/svg">
+									<line y1="5" x2="39" y2="5" stroke="white" stroke-width="4"></line>
+									<line
+										x1="12"
+										y1="1.5"
+										x2="26.0357"
+										y2="1.5"
+										stroke="white"
+										stroke-width="3"></line>
 								</svg>
+
+								<svg
+									class="bin-bottom"
+									viewBox="0 0 33 39"
+									fill="none"
+									xmlns="http://www.w3.org/2000/svg">
+									<mask id="path-1-inside-1_8_19" fill="white">
+										<path
+											d="M0 0H33V35C33 37.2091 31.2091 39 29 39H4C1.79086 39 0 37.2091 0 35V0Z">
+										</path>
+									</mask>
+									<path
+										d="M0 0H33H0ZM37 35C37 39.4183 33.4183 43 29 43H4C-0.418278 43 -4 39.4183 -4 35H4H29H37ZM4 43C-0.418278 43 -4 39.4183 -4 35V0H4V35V43ZM37 0V35C37 39.4183 33.4183 43 29 43V35V0H37Z"
+										fill="white"
+										mask="url(#path-1-inside-1_8_19)">
+									</path>
+									<path d="M12 6L12 29" stroke="white" stroke-width="4"></path>
+									<path d="M21 6V29" stroke="white" stroke-width="4"></path>
+								</svg>
+
 								<span class="sr-only">削除</span>
 							</button>
 						</form>
 					</div>
 				</div>
-
-
 			</article>
 		</section>
 
@@ -76,6 +109,89 @@
 			<a th:href="@{/voidrshop/items}" class="link-back">← 商品一覧へ戻る</a>
 		</section>
 	</main>
+
+	<!-- カート追加ポップアップ（商品詳細と同等のUI） -->
+	<div class="popup-overlay" id="cartPopup">
+		<div class="popup-content">
+			<h3 style="color:black;">商品をカートに追加しました！</h3>
+			<div class="popup-buttons">
+				<button class="go-cart" onclick="window.location.href='/voidrshop/cart'">
+					購入画面へ進む
+				</button>
+				<button class="close" id="closePopup">戻る</button>
+			</div>
+		</div>
+	</div>
+
+	<!-- お気に入り一覧用 カート追加Ajax & ポップアップ制御 -->
+	<script>
+		document.addEventListener("DOMContentLoaded", () => {
+			const popup = document.getElementById("cartPopup");
+			const closePopup = document.getElementById("closePopup");
+			const headerCartCount = document.getElementById("cart-count");
+
+			// /favorites 内の「カートに追加」フォーム（複数）を対象
+			document.querySelectorAll(".fav-cart-form").forEach(form => {
+				form.addEventListener("submit", (e) => {
+					e.preventDefault();
+
+					fetch(form.action, {
+						method: "POST",
+						headers: { "X-Requested-With": "XMLHttpRequest" },
+						body: new FormData(form),
+						credentials: "same-origin"
+					})
+						.then(response => {
+							// 未ログイン時のリダイレクト検知
+							if (response.redirected && response.url.includes("/login")) {
+								const currentUrl = window.location.pathname + window.location.search;
+								window.location.href = `/login?next=${encodeURIComponent(currentUrl)}`;
+								return;
+							}
+
+							if (!response.ok) throw new Error("サーバーエラー");
+							return response.json();
+						})
+						.then(data => {
+							if (!data) return;
+
+							if (data.status === "ok") {
+								// ヘッダーのカート個数バッジを更新
+								if (headerCartCount) {
+									const count = data.count ?? 0;
+									headerCartCount.textContent = count;
+									headerCartCount.style.display = (count > 0) ? "inline-block" : "none";
+								}
+
+								// ポップアップ表示
+								if (popup) {
+									popup.style.display = "flex";
+								}
+							} else {
+								alert("カート追加に失敗しました。");
+							}
+						})
+						.catch(err => {
+							console.error("カート追加エラー:", err);
+						});
+				});
+			});
+
+			// ポップアップ閉じる処理
+			if (closePopup && popup) {
+				closePopup.addEventListener("click", () => {
+					popup.style.display = "none";
+				});
+
+				// 背景クリックで閉じる
+				popup.addEventListener("click", (e) => {
+					if (e.target === popup) {
+						popup.style.display = "none";
+					}
+				});
+			}
+		});
+	</script>
 
 	<!-- このページ専用の軽量スタイル -->
 	<style>
@@ -212,6 +328,7 @@
 			flex: 2 1 0;
 			display: flex;
 			justify-content: center;
+			align-items: center;
 		}
 
 		.w-100 {
@@ -237,20 +354,28 @@
 			filter: brightness(1.05);
 		}
 
-		/* カートボタン（アイコン＋テキスト） */
+		/* カートボタン */
 		.btn-cart {
 			display: inline-flex;
 			align-items: center;
 			justify-content: center;
 			gap: 6px;
 			width: 100%;
+			background: var(--grad-accent);
+			color: #fff;
+			transition: opacity 0.2s, transform 0.1s;
+		}
+
+		.btn-cart:hover {
+			opacity: 0.9;
+			transform: translateY(-1px);
 		}
 
 		.icon {
 			vertical-align: -2px;
 		}
 
-		/* アイコンボタン（削除） */
+		/* アイコンボタン（削除）*/
 		.btn-icon {
 			display: inline-flex;
 			align-items: center;
@@ -293,7 +418,101 @@
 			border: 0;
 		}
 
-		/* モバイル時は縦積み */
+		/* カート追加ポップアップ */
+		.popup-overlay {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background-color: rgba(0, 0, 0, 0.55);
+			display: none;
+			justify-content: center;
+			align-items: center;
+			z-index: 1000;
+		}
+
+		.popup-content {
+			background-color: #e9e9e9;
+			padding: 25px 35px;
+			border-radius: 10px;
+			text-align: center;
+			width: 300px;
+			color: #111;
+		}
+
+		.popup-content h3 {
+			white-space: nowrap;
+			font-size: 1.1rem;
+			margin-bottom: 20px;
+		}
+
+		.popup-buttons {
+			display: flex;
+			justify-content: space-around;
+			margin-top: 20px;
+			gap: 10px;
+		}
+
+		.popup-buttons button {
+			padding: 8px 14px;
+			border: none;
+			border-radius: 6px;
+			cursor: pointer;
+			font-weight: bold;
+		}
+
+		.popup-buttons .go-cart {
+			background: var(--grad-accent);
+			color: #fff;
+		}
+
+		.popup-buttons .close {
+			background-color: #ccc;
+			color: #333;
+		}
+
+		/* ゴミ箱ボタン（bin-button） */
+		.bin-button {
+			display: inline-flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			width: 100%;
+			min-width: 38px;
+			height: 38px;
+			padding: 0;
+			border-radius: 8px;
+			border: 1px solid rgba(255, 255, 255, 0.25);
+			background-color: rgb(255, 95, 95);
+			cursor: pointer;
+			transition-duration: 0.3s;
+			transform: translateY(-7px);
+		}
+
+		.bin-bottom {
+			width: 14px;
+		}
+
+		.bin-top {
+			width: 16px;
+			transform-origin: right;
+			transition-duration: 0.3s;
+		}
+
+		.bin-button:hover .bin-top {
+			transform: rotate(45deg);
+		}
+
+		.bin-button:hover {
+			background-color: rgb(255, 0, 0);
+		}
+
+		.bin-button:active {
+			transform: scale(0.9);
+		}
+
+		/* モバイル時は割合だけ少し寄せる */
 		@media (max-width: 480px) {
 			.actions {
 				flex-direction: row;
