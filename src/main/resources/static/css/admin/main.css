@@ -143,6 +143,21 @@ th {
   background: #1e6ca1;
 }
 
+.badge-ended {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  color: white;
+  background: #b0b0b0;
+  white-space: nowrap;
+}
+
+/* hover無効*/
+.badge-ended:hover {
+  background: #7f8c8d !important;
+  cursor: default;
+}
 /* ===== キャンセルボタン ===== */
 .btn-cancel {
   padding: 6px 14px;

@@ -30,15 +30,15 @@
 					<th>商品名</th>
 					<th>カテゴリ</th>
 					<th>価格</th>
-					<th>DL商品</th>
 					<th>作成日</th>
 					<th>登録日</th>
+					<th>販売状況</th>
 					<th>操作</th>
 				</tr>
 			</thead>
 
 			<tbody><!-- 商品リストをループ表示 -->
-				<tr th:each="item : ${items}">
+				<tr th:each="item : ${items}"th:classappend="${item.isDeleted} ? 'disabled-row' : ''">
 
 					<!-- 商品IDの表示 -->
 					<td th:text="${item.id}">1</td>
@@ -50,10 +50,7 @@
 					<td th:text="${#lists.isEmpty(item.categoryList) ? '' : item.categoryList[0]}">サンプル</td>
 
 					<!-- 価格の表示 -->
-					<td th:text="${#numbers.formatInteger(item.price, 0)} + '円'">1000円</td>
-
-					<!-- DL商品かどうかの表示 -->
-					<td th:text="${item.isDownload} ? '〇':'×'">×</td>
+					<td th:text="${#numbers.formatInteger(item.price, 0)} + '円'">1,000 円</td>
 
 					<!-- 商品作成日 -->
 					<td th:text="${item.createdAt != null ? #temporals.format(item.createdAt, 'yyyy/MM/dd') : ''}">
@@ -63,6 +60,13 @@
 					<!-- 商品登録日 -->
 					<td th:text="${item.updatedAt != null ? #temporals.format(item.updatedAt, 'yyyy/MM/dd') : ''}">
 						2025/11/11
+					</td>
+					
+					<!-- ★販売状況バッジ -->
+					<td>
+					    <span th:if="${item.isDeleted}" class="badge-ended">
+					        販売終了
+					    </span>
 					</td>
 
 					<td><!-- 操作 -->
@@ -74,7 +78,7 @@
 
 							<!-- 削除ボタン（POST + CSRF） -->
 							<form th:action="@{/admin/items/delete/{id}(id=${item.id})}" method="post"
-								onsubmit="return confirm('削除してもよろしいですか？');">
+								onsubmit="return confirm('この商品を「販売終了」扱いにしますか？');">
 								<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 								<button type="submit" class="btn btn-delete">削除</button>
 							</form>

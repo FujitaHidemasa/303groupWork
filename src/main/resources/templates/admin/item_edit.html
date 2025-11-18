@@ -50,6 +50,17 @@
 				<div style="display:flex; gap:8px; margin-top:8px;">
 					<button type="submit" class="btn btn-edit">保存</button>
 					<a th:href="@{/admin/items}" class="btn btn-cancel">キャンセル</a>
+					
+					<!-- ★販売再開ボタン（isDeleted = true のときだけ表示） -->
+					<div style="margin-top: 16px;" th:if="${item.isDeleted}">
+					    <form th:action="@{/admin/items/restore/{id}(id=${item.id})}" method="post"
+					          onsubmit="return confirm('この商品を販売再開しますか？');">
+					        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+					        <button type="submit" class="btn btn-edit" style="background:#27ae60;">
+					            販売再開
+					        </button>
+					    </form>
+					</div>
 				</div>
 			</form>
 		</section>

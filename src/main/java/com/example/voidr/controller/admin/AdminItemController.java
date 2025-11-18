@@ -31,8 +31,12 @@ public class AdminItemController {
     @GetMapping
     public String showItems(Model model) {
     	
-    	//データベースから全商品を取得
-    	List<Item> items = itemService.getAllItems();
+    	// ▼通常版（削除済みを除外）
+    	// List<Item> items = itemService.getAllItems(); 
+    	// ※不具合時は↑の1行に戻すだけで従来表示に復旧できます。
+
+    	// ▼管理者用：削除済み商品も含めて一覧表示
+    	List<Item> items = itemService.getAllItemsIncludingDeleted();
     	
     	// 取得した商品をセット
         model.addAttribute("items", items);
@@ -169,8 +173,19 @@ public class AdminItemController {
 			RedirectAttributes redirectAttributes) {
 
 		itemService.deleteItem(id);
-		redirectAttributes.addFlashAttribute("successMessage", "商品を削除しました。");
+		redirectAttributes.addFlashAttribute("successMessage", "商品を販売終了にしました。");
 		return "redirect:/admin/items";
+	}
+	
+	/** ★販売再開（is_deleted = FALSE）*/
+	@PostMapping("/restore/{id}")
+	public String restoreItem(
+	        @PathVariable("id") Long id,
+	        RedirectAttributes redirectAttributes) {
+
+	    itemService.restoreItem(id);
+	    redirectAttributes.addFlashAttribute("successMessage", "商品を販売再開しました。");
+	    return "redirect:/admin/items";
 	}
 	
 	/**

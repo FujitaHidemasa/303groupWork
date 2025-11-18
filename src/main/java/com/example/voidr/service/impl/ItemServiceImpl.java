@@ -108,8 +108,8 @@ public class ItemServiceImpl implements ItemService
 				if(!xmlMap.containsKey(dbItem.getId()))
 				{
 					// カテゴリ・画像は物理削除（カタログ用なのでOK）
-					categoryMapper.deleteByItemId(dbItem.getId());
-					imageMapper.deleteByItemId(dbItem.getId());
+					//categoryMapper.deleteByItemId(dbItem.getId());
+					//imageMapper.deleteByItemId(dbItem.getId());
 					
 					// ★修正：物理削除 → ソフトデリート
 					itemMapper.softDelete(dbItem.getId());
@@ -197,6 +197,20 @@ public class ItemServiceImpl implements ItemService
 	}
 	
 	@Override
+	public List<Item> getAllItemsIncludingDeleted() {
+
+	    List<Item> dbItems = itemMapper.selectAllIncludingDeleted();
+
+	    // カテゴリと画像名を紐付け（削除済みでも必要）
+	    for (Item item : dbItems) {
+	        item.setCategoryList(categoryMapper.findByItemId(item.getId()));
+	        item.setImagesName(imageMapper.findByItemId(item.getId()));
+	    }
+
+	    return dbItems;
+	}
+	
+	@Override
 	public List<Item> searchItemsByKeyword(String keyword)
 	{
 	    List<Item> dbItems = itemMapper.selectByKeyword(keyword);
@@ -254,10 +268,15 @@ public class ItemServiceImpl implements ItemService
 	@Override
 	public void deleteItem(Long id)
 	{
-		
-		categoryMapper.deleteByItemId(id);
-		imageMapper.deleteByItemId(id);
+		// カテゴリや画像は削除しない（管理画面で表示したいので）
+		// categoryMapper.deleteByItemId(id);
+		// imageMapper.deleteByItemId(id);
 		itemMapper.softDelete(id);
+	}
+	
+	@Override
+	public void restoreItem(Long id) {
+	    itemMapper.restoreItem(id);
 	}
 	
 	@Override
