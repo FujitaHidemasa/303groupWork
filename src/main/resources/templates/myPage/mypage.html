@@ -1,96 +1,140 @@
 <!DOCTYPE html>
-<html lang="ja"
-	  xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="ja" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>マイページ｜VOIDR</title>
-<link rel="stylesheet" th:href="@{/css/mypage/mypage.css}">
-<link rel="stylesheet" th:href="@{/css/ec/header.css}">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>マイページ｜VOIDR</title>
+	<link rel="stylesheet" th:href="@{/css/mypage/mypage.css}">
+	<link rel="stylesheet" th:href="@{/css/ec/header.css}">
+	<style>
+		/* マイページのCSSが上書きしたヘッダーの位置を戻す */
+		.fixed-header {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			z-index: 9999;
+		}
+
+		/* カートアイコンのバッジが崩れないようにする */
+		.cart-icon-wrap {
+			position: relative !important;
+			display: inline-flex !important;
+			align-items: center !important;
+		}
+
+		.cart-count-badge {
+			position: absolute !important;
+			top: -5px !important;
+			right: -8px !important;
+		}
+
+		/* マイページでもカートバッジを完全な丸に固定 */
+		.cart-count-badge {
+			position: absolute !important;
+			top: -5px !important;
+			right: -8px !important;
+
+			background-color: red !important;
+			color: white !important;
+			font-size: 12px !important;
+			font-weight: bold !important;
+
+			width: 18px !important;
+			height: 18px !important;
+			min-width: 18px !important;
+
+			padding: 0 !important;
+			border-radius: 50% !important;
+
+			display: flex !important;
+			justify-content: center !important;
+			align-items: center !important;
+			line-height: 1 !important;
+		}
+	</style>
+
 </head>
+
 <body>
-	
+
 	<!--共通ヘッダーの呼び出し-->
 	<div th:replace="fragments/header :: header"></div>
-	
+
 	<!--メインコンテンツ-->
 	<main class="mypage-container">
 		<aside class="mypage-sidebar">
 			<h2>メニュー</h2>
 			<ul>
 				<li>
-					<a th:href="@{/mypage/orders}" 
-					   th:classappend="${currentPath == '/mypage/orders'} ? 'active'">
-					   購入履歴
+					<a th:href="@{/mypage/orders}" th:classappend="${currentPath == '/mypage/orders'} ? 'active'">
+						購入履歴
 					</a>
 				</li>
 				<li>
-					<a th:href="@{/mypage/edit}" 
-					   th:classappend="${currentPath == '/mypage/edit'} ? 'active'">
-					   会員情報変更
+					<a th:href="@{/mypage/edit}" th:classappend="${currentPath == '/mypage/edit'} ? 'active'">
+						会員情報変更
 					</a>
 				</li>
 				<li>
-					<a th:href="@{/mypage/address}" 
-					   th:classappend="${currentPath == '/mypage/address'} ? 'active'">
-					   お届け先管理
+					<a th:href="@{/mypage/address}" th:classappend="${currentPath == '/mypage/address'} ? 'active'">
+						お届け先管理
 					</a>
 				</li>
 				<li>
-					<a th:href="@{/favorites/{userId}(userId=${#authentication.principal.id})}" 
-					   th:classappend="${currentPath == '/mypage/wishlist'} ? 'active'"
-					   sec:authorize="isAuthenticated()">
-					   お気に入り
+					<a th:href="@{/favorites/{userId}(userId=${#authentication.principal.id})}"
+						th:classappend="${currentPath == '/mypage/wishlist'} ? 'active'"
+						sec:authorize="isAuthenticated()">
+						お気に入り
 					</a>
 
 				</li>
 				<li>
-					<a th:href="@{/mypage/delete}" 
-					   th:classappend="${currentPath == '/mypage/delete'} ? 'active'">
-					   退会手続き
+					<a th:href="@{/mypage/delete}" th:classappend="${currentPath == '/mypage/delete'} ? 'active'">
+						退会手続き
 					</a>
 				</li>
 			</ul>
 		</aside>
-		
+
 		<section class="mypage-content">
 			<!-- ログイン済み -->
 			<h2>ようこそ、<span th:text="${account.displayName}">ユーザー名</span> さん！</h2>
 
 			<!-- 未ログイン -->
 			<h2 sec:authorize="!isAuthenticated()">
-			  ようこそ、ゲストさん！
+				ようこそ、ゲストさん！
 			</h2>
-			
+
 			<div class="mypage-sections">
-			  <div class="card">
-			    <h3>会員情報</h3>
-			    <a th:href="@{/mypage/edit}" class="btn">編集する</a>
-			  </div>
+				<div class="card">
+					<h3>会員情報</h3>
+					<a th:href="@{/mypage/edit}" class="btn">編集する</a>
+				</div>
 
-			  <div class="card">
-			    <h3>購入履歴</h3>
-			    <a th:href="@{/mypage/orders}" class="btn">表示する</a>
-			  </div>
+				<div class="card">
+					<h3>購入履歴</h3>
+					<a th:href="@{/mypage/orders}" class="btn">表示する</a>
+				</div>
 
-			  <div class="card">
-			    <h3>お気に入り</h3>
-			    <a th:href="@{/favorites/{userId}(userId=${#authentication.principal.id})}"
-			       class="btn"
-			       sec:authorize="isAuthenticated()">
-			       表示する
-			    </a>
-			  </div>
+				<div class="card">
+					<h3>お気に入り</h3>
+					<a th:href="@{/favorites/{userId}(userId=${#authentication.principal.id})}" class="btn"
+						sec:authorize="isAuthenticated()">
+						表示する
+					</a>
+				</div>
 
 			</div>
 
 		</section>
 	</main>
-	
+
 	<footer class="main-footer">
-	    <p>&copy; 2025 VOIDR STORE. All rights reserved.</p>
+		<p>&copy; 2025 VOIDR STORE. All rights reserved.</p>
 	</footer>
 
 </body>
+
 </html>
