@@ -46,4 +46,6 @@ public interface OrderListService {
 	 * 過去12ヶ月の月別売上一覧（出荷済みのみ）
 	 */
 	List<MonthlySales> getMonthlySalesLast12Months();
+
+	OrderList findById(long orderListId);
 }

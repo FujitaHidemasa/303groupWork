@@ -12,10 +12,12 @@
 		SELECT
 		o.id AS id,
 		o.order_list_id AS orderListId,
-		o.item_id AS itemId,
+		o.item_id
+		AS itemId,
 		o.is_hold AS isHold,
 		o.created_at AS createdAt,
-		i.name AS itemName,
+		i.name AS
+		itemName,
 		i.thumbs_image_name AS imageName,
 		i.price AS price,
 		oi.quantity AS quantity
@@ -47,5 +49,39 @@
 		CURRENT_TIMESTAMP
 		)
 	</insert>
+
+	<!-- ========================================================= -->
+	<!-- 注文IDで1件取得 -->
+	<!-- ========================================================= -->
+	<select id="findById" parameterType="long"
+		resultType="com.example.voidr.entity.Order">
+		SELECT
+		o.id AS id,
+		o.order_list_id AS orderListId,
+		o.item_id
+		AS itemId,
+		o.is_hold AS isHold,
+		o.created_at AS createdAt,
+		i.name AS
+		itemName,
+		i.thumbs_image_name AS imageName,
+		i.price AS price,
+		oi.quantity AS quantity
+		FROM "order" o
+		LEFT JOIN order_item oi ON o.id =
+		oi.order_id
+		LEFT JOIN item i ON o.item_id = i.id
+		WHERE o.id = #{orderId}
+	</select>
+
+	<!-- ========================================================= -->
+	<!-- 注文ステータス更新 -->
+	<!-- ========================================================= -->
+	<update id="updateStatus" parameterType="map">
+		UPDATE "order"
+		SET status
+		= #{string}
+		WHERE id = #{id}
+	</update>
 
 </mapper>

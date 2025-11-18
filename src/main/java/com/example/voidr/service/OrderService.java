@@ -14,4 +14,8 @@ public interface OrderService {
 
 	/** 購入確定 */
 	void confirmPurchase(long orderListId);
+
+	/** 注文リスト単位でキャンセル */
+	void cancelOrder(Long orderListId, String username);
+
 }
