@@ -147,12 +147,14 @@
 		LIMIT 1
 	</select>
 
+
 	<!-- ========================================================= -->
-	<!-- 当月売上合計（status=SHIPPED の final_total 合計） -->
+	<!-- 当月売上合計（status=SHIPPED の final_total 合計）
+	※修正: final_total には送料が含まれるため、売上から送料を除外 -->
 	<!-- ========================================================= -->
 	<select id="findCurrentMonthSales" resultType="int">
 		SELECT
-			COALESCE(SUM(final_total), 0)
+			COALESCE(SUM(final_total - shipping_fee), 0) 
 		FROM
 			order_list
 		WHERE
@@ -161,13 +163,14 @@
 	</select>
 
 	<!-- ========================================================= -->
-	<!-- ★追加：過去12ヶ月の月別売上（status=SHIPPED の final_total 合計） -->
+	<!-- ★追加：過去12ヶ月の月別売上（status=SHIPPED の final_total 合計）
+	※修正: 送料(shipping_fee)を売上に含めないよう (final_total - shipping_fee) で集計 -->
 	<!-- ========================================================= -->
 	<select id="findMonthlySalesLast12Months"
 		resultType="com.example.voidr.dto.MonthlySales">
 		SELECT
 		to_char(date_trunc('month', updated_at), 'YYYY-MM') AS year_month,
-		COALESCE(SUM(final_total), 0) AS total_sales,
+		COALESCE(SUM(final_total - shipping_fee), 0) AS total_sales,
 		COUNT(*) AS order_count
 		FROM
 		order_list
