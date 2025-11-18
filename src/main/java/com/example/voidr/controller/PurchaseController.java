@@ -18,10 +18,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.voidr.entity.Account;
+import com.example.voidr.entity.Address;
 import com.example.voidr.entity.Order;
 import com.example.voidr.entity.OrderItem;
 import com.example.voidr.entity.OrderList;
 import com.example.voidr.service.AccountService;
+import com.example.voidr.service.AddressService;
 import com.example.voidr.service.CartService;
 import com.example.voidr.service.OrderItemService;
 import com.example.voidr.service.OrderListService;
@@ -42,6 +44,8 @@ public class PurchaseController {
 	private final OrderService orderService;
 	private final OrderItemService orderItemService;
 	private final AccountService accountService;
+	private final AddressService addressService;
+
 
 	/** ログイン中ユーザー情報取得 */
 	private Account currentUser(Principal principal) {
@@ -179,6 +183,12 @@ public class PurchaseController {
 		List<CartView> allCart = cartService.list(account.getId());
 		List<CartView> purchasable = filterPurchasable(allCart);
 		boolean hasDeleted = hasDeletedItems(allCart);
+		
+		// ▼ ★ 追加：配送先住所を取得
+	    List<Address> addresses = addressService.getAddressesByUserId(account.getId());
+	    
+	    System.out.println("★★ addresses = " + addresses);
+	    
 
 		if (purchasable.isEmpty()) {
 			model.addAttribute("cartItems", Collections.emptyList());
@@ -210,6 +220,8 @@ public class PurchaseController {
 
 		model.addAttribute("deliveryOptions", getDeliveryOptions());
 		model.addAttribute("hasDeletedItems", hasDeleted);
+		
+		model.addAttribute("addresses", addresses);
 
 		return "shop/purchase/purchase";
 	}
@@ -242,6 +254,8 @@ public class PurchaseController {
 
 		List<CartView> allCart = cartService.list(account.getId());
 		List<CartView> purchasable = filterPurchasable(allCart);
+		
+	    
 		if (purchasable.isEmpty())
 			return "redirect:/voidrshop/cart";
 

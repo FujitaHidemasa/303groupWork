@@ -136,8 +136,41 @@
 
 						<br><br>
 						<label for="address">配送先住所：</label>
-						<input type="text" id="address" name="address" placeholder="例：東京都渋谷区1-2-3" required
-							style="width:300px; margin-left:10px;">
+
+						<select id="addressSelect"
+						        style="width:300px; margin-left:10px; padding:6px 10px;"
+						        onchange="toggleManualAddress()" required>
+
+						    <option value="" disabled selected>-- 配送先を選択してください --</option>
+
+						    <!-- 登録済み住所 -->
+						    <option th:each="addr : ${addresses}"
+						            th:value="${addr.address}"
+						            th:text="${addr.recipientName + ' ／ ' 
+						                     + addr.postalCode + ' ／ ' 
+						                     + addr.address}">
+						    </option>
+
+						    <!-- 手動入力 -->
+						    <option value="manual">直接入力する</option>
+						</select>
+
+
+						<!-- ▼ 手入力フォーム（最初は非表示） -->
+						<div id="manualAddressBox" style="display:none; margin-top:10px;">
+
+						    <input type="text"
+						           id="manualAddressInput"
+						           placeholder="住所を入力してください（例：東京都新宿区1-2-3）"
+						           style="width:300px; padding:6px 10px;"
+						           oninput="syncManualAddress()" />
+
+						    <!-- ▼ 実際に送信される値（hidden） -->
+						    <input type="hidden" id="finalAddress" name="address">
+						</div>
+
+
+
 
 						<br><br>
 						<!-- 配達希望日 -->
@@ -191,6 +224,8 @@
 	</main>
 
 	<div th:replace="fragments/footer :: footer"></div>
+	<script src="/js/purchase.js"></script>
+
 </body>
 
 </html>
