@@ -1,302 +1,101 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="ja"
-	th:replace="layout/shop_base :: base_layout(~{::content}, ${item.name} + '商品詳細', null)">
+<blohtml xmlns:th="http://www.thymeleaf.org" lang="ja"
+	th:replace="layout/shop_base :: base_layout(~{::content}, ${item.name} + '商品詳細', ~{::extraCss})">
 
-<th:block th:fragment="content">
+	<!-- 固有css/js -->
+	<th:block th:fragment="extraCss">
+		<link rel="stylesheet" th:href="@{/css/ec/item_detail.css}">
+		<script th:src="@{/js/cart.js}" defer></script>
+		<script th:src="@{/js/favorite.js}" defer></script>
+	</th:block>
 
-	<main>
-		<section>
-			<h2 style="text-align: center;" th:text="${item.name}">商品の詳細</h2>
+	<!-- メインコンテンツ -->
+	<th:block th:fragment="content">
 
-			<div class="product-detail">
-				<img th:src="@{/images/{file}(file=${item.thumbsImageName})}"
-					onerror="this.onerror=null;this.src='/image/no_image.png';">
+		<main>
+			<section>
+				<h2 class="detail-title" th:text="${item.name}">商品の詳細</h2>
 
-				<table>
-					<tr>
-						<th>商品名</th>
-						<td th:text="${item.name}">商品A</td>
-					</tr>
-					<tr>
-						<th>価格</th>
-						<td><span th:text="${item.price}"></span>円</td>
-					</tr>
-					<tr>
-						<th>商品説明</th>
-						<td th:text="${item.overview}">説明</td>
-					</tr>
-					<tr>
-						<th>購入</th>
-						<td>
-							<!-- ★追加：削除されていない商品だけ購入ボタン＆お気に入りを表示 -->
-							<div class="action-buttons" th:if="${!item.isDeleted}">
-								<!-- 🛒 カート追加 -->
-								<form id="cartForm" th:action="@{/voidrshop/cart/add}" method="post">
-									<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-									<input type="hidden" name="itemId" th:value="${item.id}">
-									<button type="submit" class="cart-add-btn">
-										<span class="cart-icon">🛒</span>
-										<span class="label">カートに追加</span>
-									</button>
-								</form>
+				<div class="product-detail">
+					<!-- 商品画像 -->
+					<div class="product-image-wrap">
+						<img th:src="@{/images/{file}(file=${item.thumbsImageName})}"
+							onerror="this.onerror=null;this.src='/image/no_image.png';" alt="商品画像">
+					</div>
 
-								<!-- 🌟 お気に入りボタン -->
-								<button type="button" class="favorite-btn"
-									th:attr="data-item-id=${item.id}, aria-pressed=${isFavorite}, data-fav=${isFavorite}">
-									<span class="star" th:text="${isFavorite} ? '★' : '☆'">☆</span>
-									<span class="label"> お気に入り</span>
-								</button>
-							</div>
-							
-							<!-- ★追加：削除済み商品の場合のメッセージ表示 -->
-							<div th:if="${item.isDeleted}">
-								<p style="color:#f66; font-weight:bold; margin-top:8px;">
-									この商品は現在販売を終了しています。（購入履歴としてのみ表示されています）
-								</p>
-							</div>
-						</td>
-					</tr>
-				</table>
-			</div>
-		</section>
+					<!-- 商品情報 -->
+					<div class="product-info-wrap">
+						<table class="detail-table">
+							<tr>
+								<th>商品名</th>
+								<td th:text="${item.name}">商品A</td>
+							</tr>
+							<tr>
+								<th>価格</th>
+								<td th:text="${#numbers.formatInteger(item.price, 3, 'COMMA')} + '円'"></td>
+							</tr>
+							<tr>
+								<th>商品説明</th>
+								<td class="overview-cell" th:text="${item.overview}">説明</td>
+							</tr>
+							<tr>
+								<th>購入</th>
+								<td>
+									<!-- ★販売中だけボタンを表示 -->
+									<div class="action-buttons" th:if="${!item.isDeleted}">
+										<!-- カート追加 -->
+										<form id="cartForm" th:action="@{/voidrshop/cart/add}" method="post">
+											<input type="hidden" th:name="${_csrf.parameterName}"
+												th:value="${_csrf.token}" />
+											<input type="hidden" name="itemId" th:value="${item.id}">
+											<button type="submit" class="cart-add-btn">
+												<span class="label">カートに追加</span>
+											</button>
+										</form>
 
-		<section>
-			<p style="text-align: center;">
-				<a th:href="@{/voidrshop/items}">商品一覧に戻る</a>
-			</p>
-		</section>
-	</main>
+										<!-- お気に入りボタン -->
+										<button type="button" class="favorite-btn"
+											th:attr="data-item-id=${item.id}, aria-pressed=${isFavorite}, data-fav=${isFavorite}">
+											<span class="star" th:text="${isFavorite} ? '★' : '☆'">☆</span>
+											<span class="label">お気に入り</span>
+										</button>
+									</div>
 
-	<!-- ✅ スタイル -->
-	<style>
-		body {
-			text-align: center;
-			font-family: "Noto Sans JP", "Segoe UI", "Helvetica Neue", sans-serif;
-		}
+									<!-- ★削除済み商品の場合のメッセージ -->
+									<div th:if="${item.isDeleted}">
+										<p class="deleted-text">
+											この商品は現在販売を終了しています。（購入履歴としてのみ表示されています）
+										</p>
+									</div>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</section>
 
-		main {
-			max-width: 1000px;
-			margin: 30px auto;
-			text-align: left;
-		}
+			<section>
+				<p class="back-link">
+					<a th:href="@{/voidrshop/items}">← 商品一覧に戻る</a>
+				</p>
+			</section>
+		</main>
 
-		.product-detail {
-			display: flex;
-			justify-content: space-between;
-			align-items: flex-start;
-			gap: 40px;
-			margin: 20px auto;
-			width: fit-content;
-		}
 
-		.product-detail img {
-			width: 400px;
-			height: auto;
-			border: 1px solid #ccc;
-		}
-
-		table {
-			border-collapse: collapse;
-			width: 450px;
-		}
-
-		th,
-		td {
-			padding: 10px 12px;
-			border-bottom: 1px solid #ccc;
-			text-align: left;
-			vertical-align: top;
-		}
-
-		th {
-			width: 120px;
-			white-space: nowrap;
-		}
-
-		.action-buttons {
-			display: flex;
-			gap: 10px;
-			margin-top: 10px;
-		}
-
-		/* ✅ カートボタン */
-		.cart-add-btn {
-			background-color: #1E40FF;
-			color: #fff;
-			padding: 10px 18px;
-			border-radius: 6px;
-			text-decoration: none;
-			font-weight: bold;
-			display: flex;
-			align-items: center;
-			gap: 8px;
-			border: none;
-			cursor: pointer;
-			font-size: 15px;
-			transition: background-color 0.2s, box-shadow 0.2s;
-		}
-
-		.cart-add-btn:hover {
-			background-color: #1533CC;
-			box-shadow: 0 0 8px rgba(30, 64, 255, 0.4);
-		}
-
-		/* 🌟 お気に入りボタン */
-		.favorite-btn {
-			background: #f5f5f5;
-			border: 1px solid #ccc;
-			border-radius: 6px;
-			padding: 10px 14px;
-			cursor: pointer;
-			font-weight: bold;
-			display: flex;
-			align-items: center;
-			gap: 4px;
-			transition: background-color 0.2s;
-		}
-
-		.favorite-btn:hover {
-			background-color: #e8e8e8;
-		}
-
-		.favorite-btn .star {
-			transition: color 0.15s ease;
-			font-size: 18px;
-		}
-
-		.favorite-btn[data-fav="true"] .star {
-			color: #FFD700;
-		}
-
-		/* ✅ ポップアップ */
-		.popup-overlay {
-			position: fixed;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-			background-color: rgba(0, 0, 0, 0.5);
-			display: none;
-			justify-content: center;
-			align-items: center;
-			z-index: 1000;
-		}
-
-		.popup-content {
-			background-color: #fff;
-			padding: 25px 35px;
-			border-radius: 10px;
-			text-align: center;
-			box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-			width: 300px;
-		}
-
-		.popup-buttons {
-			display: flex;
-			justify-content: space-around;
-			margin-top: 20px;
-		}
-
-		.popup-buttons button {
-			padding: 8px 14px;
-			border: none;
-			border-radius: 6px;
-			cursor: pointer;
-			font-weight: bold;
-		}
-
-		.popup-buttons .go-cart {
-			background-color: #1E40FF;
-			color: #fff;
-		}
-
-		.popup-buttons .close {
-			background-color: #ddd;
-			color: #333;
-		}
-
-		/* お気に入りON時（data-fav=true）は★だけ黄色にする */
-		.favorite-btn .star {
-			transition: color 0.15s ease;
-		}
-
-		.favorite-btn[data-fav="true"] .star {
-			color: #FFD700;
-		}
-
-		/* gold */
-	</style>
-
-	<!-- お気に入り機能のスクリプト -->
-	<script th:src="@{/js/favorite.js}"></script>
-
-	<!-- ✅ カートポップアップ -->
-	<div class="popup-overlay" id="cartPopup">
-		<div class="popup-content">
-			<h3 style="color:black;">商品をカートに追加しました！</h3>
-			<div class="popup-buttons">
-				<button class="go-cart" onclick="window.location.href='/voidrshop/cart'">購入画面へ進む</button>
-				<button class="close" id="closePopup">戻る</button>
+		<!-- カートポップアップ -->
+		<div class="popup-overlay" id="cartPopup">
+			<div class="popup-content">
+				<h3 style="color:black;">商品をカートに追加しました！</h3>
+				<div class="popup-buttons">
+					<button class="go-cart" onclick="window.location.href='/voidrshop/cart'">購入画面へ進む</button>
+					<button class="close" id="closePopup">戻る</button>
+				</div>
 			</div>
 		</div>
-	</div>
 
-	<!-- ✅ スクリプト -->
-	<script>
-		document.addEventListener("DOMContentLoaded", () => {
-
-			// === 🛒 カート追加 ===
-			const cartForm = document.getElementById("cartForm");
-			const popup = document.getElementById("cartPopup");
-			const closePopup = document.getElementById("closePopup");
-			const headerCartCount = document.getElementById("cart-count");
-
-			cartForm.addEventListener("submit", (e) => {
-				e.preventDefault();
-
-				fetch(cartForm.action, {
-					method: "POST",
-					headers: {"X-Requested-With": "XMLHttpRequest"},
-					body: new FormData(cartForm),
-					credentials: "same-origin"
-				})
-					.then(response => {
-						// 🔒 未ログイン時 → /login?next=
-						if (response.redirected && response.url.includes("/login")) {
-							const currentUrl = window.location.pathname + window.location.search;
-							window.location.href = `/login?next=${encodeURIComponent(currentUrl)}`;
-							return;
-						}
-						if (!response.ok) throw new Error("サーバーエラー");
-						return response.json();
-					})
-					.then(data => {
-						if (!data) return;
-						if (data.status === "ok") {
-							if (headerCartCount) {
-								headerCartCount.textContent = data.count ?? 0;
-								headerCartCount.style.display = (data.count > 0) ? "inline-block" : "none";
-							}
-							popup.style.display = "flex";
-						} else {
-							alert("カート追加に失敗しました。");
-						}
-					})
-					.catch(err => console.error("カート追加エラー:", err));
-			});
-
-			closePopup.addEventListener("click", () => {
-				popup.style.display = "none";
-			});
-
-			// ポップアップ外側クリックで閉じる
-			popup.addEventListener("click", (e) => {
-				if (e.target === popup) {
-					popup.style.display = "none";
-				}
-			});
-
-			// === 🌟 お気に入りトグル ===
+		<!-- カート追加 & お気に入りトグル スクリプト -->
+		<script>
+			// === 🌟 お気に入りトグル ===（元コードそのまま / クラス名 favorite-btn のまま）
 			document.querySelectorAll(".favorite-btn").forEach(btn => {
 				btn.addEventListener("click", () => {
 					const itemId = btn.getAttribute("data-item-id");
@@ -326,9 +125,7 @@
 						.catch(err => console.error("お気に入りエラー:", err));
 				});
 			});
-		});
-	</script>
+		</script>
 
-</th:block>
-
-</html>
+	</th:block>
+	</html>

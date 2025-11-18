@@ -17,23 +17,21 @@
    【使い方】
      ① ページタイトルを変更（2行目の 'ページタイトル'）
      ② <th:block th:fragment="content"> 内にページ内容を書く
-     ③ 必要に応じて「extraCss」ブロックで個別CSSを設定する
-        ├ A. 個別CSSを使う → コメントアウトを外して <link> を記述
-        └ B. 個別CSSが不要 → null の行をそのまま残す（削除しない）
+     ③ 個別CSS・JS・フォントなど、head内に追加したいものがある場合のみ
+		   <th:block th:fragment="extraCss"> を記述する
+		   └ extraCss ブロックは不要な場合、**丸ごと省略してOK**
+
 
    ※ 実際の使用例は「templates/shop/item/list.html」を見るとわかりやすいです。
 -->
 
 <!-- ============================================================
-     ページ固有CSSの設定
+     ページ固有CSS/JS/フォントの設定
 ============================================================ -->
 <th:block th:fragment="extraCss">
 
 	<!-- A. 個別CSSを使う場合（コメントアウトを外して使用） -->
-	<!-- 例：<link rel="stylesheet" th:href="@{/css/ec/list.css}"> -->
-
-	<!-- B. 個別CSSが不要な場合（この行は削除しない） -->
-	<th:block th:remove="all">null（個別CSSなし）</th:block>
+	<!-- 例：<link rel="stylesheet" th:href="@{/css/ec/ファイル名.css}"> -->
 
 </th:block>
 

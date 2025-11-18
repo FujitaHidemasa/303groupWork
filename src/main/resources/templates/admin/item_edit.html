@@ -2,10 +2,6 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="ja"
 	th:replace="layout/admin_base :: admin_base(~{::content}, '商品編集', ~{::assets})">
 
-<th:block th:fragment="assets">
-	<!-- 必要なら個別CSS/JSをここに -->
-</th:block>
-
 <th:block th:fragment="content">
 	<div class="table-container">
 		<section class="section">
@@ -53,7 +49,7 @@
 
 				<div style="display:flex; gap:8px; margin-top:8px;">
 					<button type="submit" class="btn btn-edit">保存</button>
-					<a th:href="@{/admin/items}">キャンセル</a>
+					<a th:href="@{/admin/items}" class="btn btn-cancel">キャンセル</a>
 				</div>
 			</form>
 		</section>

@@ -2,21 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="ja"
 	th:replace="layout/admin_base :: admin_base(~{::content}, '商品管理', ~{::assets})">
 
-
-
-<title>商品管理</title>
-<th:block th:fragment="assets">
-	<link rel="stylesheet" th:href="@{/css/admin/main.css}">
-	<link rel="stylesheet" th:href="@{/css/admin/sidebar.css}">
-</th:block>
-
-
-<!-- 本文 -->
 <th:block th:fragment="content">
-
-	<!--商品管理-->
-	<section class="item-management">
-
+	<div class="table-container">
+		<section class="section">
 		<h1>商品管理</h1>
 
 		<!-- フラッシュメッセージ -->
@@ -31,7 +19,7 @@
 
 		<!-- 新規商品登録ボタン -->
 		<div class="new-item" style="margin-bottom: 16px;">
-			<a class="btn btn-primary" th:href="@{/admin/items/new}">＋ 新規商品登録</a>
+			<a class="primary-btn" th:href="@{/admin/items/new}">＋ 新規商品登録</a>
 		</div>
 
 		<!-- 商品一覧テーブル -->

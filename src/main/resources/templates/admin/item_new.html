@@ -2,10 +2,6 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="ja"
 	th:replace="layout/admin_base :: admin_base(~{::content}, '商品新規登録', ~{::assets})">
 
-<th:block th:fragment="assets">
-	<!-- 必要なら個別CSS/JSをここに -->
-</th:block>
-
 <th:block th:fragment="content">
 	<div class="table-container">
 		<section class="section">
@@ -51,7 +47,7 @@
 
 				<div style="display:flex; gap:8px; margin-top:8px;">
 					<button type="submit" class="btn btn-primary">登録</button>
-					<a th:href="@{/admin/items}">一覧に戻る</a>
+					<a th:href="@{/admin/items}" class="btn btn-cancel">一覧に戻る</a>
 				</div>
 			</form>
 		</section>

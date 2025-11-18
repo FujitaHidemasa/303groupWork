@@ -125,3 +125,38 @@ th {
 .btn-delete:hover {
   background: #c0392b;
 }
+
+.primary-btn {
+  background: #2980b9;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.2s;
+  display: inline-block;
+  text-decoration: none; /* aタグ対策 */
+}
+
+.primary-btn:hover {
+  background: #1e6ca1;
+}
+
+/* ===== キャンセルボタン ===== */
+.btn-cancel {
+  padding: 6px 14px;
+  background: #b0b0b0;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  white-space: nowrap;
+  text-decoration: none;
+  transition: background 0.15s ease-in-out, opacity 0.15s;
+}
+
+.btn-cancel:hover {
+  background: #9a9a9a;
+}
