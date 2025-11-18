@@ -98,6 +98,9 @@ public class MyPageController {
     /** お届け先追加 */
     @PostMapping("/address/add")
     public String addAddress(@ModelAttribute("newAddress") Address form, Authentication auth) {
+    	System.out.println("★★住所追加 POST 受信");
+        System.out.println(form);
+        
         if (auth == null) return "redirect:/login";
 
         String username = auth.getName();
