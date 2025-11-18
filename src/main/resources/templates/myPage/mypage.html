@@ -31,6 +31,7 @@
 		}
 
 		/* マイページでもカートバッジを完全な丸に固定 */
+		/* マイページでもカートバッジを完全な丸に固定 */
 		.cart-count-badge {
 			position: absolute !important;
 			top: -5px !important;
@@ -48,7 +49,10 @@
 			padding: 0 !important;
 			border-radius: 50% !important;
 
-			display: flex !important;
+			/* ❌ display: flex !important; を削除 */
+			display: none;
+			/* ← 初期は非表示。他画面と同じ挙動にする */
+
 			justify-content: center !important;
 			align-items: center !important;
 			line-height: 1 !important;
