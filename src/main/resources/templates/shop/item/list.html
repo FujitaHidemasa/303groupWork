@@ -4,11 +4,32 @@
 
 <th:block th:fragment="extraCss">
 	<link rel="stylesheet" th:href="@{/css/ec/list.css}">
+	<style>
+		/* 検索結果なしメッセージ用 */
+		.no-results {
+			font-size: 1.2em;
+			/* 文字サイズを少し大きく */
+			color: #fff;
+			/* 白文字 */
+			text-align: center;
+			/* 中央寄せ */
+			margin: 20px 0;
+			/* 上下余白 */
+		}
+	</style>
 </th:block>
 
 <th:block th:fragment="content">
 	<h2 class="section-title">全商品を見る</h2>
-	<div th:replace="fragments/itemList :: itemList(${items})"></div>
+
+	<!-- 検索結果なし -->
+	<div th:if="${#lists.isEmpty(items)}">
+		<p class="no-results">該当する商品がありません。</p>
+	</div>
+
+	<!-- 商品がある場合 -->
+	<div th:if="${!#lists.isEmpty(items)}" th:replace="fragments/itemList :: itemList(${items})">
+	</div>
 </th:block>
 
 </html>
