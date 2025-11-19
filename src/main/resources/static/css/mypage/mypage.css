@@ -1,5 +1,7 @@
 @charset "UTF-8";
 
+
+
 /* =============================
    基本設定
 ============================= */
@@ -23,9 +25,10 @@ body {
 ============================= */
 .mypage-container {
   display: flex;
-  margin: 140px 40px 40px; /* ヘッダー分の余白 */
+  margin:  140px 40px 40px;
   gap: 40px;
 }
+
 
 /* サイドメニュー */
 .mypage-sidebar {
@@ -229,3 +232,110 @@ body {
   padding: 6px 12px;
   font-size: 0.9em;
 }
+
+/* =============================
+   バリデーション
+============================= */
+
+/* ▼ 赤枠（エラー時） */
+.input-error {
+  border: 2px solid #ff4d4d !important;
+  background: #ffeaea;
+  outline: none;
+}
+
+/* ▼ 吹き出し風エラーテキスト */
+.error {
+  position: relative;
+  background: #ff4d4d;
+  color: #fff;
+  padding: 6px 10px;
+  margin-top: 4px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  display: inline-block;
+}
+
+/* ▼ 吹き出しの三角部分 */
+.error::before {
+  content: "";
+  position: absolute;
+  top: -6px;
+  left: 10px;
+  border-width: 0 6px 6px 6px;
+  border-style: solid;
+  border-color: transparent transparent #ff4d4d transparent;
+}
+
+/* ▼ ポップアップの外側（暗背景） */
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.65);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+/* ▼ show クラスがついたときだけ表示 */
+.popup.show {
+  display: flex;
+}
+
+/* ▼ ポップアップの中身 */
+.popup-content {
+  background: #111;
+  color: #fff;
+  padding: 20px 30px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(130, 60, 255, 0.7);
+  border: 1px solid #8a4aff;
+  font-size: 1.1rem;
+}
+
+/* ▼ 閉じるボタン */
+.popup-close {
+  margin-top: 15px;
+  padding: 8px 18px;
+  border: none;
+  background: #8a4aff;
+  color: #fff;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.popup-close:hover {
+  background: #b08aff;
+}
+
+/* 自由記述欄（退会理由）のカスタムデザイン */
+#detailReason {
+  width: 100%;               /* 横幅いっぱい */
+  max-width: 600px;          /* 過度に広がらない */
+  height: 150px;             /* 高さ固定 */
+  padding: 12px;
+  border: 1px solid #666;
+  border-radius: 6px;
+
+  background: rgba(30, 30, 30, 0.8);  /* ダーク背景 */
+  color: #fff;
+  font-size: 14px;
+
+  resize: vertical;          /* ユーザーが上下方向にのみ拡大可能 */
+  outline: none;
+}
+
+/* フォーカス時の光るエフェクト */
+#detailReason:focus {
+  border-color: #a020f0;
+  box-shadow: 0 0 10px #a020f0;
+}
+
+

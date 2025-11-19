@@ -51,7 +51,7 @@
 
   <section class="mypage-content">
     <h2>退会理由の入力</h2>
-    <p>退会の理由をお聞かせください。（任意）</p>
+    <p>退会の理由をお聞かせください。</p>
 
     <form th:action="@{/mypage/delete/confirm}" method="post" class="member-form">
       <div class="form-group">
@@ -61,6 +61,12 @@
           <option th:each="r : ${reasons}" th:value="${r}" th:text="${r}"></option>
         </select>
       </div>
+	  
+	  <div class="form-group">
+	          <label for="detailReason">自由入力（任意）</label>
+	          <textarea name="detailReason" id="detailReason" rows="4"
+	                    placeholder="その他詳しい理由があればご記入ください"></textarea>
+	        </div>
 
       <div class="form-actions">
         <button type="submit" class="btn">確認画面へ進む</button>

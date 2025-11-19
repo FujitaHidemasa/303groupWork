@@ -9,7 +9,7 @@
 <body>
 
   <!-- 共通ヘッダー -->
-  <div th:replace="fragments/header :: header"></div>
+  <header th:replace="fragments/header :: header"></header>
 
   <main class="mypage-container">
 	<aside class="mypage-sidebar">
@@ -82,22 +82,45 @@
           
           <div class="form-group">
             <label>氏名</label>
-            <input type="text" th:field="*{recipientName}" placeholder="例：山田太郎">
+            <input type="text"
+				 th:field="*{recipientName}" 
+				 th:classappend="${#fields.hasErrors('recipientName')} ? 'input-error'" 
+				 placeholder="例：山田太郎">
+				 
+			<p class="error" th:if="${#fields.hasErrors('recipientName')}"
+				th:errors="*{recipientName}"></p>
           </div>
 
           <div class="form-group">
             <label>郵便番号</label>
-            <input type="text" th:field="*{postalCode}" placeholder="例：160-0022">
+            <input type="text" 
+				th:field="*{postalCode}" 
+				th:classappend="${#fields.hasErrors('postalCode')} ? 'input-error'"
+				placeholder="例：160-0022">
+				
+			<p class="error" th:if="${#fields.hasErrors('postalCode')}"
+				th:errors="*{postalCode}"></p>
           </div>
 
           <div class="form-group">
             <label>住所</label>
-            <input type="text" th:field="*{address}" placeholder="例：東京都新宿区1-2-3">
+            <input type="text" 
+				th:field="*{address}" 
+				th:classappend="${#fields.hasErrors('address')} ? 'input-error'"
+				placeholder="例：東京都新宿区1-2-3">
+				
+			<p class="error" th:if="${#fields.hasErrors('address')}"
+				th:errors="*{address}"></p>
           </div>
 
           <div class="form-group">
             <label>電話番号</label>
-            <input type="text" th:field="*{phone}" placeholder="例：080-1234-5678">
+            <input type="text" 
+				th:field="*{phone}" 
+				th:classappend="${#fields.hasErrors('phone')} ? 'input-error'"
+				placeholder="例：080-1234-5678">
+			<p class="error" th:if="${#fields.hasErrors('phone')}"
+				th:errors="*{phone}"></p>
           </div>
 
           <div class="form-actions">
@@ -107,11 +130,35 @@
 
       </div>
     </section>
+
   </main>
+  
+
 
   <footer class="main-footer">
     <p>&copy; 2025 VOIDR STORE. All rights reserved.</p>
   </footer>
 
+  <!-- ▼ 登録完了ポップアップ -->
+  <div id="popup" class="popup">
+    <div class="popup-content">
+      <p>新しいお届け先を登録しました！</p>
+      <button class="popup-close" onclick="closePopup()">OK</button>
+    </div>
+  </div>
+  
+	<script>
+	    // URL に ?success がついていたらモーダルを開く
+	    const url = new URL(window.location.href);
+
+	    if (url.searchParams.get("success") !== null) {
+	        document.getElementById("popup").classList.add("show");
+	    }
+
+	    // 閉じるボタン
+	    function closePopup() {
+	        document.getElementById("popup").classList.remove("show");
+	    }
+	</script>
 </body>
 </html>

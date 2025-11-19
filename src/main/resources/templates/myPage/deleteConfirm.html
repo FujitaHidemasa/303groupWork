@@ -11,52 +11,45 @@
 <div th:replace="fragments/header :: header"></div>
 
 <main class="mypage-container">
-	<aside class="mypage-sidebar">
-				<h2>メニュー</h2>
-				<ul>
-					<li>
-						<a th:href="@{/mypage/orders}" 
-						   th:classappend="${currentPath == '/mypage/orders'} ? 'active'">
-						   購入履歴
-						</a>
-					</li>
-					<li>
-						<a th:href="@{/mypage/edit}" 
-						   th:classappend="${currentPath == '/mypage/edit'} ? 'active'">
-						   会員情報変更
-						</a>
-					</li>
-					<li>
-						<a th:href="@{/mypage/address}" 
-						   th:classappend="${currentPath == '/mypage/address'} ? 'active'">
-						   お届け先管理
-						</a>
-					</li>
-					<li>
-						<a th:href="@{/favorites/{userId}(userId=${#authentication.principal.id})}" 
-						   th:classappend="${currentPath == '/mypage/wishlist'} ? 'active'"
-						   sec:authorize="isAuthenticated()">
-						   お気に入り
-						</a>
+  <aside class="mypage-sidebar">
+    <h2>メニュー</h2>
+    <ul>
+      <li><a th:href="@{/mypage/orders}" th:classappend="${currentPath == '/mypage/orders'} ? 'active'">購入履歴</a></li>
+      <li><a th:href="@{/mypage/edit}" th:classappend="${currentPath == '/mypage/edit'} ? 'active'">会員情報変更</a></li>
+      <li><a th:href="@{/mypage/address}" th:classappend="${currentPath == '/mypage/address'} ? 'active'">お届け先管理</a></li>
+      <li>
+        <a th:href="@{/favorites/{userId}(userId=${#authentication.principal.id})}" 
+           th:classappend="${currentPath == '/mypage/wishlist'} ? 'active'"
+           sec:authorize="isAuthenticated()">お気に入り
+        </a>
+      </li>
+      <li><a th:href="@{/mypage/delete}" th:classappend="${currentPath == '/mypage/delete'} ? 'active'">退会手続き</a></li>
+    </ul>
+  </aside>
 
-					</li>
-					<li>
-						<a th:href="@{/mypage/delete}" 
-						   th:classappend="${currentPath == '/mypage/delete'} ? 'active'">
-						   退会手続き
-						</a>
-					</li>
-				</ul>
-			</aside>
   <section class="mypage-content">
     <h2>退会確認</h2>
+
     <p>以下の理由で退会されます：</p>
+
+    <!-- ▼ 選択式の理由 -->
     <p th:text="${reason}" class="username"></p>
+
+    <!-- ▼ ★ 自由入力の理由（空でなければ表示） -->
+    <p th:if="${detailReason != null and detailReason != ''}">
+      <strong>詳細理由：</strong><br>
+      <span th:text="${detailReason}"></span>
+    </p>
 
     <p>この操作は取り消せません。<br>アカウント情報・購入履歴など全て削除されます。</p>
 
     <form th:action="@{/mypage/delete/execute}" method="post">
+      <!-- 隠し input で理由を送る -->
       <input type="hidden" name="reason" th:value="${reason}">
+      
+      <!-- ★ detailReason も渡す -->
+      <input type="hidden" name="detailReason" th:value="${detailReason}">
+      
       <div class="form-actions">
         <button type="submit" class="btn">退会を確定する</button>
         <a th:href="@{/mypage}" class="btn" style="background:#555;">キャンセル</a>
