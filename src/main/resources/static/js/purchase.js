@@ -10,22 +10,22 @@ const addressMap = /*[[${addresses}]]*/ {};
 function toggleManualAddress() {
     const select = document.getElementById("addressSelect");
     const manualBox = document.getElementById("manualAddressBox");
-    const finalAddress = document.getElementById("finalAddress");
+    const manualInput = document.getElementById("manualAddressInput");
+
+    if (!select || !manualBox) {
+        return;
+    }
 
     // 手入力モード
     if (select.value === "manual") {
         manualBox.style.display = "block";
-        finalAddress.value = ""; 
-        return;
+    } else {
+        // 登録住所モード → 手入力欄は隠して中身もクリア
+        manualBox.style.display = "none";
+        if (manualInput) {
+            manualInput.value = "";
+        }
     }
-
-    // 通常の登録住所モード
-    manualBox.style.display = "none";
-
-    const selectedId = select.value;
-
-    // ID → テキスト住所に変換
-    finalAddress.value = addressMap[selectedId] || "";
 }
 
 
