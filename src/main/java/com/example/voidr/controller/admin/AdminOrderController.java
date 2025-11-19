@@ -78,7 +78,8 @@ public class AdminOrderController {
 		}
 
 		// ID指定で OrderList を1件取得（ユーザー名や金額、入力内容が入っている）
-		OrderList target = orderListService.getById(orderListId);
+		//OrderList target = orderListService.getById(orderListId);
+		OrderList target = orderListService.findById(orderListId);
 
 		model.addAttribute("orders", orders);
 		model.addAttribute("orderListId", orderListId);
@@ -87,6 +88,8 @@ public class AdminOrderController {
 		if (target != null) {
 			// 会員ID（ログインID）
 			model.addAttribute("orderUserName", target.getUsername());
+	        // 追加：会員の表示名（displayName）
+	        model.addAttribute("orderDisplayName", target.getDisplayName());
 			// 注文日時
 			model.addAttribute("orderCreatedAt", target.getCreatedAt());
 			// 最終更新日時

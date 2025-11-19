@@ -15,6 +15,7 @@ public class OrderList {
 	private long id; // 注文リストID
 	private long userId; // ユーザーID
 	private String username; // ユーザーネーム
+	private String displayName; // 氏名
 
 	
 	/** 購入画面の入力内容 */

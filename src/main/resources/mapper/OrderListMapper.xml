@@ -21,7 +21,8 @@
 		ol.final_total,
 		ol.created_at,
 		ol.updated_at,
-		u.username
+		u.username,
+		u.display_name AS displayName
 		FROM
 		order_list ol
 		JOIN
@@ -81,7 +82,8 @@
 		ol.final_total,
 		ol.created_at,
 		ol.updated_at,
-		u.username
+		u.username,
+		u.display_name AS displayName
 		FROM
 		order_list ol
 		JOIN
@@ -110,7 +112,8 @@
 		ol.final_total,
 		ol.created_at,
 		ol.updated_at,
-		u.username
+		u.username,
+		u.display_name AS displayName
 		FROM
 		order_list ol
 		JOIN
@@ -137,7 +140,8 @@
 		ol.final_total,
 		ol.created_at,
 		ol.updated_at,
-		u.username
+		u.username,
+		u.display_name AS displayName
 		FROM
 		order_list ol
 		JOIN
