@@ -1,8 +1,8 @@
 package com.example.voidr.controller.admin;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -22,28 +22,29 @@ import lombok.RequiredArgsConstructor;
 @Controller
 @RequestMapping("/admin/items")  // 商品管理用URL
 @RequiredArgsConstructor        //  コンストラクタ注入（Lombok）
-public class AdminItemController {
+public class AdminItemController 
+{
 	
-    /** 11/13修正（谷口）Mapper ではなく Service を注入 */
-    private final ItemService itemService;
+	private final ItemService itemService;
 
-	 /** 商品管理画面（一覧） */
-    @GetMapping
-    public String showItems(Model model) {
-    	
-    	// ▼通常版（削除済みを除外）
-    	// List<Item> items = itemService.getAllItems(); 
-    	// ※不具合時は↑の1行に戻すだけで従来表示に復旧できます。
+	/** 商品管理画面（一覧） */
+	@GetMapping
+	public String showItems(Model model) 
+	{
 
-    	// ▼管理者用：削除済み商品も含めて一覧表示
-    	List<Item> items = itemService.getAllItemsIncludingDeleted();
-    	
-    	// 取得した商品をセット
-        model.addAttribute("items", items);
-        model.addAttribute("pageTitle", "商品管理");  // ページタイトル
-        return "admin/items";  // resources/templates/admin/items.html を表示
-    }
-    
+		// ▼通常版（削除済みを除外）
+		// List<Item> items = itemService.getAllItems(); 
+		// ※不具合時は↑の1行に戻すだけで従来表示に復旧できます。
+
+		// ▼管理者用：削除済み商品も含めて一覧表示
+		List<Item> items = itemService.getAllItemsIncludingDeleted();
+
+		// 取得した商品をセット
+		model.addAttribute("items", items);
+		model.addAttribute("pageTitle", "商品管理"); // ページタイトル
+		return "admin/items"; // resources/templates/admin/items.html を表示
+	}
+
 	/** 新規商品フォーム表示 */
 	@GetMapping("/new")
 	public String showNewForm(Model model) {
@@ -64,6 +65,7 @@ public class AdminItemController {
 			@RequestParam("price") Integer price,
 			@RequestParam(name = "overview", required = false) String overview,
 			@RequestParam(name = "isDownload", defaultValue = "false") boolean isDownload,
+			@RequestParam(name = "categories", required = false) String categories,
 			@RequestParam(name = "thumbsImageName", required = false) String thumbsImageName,
 			RedirectAttributes redirectAttributes) {
 
@@ -83,22 +85,21 @@ public class AdminItemController {
 		item.setOverview(overview);
 		item.setIsDownload(isDownload);
 		item.setThumbsImageName(thumbsImageName);
+		
+		// カテゴリ（カンマ / 読点区切り入力）を List<String> に変換
+		item.setCategoryList(parseCategories(categories));
 
-		// ID を採番（既存IDの最大値 + 1）
-		List<Item> all = itemService.getAllItems();
-		Long maxId = all.stream()
-				.map(Item::getId)
-				.max(Comparator.naturalOrder())
-				.orElse(0L);
-		item.setId(maxId + 1);
-
+		/**
+		 * ID の採番は DB の SERIAL に任せる（ここでは設定しない）
+		*/
+		
 		// 作成日時・更新日時
 		LocalDateTime now = LocalDateTime.now();
 		item.setCreatedAt(now);
 		item.setUpdatedAt(now);
 
-		// カテゴリ・画像は未対応なので空リストでNPE回避
-		item.setCategoryList(Collections.emptyList());
+		// 画像は未対応なので空リストでNPE回避
+		// item.setCategoryList(Collections.emptyList());
 		item.setImagesName(Collections.emptyList());
 
 		itemService.createItem(item);
@@ -112,8 +113,8 @@ public class AdminItemController {
 	public String showEditForm(
 			@PathVariable("id") Long id,
 			Model model,
-			RedirectAttributes redirectAttributes) {
-
+			RedirectAttributes redirectAttributes) 
+	{
 		Item item = itemService.getItemById(id);
 		if (item == null) {
 			redirectAttributes.addFlashAttribute("errorMessage", "指定した商品が見つかりません。");
@@ -133,9 +134,10 @@ public class AdminItemController {
 			@RequestParam("price") Integer price,
 			@RequestParam(name = "overview", required = false) String overview,
 			@RequestParam(name = "isDownload", defaultValue = "false") boolean isDownload,
+			@RequestParam(name = "categories", required = false) String categories,
 			@RequestParam(name = "thumbsImageName", required = false) String thumbsImageName,
-			RedirectAttributes redirectAttributes) {
-
+			RedirectAttributes redirectAttributes) 
+	{
 		Item item = itemService.getItemById(id);
 		if (item == null) {
 			redirectAttributes.addFlashAttribute("errorMessage", "指定した商品が見つかりません。");
@@ -158,6 +160,10 @@ public class AdminItemController {
 		item.setOverview(overview);
 		item.setIsDownload(isDownload);
 		item.setThumbsImageName(thumbsImageName);
+		
+		// カテゴリをフォームの入力内容で上書き（未入力なら空リスト）
+		item.setCategoryList(parseCategories(categories));
+
 		item.setUpdatedAt(LocalDateTime.now());
 
 		itemService.updateItem(item);
@@ -170,22 +176,34 @@ public class AdminItemController {
 	@PostMapping("/delete/{id}")
 	public String deleteItem(
 			@PathVariable("id") Long id,
-			RedirectAttributes redirectAttributes) {
-
+			RedirectAttributes redirectAttributes) 
+	{
 		itemService.deleteItem(id);
 		redirectAttributes.addFlashAttribute("successMessage", "商品を販売終了にしました。");
 		return "redirect:/admin/items";
 	}
 	
-	/** ★販売再開（is_deleted = FALSE）*/
+	/** 販売再開（is_deleted = FALSE）*/
 	@PostMapping("/restore/{id}")
 	public String restoreItem(
-	        @PathVariable("id") Long id,
-	        RedirectAttributes redirectAttributes) {
+			@PathVariable("id") Long id,
+			RedirectAttributes redirectAttributes) 
+	{
 
-	    itemService.restoreItem(id);
-	    redirectAttributes.addFlashAttribute("successMessage", "商品を販売再開しました。");
-	    return "redirect:/admin/items";
+		itemService.restoreItem(id);
+		redirectAttributes.addFlashAttribute("successMessage", "商品を販売再開しました。");
+		return "redirect:/admin/items";
+	}
+	
+	/** カテゴリ入力（カンマ or 読点区切り）を List<String> に変換 */
+	private List<String> parseCategories(String categoriesInput) {
+		if (categoriesInput == null || categoriesInput.isBlank()) {
+			return Collections.emptyList();
+		}
+		return Arrays.stream(categoriesInput.split("[,、]"))
+				.map(String::trim)
+				.filter(s -> !s.isEmpty())
+				.toList();
 	}
 	
 	/**

@@ -33,6 +33,12 @@
 					<textarea id="overview" name="overview" rows="4" style="width:100%;"
 						th:text="${item.overview}"></textarea>
 				</div>
+				
+				<div>
+					<label for="categories">カテゴリ（複数ある場合はカンマ区切り）</label><br>
+					<input type="text" id="categories" name="categories" th:value="${#strings.listJoin(item.categoryList, ', ')}"
+						style="width:100%;">
+				</div>
 
 				<div>
 					<label>
@@ -43,8 +49,17 @@
 
 				<div>
 					<label for="thumbsImageName">サムネイル画像ファイル名</label><br>
-					<input type="text" id="thumbsImageName" name="thumbsImageName" style="width:100%;"
-						th:value="${item.thumbsImageName}">
+					<div style="display:flex; gap:8px; align-items:center;">
+						<input type="text" id="thumbsImageName" name="thumbsImageName" style="flex:1;"
+							th:value="${item.thumbsImageName}">
+						<!-- PCからファイル名を拾うボタン -->
+						<button type="button" class="btn btn-secondary" onclick="document.getElementById('thumbsFile').click();">
+							追加
+						</button>
+						<input type="file" id="thumbsFile" name="thumbsFile" accept="image/*" style="display:none;"
+							onchange="onThumbFileSelected(this)">
+					</div>
+					<small>※ この機能では画像ファイル名のみ自動入力されます。画像ファイル自体は <code>/images</code> 配下に配置してください。</small>
 				</div>
 
 				<div style="display:flex; gap:8px; margin-top:8px;">
@@ -65,6 +80,21 @@
 			</form>
 		</section>
 	</div>
+</th:block>
+
+<th:block th:fragment="assets">
+	<script>
+		function onThumbFileSelected(input) {
+			if (!input.files || input.files.length === 0) {
+				return;
+			}
+			const file = input.files[0];
+			const nameField = document.getElementById('thumbsImageName');
+			if (nameField) {
+				nameField.value = file.name;
+			}
+		}
+	</script>
 </th:block>
 
 </html>

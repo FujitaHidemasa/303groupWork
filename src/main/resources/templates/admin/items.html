@@ -64,27 +64,42 @@
 					
 					<!-- ★販売状況バッジ -->
 					<td>
+					    <span th:if="${!item.isDeleted}" class="badge-active">
+					        販売中
+					    </span>
 					    <span th:if="${item.isDeleted}" class="badge-ended">
 					        販売終了
 					    </span>
 					</td>
 
 					<td><!-- 操作 -->
-						<div style="display:flex; gap:8px;">
+					    <div style="display:flex; gap:8px;">
 
-							<!-- 編集ボタン -->
-							<a class="btn btn-edit"
-								th:href="@{/admin/items/edit/{id}(id=${item.id})}">編集</a>
+					        <!-- 編集ボタン（常に表示） -->
+					        <a class="btn btn-edit"
+					           th:href="@{/admin/items/edit/{id}(id=${item.id})}">
+					            編集
+					        </a>
 
-							<!-- 削除ボタン（POST + CSRF） -->
-							<form th:action="@{/admin/items/delete/{id}(id=${item.id})}" method="post"
-								onsubmit="return confirm('この商品を「販売終了」扱いにしますか？');">
-								<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-								<button type="submit" class="btn btn-delete">削除</button>
-							</form>
-						</div>
+					        <!-- ★販売中：販売終了（論理削除）ボタン -->
+					        <form th:if="${!item.isDeleted}"
+					              th:action="@{/admin/items/delete/{id}(id=${item.id})}"
+					              method="post"
+					              onsubmit="return confirm('この商品を「販売終了」扱いにしますか？');">
+					            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+					            <button type="submit" class="btn btn-delete">削除</button>
+					        </form>
+
+					        <!-- ★販売終了：販売再開ボタン -->
+					        <form th:if="${item.isDeleted}"
+					              th:action="@{/admin/items/restore/{id}(id=${item.id})}"
+					              method="post"
+					              onsubmit="return confirm('この商品を再度「販売中」にしますか？');">
+					            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+					            <button type="submit" class="btn btn-restore">販売再開</button>
+					        </form>
+					    </div>
 					</td>
-				</tr>
 
 
 				<!-- データが無いとき -->

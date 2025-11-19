@@ -31,9 +31,12 @@ public interface ItemMapper
 	/** idに一致した商品を取得する */
 	Item selectById(@Param("id")Long id);
 	
-	/** 商品を新規作成する */
+	/** 商品を新規作成する（XML同期など、ID指定あり） */
 	void insert(Item item);
-	
+
+	/** 商品を新規作成する（管理画面用：IDはDBのSERIALに任せる） */
+	void insertAuto(Item item);
+
 	/** 商品を更新する */
 	void update(Item item);
 	
