@@ -5,6 +5,52 @@
   <title>お届け先管理｜VOIDR</title>
   <link rel="stylesheet" th:href="@{/css/mypage/mypage.css}">
   <link rel="stylesheet" th:href="@{/css/ec/header.css}">
+  <style>
+    		/* マイページのCSSが上書きしたヘッダーの位置を戻す */
+    		.fixed-header {
+    			position: fixed;
+    			top: 0;
+    			left: 0;
+    			width: 100%;
+    			z-index: 9999;
+    		}
+
+    		/* カートアイコンのバッジが崩れないようにする */
+    		.cart-icon-wrap {
+    			position: relative !important;
+    			display: inline-flex !important;
+    			align-items: center !important;
+    		}
+
+    		.cart-count-badge {
+    			position: absolute !important;
+    			top: -5px !important;
+    			right: -8px !important;
+    		}
+
+    		/* マイページでもカートバッジを完全な丸に固定 */
+    		.cart-count-badge {
+    		    position: absolute !important;
+    		    top: -5px !important;
+    		    right: -8px !important;
+
+    		    background-color: red !important;
+    		    color: white !important;
+    		    font-size: 12px !important;
+    		    font-weight: bold !important;
+
+    		    height: 18px !important;          /* 高さ固定 */
+    		    min-width: 18px !important;       /* 最小サイズは正円 */
+    		    padding: 0 6px !important;        /* 2桁以上の時に横幅が広がる */
+
+    		    border-radius: 50% !important;    /* 丸/楕円 */
+    		    display: none;                     /* 初期は非表示 */
+    		    text-align: center;
+    		    line-height: 18px;                 /* 縦中央揃え */
+    		    white-space: nowrap;               /* 折り返さない */
+    		    box-sizing: border-box;            /* paddingを含めた幅調整 */
+    		}
+    	</style>
 </head>
 <body>
 
