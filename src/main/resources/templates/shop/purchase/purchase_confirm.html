@@ -177,18 +177,28 @@
 
 			<!-- 購入確定ボタン -->
 			<div class="purchase-actions">
-				<form th:action="@{/voidrshop/purchase/complete}" method="post">
-					<!-- hidden で全ての情報を送信 -->
-					<input type="hidden" name="paymentMethod" th:value="${paymentMethod}">
-					<input type="hidden" name="address" th:value="${address}">
-					<input type="hidden" name="deliveryDate" th:value="${deliveryDate}">
-					<input type="hidden" name="deliveryTime" th:value="${deliveryTime}">
-					<button type="submit" class="btn-confirm">購入を確定する</button>
-				</form>
+			    <form th:action="@{/voidrshop/purchase/complete}"
+			          method="post"
+			          onsubmit="this.querySelector('button[type=submit]').disabled = true;">
 
-				<form th:action="@{/voidrshop/purchase}" method="get">
-					<button type="submit" class="btn-back">戻る</button>
-				</form>
+			        <!-- CSRF トークン -->
+			        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+			        <!-- hidden で全ての情報を送信 -->
+			        <input type="hidden" name="paymentMethod" th:value="${paymentMethod}">
+			        <input type="hidden" name="address" th:value="${address}">
+			        <input type="hidden" name="deliveryDate" th:value="${deliveryDate}">
+			        <input type="hidden" name="deliveryTime" th:value="${deliveryTime}">
+
+			        <!-- ★onclick は外す（submit は form に任せる） -->
+			        <button type="submit" class="btn-confirm">
+			            購入を確定する
+			        </button>
+			    </form>
+
+			    <form th:action="@{/voidrshop/purchase}" method="get">
+			        <button type="submit" class="btn-back">戻る</button>
+			    </form>
 			</div>
 		</section>
 	</main>

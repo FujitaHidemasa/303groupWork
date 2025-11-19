@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.voidr.dto.PurchaseReceiptDto;
 import com.example.voidr.entity.Account;
 import com.example.voidr.entity.Address;
 import com.example.voidr.entity.Order;
@@ -25,6 +26,7 @@ import com.example.voidr.entity.OrderList;
 import com.example.voidr.service.AccountService;
 import com.example.voidr.service.AddressService;
 import com.example.voidr.service.CartService;
+import com.example.voidr.service.EmailService;
 import com.example.voidr.service.OrderItemService;
 import com.example.voidr.service.OrderListService;
 import com.example.voidr.service.OrderService;
@@ -45,6 +47,7 @@ public class PurchaseController {
 	private final OrderItemService orderItemService;
 	private final AccountService accountService;
 	private final AddressService addressService;
+	private final EmailService emailService;
 
 
 	/** ログイン中ユーザー情報取得 */
@@ -243,7 +246,7 @@ public class PurchaseController {
 	@PostMapping("/confirm")
 	public String confirmPurchase(
 	        @RequestParam("paymentMethod") String paymentMethod,
-	        @RequestParam(value = "addressSelect", required = false) Long addressId,
+	        @RequestParam(value = "addressSelect", required = false) String addressSelect,
 	        @RequestParam(value = "manualAddress", required = false) String manualAddress,
 	        @RequestParam("deliveryDate") String deliveryDate,
 	        @RequestParam("deliveryTime") String deliveryTime,
@@ -264,24 +267,37 @@ public class PurchaseController {
 	            .sum();
 	    int shippingFee = calcShippingFee(total);
 	    int finalTotal = total + shippingFee;
+	    
+	    // ★追加: addressSelect を Long に変換（"manual" の場合は null のまま）
+	    Long addressId = null;
+	    if (addressSelect != null && !addressSelect.isBlank() && !"manual".equals(addressSelect)) {
+	        try {
+	            addressId = Long.valueOf(addressSelect);
+	        } catch (NumberFormatException ex) {
+	            // 想定外の値が来たときは登録住所は使わず、手入力側にフォールバック
+	            addressId = null;
+	        }
+	    }
 
 	    /* ▼▼ ここが最重要 ▼▼ */
 	    String finalAddress = "";
 
 	    if (addressId != null) {
-	        // 🔹 登録済み住所のIDが送られてきた場合は、DBから住所を取り出す
-	        Address addr = addressService.getAddressesByUserId(account.getId())
-	                .stream()
-	                .filter(a -> a.getId().equals(addressId))
-	                .findFirst()
-	                .orElse(null);
-
-	        if (addr != null) {
-	            finalAddress = addr.getAddress();  // ← 表示は「住所だけ」
+	        // 登録済み住所IDが来ている場合は、for文で該当レコードを探す（ラムダを使わない）
+	        List<Address> addresses = addressService.getAddressesByUserId(account.getId());
+	        Address found = null;
+	        for (Address a : addresses) {
+	            if (a.getId().equals(addressId)) {
+	                found = a;
+	                break;
+	            }
+	        }
+	        if (found != null) {
+	            finalAddress = found.getAddress();
 	        }
 
 	    } else if (manualAddress != null && !manualAddress.isBlank()) {
-	        // 🔹 手動入力の場合はこちら
+	        // 「直接入力する」＋手入力住所の場合はこちら
 	        finalAddress = manualAddress;
 	    }
 
@@ -362,6 +378,46 @@ public class PurchaseController {
 
 		// カート全削除
 		cartService.clearCart(account.getUsername());
+		
+		// ★追加: 注文情報を再取得（created_at を含めてDTOに詰める）
+		OrderList freshOrderList = orderListService.findById(orderList.getId());
+
+		// ★追加: 購入完了メール送信（失敗しても注文は残す）
+		try {
+
+			PurchaseReceiptDto dto = new PurchaseReceiptDto();
+			dto.setDisplayName(account.getDisplayName());
+			dto.setAddress(address);
+			dto.setPhoneNumber(account.getPhoneNumber());
+			dto.setOrderId(orderList.getId());
+			dto.setOrderDateTime(freshOrderList != null ? freshOrderList.getCreatedAt() : null);
+			dto.setPaymentMethod(paymentMethod);
+			dto.setSubtotal(total);
+			dto.setShippingFee(shippingFee);
+			dto.setFinalTotal(finalTotal);
+
+			// 商品明細
+			List<PurchaseReceiptDto.Item> dtoItems = new ArrayList<>();
+			for (CartView cv : purchasable) {
+				int unitPrice = cv.getItem().getPrice();
+				int quantity = cv.getCart().getQuantity();
+				dtoItems.add(new PurchaseReceiptDto.Item(
+						cv.getItem().getName(),
+						unitPrice,
+						quantity,
+						unitPrice * quantity));
+			}
+			dto.setItems(dtoItems);
+
+			emailService.sendPurchaseReceipt(account.getEmail(), dto);
+			// ★成功メッセージ
+			model.addAttribute("emailNotice", "ご登録のメールアドレスに注文内容を送信しました。");
+
+		} catch (Exception e) {
+			// ★失敗してもロールバックしない（注文は確定済み）
+			e.printStackTrace(); // TODO: logger に変更推奨
+			model.addAttribute("emailNotice", "ご注文は完了しましたが、メール送信に失敗しました。");
+		}
 
 		// 完了画面表示
 		model.addAttribute("orderListId", orderList.getId());
@@ -372,7 +428,6 @@ public class PurchaseController {
 		model.addAttribute("address", address);
 		model.addAttribute("deliveryDate", deliveryValue);
 		model.addAttribute("deliveryTime", deliveryTime);
-		model.addAttribute("emailNotice", "ご登録のメールアドレスに注文詳細をお送りしました。");
 
 		return "shop/purchase/purchase_complete";
 	}
