@@ -21,6 +21,23 @@
 		<div class="new-item" style="margin-bottom: 16px;">
 			<a class="primary-btn" th:href="@{/admin/items/new}">＋ 新規商品登録</a>
 		</div>
+		
+		<!-- ★追加：販売状況フィルタ -->
+		<div class="status-filter">
+			<span class="status-filter-label">表示：</span>
+		
+			<a th:href="@{/admin/items(status='all')}" th:classappend="${status} == 'all' ? ' active' : ''">
+				すべて
+			</a>
+		
+			<a th:href="@{/admin/items(status='active')}" th:classappend="${status} == 'active' ? ' active' : ''">
+				販売中
+			</a>
+		
+			<a th:href="@{/admin/items(status='ended')}" th:classappend="${status} == 'ended' ? ' active' : ''">
+				販売終了
+			</a>
+		</div>
 
 		<!-- 商品一覧テーブル -->
 		<table class="item-table">

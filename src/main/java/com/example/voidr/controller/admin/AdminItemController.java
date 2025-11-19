@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -67,19 +68,35 @@ public class AdminItemController {
 
 	/** 商品管理画面（一覧） */
 	@GetMapping
-	public String showItems(Model model) {
+	public String showItems(
+			@RequestParam(name = "status", defaultValue = "all") String status, // ★追加：ステータス選択
+			Model model) {
 
-		// ▼通常版（削除済みを除外）
-		// List<Item> items = itemService.getAllItems(); 
-		// ※不具合時は↑の1行に戻すだけで従来表示に復旧できます。
+		List<Item> items;
 
-		// ▼管理者用：削除済み商品も含めて一覧表示
-		List<Item> items = itemService.getAllItemsIncludingDeleted();
+		switch (status) {
+		case "active": // 販売中のみ（is_deleted = false）
+			items = itemService.getAllItems(); // 既存メソッド：削除済みを除外
+			break;
 
-		// 取得した商品をセット
+		case "ended": // 販売終了のみ（is_deleted = true）
+			items = itemService.getAllItemsIncludingDeleted()
+					.stream()
+					.filter(Item::getIsDeleted)
+					.collect(Collectors.toList());
+			break;
+
+		case "all":
+		default: // すべて（販売中＋販売終了）
+			items = itemService.getAllItemsIncludingDeleted();
+			break;
+		}
+
 		model.addAttribute("items", items);
-		model.addAttribute("pageTitle", "商品管理"); // ページタイトル
-		return "admin/items"; // resources/templates/admin/items.html を表示
+		model.addAttribute("status", status); // ★現在のフィルタ状態をViewに渡す
+		model.addAttribute("pageTitle", "商品管理");
+
+		return "admin/items";
 	}
 
 	/** 新規商品フォーム表示 */

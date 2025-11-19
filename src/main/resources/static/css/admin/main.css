@@ -259,3 +259,36 @@ th {
 .badge-c {
   background-color: #e74c3c;
 }
+
+/* ===== 販売状況フィルタ ===== */
+.status-filter {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin-bottom: 12px;
+	font-size: 0.9rem;
+}
+
+.status-filter-label {
+	color: #555;
+}
+
+.status-filter a {
+	padding: 4px 10px;
+	border-radius: 999px;
+	border: 1px solid #ccc;
+	text-decoration: none;
+	color: #333;
+	font-size: 0.85rem;
+	background: #fff;
+}
+
+.status-filter a:hover {
+	background: #ecf0f1;
+}
+
+.status-filter a.active {
+	background: #2980b9;
+	color: #fff;
+	border-color: #2980b9;
+}
