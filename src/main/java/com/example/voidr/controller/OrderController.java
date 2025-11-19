@@ -1,7 +1,6 @@
 package com.example.voidr.controller;
 
 import java.security.Principal;
-import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,7 +38,7 @@ public class OrderController {
 	@GetMapping
 	public String showOrderHistory(Model model,
 			Principal principal,
-			@RequestParam(name = "sort", defaultValue = "desc") String sort,
+			@RequestParam(name = "month", required = false) String targetMonth,
 			@RequestParam(name = "historyKeyword", required = false) String keyword) {
 
 		if (principal == null)
@@ -48,12 +47,7 @@ public class OrderController {
 		String username = principal.getName();
 		List<OrderList> orderLists = orderListService.findByUserName(username);
 
-		if (sort.equals("asc")) {
-			orderLists.sort(Comparator.comparing(OrderList::getCreatedAt));
-		} else {
-			orderLists.sort(Comparator.comparing(OrderList::getCreatedAt).reversed());
-		}
-
+		// 月ごとのフィルター
 		Map<Long, List<Order>> groupedOrders = new LinkedHashMap<>();
 		Map<Long, Integer> totalPriceMap = new LinkedHashMap<>();
 		Map<Long, Integer> shippingFeeMap = new LinkedHashMap<>();
@@ -61,6 +55,14 @@ public class OrderController {
 		Map<Long, String> deliveryMap = new LinkedHashMap<>();
 
 		for (OrderList ol : orderLists) {
+			// 作成日を yyyy-MM に変換
+			String orderMonth = ol.getCreatedAt().format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM"));
+
+			// 月フィルターがあればスキップ
+			if (targetMonth != null && !targetMonth.isEmpty() && !targetMonth.equals(orderMonth)) {
+				continue;
+			}
+
 			List<Order> orderHistory = orderService.getOrderHistory(ol.getId());
 
 			if (keyword != null && !keyword.trim().isEmpty()) {
@@ -92,12 +94,18 @@ public class OrderController {
 			deliveryMap.put(ol.getId(), deliveryText.trim());
 		}
 
+		// 月リスト作成（ドロップダウン用）
+		java.util.Set<String> availableMonths = orderLists.stream()
+				.map(ol -> ol.getCreatedAt().format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM")))
+				.collect(java.util.stream.Collectors.toCollection(java.util.LinkedHashSet::new));
+
 		model.addAttribute("groupedOrders", groupedOrders);
 		model.addAttribute("totalPriceMap", totalPriceMap);
 		model.addAttribute("shippingFeeMap", shippingFeeMap);
 		model.addAttribute("statusMap", statusMap);
 		model.addAttribute("deliveryMap", deliveryMap);
-		model.addAttribute("sort", sort);
+		model.addAttribute("availableMonths", availableMonths);
+		model.addAttribute("targetMonth", targetMonth);
 		model.addAttribute("historyKeyword", keyword);
 
 		return "order/history";

@@ -21,7 +21,8 @@ body {
 }
 
 .section-title {
-	margin-bottom: 20px;}
+	margin-bottom: 20px;
+}
 
 
 /* ==========================================
@@ -29,11 +30,11 @@ body {
 ========================================== */
 
 .faq-item {
-  margin-bottom: 16px;
-  overflow: hidden;
-  border-left: 4px solid transparent;
-  background: linear-gradient(to right, rgba(143, 122, 240, 0.3), transparent);
-  border-radius: 10px;
+	margin-bottom: 16px;
+	overflow: hidden;
+	border-left: 4px solid transparent;
+	background: linear-gradient(to right, rgba(143, 122, 240, 0.3), transparent);
+	border-radius: 10px;
 }
 
 .faq-question {
@@ -103,6 +104,13 @@ body {
 .contact-form label {
 	color: var(--color-text-main);
 	font-weight: 500;
+}
+
+/* === エラーメッセージ === */
+.contact-form .error {
+	color: #ff6666;
+	font-size: 0.9rem;
+	margin-top: 2px;
 }
 
 /* === 入力フォーム共通 === */
