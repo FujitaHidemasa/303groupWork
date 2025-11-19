@@ -13,8 +13,8 @@
 				<span th:text="${errorMessage}"></span>
 			</div>
 
-			<form th:action="@{/admin/items/new}" method="post"
-				style="display:flex; flex-direction:column; gap:12px; max-width:600px;">
+			<form th:action="@{/admin/items/new}" method="post" enctype="multipart/form-data"
+			      th:object="${item}">
 				<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 
 				<div>
@@ -46,8 +46,21 @@
 
 				<div>
 					<label for="thumbsImageName">サムネイル画像ファイル名</label><br>
-					<input type="text" id="thumbsImageName" name="thumbsImageName" placeholder="例）item001_thumb.jpg"
-						style="width:100%;">
+					<div style="display:flex; gap:8px; align-items:center;">
+						<!-- ファイル名を保持するテキスト欄（DBにはこちらの値が入る） -->
+						<input type="text" id="thumbsImageName" name="thumbsImageName" placeholder="例）item001_thumb.jpg"
+							style="flex:1;">
+				
+						<!-- ★追加：PCからファイルを選ぶボタン -->
+						<button type="button" class="btn btn-secondary" onclick="document.getElementById('thumbsFile').click();">
+							画像を選択
+						</button>
+				
+						<!-- 実際にファイルを送る input -->
+						<input type="file" id="thumbsFile" name="thumbsFile" accept="image/*" style="display:none;"
+							onchange="onThumbFileSelected(this)">
+					</div>
+					<small>※ 画像ファイルは uploads ディレクトリに保存され、ファイル名がここに自動入力されます。</small>
 				</div>
 
 				<div style="display:flex; gap:8px; margin-top:8px;">
@@ -58,5 +71,21 @@
 		</section>
 	</div>
 </th:block>
+
+<th:block th:fragment="assets">
+	<script>
+		function onThumbFileSelected(input) {
+			if (!input.files || input.files.length === 0) {
+				return;
+			}
+			const file = input.files[0];
+			const nameField = document.getElementById('thumbsImageName');
+			if (nameField) {
+				nameField.value = file.name;
+			}
+		}
+	</script>
+</th:block>
+
 
 </html>

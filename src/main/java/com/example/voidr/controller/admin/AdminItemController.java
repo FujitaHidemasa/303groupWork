@@ -1,5 +1,10 @@
 package com.example.voidr.controller.admin;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
@@ -12,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.voidr.entity.Item;
@@ -20,17 +26,48 @@ import com.example.voidr.service.ItemService;
 import lombok.RequiredArgsConstructor;
 
 @Controller
-@RequestMapping("/admin/items")  // 商品管理用URL
-@RequiredArgsConstructor        //  コンストラクタ注入（Lombok）
-public class AdminItemController 
-{
-	
+@RequestMapping("/admin/items") // 商品管理用URL
+@RequiredArgsConstructor //  コンストラクタ注入（Lombok）
+public class AdminItemController {
+	/**
+	 * サムネイル画像を ./uploads/item-thumbs/ に保存し、
+	 * DBに保存するファイル名（storedName）を返す。
+	 */
+	private String saveThumbImage(MultipartFile file) throws IOException {
+		if (file == null || file.isEmpty()) {
+			return null;
+		}
+
+		// アップロードディレクトリ（プロジェクト直下）
+		Path uploadDir = Paths.get("uploads", "item-thumbs");
+		Files.createDirectories(uploadDir);
+
+		// 元ファイル名
+		String originalName = file.getOriginalFilename();
+		if (originalName == null || originalName.isBlank()) {
+			originalName = "thumb";
+		}
+
+		// 拡張子を保持したまま一意なファイル名を作成
+		String ext = "";
+		int dotIndex = originalName.lastIndexOf('.');
+		if (dotIndex >= 0) {
+			ext = originalName.substring(dotIndex); // 例: ".png"
+		}
+		String storedName = System.currentTimeMillis() + ext;
+
+		// 保存
+		Path dest = uploadDir.resolve(storedName);
+		Files.copy(file.getInputStream(), dest, StandardCopyOption.REPLACE_EXISTING);
+
+		return storedName;
+	}
+
 	private final ItemService itemService;
 
 	/** 商品管理画面（一覧） */
 	@GetMapping
-	public String showItems(Model model) 
-	{
+	public String showItems(Model model) {
 
 		// ▼通常版（削除済みを除外）
 		// List<Item> items = itemService.getAllItems(); 
@@ -67,15 +104,16 @@ public class AdminItemController
 			@RequestParam(name = "isDownload", defaultValue = "false") boolean isDownload,
 			@RequestParam(name = "categories", required = false) String categories,
 			@RequestParam(name = "thumbsImageName", required = false) String thumbsImageName,
+			@RequestParam(name = "thumbsFile", required = false) MultipartFile thumbsFile, // ★追加
 			RedirectAttributes redirectAttributes) {
 
-		// 簡易バリデーション
+		// ▼ ここは今まで通りのバリデーション（必須チェックなど）
 		if (name == null || name.isBlank()) {
 			redirectAttributes.addFlashAttribute("errorMessage", "商品名を入力してください。");
 			return "redirect:/admin/items/new";
 		}
 		if (price == null || price < 0) {
-			redirectAttributes.addFlashAttribute("errorMessage", "価格には0以上の数値を入力してください。");
+			redirectAttributes.addFlashAttribute("errorMessage", "価格は0以上の数値で入力してください。");
 			return "redirect:/admin/items/new";
 		}
 
@@ -84,22 +122,29 @@ public class AdminItemController
 		item.setPrice(price);
 		item.setOverview(overview);
 		item.setIsDownload(isDownload);
-		item.setThumbsImageName(thumbsImageName);
-		
-		// カテゴリ（カンマ / 読点区切り入力）を List<String> に変換
+
+		// ★カテゴリ
 		item.setCategoryList(parseCategories(categories));
 
-		/**
-		 * ID の採番は DB の SERIAL に任せる（ここでは設定しない）
-		*/
-		
+		// ★サムネイル画像：ファイルがあればそれを優先、無ければテキスト入力を使用
+		try {
+			if (thumbsFile != null && !thumbsFile.isEmpty()) {
+				String storedName = saveThumbImage(thumbsFile);
+				item.setThumbsImageName(storedName);
+			} else {
+				item.setThumbsImageName(thumbsImageName);
+			}
+		} catch (IOException e) {
+			redirectAttributes.addFlashAttribute("errorMessage", "サムネイル画像の保存に失敗しました。");
+			return "redirect:/admin/items/new";
+		}
+
 		// 作成日時・更新日時
 		LocalDateTime now = LocalDateTime.now();
 		item.setCreatedAt(now);
 		item.setUpdatedAt(now);
 
-		// 画像は未対応なので空リストでNPE回避
-		// item.setCategoryList(Collections.emptyList());
+		// 画像リストは未対応なので空でOK
 		item.setImagesName(Collections.emptyList());
 
 		itemService.createItem(item);
@@ -113,8 +158,7 @@ public class AdminItemController
 	public String showEditForm(
 			@PathVariable("id") Long id,
 			Model model,
-			RedirectAttributes redirectAttributes) 
-	{
+			RedirectAttributes redirectAttributes) {
 		Item item = itemService.getItemById(id);
 		if (item == null) {
 			redirectAttributes.addFlashAttribute("errorMessage", "指定した商品が見つかりません。");
@@ -136,33 +180,36 @@ public class AdminItemController
 			@RequestParam(name = "isDownload", defaultValue = "false") boolean isDownload,
 			@RequestParam(name = "categories", required = false) String categories,
 			@RequestParam(name = "thumbsImageName", required = false) String thumbsImageName,
-			RedirectAttributes redirectAttributes) 
-	{
+			@RequestParam(name = "thumbsFile", required = false) MultipartFile thumbsFile,
+			RedirectAttributes redirectAttributes) {
+
 		Item item = itemService.getItemById(id);
 		if (item == null) {
-			redirectAttributes.addFlashAttribute("errorMessage", "指定した商品が見つかりません。");
+			redirectAttributes.addFlashAttribute("errorMessage", "指定された商品が見つかりません。");
 			return "redirect:/admin/items";
 		}
 
-		// 簡易バリデーション
-		if (name == null || name.isBlank()) {
-			redirectAttributes.addFlashAttribute("errorMessage", "商品名を入力してください。");
-			return "redirect:/admin/items/edit/" + id;
-		}
-		if (price == null || price < 0) {
-			redirectAttributes.addFlashAttribute("errorMessage", "価格には0以上の数値を入力してください。");
-			return "redirect:/admin/items/edit/" + id;
-		}
-
-		// 変更する項目だけ上書き（カテゴリや画像リストはそのまま保持）
 		item.setName(name);
 		item.setPrice(price);
 		item.setOverview(overview);
 		item.setIsDownload(isDownload);
-		item.setThumbsImageName(thumbsImageName);
-		
-		// カテゴリをフォームの入力内容で上書き（未入力なら空リスト）
+
+		// ★カテゴリ更新
 		item.setCategoryList(parseCategories(categories));
+
+		// ★サムネイル：新しいファイルがあれば保存して上書き
+		try {
+			if (thumbsFile != null && !thumbsFile.isEmpty()) {
+				String storedName = saveThumbImage(thumbsFile);
+				item.setThumbsImageName(storedName);
+			} else {
+				// フォームのテキスト欄で変更された場合だけ反映
+				item.setThumbsImageName(thumbsImageName);
+			}
+		} catch (IOException e) {
+			redirectAttributes.addFlashAttribute("errorMessage", "サムネイル画像の保存に失敗しました。");
+			return "redirect:/admin/items/edit/" + id;
+		}
 
 		item.setUpdatedAt(LocalDateTime.now());
 
@@ -176,25 +223,23 @@ public class AdminItemController
 	@PostMapping("/delete/{id}")
 	public String deleteItem(
 			@PathVariable("id") Long id,
-			RedirectAttributes redirectAttributes) 
-	{
+			RedirectAttributes redirectAttributes) {
 		itemService.deleteItem(id);
 		redirectAttributes.addFlashAttribute("successMessage", "商品を販売終了にしました。");
 		return "redirect:/admin/items";
 	}
-	
+
 	/** 販売再開（is_deleted = FALSE）*/
 	@PostMapping("/restore/{id}")
 	public String restoreItem(
 			@PathVariable("id") Long id,
-			RedirectAttributes redirectAttributes) 
-	{
+			RedirectAttributes redirectAttributes) {
 
 		itemService.restoreItem(id);
 		redirectAttributes.addFlashAttribute("successMessage", "商品を販売再開しました。");
 		return "redirect:/admin/items";
 	}
-	
+
 	/** カテゴリ入力（カンマ or 読点区切り）を List<String> に変換 */
 	private List<String> parseCategories(String categoriesInput) {
 		if (categoriesInput == null || categoriesInput.isBlank()) {
@@ -205,20 +250,20 @@ public class AdminItemController
 				.filter(s -> !s.isEmpty())
 				.toList();
 	}
-	
+
 	/**
 	 * 【開発用】XML(ItemList.xml) から商品情報をDBへ再取り込みする
 	 * 
 	 * ※通常運用では使わない想定。
 	 * 　DBを作り直したときや、初期セットアップ時に1回だけ叩く。
 	 */
-//	@GetMapping("/dev-sync")
-//	public String devSyncFromXml(RedirectAttributes redirectAttributes) {
-//
-//		// XML -> DB 同期（ItemServiceImpl.syncItems()）
-//		itemService.syncItems();
-//
-//		redirectAttributes.addFlashAttribute("successMessage", "XMLから商品情報を再読み込みしました。");
-//		return "redirect:/admin/items";
-//	}
+	//	@GetMapping("/dev-sync")
+	//	public String devSyncFromXml(RedirectAttributes redirectAttributes) {
+	//
+	//		// XML -> DB 同期（ItemServiceImpl.syncItems()）
+	//		itemService.syncItems();
+	//
+	//		redirectAttributes.addFlashAttribute("successMessage", "XMLから商品情報を再読み込みしました。");
+	//		return "redirect:/admin/items";
+	//	}
 }
