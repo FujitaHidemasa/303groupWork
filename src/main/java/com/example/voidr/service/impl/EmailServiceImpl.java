@@ -70,7 +70,7 @@ public class EmailServiceImpl implements EmailService
 
 		StringBuilder sb = new StringBuilder();
 
-		// ★宛名は「お届け先氏名」を優先、なければ displayName
+		// 宛名は「お届け先氏名」を優先、なければ displayName
 		String name = dto.getRecipientName();
 		if (name == null || name.isBlank()) {
 			name = dto.getDisplayName();

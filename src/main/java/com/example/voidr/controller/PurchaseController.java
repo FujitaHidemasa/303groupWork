@@ -166,7 +166,7 @@ public class PurchaseController {
 		List<CartView> purchasable = filterPurchasable(allCart);
 		boolean hasDeleted = hasDeletedItems(allCart);
 
-		// ★配送先候補（お届け先管理）
+		// 配送先候補（お届け先管理）
 		List<Address> addresses = addressService.getAddressesByUserId(account.getId());
 
 		if (purchasable.isEmpty()) {
@@ -280,9 +280,9 @@ public class PurchaseController {
 	        // 手入力住所（氏名は会員情報の氏名）
 	        finalAddress = manualAddress;
 	    }
-	    /* ▲▲ 配送先情報の決定 ▲▲ */
+	    /* ▲▲ ここが最重要 ▲▲ */
 
-	    // ★ここが追加ポイント：お届け先が決まっていなければ購入画面に戻す
+	    // お届け先が決まっていなければ購入画面に戻す
 	    if (finalAddress == null || finalAddress.isBlank()) {
 	        // 購入画面に必要な情報を再セット
 	        model.addAttribute("cartItems", purchasable);
@@ -305,7 +305,7 @@ public class PurchaseController {
 	        return "shop/purchase/purchase";
 	    }
 
-	    // ▼ ここから先は今まで通り、確認画面へ
+	    // ▼ 確認画面へ
 	    model.addAttribute("cartItems", purchasable);
 	    model.addAttribute("totalPrice", total);
 	    model.addAttribute("shippingFee", shippingFee);
@@ -388,7 +388,7 @@ public class PurchaseController {
 		// 最新の注文情報を取得（created_at 用）
 		OrderList freshOrderList = orderListService.findById(orderList.getId());
 
-		// ★購入完了メール送信（氏名は recipientName を優先）
+		// 購入完了メール送信（氏名は recipientName を優先）
 		try {
 			PurchaseReceiptDto dto = new PurchaseReceiptDto();
 			dto.setDisplayName(account.getDisplayName()); // フォールバック用
