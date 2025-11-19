@@ -70,19 +70,22 @@ public class EmailServiceImpl implements EmailService
 
 		StringBuilder sb = new StringBuilder();
 
-		sb.append(dto.getDisplayName()).append(" 様").append("\n\n");
+		// ★宛名は「お届け先氏名」を優先、なければ displayName
+		String name = dto.getRecipientName();
+		if (name == null || name.isBlank()) {
+			name = dto.getDisplayName();
+		}
+		sb.append(name).append(" 様").append("\n\n");
+
 		sb.append("この度は VOIDR OFFICIAL STORE をご利用いただきありがとうございます。").append("\n");
 		sb.append("ご注文内容は下記の通りです。").append("\n\n");
 
 		sb.append("[注文情報]").append("\n");
 		sb.append("注文番号: ").append(dto.getOrderId()).append("\n");
-
-		// 注文日時を「yyyy年MM月dd日 HH時mm分」形式で表示
 		if (dto.getOrderDateTime() != null) {
-			String formatted = dto.getOrderDateTime().format(ORDER_DATETIME_FORMATTER);
-			sb.append("注文日時: ").append(formatted).append("\n");
+			var fmt = java.time.format.DateTimeFormatter.ofPattern("yyyy年MM月dd日 HH時mm分");
+			sb.append("注文日時: ").append(dto.getOrderDateTime().format(fmt)).append("\n");
 		}
-
 		if (dto.getPaymentMethod() != null) {
 			sb.append("支払い方法: ").append(dto.getPaymentMethod()).append("\n");
 		}
@@ -97,24 +100,22 @@ public class EmailServiceImpl implements EmailService
 		if (dto.getItems() != null) {
 			for (PurchaseReceiptDto.Item item : dto.getItems()) {
 				sb.append("- ")
-						.append(item.getItemName())
-						.append(" / ")
-						.append(item.getUnitPrice()).append("円")
-						.append(" × ")
-						.append(item.getQuantity())
-						.append(" = ")
-						.append(item.getSubtotal()).append("円")
-						.append("\n");
+				  .append(item.getItemName())
+				  .append(" / ")
+				  .append(item.getUnitPrice()).append("円")
+				  .append(" × ")
+				  .append(item.getQuantity())
+				  .append(" = ")
+				  .append(item.getSubtotal()).append("円")
+				  .append("\n");
 			}
 		}
 		sb.append("\n");
 
-		sb.append("[配送先]").append("\n");
-		if (dto.getAddress() != null) {
+		// ★配送先は住所のみ（電話番号は出さない）
+		sb.append("[お届け先]").append("\n");
+		if (dto.getAddress() != null && !dto.getAddress().isBlank()) {
 			sb.append(dto.getAddress()).append("\n");
-		}
-		if (dto.getPhoneNumber() != null && !dto.getPhoneNumber().isBlank()) {
-			sb.append("電話番号: ").append(dto.getPhoneNumber()).append("\n");
 		}
 		sb.append("\n");
 
@@ -123,4 +124,5 @@ public class EmailServiceImpl implements EmailService
 
 		return sb.toString();
 	}
+
 }

@@ -47,7 +47,7 @@
 			height: 120px;
 		}
 
-		/* 支払い情報ボックスを強調表示 */
+		/* 支払い情報・配送先ボックス */
 		.info-section {
 			text-align: left;
 			background-color: #fafafa;
@@ -62,13 +62,13 @@
 
 		.info-section p {
 			font-size: 1.1rem;
-			margin: 10px 0;
+			margin: 8px 0;
 			color: #111;
 		}
 
 		.info-section strong {
 			display: inline-block;
-			width: 140px;
+			width: 160px;
 			color: #000;
 		}
 
@@ -122,12 +122,30 @@
 				※ カート内に販売終了の商品がありましたが、これらは注文内容に含まれていません。
 			</p>
 
-			<!-- 支払い方法・住所・配達希望日（表示用） -->
+			<!-- 支払い情報・配送先情報 -->
 			<div class="info-section">
-				<p><strong>支払い方法：</strong><span th:text="${paymentMethod}">着払い</span></p>
-				<p><strong>配送先住所：</strong><span th:text="${address}">大阪府大阪市島之内</span></p>
-				<p><strong>配達希望日：</strong><span th:text="${deliveryDate}">2025-11-13</span></p>
-				<p><strong>配達希望時間：</strong><span th:text="${deliveryTime}">指定なし</span></p>
+				<p>
+					<strong>お届け先氏名：</strong>
+					<span th:text="${recipientName}">山田太郎</span>
+				</p>
+				
+				<p>
+					<strong>お届け先：</strong>
+					<span th:text="${address}">東京都新宿区1-2-3</span>
+				</p>
+
+				<p>
+					<strong>支払い方法：</strong>
+					<span th:text="${paymentMethod}">着払い</span>
+				</p>
+				<p>
+					<strong>配達希望日：</strong>
+					<span th:text="${deliveryDate}">2025-11-19</span>
+				</p>
+				<p>
+					<strong>配達希望時間：</strong>
+					<span th:text="${deliveryTime}">指定なし</span>
+				</p>
 			</div>
 
 			<!-- 商品一覧 -->
@@ -148,7 +166,6 @@
 								onerror="this.onerror=null;this.src='/images/no_image.png';" alt="商品画像" width="80"
 								height="80" style="object-fit: cover;">
 						</td>
-
 						<td th:text="${cv.item.name}">商品名</td>
 						<td th:text="${cv.cart.quantity}">1</td>
 						<td th:text="${#numbers.formatInteger(cv.item.price, 1, 'COMMA')} + '円'">0円</td>
@@ -174,31 +191,32 @@
 				<span th:text="${#numbers.formatInteger(finalTotal, 1, 'COMMA')}"></span>円
 			</p>
 
-
 			<!-- 購入確定ボタン -->
 			<div class="purchase-actions">
-			    <form th:action="@{/voidrshop/purchase/complete}"
-			          method="post"
-			          onsubmit="this.querySelector('button[type=submit]').disabled = true;">
+				<form th:action="@{/voidrshop/purchase/complete}"
+					  method="post"
+					  onsubmit="this.querySelector('button[type=submit]').disabled = true;">
 
-			        <!-- CSRF トークン -->
-			        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+					<!-- CSRF トークン -->
+					<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 
-			        <!-- hidden で全ての情報を送信 -->
-			        <input type="hidden" name="paymentMethod" th:value="${paymentMethod}">
-			        <input type="hidden" name="address" th:value="${address}">
-			        <input type="hidden" name="deliveryDate" th:value="${deliveryDate}">
-			        <input type="hidden" name="deliveryTime" th:value="${deliveryTime}">
+					<!-- hidden で全ての情報を送信 -->
+					<input type="hidden" name="paymentMethod" th:value="${paymentMethod}">
+					<input type="hidden" name="recipientName" th:value="${recipientName}">
+					<input type="hidden" name="postalCode" th:value="${postalCode}">
+					<input type="hidden" name="address" th:value="${address}">
+					<input type="hidden" name="phoneNumber" th:value="${phoneNumber}">
+					<input type="hidden" name="deliveryDate" th:value="${deliveryDate}">
+					<input type="hidden" name="deliveryTime" th:value="${deliveryTime}">
 
-			        <!-- ★onclick は外す（submit は form に任せる） -->
-			        <button type="submit" class="btn-confirm">
-			            購入を確定する
-			        </button>
-			    </form>
+					<button type="submit" class="btn-confirm">
+						購入を確定する
+					</button>
+				</form>
 
-			    <form th:action="@{/voidrshop/purchase}" method="get">
-			        <button type="submit" class="btn-back">戻る</button>
-			    </form>
+				<form th:action="@{/voidrshop/purchase}" method="get">
+					<button type="submit" class="btn-back">戻る</button>
+				</form>
 			</div>
 		</section>
 	</main>
