@@ -107,6 +107,25 @@
 			font-size: 0.85rem;
 			color: #c00;
 		}
+		
+		/* カートテーブルのレイアウトを固定 */
+		#cart-table {
+			table-layout: fixed;
+		}
+		
+		/* 数量・価格・小計の位置ブレ防止（改良版） */
+		td.price,
+		td.subtotal {
+			width: 120px;          /* 100,000 や 999,999 まで想定して少し広めに */
+			text-align: right;     /* 右寄せで桁が増えても右端が揃う */
+			white-space: nowrap;   /* 改行させない（2行になるとズレる原因になる） */
+		}
+
+		/* 数量入力欄も右寄せ（見た目用） */
+		.cart-quantity {
+			text-align: right;
+		}
+		
 	</style>
 </head>
 
