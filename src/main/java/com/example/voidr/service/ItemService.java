@@ -8,6 +8,10 @@ public interface ItemService
 {
     /** 全商品取得 */
     List<Item> getAllItems();
+    
+    /** 削除済み商品を含めて全件取得(管理者用)
+     * @return is_deleted を含む全商品の一覧 */
+    List<Item> getAllItemsIncludingDeleted();
 
     /** idの範囲で商品取得 */
     List<Item> getItemsByRangeId(Integer min, Integer max);
@@ -32,6 +36,9 @@ public interface ItemService
 
     /** 商品をソフトデリート（is_deleted = TRUE）にする */
     void deleteItem(Long id);
+    
+    /** ★管理者専用：販売終了 → 販売再開 */
+    void restoreItem(Long id);
 	
     /**
      * XMLとDBを同期する

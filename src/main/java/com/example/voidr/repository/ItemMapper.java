@@ -13,6 +13,9 @@ public interface ItemMapper
 	/** 商品を全て取得する */
 	List<Item> selectAll();
 	
+	/** ★管理専用：削除済みも含めて全件取得 */
+	List<Item> selectAllIncludingDeleted();
+	
     /** 特定の範囲のidの商品を全て取得する */
     List<Item> selectByRangeId(@Param("min") Integer min, @Param("max") Integer max);
     
@@ -39,6 +42,9 @@ public interface ItemMapper
 	
 	// ソフトデリート（is_deleted = TRUE に更新）
 	void softDelete(Long id);
+	
+	/** ★管理者専用：販売終了 → 販売再開 */
+	void restoreItem(Long id);
 	
 	/**ランダム4件取得*/
 	List<Item> selectRandom4();

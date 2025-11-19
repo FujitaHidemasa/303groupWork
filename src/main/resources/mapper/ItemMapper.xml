@@ -21,7 +21,7 @@
 
 	<!-- ============================== SELECT文 ============================== -->
 
-	<!-- 一覧（管理・ショップ共通）※削除済みは除外 -->
+	<!-- 一覧（ショップ用）※削除済みは除外 -->
 	<select id="selectAll" resultMap="ItemMap">
 		SELECT
 		id,
@@ -35,6 +35,22 @@
 		is_deleted
 		FROM item
 		WHERE is_deleted = FALSE
+		ORDER BY id DESC
+	</select>
+	
+	<!-- ★一覧（管理者画面専用）削除済み商品も含めて全件取得する -->
+	<select id="selectAllIncludingDeleted" resultMap="ItemMap">
+		SELECT
+        id,
+        name,
+        price,
+        overview,
+        is_download,
+        thumbs_image_name,
+        created_at,
+        updated_at,
+        is_deleted
+		FROM item
 		ORDER BY id DESC
 	</select>
 
@@ -198,6 +214,15 @@
 		SET
 		is_deleted = TRUE,
 		updated_at = CURRENT_TIMESTAMP
+		WHERE id = #{id}
+	</update>
+	
+	<!-- 管理者専用：販売終了（is_deleted = TRUE）を元に戻す -->
+	<update id="restoreItem" parameterType="long">
+    	UPDATE item
+    	SET
+        is_deleted = FALSE,
+        updated_at = CURRENT_TIMESTAMP
 		WHERE id = #{id}
 	</update>
 
