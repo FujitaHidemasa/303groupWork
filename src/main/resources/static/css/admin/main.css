@@ -175,3 +175,35 @@ th {
 .btn-cancel:hover {
   background: #9a9a9a;
 }
+
+/* ===========================================================
+   再利用可能なステータス用バッジ
+   .btn と同じ形・サイズ・角丸で、ホバーなし
+=========================================================== */
+
+.badge {
+  min-width: 80px;
+  display: inline-block;
+  padding: 5px 10px;      /* .btn と同じ */
+  border-radius: 4px;     /* .btn と同じ */
+  font-size: 0.9rem;      /* .btn と同じ */
+  color: #fff;            /* .btn と同じ */
+  border: none;
+  user-select: none;
+  text-align: center;
+}
+
+/* a = 青 */
+.badge-a {
+  background-color: #2980b9;
+}
+
+/* b = 緑 */
+.badge-b {
+  background-color: #27ae60;
+}
+
+/* c = 赤 */
+.badge-c {
+  background-color: #e74c3c;
+}

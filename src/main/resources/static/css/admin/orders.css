@@ -1,0 +1,39 @@
+@charset "UTF-8";
+/* ===========================
+   ステータス変更プルダウン（注文管理）
+=========================== */
+.status-form select {
+  padding: 4px 8px;
+  border: 1px solid #dcdde1;
+  border-radius: 4px;
+  background-color: #fff;
+  font-size: 0.9rem;
+  color: #2f3640;
+  height: 30px;
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+/* hover時・focus時の統一感 */
+.status-form select:hover,
+.status-form select:focus {
+  border-color: #2980b9;
+  box-shadow: 0 0 3px rgba(41, 128, 185, 0.3);
+  outline: none;
+}
+
+/* プルダウン ＋ 更新ボタン を横並びにする */
+.status-form {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+table th:nth-child(1) { width: 55px; }    /* 注文ID */
+table th:nth-child(2) { width: 155px; }   /* 注文日 */
+table th:nth-child(3) { width: 140px; }   /* 氏名 */
+table th:nth-child(4) { width: 60px; }    /* 点数 ← 新規追加 */
+table th:nth-child(5) { width: 110px; }   /* 合計金額 */
+table th:nth-child(6) { width: 110px; }   /* ステータス（バッジ） */
+table th:nth-child(7) { width: 170px; }   /* ステータス更新（プルダウン+更新ボタン） */
+table th:nth-child(8) { width: 60px; }    /* 詳細ボタン */
