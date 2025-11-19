@@ -97,19 +97,36 @@ public class MyPageController {
 
     /** お届け先追加 */
     @PostMapping("/address/add")
-    public String addAddress(@ModelAttribute("newAddress") Address form, Authentication auth) {
-    	System.out.println("★★住所追加 POST 受信");
-        System.out.println(form);
-        
+    public String addAddress(
+            @Valid @ModelAttribute("newAddress") Address form,
+            BindingResult bindingResult,   // ← 必須！
+            Authentication auth,
+            Model model) {
+
+
         if (auth == null) return "redirect:/login";
 
+        // ❗ バリデーションエラー時は登録せず戻す
+        if (bindingResult.hasErrors()) {
+            String username = auth.getName();
+            Account user = accountService.findByUsername(username);
+
+            List<Address> addresses = addressService.getAddressesByUserId(user.getId());
+            model.addAttribute("addresses", addresses);
+
+            return "myPage/address";  // ← 元画面を再表示
+        }
+
+        // OKなら保存
         String username = auth.getName();
         Account user = accountService.findByUsername(username);
 
         form.setUserId(user.getId());
         addressService.addAddress(form);
-        return "redirect:/mypage/address";
+
+        return "redirect:/mypage/address?success";
     }
+
 
     /** お届け先削除 */
     @PostMapping("/address/delete")
@@ -141,22 +158,26 @@ public class MyPageController {
     // 🔹 理由入力 → 確認ページへ
     @PostMapping("/delete/confirm")
     public String confirmDelete(
-            @RequestParam("reason") String reason,
-            Model model,
-            Authentication auth) {
+	        @RequestParam("reason") String reason,
+	        @RequestParam(value = "detailReason", required = false) String detailReason,
+	        Model model,
+	        Authentication auth) {
 
-        if (auth == null) return "redirect:/login";
+	    if (auth == null) return "redirect:/login";
 
-        model.addAttribute("reason", reason);
-        model.addAttribute("username", auth.getName());
-        return "myPage/deleteConfirm";
-    }
+	    model.addAttribute("reason", reason);
+	    model.addAttribute("detailReason", detailReason); // ← 追加！
+	    model.addAttribute("username", auth.getName());
+
+	    return "myPage/deleteConfirm";
+	}
 
     // 🔹 確認ページ → 実際に削除
     @PostMapping("/delete/execute")
     public String executeDelete(
             @RequestParam("reason") String reason,
             Authentication auth) {
+
 
         if (auth == null) return "redirect:/login";
 

@@ -1,4 +1,8 @@
 @charset "UTF-8";
+:root {
+  --header-height: 100px;   /* ヘッダーの合計高さ */
+}
+
 
 /* ===========================================
    固定ヘッダー
@@ -12,6 +16,7 @@
   box-shadow: 0 2px 20px var(--color-shadow-strong);
   border-bottom: 1px solid var(--color-border-light);
   backdrop-filter: blur(6px);
+  
 }
 
 /* 上段：グラデーションバー */
