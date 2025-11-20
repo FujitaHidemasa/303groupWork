@@ -4,7 +4,7 @@
 <head>
 	<meta charset="UTF-8">
 
-	<!-- 11/11 CSRFメタ 追加 -->
+	<!-- CSRFメタ -->
 	<meta name="_csrf" th:content="${_csrf.token}">
 	<meta name="_csrf_header" th:content="${_csrf.headerName}">
 
@@ -13,120 +13,87 @@
 	<link rel="stylesheet" th:href="@{/css/ec/header.css}">
 	<link rel="stylesheet" th:href="@{/css/ec/footer.css}">
 	<title>カート - FPS GEAR STORE</title>
+
 	<style>
 		table {
 			border-collapse: collapse;
 			width: 100%;
 			margin-top: 20px;
+			table-layout: fixed; /* 列幅を固定 */
 		}
 
-		th,
-		td {
-			padding: 12px 14px;
+		th, td {
+			padding: 12px;
 			border-bottom: 1px solid #ccc;
-			text-align: center;
+			text-align: center; /* 基本は中央揃え */
 			vertical-align: middle;
+			overflow: hidden; /* 長い文字は切る */
+			text-overflow: ellipsis;
+			white-space: nowrap;
 		}
 
-		th {
-			background-color: #f5f5f5;
-			color: black;
-			/* 文字色を黒に設定 */
+		/* 列幅を統一 */
+		th, td {
+			width: 16.66%; /* 6列なので均等に */
 		}
 
 		img {
 			display: block;
 			margin: 0 auto;
+			width: 80px;
+			height: 80px;
+			object-fit: cover;
 		}
 
-		tbody tr {
-			height: 120px;
-		}
-
-		.cart-actions {
-			margin-top: 30px;
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
-			border-top: 1px solid #ccc;
-			padding-top: 15px;
-		}
-
-		.cart-actions strong {
-			font-size: 1.1rem;
-		}
-
-		.cart-actions button {
-			margin-left: 15px;
-			padding: 10px 20px;
-			background-color: #ccc;
-			border: none;
-			cursor: pointer;
-		}
-
-		.cart-actions button:hover {
-			background-color: #bbb;
-		}
-
-		.cart-actions a {
-			text-decoration: none;
-			color: black;
-			background-color: #eee;
-			padding: 10px 15px;
-			border: 1px solid #ccc;
-		}
-
-		.cart-actions a:hover {
-			background-color: #ddd;
+		.cart-quantity {
+			width: 60px;
+			text-align: right;
 		}
 
 		.subtotal {
 			font-weight: bold;
 		}
 
-		.cart-page img,
-		.purchase-page img,
-		.purchase-confirm-page img {
-			width: 100px;
-			/* 好きなサイズに調整OK */
-			height: 100px;
-			/* アスペクト比壊したくなければ auto に変更 */
-			object-fit: cover;
-			/* きれいにトリミング */
-		}
-
-		td img {
-			width: 80px !important;
-			height: 80px !important;
-			object-fit: cover;
-		}
-
-		/* 販売終了ラベル用 */
 		.soldout-label {
-			margin-top: 4px;
 			font-size: 0.85rem;
 			color: #c00;
+			margin-top: 4px;
 		}
-		
-		/* カートテーブルのレイアウトを固定 */
-		#cart-table {
-			table-layout: fixed;
-		}
-		
-		/* 数量・価格・小計の位置ブレ防止（改良版） */
-		td.price,
-		td.subtotal {
-			width: 120px;          /* 100,000 や 999,999 まで想定して少し広めに */
-			text-align: right;     /* 右寄せで桁が増えても右端が揃う */
-			white-space: nowrap;   /* 改行させない（2行になるとズレる原因になる） */
-		}
+		/* カート下のボタン用 */
+		    .cart-actions {
+		        margin-top: 30px;
+		        display: flex;
+		        justify-content: space-between; /* 左右に配置 */
+		        align-items: center;
+		        border-top: 1px solid #ccc;
+		        padding-top: 15px;
+		    }
 
-		/* 数量入力欄も右寄せ（見た目用） */
-		.cart-quantity {
-			text-align: right;
-		}
-		
+		    .cart-actions a {
+		        text-decoration: none;
+		        color: black;
+		        background-color: #eee;
+		        padding: 10px 15px;
+		        border: 1px solid #ccc;
+		    }
+
+		    .cart-actions a:hover {
+		        background-color: #ddd;
+		    }
+
+		    .cart-actions button {
+		        margin-left: 15px;
+		        padding: 10px 20px;
+		        background-color: #ccc;
+		        border: none;
+		        cursor: pointer;
+		    }
+
+		    .cart-actions button:hover {
+		        background-color: #bbb;
+		    }
 	</style>
+
 </head>
 
 <body>
@@ -137,51 +104,49 @@
 		<section>
 			<h2>ショッピングカート</h2>
 
-			<!-- 販売終了商品が含まれている場合の注意書き -->
 			<div th:if="${hasDeletedItems}" style="margin-top:10px; color:#c00; font-size:0.95rem;">
 				※ カート内に販売終了となった商品が含まれています。<br>
 				&nbsp;&nbsp;これらの商品は合計金額には含まれず、購入もできません。
 			</div>
-			<!-- カートが空の場合のメッセージ -->
+
 			<p th:if="${cartItems == null or #lists.isEmpty(cartItems)}"
 				style="text-align:center; margin-top:20px; font-size:1.2rem; color:#fff;">
 				カートに商品がありません。
 			</p>
 
-			<!-- カートに商品がある場合のみテーブルを表示 -->
 			<table id="cart-table" th:if="${cartItems != null and !#lists.isEmpty(cartItems)}">
 				<thead>
 					<tr>
-						<th>商品画像</th>
-						<th>商品名</th>
-						<th>価格</th>
-						<th>数量</th>
-						<th>小計</th>
-						<th>操作</th>
+						<th class="img">商品画像</th>
+						<th class="name">商品名</th>
+						<th class="price">価格</th>
+						<th class="quantity">数量</th>
+						<th class="subtotal">小計</th>
+						<th class="actions">操作</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr th:each="cv : ${cartItems}">
-						<td>
+						<td class="img">
 							<a href="#">
 								<img th:src="@{'/images/' + ${cv.item.thumbsImageName}}"
 									onerror="this.onerror=null;this.src='/images/no_image.png';" alt="商品画像">
 							</a>
 						</td>
-						<td>
+						<td class="name">
 							<span th:text="${cv.item.name}">商品名</span>
 							<div th:if="${cv.itemDeleted}" class="soldout-label">
 								販売終了の商品です（購入はできません）
 							</div>
 						</td>
 						<td class="price" th:text="${cv.item.price}">1000</td>
-						<td>
+						<td class="quantity">
 							<input type="number" class="cart-quantity" th:if="${!cv.itemDeleted}"
-								th:value="${cv.cart.quantity}" min="1" style="width:60px;" th:data-id="${cv.cart.id}">
+								th:value="${cv.cart.quantity}" min="1" th:data-id="${cv.cart.id}">
 							<span th:if="${cv.itemDeleted}" style="color:#888; font-size:0.9rem;">-</span>
 						</td>
 						<td class="subtotal" th:text="${cv.subtotal}">0</td>
-						<td>
+						<td class="actions">
 							<form th:action="@{/voidrshop/cart/remove}" method="post">
 								<input type="hidden" name="cartId" th:value="${cv.cart.id}">
 								<button type="submit">削除</button>
@@ -206,29 +171,21 @@
 	<script>
 		document.addEventListener("DOMContentLoaded", function () {
 			const quantityInputs = document.querySelectorAll(".cart-quantity");
-
-			// CSRF トークンをメタから取得
 			const csrfToken = document.querySelector('meta[name="_csrf"]')?.getAttribute("content");
 			const csrfHeader = document.querySelector('meta[name="_csrf_header"]')?.getAttribute("content") || "X-CSRF-TOKEN";
 
 			quantityInputs.forEach(input => {
-				// 初期値保持（誤発火対策は任意で）
 				input.dataset.initial = input.value;
-
 				input.addEventListener("change", async function () {
 					const row = input.closest("tr");
 					const price = parseInt(row.querySelector(".price").textContent.replace(/,/g, "")) || 0;
 					const subtotalCell = row.querySelector(".subtotal");
 					const cartId = input.dataset.id;
-
-					// 値チェック
 					const quantity = Math.max(1, parseInt(input.value) || 1);
 
-					// フロント表示を先に更新
 					subtotalCell.textContent = (price * quantity).toLocaleString();
 					updateTotal();
 
-					// サーバ更新（CSRFヘッダ付き）
 					const formData = new FormData();
 					formData.append("cartId", cartId);
 					formData.append("quantity", quantity);
@@ -240,18 +197,13 @@
 							body: formData,
 							credentials: "same-origin"
 						});
-
 						if (!res.ok) {
-							// 失敗時は元に戻す
-							alert("数量の更新に失敗しました（" + res.status + "）。再読み込みしてやり直してください。");
-							// 可能ならサーバ値再取得または直前の initial に戻す
+							alert("数量の更新に失敗しました（" + res.status + "）。再読み込みしてください。");
 							input.value = input.dataset.initial || "1";
 							subtotalCell.textContent = (price * (parseInt(input.value) || 1)).toLocaleString();
 							updateTotal();
 							return;
 						}
-
-						// 成功したら initial を更新
 						input.dataset.initial = String(quantity);
 					} catch (e) {
 						console.error(e);
@@ -272,22 +224,18 @@
 				if (tp) tp.textContent = total.toLocaleString();
 			}
 
-			// 追加オプション：戻る（BFCache）時の誤発火/不一致対策
 			window.addEventListener("pageshow", function (ev) {
 				if (ev.persisted) {
 					document.querySelectorAll(".cart-quantity").forEach(input => {
 						input.dataset.initial = input.value;
 					});
-					// 戻ってきた時に合計も再計算
 					updateTotal();
 				}
 			});
 
-			// 初期表示時にも合計を揃える
 			updateTotal();
 		});
 	</script>
-
 </body>
 
 </html>
