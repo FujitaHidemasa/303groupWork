@@ -29,15 +29,21 @@
 	    #cart-table td {
 	        padding: 12px;
 	        border-bottom: 1px solid #ccc;
-	        text-align: center; /* 基本は中央揃え */
+	        text-align: center; /* 中央揃え */
 	        vertical-align: middle;
-	        overflow: hidden; /* 長い文字は切る */
+	        overflow: hidden;
 	        text-overflow: ellipsis;
 	        white-space: nowrap;
-	        width: 16.66%; /* 6列なので均等に */
+	        width: 16.66%; /* 6列均等 */
 	    }
 
-	    /* カート内の商品画像のみ */
+	    /* ヘッダー背景 */
+	    #cart-table th {
+	        background-color: #f5f5f5;
+	        color: black;
+	    }
+
+	    /* カート内商品画像のみ */
 	    #cart-table img {
 	        display: block;
 	        margin: 0 auto;
@@ -64,14 +70,18 @@
 	        margin-top: 4px;
 	    }
 
-	    /* カート下のボタン用 */
+	    /* カート下ボタン */
 	    .cart-actions {
 	        margin-top: 30px;
 	        display: flex;
-	        justify-content: space-between; /* 左右に配置 */
+	        justify-content: space-between;
 	        align-items: center;
 	        border-top: 1px solid #ccc;
 	        padding-top: 15px;
+	    }
+
+	    .cart-actions strong {
+	        font-size: 1.1rem;
 	    }
 
 	    .cart-actions a {
@@ -102,11 +112,12 @@
 	       共通ヘッダーのロゴは上書きしない
 	    ============================= */
 	    header .logo img {
-	        max-width: 100%;  /* 親幅に収める */
-	        height: auto;     /* アスペクト比維持 */
+	        max-width: 100%;
+	        height: auto;
 	        display: block;
 	    }
 	</style>
+
 
 
 </head>
