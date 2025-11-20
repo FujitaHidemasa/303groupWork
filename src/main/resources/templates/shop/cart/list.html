@@ -15,84 +15,99 @@
 	<title>カート - FPS GEAR STORE</title>
 
 	<style>
-		table {
-			border-collapse: collapse;
-			width: 100%;
-			margin-top: 20px;
-			table-layout: fixed; /* 列幅を固定 */
-		}
+	    /* =============================
+	       カート用テーブル
+	    ============================= */
+	    #cart-table {
+	        border-collapse: collapse;
+	        width: 100%;
+	        margin-top: 20px;
+	        table-layout: fixed; /* 列幅を固定 */
+	    }
 
-		th, td {
-			padding: 12px;
-			border-bottom: 1px solid #ccc;
-			text-align: center; /* 基本は中央揃え */
-			vertical-align: middle;
-			overflow: hidden; /* 長い文字は切る */
-			text-overflow: ellipsis;
-			white-space: nowrap;
-		}
+	    #cart-table th,
+	    #cart-table td {
+	        padding: 12px;
+	        border-bottom: 1px solid #ccc;
+	        text-align: center; /* 基本は中央揃え */
+	        vertical-align: middle;
+	        overflow: hidden; /* 長い文字は切る */
+	        text-overflow: ellipsis;
+	        white-space: nowrap;
+	        width: 16.66%; /* 6列なので均等に */
+	    }
 
-		/* 列幅を統一 */
-		th, td {
-			width: 16.66%; /* 6列なので均等に */
-		}
+	    /* カート内の商品画像のみ */
+	    #cart-table img {
+	        display: block;
+	        margin: 0 auto;
+	        width: 80px;
+	        height: 80px;
+	        object-fit: cover;
+	    }
 
-		img {
-			display: block;
-			margin: 0 auto;
-			width: 80px;
-			height: 80px;
-			object-fit: cover;
-		}
+	    /* 数量入力 */
+	    .cart-quantity {
+	        width: 60px;
+	        text-align: right;
+	    }
 
-		.cart-quantity {
-			width: 60px;
-			text-align: right;
-		}
+	    /* 小計 */
+	    .subtotal {
+	        font-weight: bold;
+	    }
 
-		.subtotal {
-			font-weight: bold;
-		}
+	    /* 販売終了ラベル */
+	    .soldout-label {
+	        font-size: 0.85rem;
+	        color: #c00;
+	        margin-top: 4px;
+	    }
 
-		.soldout-label {
-			font-size: 0.85rem;
-			color: #c00;
-			margin-top: 4px;
-		}
-		/* カート下のボタン用 */
-		    .cart-actions {
-		        margin-top: 30px;
-		        display: flex;
-		        justify-content: space-between; /* 左右に配置 */
-		        align-items: center;
-		        border-top: 1px solid #ccc;
-		        padding-top: 15px;
-		    }
+	    /* カート下のボタン用 */
+	    .cart-actions {
+	        margin-top: 30px;
+	        display: flex;
+	        justify-content: space-between; /* 左右に配置 */
+	        align-items: center;
+	        border-top: 1px solid #ccc;
+	        padding-top: 15px;
+	    }
 
-		    .cart-actions a {
-		        text-decoration: none;
-		        color: black;
-		        background-color: #eee;
-		        padding: 10px 15px;
-		        border: 1px solid #ccc;
-		    }
+	    .cart-actions a {
+	        text-decoration: none;
+	        color: black;
+	        background-color: #eee;
+	        padding: 10px 15px;
+	        border: 1px solid #ccc;
+	    }
 
-		    .cart-actions a:hover {
-		        background-color: #ddd;
-		    }
+	    .cart-actions a:hover {
+	        background-color: #ddd;
+	    }
 
-		    .cart-actions button {
-		        margin-left: 15px;
-		        padding: 10px 20px;
-		        background-color: #ccc;
-		        border: none;
-		        cursor: pointer;
-		    }
+	    .cart-actions button {
+	        margin-left: 15px;
+	        padding: 10px 20px;
+	        background-color: #ccc;
+	        border: none;
+	        cursor: pointer;
+	    }
 
-		    .cart-actions button:hover {
-		        background-color: #bbb;
-		    }
+	    .cart-actions button:hover {
+	        background-color: #bbb;
+	    }
+
+	    /* =============================
+	       共通ヘッダーのロゴは上書きしない
+	    ============================= */
+	    header .logo img {
+	        max-width: 100%;  /* 親幅に収める */
+	        height: auto;     /* アスペクト比維持 */
+	        display: block;
+	    }
 	</style>
+
 
 </head>
 
