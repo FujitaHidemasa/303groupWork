@@ -8,56 +8,31 @@
 }
 
 /* ===== カラム幅（8列で合計 100%） ===== */
-
-/* 1: ID */
 .table-container th:nth-child(1),
-.table-container td:nth-child(1) {
-	width: 6%;
-}
+.table-container td:nth-child(1) { width: 6%; }
 
-/* 2: ユーザーID */
 .table-container th:nth-child(2),
-.table-container td:nth-child(2) {
-	width: 13%;
-}
+.table-container td:nth-child(2) { width: 13%; }
 
-/* 3: 氏名 */
 .table-container th:nth-child(3),
-.table-container td:nth-child(3) {
-	width: 17%;
-}
+.table-container td:nth-child(3) { width: 17%; }
 
-/* 4: 権限 */
 .table-container th:nth-child(4),
-.table-container td:nth-child(4) {
-	width: 15%;
-}
+.table-container td:nth-child(4) { width: 15%; }
 
-/* 5: Email */
 .table-container th:nth-child(5),
-.table-container td:nth-child(5) {
-	width: 24%;
-}
+.table-container td:nth-child(5) { width: 24%; }
 
-/* 6: 登録日 */
 .table-container th:nth-child(6),
-.table-container td:nth-child(6) {
-	width: 10%;
-}
+.table-container td:nth-child(6) { width: 10%; }
 
-/* 7: 状態 */
 .table-container th:nth-child(7),
-.table-container td:nth-child(7) {
-	width: 8%;
-}
+.table-container td:nth-child(7) { width: 8%; }
 
-/* 8: 操作 */
 .table-container th:nth-child(8),
-.table-container td:nth-child(8) {
-	width: 12%;
-}
+.table-container td:nth-child(8) { width: 12%; }
 
-/* --- 操作ボタンの横並び（div.actions にだけ適用） --- */
+/* --- 操作ボタンの横並び --- */
 .table-container td .actions {
 	display: inline-flex;
 	gap: 8px;
@@ -67,22 +42,11 @@
 }
 
 /* 退会済みユーザーの行 */
-.disabled-row {
-	opacity: 0.5;
-	/* 全体を少し薄く */
-}
+.disabled-row { opacity: 0.5; }
+.disabled-row td { color: #888; }
+.disabled-row .btn-delete { opacity: 0.6; }
 
-/* 退会済みのテキストをグレーにしたい場合 */
-.disabled-row td {
-	color: #888;
-}
-
-/* ボタンを薄く・押せない感じにするなら */
-.disabled-row .btn-delete {
-	opacity: 0.6;
-}
-
-/*削除ボタン*/
+/* 削除ボタン */
 .btn-gun {
     background: #8a0000;
     color: #fff;
@@ -102,9 +66,7 @@
     box-shadow: 0 0 6px #ff4d4d;
 }
 
-/* =====================================================
-   ▼ 修正①：退会済み行でも「権限変更フォーム」は薄くしない
-   ===================================================== */
+/* ▼ 退会済みでも権限変更フォームは薄くしない */
 .disabled-row td form,
 .disabled-row td select,
 .disabled-row td button {
@@ -112,22 +74,20 @@
     color: #fff !important;
 }
 
-/* =====================================================
-   ▼ 修正②：権限変更フォームのレイアウト調整（かぶり防止）
-   ===================================================== */
+/* ▼ 権限変更フォームのかぶり防止 */
 .table-container td form {
     display: flex;
-    gap: 10px;        /* ← 変更ボタンとの間隔を広げる */
+    gap: 10px;
     align-items: center;
 }
 
 .table-container td form select {
-    min-width: 80px;  /* ← セレクトが小さく潰れないように固定幅 */
+    min-width: 80px;
 }
 
-/* --- 権限変更ボタンの色を強制的に元に戻す --- */
-.table-container td form .btn-update {
-    background: #4F8BFF;   /* ボタンの元々の色に近い青 */
+/* ▼ 権限変更ボタンの色 */
+.btn-update {
+    background: #4F8BFF;
     color: #fff;
     border: none;
     border-radius: 6px;
@@ -136,15 +96,117 @@
     font-weight: bold;
 }
 
-.table-container td form .btn-update:hover {
+.btn-update:hover {
     background: #6aa0ff;
     box-shadow: 0 0 6px rgba(80, 150, 255, 0.7);
 }
 
-/* --- disabled-row の “文字色グレー” をボタンには効かなくする --- */
+/* ▼ disabled-row のグレー化をボタンには効かせない */
 .disabled-row .btn-update,
 .disabled-row select {
     color: #fff !important;
     opacity: 1 !important;
 }
 
+/* ============================
+   ▼ ホログラム崩壊アニメ
+   ============================ */
+.holo-break {
+    position: relative;
+    animation: holoGlitch 0.6s ease-out forwards;
+    overflow: hidden;
+}
+
+/* 青いスキャンライン */
+.holo-break::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    background: rgba(0, 170, 255, 0.25);
+    filter: blur(3px);
+    transform: translateY(-100%);
+    animation: scanline 0.25s ease-out forwards;
+    pointer-events: none;
+}
+
+/* パシュッ光 */
+.holo-break::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 180%;
+    height: 2px;
+    background: rgba(0, 200, 255, 0.9);
+    transform: translate(-50%, -50%) scaleX(0);
+    filter: blur(2px);
+    animation: flash 0.2s ease-out forwards 0.15s;
+    pointer-events: none;
+}
+
+/* スキャンライン移動 */
+@keyframes scanline {
+    0%   { transform: translateY(-120%); opacity: 0.1; }
+    70%  { transform: translateY(80%);  opacity: 0.4; }
+    100% { transform: translateY(120%); opacity: 0; }
+}
+
+/* パシュッ光 */
+@keyframes flash {
+    0%   { transform: scaleX(0); opacity: 0.8; }
+    50%  { transform: scaleX(1); opacity: 1; }
+    100% { transform: scaleX(0); opacity: 0; }
+}
+
+/* 崩壊本体 */
+@keyframes holoGlitch {
+    0%   { opacity: 1; transform: translate(0, 0); }
+    25%  { transform: translate(-3px, 0); }
+    50%  { transform: translate(3px, -2px); opacity: .8; }
+    75%  { transform: translate(-2px, 2px); opacity: .5; }
+    100% { opacity: 0; transform: translate(0, -10px); }
+}
+
+/* ============================
+   ▼ タブデザイン（ここ外に出す必要あり）
+   ============================ */
+.status-tabs {
+    display: flex;
+    gap: 12px;
+    margin: 20px 0;
+}
+
+.status-tabs a {
+    padding: 8px 16px;
+    text-decoration: none;
+    color: #ccc;
+    border: 1px solid #555;
+    border-radius: 8px;
+    transition: 0.2s;
+    background: #222;
+}
+
+.status-tabs a:hover {
+    background: #333;
+    color: #fff;
+    border-color: #777;
+}
+
+.status-tabs a.active {
+    background: #5c6bc0;
+    color: #fff;
+    border-color: #5c6bc0;
+    font-weight: bold;
+    box-shadow: 0 0 6px #6f7dde;
+}
+
+/* ユーザーID列は長文でも折り返して収まるようにする */
+.table-container td:nth-child(2),
+.table-container th:nth-child(2) {
+    word-break: break-word;      /* 長い文字列を強制的に折り返す */
+    overflow-wrap: break-word;   /* より強力な折り返し制御 */
+    white-space: normal !important;  /* nowrap されていたら無効化 */
+}

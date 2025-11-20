@@ -36,6 +36,18 @@
 
 					<button type="submit">検索</button>
 				</form>
+				
+				</div>
+				<div class="status-tabs">
+				    <a th:href="@{/admin/members(status='all')}"
+				       th:classappend="${status == 'all'} ? 'active' : ''">すべて</a>
+
+				    <a th:href="@{/admin/members(status='active')}"
+				       th:classappend="${status == 'active'} ? 'active' : ''">有効</a>
+
+				    <a th:href="@{/admin/members(status='disabled')}"
+				       th:classappend="${status == 'disabled'} ? 'active' : ''">退会済</a>
+
 			</div>
 			<table>
 				<thead>
@@ -106,13 +118,30 @@
 		</section>
 	</div>
 	
-	<script th:inline="javascript">
-	   
-	   let msg = /*[[${successMessage}]]*/ "";
-	   if (msg !== null && msg !== "") {
-	       alert(msg);
-	   }
+	<script>
+	document.addEventListener("DOMContentLoaded", () => {
+	  const deleteForms = document.querySelectorAll("form[action='/admin/members/delete']");
+
+	  deleteForms.forEach(form => {
+	    form.addEventListener("submit", function(e) {
+	      e.preventDefault();
+
+	      if (!confirm("本当に強制退会させますか？⚠️")) return;
+
+	      const row = this.closest("tr");
+
+	      // ホログラム崩壊エフェクト発動
+	      row.classList.add("holo-break");
+
+	      // 完全崩壊後に削除処理 (0.65秒後)
+	      setTimeout(() => form.submit(), 650);
+	    });
+	  });
+	});
 	</script>
+
+
+
 
 
 </th:block>
