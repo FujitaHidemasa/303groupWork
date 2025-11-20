@@ -22,24 +22,35 @@ public class AdminMemberController {
 	
 	private final AccountService accountService;
 
-    @GetMapping
-    public String showMembers(@RequestParam(name = "keyword", required = false) String keyword,
-            Model model) {
-    	
-    	List<Account> members;
+	@GetMapping
+	public String showMembers(
+	        @RequestParam(name = "keyword", required = false) String keyword,
+	        @RequestParam(name = "status", required = false, defaultValue = "all") String status,
+	        Model model) {
 
-        if (keyword == null || keyword.isBlank()) {
-            members = accountService.findAll();
-        } else {
-            members = accountService.searchMembers(keyword);
-        }
+	    List<Account> members;
 
-        model.addAttribute("members", members);
-        model.addAttribute("keyword", keyword);
-    	
-        model.addAttribute("pageTitle", "会員管理");
-        return "admin/members";
-    }
+	    // 1) 検索ワード優先
+	    if (keyword != null && !keyword.isBlank()) {
+	        members = accountService.searchMembers(keyword);
+	    } else {
+	        // 2) タブのステータスによるフィルタ
+	        if (status.equals("active")) {
+	            members = accountService.findActive(); // enabled = true
+	        } else if (status.equals("disabled")) {
+	            members = accountService.findDisabled(); // enabled = false
+	        } else {
+	            members = accountService.findAll(); // 全件
+	        }
+	    }
+
+	    model.addAttribute("members", members);
+	    model.addAttribute("keyword", keyword);
+	    model.addAttribute("status", status);
+
+	    return "admin/members";
+	}
+
     
 	// ==========================
 	// 会員削除（論理削除）

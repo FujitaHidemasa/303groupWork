@@ -34,6 +34,13 @@ public interface AccountService
     // 権限変更（USER ⇄ ADMIN）
     void updateAuthority(String username, String authority);
 
+    List<Account> findActive();
+    
+    List<Account> findDisabled();
+    
+    
+
+
 
     
 

@@ -166,6 +166,21 @@
     WHERE username = #{username}
 	</update>
 	
+	<!-- 有効ユーザーのみ -->
+<select id="findActive" resultMap="AccountMap">
+    SELECT * FROM login_user
+    WHERE enabled = true
+    ORDER BY id;
+</select>
+
+<!-- 退会ユーザーのみ -->
+<select id="findDisabled" resultMap="AccountMap">
+    SELECT * FROM login_user
+    WHERE enabled = false
+    ORDER BY id;
+</select>
+	
+	
 	
 
 </mapper>

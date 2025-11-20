@@ -145,5 +145,16 @@ public class AccountDetailsService implements AccountService
     	// DB反映（Mapper側で UPDATE）
         accountMapper.updateAuthority(username, authority);
     }
+    
+    @Override
+    public List<Account> findActive() {
+        return accountMapper.findActive();
+    }
+
+    @Override
+    public List<Account> findDisabled() {
+        return accountMapper.findDisabled();
+    }
+
 
 }

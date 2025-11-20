@@ -42,5 +42,11 @@ public interface AccountMapper {
 	        @Param("username") String username,
 	        @Param("authority") String authority);
 
+	List<Account> findActive();
+
+	List<Account> findDisabled();
+	
+	
+
 }
 
