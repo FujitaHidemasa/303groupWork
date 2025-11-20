@@ -15,10 +15,6 @@ import com.example.voidr.service.AccountService;
 
 import lombok.RequiredArgsConstructor;
 
-/**
- * 会員管理画面のコントローラー
- */
-
 @Controller
 @RequestMapping("/admin/members")
 @RequiredArgsConstructor
@@ -27,26 +23,26 @@ public class AdminMemberController {
 	private final AccountService accountService;
 
     @GetMapping
-    public String showMembers(@RequestParam(name = "keyword", required = false)String keyword,
+    public String showMembers(@RequestParam(name = "keyword", required = false) String keyword,
             Model model) {
     	
     	List<Account> members;
 
         if (keyword == null || keyword.isBlank()) {
-            members = accountService.findAll();       // 全件
+            members = accountService.findAll();
         } else {
-            members = accountService.searchMembers(keyword); // 部分一致検索
+            members = accountService.searchMembers(keyword);
         }
 
         model.addAttribute("members", members);
         model.addAttribute("keyword", keyword);
     	
         model.addAttribute("pageTitle", "会員管理");
-        return "admin/members"; // templates/admin/members.html
+        return "admin/members";
     }
     
 	// ==========================
-	// 会員削除（論理削除：enabled = false）
+	// 会員削除（論理削除）
 	// ==========================
 	@PostMapping("/delete")
 	public String deleteMember(
@@ -60,5 +56,24 @@ public class AdminMemberController {
 				"ユーザー「" + username + "」を退会扱いにしました。");
 
 		return "redirect:/admin/members";
+	}
+	
+	// ==========================
+	// 権限変更（USER ⇄ ADMIN）
+	// ==========================
+	@PostMapping("/changeAuthority")
+	public String changeAuthority(
+	        @RequestParam("username") String username,
+	        @RequestParam("authority") String authority,
+	        RedirectAttributes redirectAttributes) {
+
+	    accountService.updateAuthority(username, authority);
+
+	    redirectAttributes.addFlashAttribute(
+	        "successMessage",
+	        "ユーザー「" + username + "」の権限を「" + authority + "」に変更しました。"
+	    );
+
+	    return "redirect:/admin/members";
 	}
 }

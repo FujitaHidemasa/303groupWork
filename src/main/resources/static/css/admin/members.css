@@ -30,7 +30,7 @@
 /* 4: 権限 */
 .table-container th:nth-child(4),
 .table-container td:nth-child(4) {
-	width: 10%;
+	width: 15%;
 }
 
 /* 5: Email */
@@ -81,3 +81,70 @@
 .disabled-row .btn-delete {
 	opacity: 0.6;
 }
+
+/*削除ボタン*/
+.btn-gun {
+    background: #8a0000;
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: 0.3s;
+    font-weight: bold;
+}
+
+.btn-gun:hover {
+    background: #d00000;
+    box-shadow: 0 0 6px #ff4d4d;
+}
+
+/* =====================================================
+   ▼ 修正①：退会済み行でも「権限変更フォーム」は薄くしない
+   ===================================================== */
+.disabled-row td form,
+.disabled-row td select,
+.disabled-row td button {
+    opacity: 1 !important;
+    color: #fff !important;
+}
+
+/* =====================================================
+   ▼ 修正②：権限変更フォームのレイアウト調整（かぶり防止）
+   ===================================================== */
+.table-container td form {
+    display: flex;
+    gap: 10px;        /* ← 変更ボタンとの間隔を広げる */
+    align-items: center;
+}
+
+.table-container td form select {
+    min-width: 80px;  /* ← セレクトが小さく潰れないように固定幅 */
+}
+
+/* --- 権限変更ボタンの色を強制的に元に戻す --- */
+.table-container td form .btn-update {
+    background: #4F8BFF;   /* ボタンの元々の色に近い青 */
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 10px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.table-container td form .btn-update:hover {
+    background: #6aa0ff;
+    box-shadow: 0 0 6px rgba(80, 150, 255, 0.7);
+}
+
+/* --- disabled-row の “文字色グレー” をボタンには効かなくする --- */
+.disabled-row .btn-update,
+.disabled-row select {
+    color: #fff !important;
+    opacity: 1 !important;
+}
+

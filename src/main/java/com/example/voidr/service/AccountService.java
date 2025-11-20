@@ -30,6 +30,13 @@ public interface AccountService
     
     // 会員検索：ユーザーID・氏名・メールアドレスの部分一致検索に使用
     List<Account> searchMembers(String keyword);
+    
+    // 権限変更（USER ⇄ ADMIN）
+    void updateAuthority(String username, String authority);
+
+
+    
+
 }
 
 

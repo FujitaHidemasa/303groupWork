@@ -158,5 +158,14 @@
 			updated_at = CURRENT_TIMESTAMP
 		WHERE username = #{username}
 	</update>
+	
+	<!-- 11/20追加（藤田）　権限変更 -->
+	<update id="updateAuthority">
+    UPDATE login_user
+    SET authority = CAST(#{authority} AS role)
+    WHERE username = #{username}
+	</update>
+	
+	
 
 </mapper>
