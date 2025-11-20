@@ -59,26 +59,45 @@ public class PurchaseController {
 		return (totalPrice >= 5000) ? 0 : 500;
 	}
 
+
 	/* ============================
-	 * 祝日 & 営業日 判定
+	 * 祝日 & 振替休日（現状の祝日+振替のみ）
 	 * ============================ */
 
 	private boolean isHoliday(LocalDate date) {
-		int year = date.getYear();
+	    int year = date.getYear();
 
-		List<LocalDate> holidays = List.of(
-				LocalDate.of(year, 1, 1),
-				LocalDate.of(year, 2, 11),
-				LocalDate.of(year, 4, 29),
-				LocalDate.of(year, 5, 3),
-				LocalDate.of(year, 5, 4),
-				LocalDate.of(year, 5, 5),
-				LocalDate.of(year, 11, 3),
-				LocalDate.of(year, 11, 23)
-		);
+	    // 現在登録している祝日
+	    List<LocalDate> baseHolidays = List.of(
+	            LocalDate.of(year, 1, 1),   // 元日
+	            LocalDate.of(year, 2, 11),  // 建国記念の日
+	            LocalDate.of(year, 4, 29),  // 昭和の日
+	            LocalDate.of(year, 5, 3),   // 憲法記念日
+	            LocalDate.of(year, 5, 4),   // みどりの日
+	            LocalDate.of(year, 5, 5),   // こどもの日
+	            LocalDate.of(year, 11, 3),  // 文化の日
+	            LocalDate.of(year, 11, 23)  // 勤労感謝の日
+	    );
 
-		return holidays.contains(date);
+	    // まず固定祝日を判定
+	    if (baseHolidays.contains(date)) return true;
+
+	    // ▼ 振替休日（祝日が日曜だった場合）
+	    for (LocalDate holiday : baseHolidays) {
+	        if (holiday.getDayOfWeek() == DayOfWeek.SUNDAY) {
+	            LocalDate substitute = holiday.plusDays(1);
+
+	            // その月曜がもともと祝日なら翌日へずれるが、
+	            // 今は固定祝日しか扱わないのでシンプルに1日のみ対応
+	            if (date.equals(substitute)) {
+	                return true;
+	            }
+	        }
+	    }
+
+	    return false;
 	}
+
 
 	private boolean isBusinessDay(LocalDate date) {
 		DayOfWeek w = date.getDayOfWeek();
