@@ -3,10 +3,11 @@ package com.example.voidr.controller;
 import java.util.List;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -176,8 +177,9 @@ public class MyPageController {
     @PostMapping("/delete/execute")
     public String executeDelete(
             @RequestParam("reason") String reason,
-            Authentication auth) {
-
+            Authentication auth,
+            HttpServletRequest request,
+            HttpServletResponse response) {
 
         if (auth == null) return "redirect:/login";
 
@@ -186,14 +188,12 @@ public class MyPageController {
 
         // TODO: 必要なら退会理由をログに保存してもOK
 
-        SecurityContextHolder.clearContext();
-        return "redirect:/voidr";
-    }
+        // ここで Spring Security のログアウト処理を実行
+        new SecurityContextLogoutHandler().logout(request, response, auth);
 
-    // 🔹 完了画面
-    @GetMapping("/delete/complete")
-    public String deleteComplete() {
-        return "myPage/deleteComplete";
+        // 退会後にどこへ飛ばすかは好みでOK
+        // いまは元の設計に合わせて /voidr のままにしておきます
+        return "redirect:/voidr";
     }
 
 
