@@ -126,6 +126,32 @@ th {
   background: #c0392b;
 }
 
+/* グレー系のサブボタン（例：ファイル追加用） */
+.btn-secondary {
+	display: inline-block;
+	padding: 6px 12px;
+	border-radius: 4px;
+	font-size: 0.9rem;
+	border: none;
+	background: #7f8c8d;
+	color: #fff;
+	cursor: pointer;
+}
+
+.btn-secondary:hover {
+	background: #707b7c;
+}
+
+
+/* 販売再開ボタン */
+.btn-restore {
+  background: #27ae60;       /* 緑系 */
+}
+
+.btn-restore:hover {
+  background: #1e8449;
+}
+
 .primary-btn {
   background: #2980b9;
   color: white;
@@ -151,6 +177,32 @@ th {
   color: white;
   background: #b0b0b0;
   white-space: nowrap;
+}
+
+/* 販売中バッジ */
+.badge-active {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  color: #fff;
+  background: #2980b9;      /* 編集ボタンと同系色 */
+  white-space: nowrap;
+}
+
+/* hover 無効（ボタンではないので） */
+.badge-active:hover {
+  background: #1e6ca1 !important;
+  cursor: default;
+}
+
+/* 削除済み（販売終了）商品の行を薄く表示 */
+.disabled-row {
+  opacity: 0.5;          /* 行全体を薄く */
+}
+
+.disabled-row td {
+  color: #888;           /* 文字もグレー寄りに */
 }
 
 /* hover無効*/
@@ -206,4 +258,37 @@ th {
 /* c = 赤 */
 .badge-c {
   background-color: #e74c3c;
+}
+
+/* ===== 販売状況フィルタ ===== */
+.status-filter {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin-bottom: 12px;
+	font-size: 0.9rem;
+}
+
+.status-filter-label {
+	color: #555;
+}
+
+.status-filter a {
+	padding: 4px 10px;
+	border-radius: 999px;
+	border: 1px solid #ccc;
+	text-decoration: none;
+	color: #333;
+	font-size: 0.85rem;
+	background: #fff;
+}
+
+.status-filter a:hover {
+	background: #ecf0f1;
+}
+
+.status-filter a.active {
+	background: #2980b9;
+	color: #fff;
+	border-color: #2980b9;
 }

@@ -41,6 +41,16 @@ public class ItemServiceImpl implements ItemService
 	@Override
 	public void syncItems()
 	{
+		/*
+		 * itemMapper.countAll();
+		 * spring.sql.init.mode=alwaysを切る場合は必須
+		 * item テーブルに 1 件でもデータがあれば、XML → DB 同期は行わない
+		 */
+		int itemCount = itemMapper.countAll();
+		if (itemCount > 0) {
+			return;
+		}
+
 		try
 		{
 			File xmlFile = FilePath.ITEM_LIST_XML.getPathFile();
@@ -244,14 +254,20 @@ public class ItemServiceImpl implements ItemService
 	}
 
 	@Override
-	public void createItem(Item item)
+	public void createItem(Item item) 
 	{
-		itemMapper.insert(item);
-		for (String c : item.getCategoryList())
+		// ★修正：管理画面からの新規登録は、DBのSERIALでIDを採番
+		itemMapper.insertAuto(item);
+
+		// ID 採番後、item.id に値が入るので、それを使って紐付け登録
+		for (String c : item.getCategoryList()) {
 			categoryMapper.insert(item.getId(), c);
-		for (String img : item.getImagesName())
+		}
+		for (String img : item.getImagesName()) {
 			imageMapper.insert(item.getId(), img);
+		}
 	}
+
 
 	@Override
 	public void updateItem(Item item)

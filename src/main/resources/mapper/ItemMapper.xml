@@ -196,6 +196,32 @@
 		)
 	</insert>
 
+	<!-- 管理画面用（IDはDBのSERIALに任せる） -->
+	<insert id="insertAuto"
+		parameterType="com.example.voidr.entity.Item" useGeneratedKeys="true"
+		keyProperty="id">
+		INSERT INTO item (
+		name,
+		price,
+		overview,
+		is_download,
+		thumbs_image_name,
+		created_at,
+		updated_at
+		-- is_deleted は DEFAULT FALSE を使用
+		)
+		VALUES (
+		#{name},
+		#{price},
+		#{overview},
+		#{isDownload},
+		#{thumbsImageName},
+		#{createdAt},
+		#{updatedAt}
+		)
+	</insert>
+	
+
 	<update id="update">
 		UPDATE item
 		SET
