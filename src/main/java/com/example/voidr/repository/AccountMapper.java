@@ -36,5 +36,11 @@ public interface AccountMapper {
 	int updatePasswordByEmail
 	(	@Param("email") String email, 
 		@Param("passwordHash") String passwordHash);
+	
+	/** 権限（ADMIN / USER）の更新 */
+	void updateAuthority(
+	        @Param("username") String username,
+	        @Param("authority") String authority);
+
 }
 

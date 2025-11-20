@@ -18,6 +18,8 @@
 
 <th:block th:fragment="assets">
 	<link rel="stylesheet" th:href="@{/css/admin/members.css}">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 </th:block>
 
 <th:block th:fragment="content">
@@ -53,14 +55,32 @@
 						<td th:text="${m.id}"></td>
 						<td th:text="${m.username}"></td>
 						<td th:text="${m.displayName}"></td>
-						<td th:text="${m.authority}"></td>
+						<td>
+							<form th:action="@{/admin/members/changeAuthority}" method="post" style="display:flex; gap:6px;">
+							    <input type="hidden" name="username" th:value="${m.username}">
+								<select name="authority">
+								    <option value="USER"
+								            th:selected="${m.authority.name() == 'USER'}">USER</option>
+
+								    <option value="ADMIN"
+								            th:selected="${m.authority.name() == 'ADMIN'}">ADMIN</option>
+								</select>
+
+
+							    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+							    <button type="submit" class="btn btn-update"
+								onclick="return confirm('このユーザーの権限を変更しますか？');">変更</button>
+							</form>
+
+						</td>
 						<td th:text="${m.email}"></td>
 						<td th:text="${#temporals.format(m.createdAt, 'yyyy/MM/dd')}"></td>
 						<td th:text="${m.enabled} ? '有効' : '退会'"></td>
 						<td>
 							<div class="actions">
 								<!-- 編集ボタンはまだダミーのまま（必要なら disabled にしておく） -->
-								<button type="button" class="btn btn-edit" disabled>編集</button>
+								<!--編集ボタンは削除しました　藤田11/20-->
+								
 
 								<!-- 削除（退会）フォーム -->
 								<th:block th:if="${m.enabled}">
@@ -68,10 +88,11 @@
 										<input type="hidden" name="username" th:value="${m.username}">
 										<input type="hidden" th:name="${_csrf.parameterName}"
 											th:value="${_csrf.token}" />
-										<button type="submit" class="btn btn-delete"
-											onclick="return confirm('本当に退会扱いにしますか？');">
-											削除
-										</button>
+											<button type="submit" class="btn btn-gun"
+											        onclick="return confirm('本当に強制退会させますか？⚠️');">
+											    <i class="fas fa-gun"></i> 強制退会
+											</button>
+
 									</form>
 								</th:block>
 
@@ -84,6 +105,15 @@
 			</table>
 		</section>
 	</div>
+	
+	<script th:inline="javascript">
+	   
+	   let msg = /*[[${successMessage}]]*/ "";
+	   if (msg !== null && msg !== "") {
+	       alert(msg);
+	   }
+	</script>
+
 
 </th:block>
 

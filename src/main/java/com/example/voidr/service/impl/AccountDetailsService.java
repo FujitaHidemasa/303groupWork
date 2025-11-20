@@ -130,5 +130,20 @@ public class AccountDetailsService implements AccountService
     public List<Account> searchMembers(String keyword) {
         return accountMapper.searchMembers(keyword);
     }
+    
+    //===========================
+    //★追加：権限変更機能
+    // ==========================
+    @Transactional
+    @Override
+    public void updateAuthority(String username, String authority) {
+    	
+    	if(!authority.equals("USER") && !authority.equals("ADMIN")) {
+    		throw new IllegalArgumentException("不正な権限: " + authority);
+    	}
+    	
+    	// DB反映（Mapper側で UPDATE）
+        accountMapper.updateAuthority(username, authority);
+    }
 
 }
